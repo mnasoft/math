@@ -220,53 +220,36 @@ m-количест во столбцов в матрице"
       ((>= i n))
     (format t "~S~%" (matr-get-row matr i))))
 
-(defun matr-mnk(vv ff ex_pts / mtr n m nv)
+(defun matr-mnk(vv ff ex_pts)
   "Формирует точки для расчета коэффициентов по методу наименьших квадратов
-vv     - '(xx yy) - список, состоящий имен факторов влияния
+vv     - '(xx yy) - список, состоящий из имен факторов влияния
          и имени функции отклика;
-ff     - '(xx yy) '((xx xx) (xx) (1.0) (yy)) - задает 
+ff     - '((xx xx) (xx) (1.0) (yy)) - задает 
          вид функциональной зависимости;
 ex_pts - '((-1.0 1.0) (2.0 4.0) (3.0 9.0))  - задает 
          значения факторов влияния и значение функции отклика
+;;;;
+Пример использования;
+(matr-mnk '(xx yy) '((xx xx) (xx) (1.0) (yy)) '((-1.0 1.0) (2.0 4.0) (3.0 9.0)))
 "
-  (setq
-   m	(length ff)
-   n	(1- m)
-   nv	(length vv)
-   mtr	(matr-new n m)
-   )
-  (mapcar
-   (function
-    (lambda (el / i j)
-     (setq i 0)
-     (while (< i nv)
-       (set (nth i vv) (nth i el))
-       (setq i (1+ i))
-       )
-     (setq i 0)
-     (while (< i n)
-       (setq j 0)
-       (while (< j m)
-	 (setq
-	  pr  (apply
-	       '*
-	       (mapcar
-		'eval
-		(append (nth i ff) (nth j ff))
-		)
-	       )
-	  mtr (matr-set_ij mtr (+ pr (matr-ij mtr i j)) i j)
-	  )
-	 (setq j (1+ j))
-	 )
-       (setq i (1+ i))
-       )
-     )
-    )
-   ex_pts
-   )
-  mtr
-  )
+  (let* ((m (length ff))
+	 (n (1- m))
+	 (nv (length vv))
+	 (mtr (matr-new n m)))
+    (mapcar
+     #'(lambda (el)
+	 (do ((i 0 (1+ i)))
+	     ((>= i nv))
+	   (setf (nth i vv) (nth i el)))
+	 (do ((i 0 (1+ i)))
+	     ((>= i n))
+	   (do ((j 0 (1+ j))
+		(pr nil))
+	       ((>= j m))
+	     (setf pr (apply #'* (mapcar #'eval (append (nth i ff) (nth j ff))))
+		   mtr (matr-set_ij mtr (+ pr (matr-ij mtr i j)) i j)))))
+     ex_pts)
+    mtr))
 
 (defun matr-triang (matr / n m i j k matr_i_k row_i row_k)
   "Сведение матрицы  к треугольному виду матрицы (Для решения системы ЛУ методом Гаусса)
@@ -274,6 +257,7 @@ ex_pts - '((-1.0 1.0) (2.0 4.0) (3.0 9.0))  - задает
  '(\"Matr\" 3 4 ((0 . 1.0) (1 . 0.0) (2 . 1.0) (3 . 4.0) 
 		 (4 . 0.0) (5 . 1.0) (6 . 0.0) (7 . 2.0) 
 		 (8 . 0.0) (9 . 0.0) (10 . 1.0) (11 . 3.0))))
+
 (\"Matr\" 3 2 ((0 . 1.0) (1 . 0.0) (2 . 1.0) (3 . 4.0) 
                (4 . 0.0) (5 . 1.0) (6 . 0.0) (7 . 2.0) 
 	       (8 . 0.0) (9 . 0.0) (10 . 1.0) (11 . 3.0)))
