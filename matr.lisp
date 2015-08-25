@@ -1,5 +1,13 @@
+;;;; matr.lisp
+
+(in-package #:math)
+
 (defun matr-name ()
-  "Возвращает сторку \"Matr\""
+  "Возвращает сторку \"Matr\"
+;;;;
+Пример использования:
+(matr-name)
+"
   "Matr")
 
 (defun matr-idx (i j m)
@@ -93,32 +101,31 @@ m-количест во столбцов в матрице"
       ((>= j m) (reverse pts))
     (setf pts (cons (matr-ij matr i j) pts))))
 
-(defun matr-set_col(matr j pts)
-  (do ((n (matr-row matr))
-        (m (matr-col matr))
-	(i 0))
-  ((>= i n) matr)
-    (setf matr (matr-set_ij matr (nth i pts)i j))))
-
-(defun matr-get_col (matr j / i n m pts)
+(defun matr-set-col(matr j pts)
+  "Пример использования;
+(matr-set-col
+ '(\"Matr\" 2 3 ((0 . 1.0) (1 . 2.0) (2 . 3.0) 
+		 (3 . 4.0) (4 . 5.0) (5 . 6.0)))
+ 0 '(11.0 12.0))"
   (do ((n (matr-row matr))
        (m (matr-col matr))
-       (i 0)
+       (i 0 (1+ i)))
+      ((>= i n) matr)
+    (setf matr (matr-set_ij matr (nth i pts)i j))))
+
+(defun matr-get-col (matr j)
+    "Пример использования:
+(matr-get-col
+ '(\"Matr\" 2 3 ((0 . 1.0) (1 . 2.0) (2 . 3.0) 
+		 (3 . 4.0) (4 . 5.0) (5 . 6.0)))
+ 1)
+"
+  (do ((n (matr-row matr))
+       (m (matr-col matr))
+       (i 0 (1+ i))
        (pts nil))
   ((>= i n)(reverse pts))
     (setf pts (cons (matr-ij matr i j) pts))))
-
-(defun matr-new	(n m)
-"Создание матрицы размером n-строк на m-столбцов
-Пример использования:
-(matr-new 2 3)
-"
-(do
- ((li nil)
-  (size (* n m))
-  (i 0 (1+ i)))
- ((>= i size) (list (matr-name) n m (reverse li)))
-  (setf li (cons (cons i 0.0) li))))
 
 (defun matr-new (n m &optional (lst nil))
 "Создание матрицы размером n-строк на m-столбцов
@@ -126,7 +133,7 @@ m-количест во столбцов в матрице"
 Если элементов в списке недостаточно элементы матрицы инициализируются нулями  
 Пример использования:
 (matr-new 2 3)
-(matr-new 2 3 '(11. 12.))
+(matr-new 2 3 '(11.0 12.0))
 "
   (do
    ((li nil)
@@ -136,9 +143,10 @@ m-количест во столбцов в матрице"
     (setf li (cons (cons i (cond ((nth i lst)) (t 0.0))) li))))
 
 (defun matr-eval (matr)
-  "
+  "Выполняет поэлементное оценивание каждого элемента матрицы
+Пример использования:
 (defparameter *alfa* (/ pi 3))
-(matr-eval '("Matr" 2 3
+(matr-eval '(\"Matr\" 2 3
 	     ((0 . (sin *alfa*)) (1 . 0.0) (2 . 0.0)
 	      (3 . 0.0) (4 . (cos *alfa*)) (5 . 0.0))))
 "
@@ -148,113 +156,69 @@ m-количест во столбцов в матрице"
     (setf li (mapcar #'(lambda (el) (cons (car el) (eval (cdr el)))) li))
     (list (matr-name) n m li)))
 
-
-
-(defun matr-mult (a b / a_n a_m a_n b_m a_li b_li i j k sum c_li)
-  "Перемножение матриц
+(defun matr-mult (a b)
+  "Перемножение матриц a и b
+(matr-mult  '(\"Matr\" 2 3
+	     ((0 . 1.0) (1 . 2.0) (2 . 3.0)
+	      (3 . 4.0) (4 . 5.0) (5 . 6.0)))
+	     '(\"Matr\" 3 2
+	       ((0 . 1.0) (1 . 2.0)
+		(2 . 3.0) (3 . 4.0)
+		(4 . 5.0) (5 . 6.0)))
+	     )
 "
-  (setq
-   a_n	 (cadr a)
-   a_m	 (caddr a)
-   a_li (cadddr a)
-   b_n	 (cadr b)
-   b_m	 (caddr b)
-   b_li (cadddr b)
-   )
-  (cond
-    (
-     (/= a_m b_n)
-     (alert
-      (strcat
-       "Запрещенные размеры матриц для"
-       "\n перемножения: A("
-       (itoa a_n)
-       " x "
-       (itoa a_m)
-       ") x B("
-       (itoa b_n)
-       " x "
-       (itoa b_m)
-       ")"
-       )
-      )
-     )
-    )
-  (setq i a_n)
-  (repeat a_n
-	  (setq i (1- i)
-		j b_m
-		)
-	  (repeat b_m
-		  (setq j	(1- j)
-			k	a_m
-			sum	0.0
-			)
-		  (repeat a_m
-			  (setq k	   (1- k)
-				a_el (cdr (assoc (matr-idx i k a_m) a_li))
-				b_el (cdr (assoc (matr-idx k j b_m) b_li))
-				sum  (+ sum (* a_el b_el))
-				)
-			  )
-		  (setq c_li (cons (cons (matr-idx i j b_m) sum) c_li))
-		  )
-	  )
-  (list (matr-name) a_n b_m c_li))
+  (let ((a_n (matr-row a))
+	(a_m (matr-col a))
+	(b_n (matr-row b))
+	(b_m (matr-col b))
+	(c nil))
+    (cond ((/= a_m b_n)
+	   (break
+	    "Запрещенные размеры матриц для перемножения: A[~A,~A] x B[~A,~A]"
+	    a_n a_m b_n b_m))
+	  (t (setf c (matr-new a_n b_m))))
+    (do ((i 0 (1+ i))
+	 (a-row nil))
+	((>= i a_n))
+      (setf a-row (matr-get-row a i))
+      (do ((j 0 (1+ j))
+	   (b-col nil))
+	  ((>= j b_m))
+	(setf b-col (matr-get-col b j))
+	(setf c (matr-set_ij c (apply #'+ (mapcar #'* a-row b-col)) i j))
+	))
+    c))
 
-(defun matr-to-point (matr / n m li)
+(defun matr-to-point (matr)
   "Перевод матрицы в точку
 (matr-to-point '(\"Matr\" 1 3 ((0 . 1.0) (1 . 2.0) (2 . 3.0))))
-(1.0 2.0 3.0)
 "
-  (setq
-   n  (cadr matr)
-   m  (caddr matr)
-   li (cadddr matr)
-   )
-  (mapcar 'cdr li)
-  )
+  (let ((n  (matr-row matr))
+	(m  (matr-col matr))
+	(li (matr-elements matr)))
+    (mapcar #'cdr li)))
 
-(defun point-to-matr (p / i li n)
-  "Перевод точки в матрицу:
-(point-to-matr '(10.0 11.0 12.0 13.0) )
-(\"Matr\" 1 4 ((0 . 10.0) (1 . 11.0) (2 . 12.0) (3 . 13.0)))
+(defun point-to-matr (p)
+  "Перевод точки в матрицу
+;;;;
+Пример использования:
+(point-to-matr '(10.0 11.0 12.0 13.0))
 "
-  (setq
-   n (length p)
-   i -1
-   )
-  (list
-   (matr-name)
-   1
-   n
-   (mapcar
-    (function
-     (lambda	(el)
-      (cons (setq i (1+ i)) el)
-      )
-     )
-    p
-    )
-   )
-  )
+  (matr-new 1 (length p) p))
 
-(defun matr-print (matr / i j)
-  (setq
-    i 0
-  )
-  (while (< i (matr-row matr))
-    (setq j 0)
-    (princ "\n")
-    (while (< j (matr-col matr))
-      (princ (matr-ij matr i j))
-      (princ " ")
-      (setq j (1+ j))
-    )
-    (setq i (1+ i))
-  )
-  (princ)
-)
+(defun matr-print (matr)
+  " Выводит матрицу на печать
+;;;;
+Пример использования:
+'(\"Matr\" 2 3
+	     ((0 . (sin *alfa*)) (1 . 0.0) (2 . 0.0)
+	      (3 . 0.0) (4 . (cos *alfa*)) (5 . 0.0)))
+"
+  (do ((i 0 (1+ i))
+       (n (matr-row matr))
+       (m (matr-col matr)))
+      ((>= i n))
+    (format t "~S~%" (matr-get-row matr i))))
 
 (defun matr-mnk(vv ff ex_pts / mtr n m nv)
   "Формирует точки для расчета коэффициентов по методу наименьших квадратов
