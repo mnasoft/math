@@ -216,9 +216,10 @@ m-количест во столбцов в матрице"
 "
   (do ((i 0 (1+ i))
        (n (matr-row matr))
-       (m (matr-col matr)))
-      ((>= i n))
-    (format t "~S~%" (matr-get-row matr i))))
+       (m (matr-col matr))
+       (out (make-string-output-stream)))
+      ((>= i n) (get-output-stream-string out))
+    (format out "~S~%" (matr-get-row matr i))))
 
 (defun matr-mnk(vv ff ex_pts)
   "Формирует точки для расчета коэффициентов по методу наименьших квадратов
@@ -251,83 +252,45 @@ ex_pts - '((-1.0 1.0) (2.0 4.0) (3.0 9.0))  - задает
      ex_pts)
     mtr))
 
-(defun matr-triang (matr / n m i j k matr_i_k row_i row_k)
+(defun matr-triang (matr)
   "Сведение матрицы  к треугольному виду матрицы (Для решения системы ЛУ методом Гаусса)
 (matr-triang 
  '(\"Matr\" 3 4 ((0 . 1.0) (1 . 0.0) (2 . 1.0) (3 . 4.0) 
 		 (4 . 0.0) (5 . 1.0) (6 . 0.0) (7 . 2.0) 
 		 (8 . 0.0) (9 . 0.0) (10 . 1.0) (11 . 3.0))))
-
+;;;;
 (\"Matr\" 3 2 ((0 . 1.0) (1 . 0.0) (2 . 1.0) (3 . 4.0) 
                (4 . 0.0) (5 . 1.0) (6 . 0.0) (7 . 2.0) 
 	       (8 . 0.0) (9 . 0.0) (10 . 1.0) (11 . 3.0)))
 "
-  (setq
-   n (matr-row matr)
-   m (matr-col matr)
-   )
-  (setq j 0)
-  (while (< j n) ;цикл по столбцам	;
-    (setq
-     ie (1- n)
-     i	 j
-     )
-    (while (<= i ie) ;цикл по строкам для деления ;
-      (setq
-       row_i	 (matr-get-row matr i)
-       matr_ij  (matr-ij matr i j)
-       )
+  (do ((n (matr-row matr)) (m (matr-col matr)) (ie nil) (j 0 (1+ j)) (row_j nil) (row_i nil))
+      ( (>= j n) matr)
+    (setf ie (1- n))
+    (do (  (i j (1+ i)) (matr_ij nil) (row_ie nil))
+	( (> i ie))
+      (setf row_i   (matr-get-row matr i)
+	    matr_ij (matr-ij matr i j))
+      (break (matr-print matr))
       (cond
-	(
-	 (= matr_ij 0)
-	 (setq
-	  row_ie (matr-get-row matr ie)
-	  matr	  (matr-set-row matr i row_ie)
-	  matr	  (matr-set-row matr ie row_i)
-	  ie	  (1- ie)
-	  )
-	 )
-	(
-	 (/= matr_ij 0)
-	 (setq
-	  row_i
-	  (mapcar
-	   (function
-	    (lambda (el)
-	     (/ el matr_ij)
-	     )
-	    )
-	   row_i
-	   )
-	  matr	 (matr-set-row matr i row_i)
-	  i	 (1+ i)
-	  )
-	 )
-	)
-      )
-    (setq row_j (matr-get-row matr j));строка которую необходимо вычесть из других строк ;
-    (setq i (1+ j))
-    (while (<= i ie) ;цикл по строкам для деления ;
-      (setq
-       row_i (matr-get-row matr i)
-       row_i
-       (mapcar
-	(function
-	 (lambda (el1 el2)
-	  (- el1 el2)
-	  )
-	 )
-	row_i
-	row_j
-	)
-       matr  (matr-set-row matr i row_i)
-       )
-      (setq i (1+ i))
-      )
-    (setq j (1+ j))
-    )
-  matr
-  )
+	((= matr_ij 0)
+	 (setf row_ie (matr-get-row matr ie)
+	       matr (matr-set-row matr i row_ie)
+	       matr (matr-set-row matr ie row_i)
+	       ie (1- ie)))
+	((/= matr_ij 0)
+	 (setf row_i (mapcar #'(lambda (el) (/ el matr_ij)) row_i)
+	       matr (matr-set-row matr i row_i)))))
+    (setf row_j (matr-get-row matr j)) ;строка которую необходимо вычесть из других строк ;
+    (do ((i (1+ j)(1+ i)))
+	((> i ie))			;цикл по строкам для деления ;
+      (setq row_i (matr-get-row matr i)
+	    row_i (mapcar (function (lambda (el1 el2) (- el1 el2))) row_i row_j)
+	    matr  (matr-set-row matr i row_i)))))
+
+(matr-print (matr-triang 
+ '("Matr" 3 4 ((0 . 1.0) (1 . 0.0) (2 . 1.0) (3 . 4.0) 
+	       (4 . 0.0) (5 . 1.0) (6 . 0.0) (7 . 2.0) 
+	       (8 . 0.0) (9 . 0.0) (10 . 1.0) (11 . 3.0)))))
 
 (defun matr-obrhod (matr / i j m n summ x)
   "Обратный ход при вычислении решения системы линейных уравнений
