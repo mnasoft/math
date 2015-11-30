@@ -218,20 +218,31 @@ m-количест во столбцов в матрице"
 "
   (matr-new 1 (length p) p))
 
-(defun matr-print (matr)
-  " Выводит матрицу на печать
+(defun matr-to-string (matr)
+  "Выводит представление матрицы в виде строки символов
 ;;;;
 Пример использования:
-'(\"Matr\" 2 3
+(matr-to-string '(\"Matr\" 2 3
 	     ((0 . (sin *alfa*)) (1 . 0.0) (2 . 0.0)
-	      (3 . 0.0) (4 . (cos *alfa*)) (5 . 0.0)))
+	      (3 . 0.0) (4 . (cos *alfa*)) (5 . 0.0))))
 "
-  (do ((i 0 (1+ i))
-       (n (matr-row matr))
-       (m (matr-col matr))
-       (out (make-string-output-stream)))
-      ((>= i n) (get-output-stream-string out))
-    (format out "~S~%" (matr-get-row matr i))))
+  (let ((n (matr-row matr))
+	(m (matr-col matr))
+	(out (make-string-output-stream)))
+    (format out "Matr ~S ~S~%" n m)
+    (do ((i 0 (1+ i))
+	 )
+	((>= i n) (get-output-stream-string out))
+      (format out "~S~%" (matr-get-row matr i)))))
+
+(defun matr-print (matr &optional (ostream t))
+  "Выводит представление матрицы в поток
+;;;;
+Пример использования:
+(matr-print '(\"Matr\" 2 3
+	     ((0 . (sin *alfa*)) (1 . 0.0) (2 . 0.0)
+	      (3 . 0.0) (4 . (cos *alfa*)) (5 . 0.0))))"
+  (format ostream "~A" (matr-to-string matr)))
 
 (defun matr-mnk(vv ff ex_pts)
   "Формирует точки для расчета коэффициентов по методу наименьших квадратов
@@ -273,6 +284,7 @@ ex_pts - '((-1.0 1.0) (2.0 4.0) (3.0 9.0))  - задает
 n - количество сторк;
 m - количество столбцов;
 "
+  (matr-print matr)
   (do ((n (matr-row matr)) (m (matr-col matr)) (ie nil) (j 0 (1+ j)) (row_j nil) (row_i nil))
       ( (>= j n) matr)
     (setf ie (1- n))
@@ -280,39 +292,23 @@ m - количество столбцов;
 	( (> i ie))
       (setf row_i   (matr-get-row matr i)
 	    matr_ij (matr-ij matr i j))
-;;;;      (break "1~%~A~%" (matr-print matr))
       (cond
 	((= matr_ij 0)
-;;;;         (break "2~%~A~%" (matr-print matr))
 	 (setf row_ie (matr-get-row matr ie)
 	       matr (matr-set-row matr i row_ie)
 	       matr (matr-set-row matr ie row_i)
 	       ie (1- ie)))
 	((/= matr_ij 0)
-;;;;         (break "3~%~A~%" (matr-print matr))
 	 (setf row_i (mapcar #'(lambda (el) (/ el matr_ij)) row_i)
-	       matr (matr-set-row matr i row_i)))))
+	       matr (matr-set-row matr i row_i))))
+      (matr-print matr))
     (setf row_j (matr-get-row matr j)) ;строка которую необходимо вычесть из других строк ;
-;;;;    (break "4~%~A~%" (matr-print matr))
     (do ((i (1+ j)(1+ i)))
 	((> i ie))			;цикл по строкам для деления ;
       (setf row_i (matr-get-row matr i)
 	    row_i (mapcar (function (lambda (el1 el2) (- el1 el2))) row_i row_j)
 	    matr  (matr-set-row matr i row_i))
-;;;;      (break "5~%~A~%" (matr-print matr))
-      )))
-
-(matr-print
- (matr-obrhod
-  (matr-triang 
-  '("Matr" 3 4 ((0 . 10.0d0) (1 . 2.0d0) (2  .  3.0d0) (3  . 4.0d0) 
-		(4 . 40.0d0) (5 . 5.0d0) (6  .  6.0d0) (7  . 2.0d0) 
-		(8 . 70.0d0) (9 . 8.0d0) (10 . 10.0d0) (11 . 3.0d0))))))
-
-(apply #'+
-       (mapcar #'(lambda (e1 e2) (* e1 e2))
-	       '(-0.2333333333333333 -4/3 3)
-	       '(1.0 0.2 0.3 0.4)))
+      (matr-print matr))))
 
 (defun matr-obrhod (matr)
   "Обратный ход при вычислении решения системы линейных уравнений
@@ -370,6 +366,14 @@ m - количество столбцов;
 
 (matr-sys_lu  
  '(\"Matr\" 3 4 
-   ((0 . 10.0d0) (1 . 2.0d0) (2  .  3.0d0) (3  . 4.0d0) 
-    (4 . 40.0d0) (5 . 5.0d0) (6  .  6.0d0) (7  . 2.0d0) 
-    (8 . 70.0d0) (9 . 8.0d0) (10 . 10.0d0) (11 . 3.0d0))))
+   ((8 . 0.0d0) (9 . 8.0d0) (10 . 10.0d0) (11 . 3.0d0)
+    (4 . 0.0d0) (5 . 5.0d0) (6 . 6.0d0) (7  . 2.0d0) 
+    (0 . 100.0d0) (1 . 2.0d0) (2 . 3.0d0) (3  . 4.0d0)
+    )))
+
+(matr-triang 
+ '("Matr" 3 4 ((0 . 0.0d0) (1 . 2.0d0) (2  . 3.0d0) (3  . 4.0d0) 
+	       (4 . 40.0d0) (5 . 5.0d0) (6  . 6.0d0) (7  . 2.0d0) 
+	       (8 . 70.0d0) (9 . 8.0d0) (10 . 10.0d0) (11 . 3.0d0))))
+
+
