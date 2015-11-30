@@ -2,6 +2,8 @@
 
 (in-package #:math)
 
+(declaim (optimize (debug 3)))
+
 (defun matr-name ()
   "Возвращает сторку \"Matr\"
 ;;;;
@@ -38,24 +40,33 @@ m-количест во столбцов в матрице"
   "Пример использования:
 (matr-ind_err 0 0 2 3)
 "
-(format nil "Ошибка при доступе к эл. матрицы: M[i=~A,j=~A] M[n=~A,m=~A]" i j n m))
+(format nil "Ошибка при доступе к эл. матрицы: M[~A,~A] M[0..~A,0..~A]" i j n m))
+
+(defun in-range-inc (i i_min i_max ) (<= i_min i  i_max))
+
+(defun in-range-exc (i i_min i_max) (< i_min i  i_max))
+
+(defun in-range-inc-exc (i i_min i_max) (and (<= i_min i) (< i i_max)))
+
+(defun matr-index-is-good (matr i j)
+  (let ((n  (matr-row matr))
+	(m  (matr-col matr)))
+    (if (not (and(in-range-inc-exc i 0 n) (in-range-inc-exc j 0 m)))
+	(break "Ошибка при доступе к эл. матрицы: M[~A,~A] M[0..~A,0..~A]" i j (- n 1) (-  m 1 )))))
+
 
 (defun matr-ij (matr i j)
-  "Доступ к ij элементу матрицы matr элементы начинаются с нуля
+  "Доступ к i,j элементу матрицы matr
+Нумерация элементов начинается с нуля
 Пример использования:
 (matr-ij '(\"Matr\" 2 3 ((0 . 1.0) (1 . 2.0) (2 . 3.0) (3 . 4.0) (4 . 5.0) (5 . 6.0)))
-0 2
-)
+	 0 2)
 "
   (let ((n  (matr-row matr))
 	(m  (matr-col matr))
 	(li (matr-elements matr)))
-  (cond
-    ( (or (< i 0) (>= i n))
-     (break "~A" (matr-ind_err i j n m)))
-    ( (or (< j 0) (>= j m))
-     (break "~A" (matr-ind_err i j n m)))
-    (t (cdr (assoc (matr-idx i j m) li))))))
+    (matr-index-is-good matr i j)
+    (cdr (assoc (matr-idx i j m) li))))
 
 (defun matr-set_ij (matr elem i j)
   "Присвоение значения elem элементу матрицы matr(i j) элементы начинаются с нуля
@@ -69,6 +80,7 @@ m-количест во столбцов в матрице"
   (let ((n  (cadr matr))
 	(m  (caddr matr))
 	(li (cadddr matr)))
+    (matr-index-is-good matr i j)
     (setf li (subst (cons (matr-idx i j m) elem)
 		    (assoc (matr-idx i j m) li)
 		    li))
@@ -114,7 +126,7 @@ m-количест во столбцов в матрице"
     (setf matr (matr-set_ij matr (nth i pts)i j))))
 
 (defun matr-get-col (matr j)
-    "Пример использования:
+  "Пример использования:
 (matr-get-col
  '(\"Matr\" 2 3 ((0 . 1.0) (1 . 2.0) (2 . 3.0) 
 		 (3 . 4.0) (4 . 5.0) (5 . 6.0)))
@@ -124,7 +136,7 @@ m-количест во столбцов в матрице"
        (m (matr-col matr))
        (i 0 (1+ i))
        (pts nil))
-  ((>= i n)(reverse pts))
+      ((>= i n)(reverse pts))
     (setf pts (cons (matr-ij matr i j) pts))))
 
 (defun matr-new (n m &optional (lst nil))
@@ -133,14 +145,14 @@ m-количест во столбцов в матрице"
 Если элементов в списке недостаточно элементы матрицы инициализируются нулями  
 Пример использования:
 (matr-new 2 3)
-(matr-new 2 3 '(11.0 12.0))
+(matr-new 2 3 '(11.0d0 12.0d0))
 "
   (do
    ((li nil)
     (size (* n m))
     (i 0 (1+ i)))
    ((>= i size) (list (matr-name) n m (reverse li)))
-    (setf li (cons (cons i (cond ((nth i lst)) (t 0.0))) li))))
+    (setf li (cons (cons i (cond ((nth i lst)) (t 0.0d0))) li))))
 
 (defun matr-eval (matr)
   "Выполняет поэлементное оценивание каждого элемента матрицы
@@ -255,13 +267,11 @@ ex_pts - '((-1.0 1.0) (2.0 4.0) (3.0 9.0))  - задает
 (defun matr-triang (matr)
   "Сведение матрицы  к треугольному виду матрицы (Для решения системы ЛУ методом Гаусса)
 (matr-triang 
- '(\"Matr\" 3 4 ((0 . 1.0) (1 . 0.0) (2 . 1.0) (3 . 4.0) 
-		 (4 . 0.0) (5 . 1.0) (6 . 0.0) (7 . 2.0) 
-		 (8 . 0.0) (9 . 0.0) (10 . 1.0) (11 . 3.0))))
-;;;;
-(\"Matr\" 3 2 ((0 . 1.0) (1 . 0.0) (2 . 1.0) (3 . 4.0) 
-               (4 . 0.0) (5 . 1.0) (6 . 0.0) (7 . 2.0) 
-	       (8 . 0.0) (9 . 0.0) (10 . 1.0) (11 . 3.0)))
+ '(\"Matr\" 3 4 ((0 . 1.0d0) (1 . 0.0d0) (2  . 1.0d0) (3  . 4.0d0) 
+		 (4 . 0.0d0) (5 . 1.0d0) (6  . 0.0d0) (7  . 2.0d0) 
+		 (8 . 0.0d0) (9 . 0.0d0) (10 . 1.0d0) (11 . 3.0d0))))
+n - количество сторк;
+m - количество столбцов;
 "
   (do ((n (matr-row matr)) (m (matr-col matr)) (ie nil) (j 0 (1+ j)) (row_j nil) (row_i nil))
       ( (>= j n) matr)
@@ -270,65 +280,75 @@ ex_pts - '((-1.0 1.0) (2.0 4.0) (3.0 9.0))  - задает
 	( (> i ie))
       (setf row_i   (matr-get-row matr i)
 	    matr_ij (matr-ij matr i j))
-      (break (matr-print matr))
+;;;;      (break "1~%~A~%" (matr-print matr))
       (cond
 	((= matr_ij 0)
+;;;;         (break "2~%~A~%" (matr-print matr))
 	 (setf row_ie (matr-get-row matr ie)
 	       matr (matr-set-row matr i row_ie)
 	       matr (matr-set-row matr ie row_i)
 	       ie (1- ie)))
 	((/= matr_ij 0)
+;;;;         (break "3~%~A~%" (matr-print matr))
 	 (setf row_i (mapcar #'(lambda (el) (/ el matr_ij)) row_i)
 	       matr (matr-set-row matr i row_i)))))
     (setf row_j (matr-get-row matr j)) ;строка которую необходимо вычесть из других строк ;
+;;;;    (break "4~%~A~%" (matr-print matr))
     (do ((i (1+ j)(1+ i)))
 	((> i ie))			;цикл по строкам для деления ;
-      (setq row_i (matr-get-row matr i)
+      (setf row_i (matr-get-row matr i)
 	    row_i (mapcar (function (lambda (el1 el2) (- el1 el2))) row_i row_j)
-	    matr  (matr-set-row matr i row_i)))))
+	    matr  (matr-set-row matr i row_i))
+;;;;      (break "5~%~A~%" (matr-print matr))
+      )))
 
-(matr-print (matr-triang 
- '("Matr" 3 4 ((0 . 1.0) (1 . 0.0) (2 . 1.0) (3 . 4.0) 
-	       (4 . 0.0) (5 . 1.0) (6 . 0.0) (7 . 2.0) 
-	       (8 . 0.0) (9 . 0.0) (10 . 1.0) (11 . 3.0)))))
+(matr-print
+ (matr-obrhod
+  (matr-triang 
+  '("Matr" 3 4 ((0 . 10.0d0) (1 . 2.0d0) (2  .  3.0d0) (3  . 4.0d0) 
+		(4 . 40.0d0) (5 . 5.0d0) (6  .  6.0d0) (7  . 2.0d0) 
+		(8 . 70.0d0) (9 . 8.0d0) (10 . 10.0d0) (11 . 3.0d0))))))
 
-(defun matr-obrhod (matr / i j m n summ x)
+(apply #'+
+       (mapcar #'(lambda (e1 e2) (* e1 e2))
+	       '(-0.2333333333333333 -4/3 3)
+	       '(1.0 0.2 0.3 0.4)))
+
+(defun matr-obrhod (matr)
   "Обратный ход при вычислении решения системы линейных уравнений
 Матрица matr должна быть приведена к треуголной
 "
-  (setq
-   n (matr-row matr)
-   m (matr-col matr)
-   x (matr-new 1 n)
-   )
-  (setq i 0)
-  (while (< i n)
-    (setq x (matr-set_ij x 1.0 0 i))
-    (setq i (1+ i))
-    )
-  (setq i n)
-  (while (<= 0 (setq i (1- i)))
-    (setq j (1+ i)
-	  summ 0.0
-	  )
-    (while (< j  n)
-      (setq summ (+ summ(* (matr-ij matr i j) (matr-ij x 0 j))))
-      (setq j (1+ j))
-      )
-    (setq x (matr-set_ij x (/ (- (matr-ij matr i n) summ)(matr-ij matr i i)) 0 i))
-    )
-  x
-  )
-
-(defun matr-sys_lu(matr / x)
+  (let* ((n (matr-row matr))
+	 (m (matr-col matr))
+	 (x (matr-new 1 n)))
+;;;;    (break "00~%" (matr-print x))
+    (do ((i 0 (+ 1 i)))
+	((>= i n) x)
+      (setf x (matr-set_ij x 1.0 0 i)))
+;;;;    (break "10~%~A~%" (matr-print x))
+    (do ((i (- n 1)(- i 1))
+	 (summ 0.0))
+	((< i 0) x)
+;;;;      (break "20~%")
+      (do ((j (+ 1 i) (+ 1 j)))
+	  ((>= j  n) 'done2)
+	(setf summ (+ summ(* (matr-ij matr i j) (matr-ij x 0 j))))
+;;;;	(break "30~%")
+	)
+;;;;      (break "40~%")
+      (setf x (matr-set_ij x (/ (- (matr-ij matr i n) summ)(matr-ij matr i i)) 0 i)))
+    ))
+ 
+(defun matr-sys_lu(matr)
   "Решение системы линейных уравнений методом Гаусса
 Выводит матрицу с корнями системы линейных уравений коэффициентов
 
 Например:
 (matr-sys_lu  
- '(\"Matr\" 3 4 ((0 . 2.0) (1 . 0.0) (2 . 2.0) (3 . 8.0) 
-		 (4 . 0.0) (5 . 2.0) (6 . 0.0) (7 . 4.0) 
-		 (8 . 2.0) (9 . 0.0) (10 . 3.0) (11 . 11.0))))
+ '(\"Matr\" 3 4 
+   ((0 . 10.0d0) (1 . 2.0d0) (2  .  3.0d0) (3  . 4.0d0) 
+    (4 . 40.0d0) (5 . 5.0d0) (6  .  6.0d0) (7  . 2.0d0) 
+    (8 . 70.0d0) (9 . 8.0d0) (10 . 10.0d0) (11 . 3.0d0))))
 
 Матрица, приведенная к тругольной:
 1.0 0.0 1.0 4.0 
@@ -339,11 +359,17 @@ ex_pts - '((-1.0 1.0) (2.0 4.0) (3.0 9.0))  - задает
 1.0 2.0 3.0
 (\"Matr\" 1 3 ((0 . 1.0) (1 . 2.0) (2 . 3.0)))
 "
-  (setq matr (matr-triang matr)	)
-  (princ "\nМатрица приведенная к тругольной:")
-  (matr-print matr)
-  (princ "\nКорни системы уравнений:")
-  (setq x(matr-obrhod matr))
+(let ((matr-tr (matr-triang matr))
+      (x nil))
+  (format nil "~%Матрица приведенная к тругольной:~%")
+  (matr-print matr-tr)
+  (format nil "~%Корни системы уравнений:~%")
+  (setf x(matr-obrhod matr-tr))
   (matr-print x)
-  x
-)
+  x))
+
+(matr-sys_lu  
+ '(\"Matr\" 3 4 
+   ((0 . 10.0d0) (1 . 2.0d0) (2  .  3.0d0) (3  . 4.0d0) 
+    (4 . 40.0d0) (5 . 5.0d0) (6  .  6.0d0) (7  . 2.0d0) 
+    (8 . 70.0d0) (9 . 8.0d0) (10 . 10.0d0) (11 . 3.0d0))))
