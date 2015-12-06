@@ -5,6 +5,7 @@
   :author "Your Name <your.name@example.com>"
   :license "Specify license here"
   :serial t
+  :depends-on (:cl-utilities)
   :components ((:file "package")
                (:file "math")
 	       (:file "approximation")

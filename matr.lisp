@@ -377,78 +377,81 @@ m - количество столбцов;
 	       (8 . 70.0d0) (9 . 8.0d0) (10 . 10.0d0) (11 . 3.0d0))))
 
 
-(defun rotation (arr)
-  (let ((n (array-dimension arr 0)) ;; Количество строк
-	(m (array-dimension arr 1)) ;; Количество столбцов
+(defun matr-rotation (matr)
+  "Решение системы линейных алгебраических уравнений (СЛАУ) методом вращения, состоящего из:
+- сведения СЛАУ к треугольной системе;
+- нахождение корней методом обратного хода метода Гаусса
+;
+Возвращает вектор с количеством элементов равным количеству строк в СЛАУ
+;
+Matr - массив, у которого количество строк (первая размерность)
+должно быть на единицу меньше количества столбцов (вторая размерность)
+Данная матрица меняется в процессе в процессе вычисления функции
+;
+Пример использования:
+(defparameter *m-test*
+  (make-array '(3 4)
+	      :initial-contents
+	      '((10.0d0 11.0d0  12.0d0  4.0d0)
+		(15.0d0 17.0d0  21.0d0  2.0d0)
+		(70.0 8.0  10.0 3.0))))
+(matr-rotation (copy-array *m-test*))
+;
+Есть необходимость доработки с точки зрения решения разреженной СЛАУ
+"
+  (let ((n (array-dimension matr 0))	; Количество строк
+	(m (array-dimension matr 1))	; Количество столбцов
 	)
+    (if (/= (1+ n) m)			; Проверка размерности
+	(break "ERROR IN FUNC matr-rotation:~%n+1 != m~%" ))
     (do ((i 0 (1+ i)))
-	((not (< i n)) arr)
+	((not (< i n)) matr)
       (do ((a nil) (b nil) (c nil) (s nil) (tmp nil)
 	   (j  (1+ i) (1+ j)))
 	  ((not (< j n)) 'done-do-02)
-	(setf a (aref arr i i)
-	      b (aref arr j i)
+	(setf a (aref matr i i)
+	      b (aref matr j i)
 	      c (/ a (sqrt (+ (* a a) (* b b))))
 	      s (/ b (sqrt (+ (* a a) (* b b)))))
 	(do ((k i (1+ k )))
-	    ((not (< k m)) 'done-do-03)
-	  ;;	  (break "001 i=~A j=~A k=~A~%a=~A b=~A c=~A s=~A~%~S~%" i j k a b c s arr)
-	  (setf tmp (aref arr i k)
-		(aref arr i k) (+ (* c (aref arr i k)) (* s (aref arr j k)))
-		(aref arr j k) (- (* c (aref arr j k)) (* s tmp))))))
-    (do ((i (1- n) (1- i))
+	    ((not (<= k n)) 'done-do-03)
+	  ;;	  (break "001 i=~A j=~A k=~A~%a=~A b=~A c=~A s=~A~%~S~%" i j k a b c s matr)
+	  (setf tmp (aref matr i k)
+		(aref matr i k) (+ (* c (aref matr i k)) (* s (aref matr j k)))
+		(aref matr j k) (- (* c (aref matr j k)) (* s tmp))))))
+    (do ((i (1- n) (1- i))		; Обратный ход метода Гаусса
 	 (x (make-array n :initial-element 1.0d0))
 	 (summ 0.0d0 0.0d0))
 	((not (>= i 0)) x)
       (do ((j (1+ i) (1+ j)))
 	  ((not (< j n)))
-	(setf summ (+ summ (* (aref arr i j) (aref x j)))))
-      (setf summ (- (aref arr i n) summ)
-	    (aref x i) (/ summ (aref arr i i)))
+	(setf summ (+ summ (* (aref matr i j) (aref x j)))))
+      (setf summ (- (aref matr i n) summ)
+	    (aref x i) (/ summ (aref matr i i)))
       )))
 
-int rotation(int cnt_str, double **mass, double *&x)
-{
-    int i,j,k;
-    x=new double [cnt_str];//выделение памяти для неизвестных
-//прямой ход методом вращений
-    double a,b,c,s,t;
-    for(i=0; i<cnt_str; i++)
-    {
-        for(j=i+1; j<cnt_str; j++)
-        {
-            b=mass[j][i];
-            a=mass[i][i];
-            c=a/sqrt(a*a+b*b);
-            s=b/sqrt(a*a+b*b);
-            for(k=i; k<cnt_str+1; k++)
-            {
-                t=mass[i][k];
-                mass[i][k]=c*mass[i][k]+s*mass[j][k];
-                mass[j][k]=-s*t+c*mass[j][k];
-            }
-        }
-    }
-//обратный ход метод Гаусса
-    for(i=cnt_str-1; i>=0; i--)
-    {
-        double summ=0.;
-        for(j=i+1; j<cnt_str; j++)
-            summ+=mass[i][j]*x[j];
-        summ=mass[i][cnt_str]-summ;
-        if(mass[i][i]==0)
-            return 0;
-        x[i]=summ/mass[i][i];
-    }
-    return 1;
-}
+(defun mult-matr-vect (matr vect)
+  "Умножение матрицы Matr на вектор Vect
+Возвращает вектор с количеством элементов равным количеству элементов в векторе Vect
+Пример использования:
+(defparameter *m-test*
+  (make-array '(3 4)
+	      :initial-contents
+	      '((10.0d0 11.0d0  12.0d0  4.0d0)
+		(15.0d0 17.0d0  21.0d0  2.0d0)
+		(70.0 8.0  10.0 3.0))))
 
-(rotation
- (make-array '(3 4)
-	     :initial-contents
-	     '((10.0d0  20.0d0  3.0d0  4.0d0)
-	       (40.0d0 5.0d0  6.0d0  2.0d0)
-	       (70.0 8.0  10.0 3.0))))
+(mult-matr-vect  *m-test* ; Проверка правильности решения (системы линейных алгебраических уравнений) СЛАУ
+		 (matr-rotation (copy-array *m-test*)))
 
-(apply #' + (mapcar #'* '(1.0d0  2.0d0  3.0d0  4.0d0)
-'(-0.08787878787878768d0 0.12121212121212128d0 0.8181818181818168d0)))
+"
+  (let* ((n (array-dimension vect 0))
+	 (vect-rez (make-array n :initial-element 0.0d0)))
+    (do ((i 0 (1+ i)))
+	((= i n) (values vect-rez matr vect ))
+      (do ((j 0 (1+ j))
+	   (summ 0.0d0))
+	  ((= j n) (setf (aref vect-rez i) summ))
+	(setf summ (+ summ (* (aref matr i j )
+			      (aref vect j))))))))
+
