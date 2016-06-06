@@ -20,8 +20,10 @@
 	   point-to-matr
 	   matr-to-string
 	   matr-print
+	   matr-mnk
 	   matr-triang
 	   matr-las-gauss
+	   matr-osr-func
 	   matr-las-rotation
 	   ))
 

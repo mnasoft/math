@@ -294,7 +294,7 @@ ex_pts - '((-1.0 1.0) (2.0 4.0) (3.0 9.0))  - задает
 	    ex_pts)
     mtr))
 
-
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defun matr-triang (matr)
   "Выполняет приведение  матрицы  к треугольному виду 
@@ -399,6 +399,16 @@ ex_pts - '((-1.0 1.0) (2.0 4.0) (3.0 9.0))  - задает
   (matr-print x)
   x))
 
+(defun matr-osr-func (vv ff ex_pts func-name)
+  (let ((kk (cons 
+	     '+ (mapcar 
+		 #'(lambda(el1 el2) (cons '* (cons el1 el2)))
+		 (math:matr-to-point 
+		  (math:matr-las-gauss
+		   (math:matr-mnk vv ff ex_pts)))
+		 ff))))
+(list 'defun func-name (reverse (cdr(reverse vv))) kk)))
+ 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defun matr-rotation (matr)
