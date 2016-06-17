@@ -64,8 +64,7 @@ m-количест во столбцов в матрице"
 (matr-ij '(\"Matr\" 2 3 ((0 . 1.0) (1 . 2.0) (2 . 3.0) (3 . 4.0) (4 . 5.0) (5 . 6.0)))
 	 0 2)
 "
-  (let ((n  (matr-rows matr))
-	(m  (matr-cols matr))
+  (let ((m  (matr-cols matr))
 	(li (matr-elements matr)))
     (matr-index-is-good matr i j)
     (cdr (assoc (matr-idx i j m) li))))
@@ -95,8 +94,7 @@ m-количест во столбцов в матрице"
 		 (3 . 0.0) (4 . 0.0) (5 . 0.0)))
  0 '(11 12 13))
 "
-  (do ((n (matr-rows matr))
-       (m (matr-cols matr))
+  (do ((m (matr-cols matr))
        (j 0 (1+ j)))
       ( (>= j m) matr)
     (setf matr (matr-set_ij matr (nth j pts)i j))))
@@ -108,10 +106,9 @@ m-количест во столбцов в матрице"
 		 (3 . 11.0) (4 . 12.0) (5 . 13.0)))
  1)
 "
-  (do ((n (matr-rows matr))
-	(m (matr-cols matr))
-	(j 0 (1+ j))
-	(pts nil))
+  (do ((m (matr-cols matr))
+       (j 0 (1+ j))
+       (pts nil))
       ((>= j m) (reverse pts))
     (setf pts (cons (matr-ij matr i j) pts))))
 
@@ -122,7 +119,6 @@ m-количест во столбцов в матрице"
 		 (3 . 4.0) (4 . 5.0) (5 . 6.0)))
  0 '(11.0 12.0))"
   (do ((n (matr-rows matr))
-       (m (matr-cols matr))
        (i 0 (1+ i)))
       ((>= i n) matr)
     (setf matr (matr-set_ij matr (nth i pts)i j))))
@@ -135,7 +131,6 @@ m-количест во столбцов в матрице"
  1)
 "
   (do ((n (matr-rows matr))
-       (m (matr-cols matr))
        (i 0 (1+ i))
        (pts nil))
       ((>= i n)(reverse pts))
@@ -215,22 +210,19 @@ m-количест во столбцов в матрице"
 
 (defun matr-to-point (matr)
   "Выполняет преобразование матрицы в точку
-(matr-to-point '(\"Matr\" 1 3 ((0 . 1.0) (1 . 2.0) (2 . 3.0))))
+(matr-to-point (matr-new 1 3 '(1.0 2.0 3.0)))
 => (1.0 2.0 3.0)
 ;
-(matr-to-point '(\"Matr\" 3 1 ((0 . 1.0) (1 . 2.0) (2 . 3.0))))
+(matr-to-point (matr-new 3 1 '(1.0 2.0 3.0)))
 => (1.0 2.0 3.0)
 ;
-(matr-to-point '(\"Matr\" 3 2 ((0 . 1.0) (1 . 2.0) (2 . 3.0) (3 . 11.0) (4 . 12.0) (5 . 13.0))))
+(matr-to-point (matr-new 3 2 '( 1.0 2.0 3.0 11.0 12.0 13.0)))
 => (1.0 2.0 3.0 11.0 12.0 13.0)
 ;
-(matr-to-point '(\"Matr\" 2 3 ((0 . 1.0) (1 . 2.0) (2 . 3.0) (3 . 11.0) (4 . 12.0) (5 . 13.0))))
+(matr-to-point (matr-new 2 3 '(1.0 2.0 3.0 11.0 12.0 13.0)))
 => (1.0 2.0 3.0 11.0 12.0 13.0)
 "
-  (let ((n  (matr-rows matr))
-	(m  (matr-cols matr))
-	(li (matr-elements matr)))
-    (mapcar #'cdr li)))
+  (mapcar #'cdr (matr-elements matr)))
 
 (defun point-to-matr (p)
   "Выполняет преобразование точки в матрицу
@@ -301,7 +293,6 @@ ex_pts - '((-1.0 1.0) (2.0 4.0) (3.0 9.0))  - задает
 "
   (let* ((m (length ff))
 	 (n (1- m))
-	 (nv (length vv))
 	 (mtr (matr-new n m)))
     (mapcar #'(lambda (el)
 		(dotimes (i n)
@@ -313,7 +304,7 @@ ex_pts - '((-1.0 1.0) (2.0 4.0) (3.0 9.0))  - задает
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defun matr-triang (matr)		; Старая версия
+(defun matr-triang (matr)
   "Выполняет приведение  матрицы  к треугольному виду, для решения системы ЛУ методом Гаусса;
 Пример использования 1
 (matr-print 
@@ -337,9 +328,8 @@ Matr 3 4
 (1.0D0 2.0D0 3.0D0 4.0D0)
 (-0.0D0 1.0D0 2.0D0 2.9999999999999996D0)
 (0.0D0 0.0D0 0.0D0 8.881784197001252D-16)
-
 "
-  (do ((n (matr-rows matr)) (m (matr-cols matr)) (ie nil) (j 0 (1+ j)) (row_j nil) (row_i nil))
+  (do ((n (matr-rows matr)) (ie nil) (j 0 (1+ j)) (row_j nil) (row_i nil))
       ((>= j n) matr)
     (setf ie (1- n))
     (do ((i j (1+ i)) (matr_ij nil) (row_ie nil)) ; Цикл перестановки строк в j-товом столбце которых присутстыуют нули
@@ -369,12 +359,11 @@ Matr 3 4
   "Обратный ход при вычислении решения системы линейных уравнений;
 Матрица matr должна быть приведена к треуголной;"
   (let* ((n (matr-rows matr)) ; Количество строк в матрице (матрица расширенная)
-	 (m (matr-cols matr)) ; Количество столбцов в матрице (матрица расширенная)
 	 (x (matr-new 1 n))) ; Вектор результат
     (do ((i 0 (+ 1 i)))
 	((>= i n) x)
-      (setf x (matr-set_ij x 1.0 0 i)))
-    (do ((i (- n 1) (- i 1)) (summ 0.0 0.0))
+      (setf x (matr-set_ij x 1 0 i)))
+    (do ((i (- n 1) (- i 1)) (summ 0 0))
 	((< i 0) x)
       (do ((j (+ 1 i) (+ 1 j)))
 	  ((>= j  n) 'done2)
@@ -382,33 +371,48 @@ Matr 3 4
       (setf x (matr-set_ij x (/ (- (matr-ij matr i n) summ) (matr-ij matr i i)) 0 i)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
- 
+
 (defun matr-las-gauss (matr)
   "Решение системы линейных уравнений методом Гаусса
 Выводит матрицу с корнями системы линейных уравений коэффициентов
+Примеры использования:
+Пример 1:
+ (matr-print 
+  (matr-las-gauss
+   (matr-new 3 4 '(1 2 3 14 
+		   2 1 1 7 
+		   3 0 1 2))))
+;=>Matr 1 3
+;(1/3 16/3 1)
 ;
-Например:
-;(matr-las-gauss '(\"Matr\" 3 4 ((0 . 1.0)  (1 . 2.0) (2 . 3.0) (3 . 14.0) 
-				 (4 . 2.0)  (5 . 1.0) (6  . 1.0) (7  . 7.0) 
-				 (8 . 3.0)  (9 . 0.0) (10 . 1.0) (11 . 2.0))))
-
-;(matr-las-gauss '(\"Matr\" 3 4 ((0 . 1.0d0) (1 . 0.0d0) (2 . 1.0) (3  . 4.0d0) (4 . 0.0d0) (5 . 1.0d0) (6  . 0.0d0) (7  . 2.0d0) (8 . 0.0d0) (9 . 0.0d0) (10 . 1.0d0) (11 . 3.0d0))))
+Пример 1.1:
+ (matr-print 
+  (matr-las-gauss
+   (matr-new 3 4 '(1.0 2 3 14 
+		   2 1 1 7 
+		   3 0 1 2))))
+;=>Matr 1 3
+;(0.33333397 5.333332 1.0000007)
 ;
-Матрица, приведенная к тругольной:
-;(\"Matr\" 3 4 ((0 . 1.0) (1 . 2.0) (2 . 3.0d0) (3 . 14.0)(4 . -0.0) (5 . 1.0) (6 . 1.6666666666666667d0) (7 . 7.0) (8 . -0.0d0) (9 . -0.0d0) (10 . 1.0d0) (11 . 3.0d0)))
-;
-Корни системы уравнения:
-;=> 1.0 2.0 3.0
-;=> (\"Matr\" 1 3 ((0 . 1.0) (1 . 2.0) (2 . 3.0)))
+Пример 2:
+ (matr-print
+  (matr-las-gauss 
+   (matr-new 3 4 '(1 0 1 4 
+		   0 1 0 2 
+		   0 0 1 3))))
+;=>Matr 1 3
+;(1 2 3)
 "
-(let ((matr-tr (matr-triang matr))
-      (x nil))
-  (format nil "~%Матрица приведенная к тругольной:~%")
-  (matr-print matr-tr)
-  (format nil "~%Корни системы уравнений:~%")
-  (setf x (matr-obrhod matr-tr))
-  (matr-print x)
-  x))
+  (let ((matr-tr (matr-triang matr))
+	(x nil))
+    (format nil "~%Матрица приведенная к тругольной:~%")
+    (matr-print matr-tr)
+    (format nil "~%Корни системы уравнений:~%")
+    (setf x (matr-obrhod matr-tr))
+    (matr-print x)
+    x))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defun matr-osr-func (vv ff ex_pts func-name)
   (let ((kk (cons 
