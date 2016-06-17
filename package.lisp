@@ -4,8 +4,8 @@
   (:use #:cl #:cl-utilities)
   (:export appr_table   )
   (:export matr-name
-	   matr-row
-	   matr-col
+	   matr-rows
+	   matr-cols
 	   ;; matr-elements
 	   matr-ij    
 	   matr-set_ij  
@@ -18,6 +18,7 @@
 	   matr-mult    
 	   matr-to-point
 	   point-to-matr
+	   matr-copy
 	   matr-to-string
 	   matr-print
 	   matr-mnk

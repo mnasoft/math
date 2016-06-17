@@ -18,15 +18,15 @@
 m-количест во столбцов в матрице"
   (+ (* i m) j))
 
-(defun matr-row (matr)
+(defun matr-rows (matr)
   "Возвращает количество строк в матрице
-(matr-row '(\"Matr\" 2 3 ((0 . 0.0) (1 . 0.0) (2 . 0.0) (3 . 0.0) (4 . 0.0) (5 . 0.0))))
+(matr-rows '(\"Matr\" 2 3 ((0 . 0.0) (1 . 0.0) (2 . 0.0) (3 . 0.0) (4 . 0.0) (5 . 0.0))))
 2" 
   (cadr matr))
 
-(defun matr-col (matr)
+(defun matr-cols (matr)
 "Возвращает количество столбцов в матрице
-(matr-col '(\"Matr\" 2 3 ((0 . 0.0) (1 . 0.0) (2 . 0.0) (3 . 0.0) (4 . 0.0) (5 . 0.0))))
+(matr-cols '(\"Matr\" 2 3 ((0 . 0.0) (1 . 0.0) (2 . 0.0) (3 . 0.0) (4 . 0.0) (5 . 0.0))))
 3"
  (caddr matr))
 
@@ -51,8 +51,8 @@ m-количест во столбцов в матрице"
 (defun in-range-inc-exc (i i_min i_max) (and (<= i_min i) (< i i_max)))
 
 (defun matr-index-is-good (matr i j)
-  (let ((n  (matr-row matr))
-	(m  (matr-col matr)))
+  (let ((n  (matr-rows matr))
+	(m  (matr-cols matr)))
     (if (not (and(in-range-inc-exc i 0 n) (in-range-inc-exc j 0 m)))
 	(break "Ошибка при доступе к эл. матрицы: M[~A,~A] M[0..~A,0..~A]" i j (- n 1) (-  m 1 )))))
 
@@ -64,8 +64,8 @@ m-количест во столбцов в матрице"
 (matr-ij '(\"Matr\" 2 3 ((0 . 1.0) (1 . 2.0) (2 . 3.0) (3 . 4.0) (4 . 5.0) (5 . 6.0)))
 	 0 2)
 "
-  (let ((n  (matr-row matr))
-	(m  (matr-col matr))
+  (let ((n  (matr-rows matr))
+	(m  (matr-cols matr))
 	(li (matr-elements matr)))
     (matr-index-is-good matr i j)
     (cdr (assoc (matr-idx i j m) li))))
@@ -95,8 +95,8 @@ m-количест во столбцов в матрице"
 		 (3 . 0.0) (4 . 0.0) (5 . 0.0)))
  0 '(11 12 13))
 "
-  (do ((n (matr-row matr))
-       (m (matr-col matr))
+  (do ((n (matr-rows matr))
+       (m (matr-cols matr))
        (j 0 (1+ j)))
       ( (>= j m) matr)
     (setf matr (matr-set_ij matr (nth j pts)i j))))
@@ -108,8 +108,8 @@ m-количест во столбцов в матрице"
 		 (3 . 11.0) (4 . 12.0) (5 . 13.0)))
  1)
 "
-  (do ((n (matr-row matr))
-	(m (matr-col matr))
+  (do ((n (matr-rows matr))
+	(m (matr-cols matr))
 	(j 0 (1+ j))
 	(pts nil))
       ((>= j m) (reverse pts))
@@ -121,8 +121,8 @@ m-количест во столбцов в матрице"
  '(\"Matr\" 2 3 ((0 . 1.0) (1 . 2.0) (2 . 3.0) 
 		 (3 . 4.0) (4 . 5.0) (5 . 6.0)))
  0 '(11.0 12.0))"
-  (do ((n (matr-row matr))
-       (m (matr-col matr))
+  (do ((n (matr-rows matr))
+       (m (matr-cols matr))
        (i 0 (1+ i)))
       ((>= i n) matr)
     (setf matr (matr-set_ij matr (nth i pts)i j))))
@@ -134,8 +134,8 @@ m-количест во столбцов в матрице"
 		 (3 . 4.0) (4 . 5.0) (5 . 6.0)))
  1)
 "
-  (do ((n (matr-row matr))
-       (m (matr-col matr))
+  (do ((n (matr-rows matr))
+       (m (matr-cols matr))
        (i 0 (1+ i))
        (pts nil))
       ((>= i n)(reverse pts))
@@ -174,8 +174,8 @@ m-количест во столбцов в матрице"
 		 (3 . 0.0)      (4 . (cos α)) (5 . 0.0)))))
     (matr-eval matr)))
 "
-  (let ((n  (matr-row matr))
-	(m  (matr-col matr))
+  (let ((n  (matr-rows matr))
+	(m  (matr-cols matr))
 	(li (matr-elements matr)))
     (setf li (mapcar #'(lambda (el) (cons (car el) (eval (cdr el)))) li))
     (list (matr-name) n m li)))
@@ -191,10 +191,10 @@ m-количест во столбцов в матрице"
 		(4 . 5.0) (5 . 6.0)))
 	     )
 "
-  (let ((a_n (matr-row a))
-	(a_m (matr-col a))
-	(b_n (matr-row b))
-	(b_m (matr-col b))
+  (let ((a_n (matr-rows a))
+	(a_m (matr-cols a))
+	(b_n (matr-rows b))
+	(b_m (matr-cols b))
 	(c nil))
     (cond ((/= a_m b_n)
 	   (break
@@ -227,8 +227,8 @@ m-количест во столбцов в матрице"
 (matr-to-point '(\"Matr\" 2 3 ((0 . 1.0) (1 . 2.0) (2 . 3.0) (3 . 11.0) (4 . 12.0) (5 . 13.0))))
 => (1.0 2.0 3.0 11.0 12.0 13.0)
 "
-  (let ((n  (matr-row matr))
-	(m  (matr-col matr))
+  (let ((n  (matr-rows matr))
+	(m  (matr-cols matr))
 	(li (matr-elements matr)))
     (mapcar #'cdr li)))
 
@@ -252,7 +252,7 @@ m-количест во столбцов в матрице"
 		  (4 . 2.0)  (5 . 1.0) (6  . 1.0) (7  . 7.0) 
 		  (8 . 3.0)  (9 . 0.0) (10 . 1.0) (11 . 2.0)))))
 "
-  (matr-new (matr-row matr) (matr-col matr) (matr-to-point matr)))
+  (matr-new (matr-rows matr) (matr-cols matr) (matr-to-point matr)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -264,8 +264,8 @@ m-количест во столбцов в матрице"
 	     ((0 . (sin *alfa*)) (1 . 0.0) (2 . 0.0)
 	      (3 . 0.0) (4 . (cos *alfa*)) (5 . 0.0))))
 "
-  (let ((n (matr-row matr))
-	(m (matr-col matr))
+  (let ((n (matr-rows matr))
+	(m (matr-cols matr))
 	(out (make-string-output-stream)))
     (format out "Matr ~S ~S~%" n m)
     (do ((i 0 (1+ i))
@@ -313,50 +313,57 @@ ex_pts - '((-1.0 1.0) (2.0 4.0) (3.0 9.0))  - задает
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defun matr-triang (matr); Старая версия
+(defun matr-triang (matr)		; Старая версия
   "Выполняет приведение  матрицы  к треугольному виду, для решения системы ЛУ методом Гаусса;
 Пример использования 1
-;(matr-triang '(\"Matr\" 3 4 ((0 . 1.0d0) (1 . 0.0d0) (2  . 1.0d0) (3  . 4.0d0) (4 . 0.0d0) (5 . 1.0d0) (6  . 0.0d0) (7  . 2.0d0) (8 . 0.0d0) (9 . 0.0d0) (10 . 1.0d0) (11 . 3.0d0)))) => (\"Matr\" 3 4 
-	     ((0 . 1.0d0) (1 . 0.0d0)  (2 . 1.0d0) (3 . 4.0d0) (4 . 0.0d0) (5 . 1.0d0)  (6 . 0.0d0) (7 . 2.0d0) (8 . -1.0d0) (9 . 0.0d0) (10 . 0.0d0) (11 . -1.0d0)))
+(matr-print 
+ (matr-triang (matr-new 3 4 '(0.0 0.0 4.0 12.0
+			      2.0 0.0 2.0 8.0
+			      0.0 3.0 0.0 6.0))))
+=> 
+Matr 3 4
+(1.0 0.0 1.0 4.0)
+(0.0 1.0 0.0 2.0)
+(0.0 0.0 1.0 3.0)
+;
 Пример использования 2
-(matr-triang '(\"Matr\" 3 4 ((0 . 1.0d0) (1 . 0.0d0) (2  . 1.0d0) (3  . 4.0d0) (4 . 0.0d0) (5 . 1.0d0) (6  . 0.0d0) (7  . 2.0d0) (8 . 0.0d0) (9 . 0.0d0) (10 . 1.0d0) (11 . 3.0d0))))
+;
+(matr-print 
+ (matr-triang (matr-new 3 4 '(1.0d0  2.0d0  3.0d0  4.0d0 
+			      5.0d0  6.0d0  7.0d0  8.0d0
+			      9.0d0 10.0d0 11.0d0 12.0d0))))
+=>
+Matr 3 4
+(1.0D0 2.0D0 3.0D0 4.0D0)
+(-0.0D0 1.0D0 2.0D0 2.9999999999999996D0)
+(0.0D0 0.0D0 0.0D0 8.881784197001252D-16)
+
 "
-  (matr-print matr)
-  (do ((n (matr-row matr)) (m (matr-col matr)) (ie nil) (j 0 (1+ j)) (row_j nil) (row_i nil))
+  (do ((n (matr-rows matr)) (m (matr-cols matr)) (ie nil) (j 0 (1+ j)) (row_j nil) (row_i nil))
       ((>= j n) matr)
-    (break ":01~%")
     (setf ie (1- n))
-    (break ":02~%")
-    (do ((i j (1+ i)) (matr_ij nil) (row_ie nil))
+    (do ((i j (1+ i)) (matr_ij nil) (row_ie nil)) ; Цикл перестановки строк в j-товом столбце которых присутстыуют нули
 	((> i ie))
-      (break ":03~%")
       (setf row_i   (matr-get-row matr i)
 	    matr_ij (matr-ij matr i j))
-      (break ":04~%")
-      (cond
-	((= matr_ij 0)
-	 (break ":05~%")
-	 (setf row_ie (matr-get-row matr ie)
-	       matr (matr-set-row matr i row_ie)
-	       matr (matr-set-row matr ie row_i)
-	       ie (1- ie))
-	 (break ":06~%"))
-	((/= matr_ij 0)
-	 (break ":07~%")
-	 (setf row_i (mapcar #'(lambda (el) (/ el matr_ij)) row_i)
-	       matr (matr-set-row matr i row_i))))
-      (matr-print matr)
-;      (break ":01 ~A" (matr-print matr nil))
-      )
-    (setf row_j (matr-get-row matr j)) ;строка которую необходимо вычесть из других строк ;
-    (do ((i (1+ j)(1+ i)))
-	((> i ie))			;цикл по строкам для деления ;
+      (cond ((= matr_ij 0) ; Перестановка i-товой строки в место поледней непереставленной
+	     (setf row_ie (matr-get-row matr ie) ; Последняя непереставленная строка
+		   matr (matr-set-row matr i row_ie) 
+		   matr (matr-set-row matr ie row_i)
+		   ie (1- ie)) ; Увеличение количества переставленных строк
+	     (decf i)) ; Уменьшение переменной цикла для выполнения повторной итерации
+	    ((/= matr_ij 0)
+	     (setf row_i (mapcar #'(lambda (el) (/ el matr_ij)) row_i) ; Деление строки на matr_ij элемент матрицы
+		   matr (matr-set-row matr i row_i)))))
+    (setf row_j (matr-get-row matr j)) ; Строка которую необходимо вычесть из других строк
+    (do ((i (1+ j)(1+ i))) ; Цикл для вычитания j-товой строки из i-товой
+	((> i ie))			
       (setf row_i (matr-get-row matr i)
 	    row_i (mapcar (function (lambda (el1 el2) (- el1 el2))) row_i row_j)
 	    matr  (matr-set-row matr i row_i))
       (matr-print matr))))
 
-(defun matr-triang (matr); Отладочная версия ; ; ;
+(defun matr-triang-test (matr)		; Отладочная версия ; ; ;
   "Выполняет приведение  матрицы  к треугольному виду, для решения системы ЛУ методом Гаусса;
 Пример использования 1
 ;(matr-triang '(\"Matr\" 3 4 ((0 . 1.0d0) (1 . 0.0d0) (2  . 1.0d0) (3  . 4.0d0) (4 . 0.0d0) (5 . 1.0d0) (6  . 0.0d0) (7  . 2.0d0) (8 . 0.0d0) (9 . 0.0d0) (10 . 1.0d0) (11 . 3.0d0))))
@@ -366,38 +373,48 @@ ex_pts - '((-1.0 1.0) (2.0 4.0) (3.0 9.0))  - задает
 (matr-triang '(\"Matr\" 3 4 ((0 . 1.0d0) (1 . 0.0d0) (2  . 1.0d0) (3  . 4.0d0) (4 . 0.0d0) (5 . 1.0d0) (6  . 0.0d0) (7  . 2.0d0) (8 . 0.0d0) (9 . 0.0d0) (10 . 1.0d0) (11 . 3.0d0))))
 "
   (let ((m-bak (matr-copy matr))
-	(n (matr-row matr)) (m (matr-col matr)) (ie nil)
-	(row_j nil) (row_i nil))
-    (do ( (j 0 (1+ j)))
+	(n (matr-rows matr)) (m (matr-cols matr)) (ie nil)
+	(row_j nil) (row_i nil)
+	(matr_ij nil) (row_ie nil) ;; *0001*
+	)
+    (do ((j 0 (1+ j)))
 	((>= j n) matr)
       (setf ie (1- n))
-      (break ":01~%matr-bak~%~S~%matr-new~%~S~%j=~S ie=~S" (matr-to-string m-bak) (matr-to-string matr) j ie)
-      (do ((i j (1+ i)) (matr_ij nil) (row_ie nil))
+      (break ":01:(do ((j 0 (1+ j))):~%matr-bak~%~S~%matr-new~%~S~% j=~S ie=~S"
+	     (matr-to-string m-bak) (matr-to-string matr) j ie)
+      (do ((i j (1+ i)) ) ;; *0001*
 	  ((> i ie))
 	(setf row_i   (matr-get-row matr i)
 	      matr_ij (matr-ij matr i j))
-	(break ":04~%matr-bak~%~S~%matr-new~%~S~%j=~S ie=~S" (matr-to-string m-bak) (matr-to-string matr) j ie)
+	(break ":02:(do ((i j (1+ i)) (matr_ij nil) (row_ie nil)):~%matr-bak~%~S~%matr-new~%~S~%i=~S j=~S ie=~S~%row_i=~S~%matr_ij=~S"
+	       (matr-to-string m-bak) (matr-to-string matr) i j ie row_i matr_ij)
 	(cond
 	  ((= matr_ij 0)
-	   (break ":05~%")
 	   (setf row_ie (matr-get-row matr ie)
 		 matr (matr-set-row matr i row_ie)
 		 matr (matr-set-row matr ie row_i)
 		 ie (1- ie))
-	   (break ":06~%"))
+	   (decf i)
+	   (break ":03:(cond((= matr_ij 0)~%matr-bak~%~S~%matr-new~%~S~%i=~S j=~S ie=~S~%row_i=~S~%matr_ij=~S"
+		  (matr-to-string m-bak) (matr-to-string matr) i j ie row_i matr_ij)
+	   )
 	  ((/= matr_ij 0)
-	   (break ":07~%")
 	   (setf row_i (mapcar #'(lambda (el) (/ el matr_ij)) row_i)
-		 matr (matr-set-row matr i row_i))))
-	(matr-print matr)
-;      (break ":01 ~A" (matr-print matr nil)) ; ; ;
-	)
-      (setf row_j (matr-get-row matr j)) ;строка которую необходимо вычесть из других строк ; ; ; ;
+		 matr (matr-set-row matr i row_i))
+	   (break ":04:(cond (/= matr_ij 0)~%matr-bak~%~S~%matr-new~%~S~%i=~S j=~S ie=~S~%row_i=~S~%matr_ij=~S"
+		  (matr-to-string m-bak) (matr-to-string matr) i j ie row_i matr_ij)
+	   ))
+	(matr-print matr))
+      (setf row_j (matr-get-row matr j)) ;; строка которую необходимо вычесть из других строк
+      (break ":05:(cond (/= matr_ij 0)~%matr-bak~%~S~%matr-new~%~S~%j=~S ie=~S~%row_i=~S~%row_j=~S~%matr_ij=~S"
+	     (matr-to-string m-bak) (matr-to-string matr) j ie row_i row_j matr_ij)
       (do ((i (1+ j)(1+ i)))
-	  ((> i ie))			;цикл по строкам для деления ; ; ; ;
+	  ((> i ie)) ;; цикл по строкам для деления
 	(setf row_i (matr-get-row matr i)
 	      row_i (mapcar (function (lambda (el1 el2) (- el1 el2))) row_i row_j)
 	      matr  (matr-set-row matr i row_i))
+	(break ":06:(cond (/= matr_ij 0)~%matr-bak~%~S~%matr-new~%~S~%j=~S ie=~S row_i=~S~%matr_ij=~S"
+	       (matr-to-string m-bak) (matr-to-string matr) j ie row_i matr_ij)
 	(matr-print matr)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -405,8 +422,8 @@ ex_pts - '((-1.0 1.0) (2.0 4.0) (3.0 9.0))  - задает
 (defun matr-obrhod (matr)
   "Обратный ход при вычислении решения системы линейных уравнений;
 Матрица matr должна быть приведена к треуголной;"
-  (let* ((n (matr-row matr)) ; Количество строк в матрице (матрица расширенная)
-	 (m (matr-col matr)) ; Количество столбцов в матрице (матрица расширенная)
+  (let* ((n (matr-rows matr)) ; Количество строк в матрице (матрица расширенная)
+	 (m (matr-cols matr)) ; Количество столбцов в матрице (матрица расширенная)
 	 (x (matr-new 1 n))) ; Вектор результат
     (do ((i 0 (+ 1 i)))
 	((>= i n) x)
