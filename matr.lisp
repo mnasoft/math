@@ -363,60 +363,6 @@ Matr 3 4
 	    matr  (matr-set-row matr i row_i))
       (matr-print matr))))
 
-(defun matr-triang-test (matr)		; Отладочная версия ; ; ;
-  "Выполняет приведение  матрицы  к треугольному виду, для решения системы ЛУ методом Гаусса;
-Пример использования 1
-;(matr-triang '(\"Matr\" 3 4 ((0 . 1.0d0) (1 . 0.0d0) (2  . 1.0d0) (3  . 4.0d0) (4 . 0.0d0) (5 . 1.0d0) (6  . 0.0d0) (7  . 2.0d0) (8 . 0.0d0) (9 . 0.0d0) (10 . 1.0d0) (11 . 3.0d0))))
-; 
-;=> (\"Matr\" 3 4 ((0 . 1.0d0) (1 . 0.0d0)  (2 . 1.0d0) (3 . 4.0d0) (4 . 0.0d0) (5 . 1.0d0)  (6 . 0.0d0) (7 . 2.0d0) (8 . -1.0d0) (9 . 0.0d0) (10 . 0.0d0) (11 . -1.0d0)))
-Пример использования 2
-(matr-triang '(\"Matr\" 3 4 ((0 . 1.0d0) (1 . 0.0d0) (2  . 1.0d0) (3  . 4.0d0) (4 . 0.0d0) (5 . 1.0d0) (6  . 0.0d0) (7  . 2.0d0) (8 . 0.0d0) (9 . 0.0d0) (10 . 1.0d0) (11 . 3.0d0))))
-"
-  (let ((m-bak (matr-copy matr))
-	(n (matr-rows matr)) (m (matr-cols matr)) (ie nil)
-	(row_j nil) (row_i nil)
-	(matr_ij nil) (row_ie nil) ;; *0001*
-	)
-    (do ((j 0 (1+ j)))
-	((>= j n) matr)
-      (setf ie (1- n))
-      (break ":01:(do ((j 0 (1+ j))):~%matr-bak~%~S~%matr-new~%~S~% j=~S ie=~S"
-	     (matr-to-string m-bak) (matr-to-string matr) j ie)
-      (do ((i j (1+ i)) ) ;; *0001*
-	  ((> i ie))
-	(setf row_i   (matr-get-row matr i)
-	      matr_ij (matr-ij matr i j))
-	(break ":02:(do ((i j (1+ i)) (matr_ij nil) (row_ie nil)):~%matr-bak~%~S~%matr-new~%~S~%i=~S j=~S ie=~S~%row_i=~S~%matr_ij=~S"
-	       (matr-to-string m-bak) (matr-to-string matr) i j ie row_i matr_ij)
-	(cond
-	  ((= matr_ij 0)
-	   (setf row_ie (matr-get-row matr ie)
-		 matr (matr-set-row matr i row_ie)
-		 matr (matr-set-row matr ie row_i)
-		 ie (1- ie))
-	   (decf i)
-	   (break ":03:(cond((= matr_ij 0)~%matr-bak~%~S~%matr-new~%~S~%i=~S j=~S ie=~S~%row_i=~S~%matr_ij=~S"
-		  (matr-to-string m-bak) (matr-to-string matr) i j ie row_i matr_ij)
-	   )
-	  ((/= matr_ij 0)
-	   (setf row_i (mapcar #'(lambda (el) (/ el matr_ij)) row_i)
-		 matr (matr-set-row matr i row_i))
-	   (break ":04:(cond (/= matr_ij 0)~%matr-bak~%~S~%matr-new~%~S~%i=~S j=~S ie=~S~%row_i=~S~%matr_ij=~S"
-		  (matr-to-string m-bak) (matr-to-string matr) i j ie row_i matr_ij)
-	   ))
-	(matr-print matr))
-      (setf row_j (matr-get-row matr j)) ;; строка которую необходимо вычесть из других строк
-      (break ":05:(cond (/= matr_ij 0)~%matr-bak~%~S~%matr-new~%~S~%j=~S ie=~S~%row_i=~S~%row_j=~S~%matr_ij=~S"
-	     (matr-to-string m-bak) (matr-to-string matr) j ie row_i row_j matr_ij)
-      (do ((i (1+ j)(1+ i)))
-	  ((> i ie)) ;; цикл по строкам для деления
-	(setf row_i (matr-get-row matr i)
-	      row_i (mapcar (function (lambda (el1 el2) (- el1 el2))) row_i row_j)
-	      matr  (matr-set-row matr i row_i))
-	(break ":06:(cond (/= matr_ij 0)~%matr-bak~%~S~%matr-new~%~S~%j=~S ie=~S row_i=~S~%matr_ij=~S"
-	       (matr-to-string m-bak) (matr-to-string matr) j ie row_i matr_ij)
-	(matr-print matr)))))
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defun matr-obrhod (matr)
