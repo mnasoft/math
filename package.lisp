@@ -2,7 +2,7 @@
 
 (defpackage #:math	       
   (:use #:cl #:cl-utilities)
-  (:export appr_table   )
+  (:export appr_table)
   (:export matr-name
 	   matr-rows
 	   matr-cols
