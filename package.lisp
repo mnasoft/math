@@ -26,6 +26,11 @@
 	   matr-las-gauss
 	   matr-osr-func
 	   matr-las-rotation
+	   ;;
+	   averange-value
+	   dispersion
+	   standard-deviation
+	   variation-coefficient
 	   ))
 
 ;;;;(declaim (optimize (space 0) (compilation-speed 0)  (speed 0) (safety 3) (debug 3)))

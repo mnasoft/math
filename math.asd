@@ -10,4 +10,5 @@
                (:file "math")
 	       (:file "approximation")
                (:file "matr")
+	       (:file "statistics")
 	       ))
