@@ -1,4 +1,4 @@
-;;;; math.lisp
+;;;; statistics.lisp
 
 (in-package #:math)
 
@@ -16,7 +16,8 @@
   (/ (apply #'+ x) (length x)))
 
 (defun dispersion(x)
-  "
+  "Дисперсия случайной величины
+Пример использования
 ;;;; (dispersion '(1.1 1.0 0.9 1.2 0.8))
 ;;;; => 0.025000006"
   (let* ((x-sr (averange-value x))
@@ -25,13 +26,17 @@
     (/ summ n-1)))
 
 (defun standard-deviation (x)
-  "(standard-deviation '(1.1 1.0 0.9 1.2 0.8))
+  "Среднеквадратичное отклонение (стандартное отклонение)
+Пример использования:
+(standard-deviation '(1.1 1.0 0.9 1.2 0.8))
 "
   (sqrt (dispersion x)))
 
 (defun variation-coefficient (x)
-  "Коэффициент вариации
-(variation-coefficient '(1.1 1.0 0.9 1.2 0.8))
+  "Коэффициент вариации для случайной величины
+Пример использования:
+;;;; (variation-coefficient '(1.1 1.0 0.9 1.2 0.8))
+;;;; => 0.1581139
 "
   (/ (standard-deviation x)
-     (SR_ARIFM X)))
+     (averange-value X)))
