@@ -5,7 +5,7 @@
 ;;; "math" goes here. Hacks and glory await!
 
 (defun square(x)
-  "Площадь"
+  "Возвращает квадрат значения"
   (* x x))
 
 (defun averange-value (x)
