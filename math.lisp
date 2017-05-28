@@ -35,3 +35,12 @@
 "
   (/ (standard-deviation x)
      (SR_ARIFM X)))
+
+(defun e-value (n)
+  "Возвращает приближенное значение числа e"  
+  (let ((rez 1)
+	(nf 1))
+    (dotimes (i n rez)
+      (setf nf  (/ nf (1+ i))
+	    rez (+ rez nf)))))
+
