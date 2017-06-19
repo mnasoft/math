@@ -15,6 +15,12 @@
 ;;;; => 1.0"
   (/ (apply #'+ x) (length x)))
 
+(defun max-value (x)
+  (apply #'max x))
+
+(defun min-value (x)
+  (apply #'min x))
+
 (defun dispersion(x)
   "
 ;;;; (dispersion '(1.1 1.0 0.9 1.2 0.8))

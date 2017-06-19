@@ -28,6 +28,8 @@
 	   matr-las-rotation
 	   ;;
 	   averange-value
+	   max-value
+   	   min-value
 	   dispersion
 	   standard-deviation
 	   variation-coefficient
