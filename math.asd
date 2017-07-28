@@ -11,4 +11,6 @@
 	       (:file "approximation")
                (:file "matr")
 	       (:file "statistics")
+	       (:file "mult-matr-vect")
+	       (:file "las-rotation")
 	       ))
