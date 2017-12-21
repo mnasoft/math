@@ -2,6 +2,15 @@
 
 (in-package #:math)
 
+
+
+(let ((x (append '(  200. 2000.0) (make-random-value-list 100.0 :std-deviation 1.0 :n 8 ))))
+  (values
+   (length (clean-flagrant-error x))
+   ))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 (matr-osr-func '(xx yy) 
 	       '((xx xx xx) (xx xx) (xx) (1.0) (yy))
 	       '((-2.0 4.0) (-1.0 1.0) (0.0 0.0) (2.0 4.0) (3.0 9.0))
