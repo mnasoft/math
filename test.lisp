@@ -4,10 +4,11 @@
 
 
 
-(let ((x (append '(  200. 2000.0) (make-random-value-list 100.0 :std-deviation 1.0 :n 8 ))))
+(let ((x (append '(  -2000. -50.0) (make-random-value-list 100.0 :std-deviation 1.0 :n 8 ))))
   (values
-   (length (clean-flagrant-error x))
-   ))
+   (clean-flagrant-error x)
+   (clean-min-flagrant-error x)
+   (clean-max-flagrant-error x)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

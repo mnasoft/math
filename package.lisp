@@ -35,6 +35,8 @@
 	   variation-coefficient
 	   clean-flagrant-error 
 	   make-random-value-list
+	   clean-min-flagrant-error
+	   clean-max-flagrant-error
 	   ;;
 	   matr-rotation
 	   ))

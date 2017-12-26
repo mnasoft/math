@@ -15,6 +15,20 @@
 ;;;; => 1.0"
   (/ (apply #'+ x) (length x)))
 
+(defun min-value (x)
+  "Возврвщает минимальное значение для списка величин;
+Пример использования:
+;;;; (min-value '(1.1 1.0 0.9 1.2 0.8))
+;;;; => 0.8"
+  (apply #'min x))
+
+(defun max-value (x)
+  "Возврвщает максимальное значение для списка величин;
+Пример использования:
+;;;; (max-value '(1.1 1.0 0.9 1.2 0.8))
+;;;; => 1.2"
+  (apply #'max x))
+
 (defun dispersion(x)
   "Дисперсия случайной величины
 Пример использования
@@ -108,11 +122,13 @@
     (funcall arg-num (assoc n *G-t*))))
 
 (defun grubbs-1 (x)
+    "Критерий Граббса для максимального значения"
   (let ((rez (sort (copy-list x) #'> )))
     (/ (- (first rez) (averange-value rez))
     (standard-deviation rez))))
 
 (defun grubbs-2 (x)
+  "Критерий Граббса для минимального значения"
   (let ((rez (sort (copy-list x) #'< )))
     (/ (- (averange-value rez) (first rez))
        (standard-deviation rez))))
@@ -158,5 +174,28 @@ top-level     - дискретизация точек"
 	    (averange-value x)
 	    (standard-deviation x)))) 
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(defun clean-min-flagrant-error (x)
+  "Удаляет из статистики грубые промахи"
+  (do* ((lst (sort (copy-list x) #'<))
+	(n (length lst) (1- n))
+	(gr-2 (grubbs-2 lst) (grubbs-2 lst))
+	(exiting nil))
+       (exiting lst)
+    (cond
+      ((> gr-2 (grubbs n))
+       (setf lst (remove-first lst)))
+      (t (setf exiting t)))))
 
+(defun clean-max-flagrant-error (x)
+  "Удаляет из статистики грубые промахи"
+  (do* ((lst (sort (copy-list x) #'<))
+	(n (length lst) (1- n))
+	(gr-1 (grubbs-1 lst) (grubbs-1 lst))
+	(exiting nil))
+       (exiting lst)
+    (cond
+      ((> gr-1 (grubbs n))
+       (setf lst  (remove-last lst)))
+      (t (setf exiting t)))))
