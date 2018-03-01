@@ -64,3 +64,53 @@
 
 
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(list-matr-union *l-m-test*)
+
+(mapcar #'append *l-m-test*)
+
+(defparameter *l-m-test*
+  '(( 1  2  3  4  5  6  7)
+    ( 8  9 10 11 12 13 14)
+    (15 16 17 18 19 20 nil)
+    (22 23 24 25 26 27 nil)))
+
+(list-matr-rows *l-m-test*)
+
+(list-matr-cols *l-m-test*)
+
+(list-matr-row 4 *l-m-test*)
+
+(list-vector-print (list-matr-col 6 *l-m-test*))
+
+(list-matr-averange-value *l-m-test*)
+
+(list-matr-averange-not-nil-value  *l-m-test*)
+
+(list-matr-averange-col-not-nil-value *l-m-test*)
+
+(list-matr-transpose *l-m-test*)
+
+
+(progn 
+  (list-matr-print  *l-m-test* :fmt "~4,1f" )
+  (list-vector-print (list-matr-averange-col-not-nil-value *l-m-test*) :fmt "~4,1f" ))
+
+(progn
+  (list-matr-print *l-m-test*)
+  (list-matr-print (list-matr-append-col '("q" "s" nil "q" "u" "r") *l-m-test*)))
+
+(progn
+  (list-matr-print *l-m-test*)
+  (list-matr-print (list-matr-append-row '("q" "s" nil "q" "u" "r") *l-m-test*)))
+
+(progn
+  (list-matr-print *l-m-test*)
+  (list-matr-print (list-matr-prepend-col '("q" "s" nil "q" "u" "r") *l-m-test*)))
+
+(progn
+  (list-matr-print *l-m-test*)
+  (list-matr-print (list-matr-prepend-row '("q" "s" nil "q" "u" "r") *l-m-test*)))
+
+(exclude-nil-from-list '( 10 nil 30 nil 20 15))

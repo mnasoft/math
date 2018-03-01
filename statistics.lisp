@@ -15,6 +15,19 @@
 ;;;; => 1.0"
   (/ (apply #'+ x) (length x)))
 
+(defun averange-not-nil-value (x)
+  "Возврвщает среднее значение для списка величин ;
+Пример использования:
+;;;; (averange-not-nil-value '(1.1 1.0 nil 0.9 nil 1.2 nil 0.8))
+;;;; => 1.0"
+  (averange-value (exclude-nil-from-list x)))
+
+(defun exclude-nil-from-list (lst)
+  "Иключает из списка nil-элементы"
+  (let ((res nil))
+    (dolist (el lst (reverse res) )
+      (when el (push el res )))))
+
 (defun min-value (x)
   "Возврвщает минимальное значение для списка величин;
 Пример использования:
