@@ -46,6 +46,7 @@
 	   ;; list-matr
 	   list-matr-transpose
 	   list-matr-union
+	   list-matr-make
 	   list-matr-rows
 	   list-matr-cols
 	   list-matr-row
@@ -66,4 +67,3 @@
 	   ))
 
 ;;;;(declaim (optimize (space 0) (compilation-speed 0)  (speed 0) (safety 3) (debug 3)))
-

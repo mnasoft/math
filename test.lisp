@@ -114,3 +114,6 @@
   (list-matr-print (list-matr-prepend-row '("q" "s" nil "q" "u" "r") *l-m-test*)))
 
 (exclude-nil-from-list '( 10 nil 30 nil 20 15))
+
+
+(list-matr-print (list-matr-make 2 3 '(1 2 3 4 5 6)))

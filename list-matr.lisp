@@ -12,6 +12,16 @@
     (mapcar #'(lambda (el) (setf rez (append rez el) ) ) lst)
     rez))
 
+(defun list-matr-make (rows cols lst)
+  "Генерирует матрицу (список списков) из вектора (списока)"
+  (let ((rez nil)
+	(rw nil))
+    (dotimes (r rows (reverse rez))
+      (dotimes (c cols)
+	(push (nth (+ (* r cols) c) lst) rw))
+      (push (reverse rw) rez)
+      (setf rw nil))))
+
 (defun list-matr-rows (lst)
   (length lst))
 
@@ -69,13 +79,13 @@
 
 ;;;; append 
 
-(defun list-matr-append-col (r-lst lst)
-  "Добавляет вектор (список) r-lst к матрице lst"
+(defun list-matr-append-col (c-lst lst)
+  "Добавляет вектор (список) c-lst к матрице lst"
   (let ((rez nil)
 	(r nil))
     (dolist (l lst (reverse rez))
-      (setf r (car r-lst)
-	    r-lst (cdr r-lst))
+      (setf r (car c-lst)
+	    c-lst (cdr c-lst))
       (push (append l (list r)) rez))))
 
 (defun list-matr-append-row (c-lst lst)
@@ -84,12 +94,12 @@
 
 ;;;; prepend
 
-(defun list-matr-prepend-col (r-lst lst)
+(defun list-matr-prepend-col (c-lst lst)
   (let ((rez nil)
 	(r nil))
     (dolist (l lst (reverse rez))
-      (setf r (car r-lst)
-	    r-lst (cdr r-lst))
+      (setf r (car c-lst)
+	    c-lst (cdr c-lst))
       (push (cons r l) rez))))
 
 (defun list-matr-prepend-row (c-lst lst)
