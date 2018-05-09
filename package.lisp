@@ -28,6 +28,7 @@
 	   matr-las-rotation
 	   ;; statistics
 	   ;; averange
+	   averange
 	   averange-value
 	   averange-not-nil-value
 	   ;; exclude
