@@ -1,69 +1,74 @@
 ;;;; package.lisp
 
+(defpackage #:math)
+
 (defpackage #:math	       
   (:use #:cl #:cl-utilities)
-  (:export appr_table)
-  (:export matr-name
-	   matr-rows
-	   matr-cols
+  (:export math::appr_table)
+;;;; matr.lisp     
+  (:export math::matr-name
+	   math::matr-rows
+	   math::matr-cols
 	   ;; matr-elements
-	   matr-ij    
-	   matr-set_ij  
-	   matr-set-row 
-	   matr-get-row 
-	   matr-set-col 
-	   matr-get-col 
-	   matr-new     
+	   math::matr-ij    
+	   math::matr-set_ij  
+	   math::matr-set-row 
+	   math::matr-get-row 
+	   math::matr-set-col 
+	   math::matr-get-col 
+	   math::matr-new     
 	   ;; matr-eval
-	   matr-mult    
-	   matr-to-point
-	   point-to-matr
-	   matr-copy
-	   matr-to-string
-	   matr-print
-	   matr-mnk
-	   matr-triang
-	   matr-las-gauss
-	   matr-osr-func
-	   matr-las-rotation
-	   ;; statistics
+	   math::matr-mult
+	   math::matr->2d-list
+	   math::2d-list->matr
+	   math::matr-to-point
+	   math::point-to-matr
+	   math::matr-copy
+	   math::matr-to-string
+	   math::matr-print
+	   math::matr-mnk
+	   math::matr-triang
+	   math::matr-las-gauss
+	   math::matr-osr-func
+;;;; statistics.lisp
+	   math::square
 	   ;; averange
-	   averange
-	   averange-value
-	   averange-not-nil-value
+	   math::averange
+	   math::averange-value
+	   math::averange-not-nil-value
 	   ;; exclude
-	   exclude-nil-from-list
-	   max-value
-   	   min-value
-	   dispersion
-	   standard-deviation
-	   variation-coefficient
-	   clean-flagrant-error 
-	   make-random-value-list
-	   clean-min-flagrant-error
-	   clean-max-flagrant-error
-	   ;;
-	   matr-rotation
-	   ;; list-matr
-	   list-matr-transpose
-	   list-matr-union
-	   list-matr-make
-	   list-matr-rows
-	   list-matr-cols
-	   list-matr-row
-	   list-matr-col
-	   list-matr-averange-value
-	   list-matr-averange-not-nil-value
-	   list-matr-averange-row-value
-	   list-matr-averange-row-not-nil-value
-	   list-matr-averange-col-value
-	   list-matr-averange-col-not-nil-value
-	   list-matr-print
-	   list-vector-print
-	   list-matr-append-row
-	   list-matr-append-col
-	   list-matr-prepend-row
-	   list-matr-prepend-col
+	   math::exclude-nil-from-list
+	   math::max-value
+	   math::min-value
+	   math::dispersion
+	   math::standard-deviation
+	   math::variation-coefficient
+	   math::clean-flagrant-error 
+	   math::make-random-value-list
+	   math::clean-min-flagrant-error
+	   math::clean-max-flagrant-error
+;;;; las-rotation.lisp
+	   math::matr-rotation
+;;;; list-matr.lisp
+	   math::list-matr-transpose
+	   math::list-matr-union
+	   math::list-matr-make
+	   math::list-matr-rows
+	   math::list-matr-cols
+	   math::list-matr-row
+	   math::list-matr-col
+	   math::list-matr-averange-value
+	   math::list-matr-averange-not-nil-value
+	   math::list-matr-averange-row-value
+	   math::list-matr-averange-row-not-nil-value
+	   math::list-matr-averange-col-value
+	   math::list-matr-averange-col-not-nil-value
+	   math::list-matr-print
+	   math::list-vector-print
+	   math::list-matr-append-row
+	   math::list-matr-append-col
+	   math::list-matr-prepend-row
+	   math::list-matr-prepend-col
 ;;;;
 	   ))
 

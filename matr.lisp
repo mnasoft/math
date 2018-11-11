@@ -208,19 +208,37 @@ m-количест во столбцов в матрице"
 	))
     c))
 
+(defun matr->2d-list (matr)
+  "Выполняет преобразование матрицы в 2d-list (список списков).
+Пример использования:
+ (matr->2d-list (matr-new 3 2 '( 1.0 2.0 3.0 11.0 12.0 13.0)))
+ =>(1.0 2.0) (3.0 11.0) (12.0 13.0))
+"
+  (let ((r (matr-rows  matr )))
+    (loop :for i :from 0 :below r
+       collect   (matr-get-row  matr i))))
+
+(defun 2d-list->matr (2d-list)
+  "Выполняет преобразование 2d-list (списка списков) в матрицу
+Пример использования:
+ (2d-list->matr '((1.0 2.0) (3.0 11.0) (12.0 13.0)))
+ =>(\"Matr\" 2 3 ((0 . 1.0) (1 . 2.0) (2 . 3.0) (3 . 11.0) (4 . 12.0) (5 . 13.0)))
+"
+  (let ((r    (list-matr-cols  2d-list))
+	(c    (list-matr-rows  2d-list))
+	(data (list-matr-union 2d-list)))
+    (matr-new r c data)))
+
 (defun matr-to-point (matr)
   "Выполняет преобразование матрицы в точку
-(matr-to-point (matr-new 1 3 '(1.0 2.0 3.0)))
-=> (1.0 2.0 3.0)
-;
-(matr-to-point (matr-new 3 1 '(1.0 2.0 3.0)))
-=> (1.0 2.0 3.0)
-;
-(matr-to-point (matr-new 3 2 '( 1.0 2.0 3.0 11.0 12.0 13.0)))
-=> (1.0 2.0 3.0 11.0 12.0 13.0)
-;
-(matr-to-point (matr-new 2 3 '(1.0 2.0 3.0 11.0 12.0 13.0)))
-=> (1.0 2.0 3.0 11.0 12.0 13.0)
+ (matr-to-point (matr-new 1 3 '(1.0 2.0 3.0)))
+ => (1.0 2.0 3.0)
+ (matr-to-point (matr-new 3 1 '(1.0 2.0 3.0)))
+ => (1.0 2.0 3.0)
+ (matr-to-point (matr-new 3 2 '( 1.0 2.0 3.0 11.0 12.0 13.0)))
+ => (1.0 2.0 3.0 11.0 12.0 13.0)
+ (matr-to-point (matr-new 2 3 '(1.0 2.0 3.0 11.0 12.0 13.0)))
+ => (1.0 2.0 3.0 11.0 12.0 13.0)
 "
   (mapcar #'cdr (matr-elements matr)))
 
