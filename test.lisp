@@ -1,93 +1,41 @@
-;;;; matr.lisp
+;;;; test.lisp
 
 (in-package #:math)
 
-(require :gsll)
+(defparameter *vars* 
+  (loop :for i :from 0 :to 10
+     :collect (+ 1 (random 100))))
 
-(defun lu-solve (matrix vector)
-  "Solve the linear equation using LU with the supplied matrix and
-   a right-hand side vector which is the reciprocal of one more than
-   the index."
-      (multiple-value-bind (upper permutation signum) (gsl:LU-decomposition (grid:copy matrix))
-      (declare (ignore signum))
-      (let ((initial-solution (gsl:LU-solve upper vector permutation T)))
-	(gsl:LU-refine matrix upper permutation vector initial-solution))))
-
-(defun lu-solve-extmatr (matrix-vector)
-  ""
-  (let ((matrix (grid:make-foreign-array
-		 'double-float
-		 :initial-contents
-		 (list-matr-detach-last-col matrix-vector)))
-	(vector (grid:make-foreign-array
-		 'double-float
-		 :initial-contents
-		 (list-matr-get-last-col    matrix-vector))))
-    (lu-solve matrix vector)))
-
+(defun foo (x1 x2)
+  (+  (* (first  *vars*) x1 x1)
+      (* (second *vars*) x2 x2)
+      (* (third  *vars*) x1 x2)
+      (* (fourth *vars*)   x1 )
+      (* (fifth  *vars*)   x2 )
+      (sixth *vars*)))
 
 (defparameter *data*
-  '((  0	0	8)
-    (1	0	26)
-    (0	1	17)
-    (-1	-1	14)
-    (-1	1	18)
-    (0	1	17)
-    (3	3	218)
-    (3	2	186)
-    (2	3	137)
-    (-2	-3	71)
-    (-1.9	-2.8	62.6)
-    (-1.8	-2.6	54.8)
-    (-1.7	-2.4	47.6)
-    (-1.6	-2.2	41)
-    (-1.5	-2	35)
-    (-1.4	-1.8	29.6)
-    (-1.3	-1.6	24.8)
-    (-1.2	-1.4	20.6)
-    (-1.1	-1.2	17)
-    (-0.999999999999999	-1	14)
-    (-0.899999999999999	-0.8	11.6)
-    (-0.799999999999999	-0.6	9.79999999999999)
-    (-0.699999999999999	-0.4	8.59999999999999)
-    (-0.599999999999999	-0.2	8)
-    (-0.499999999999999	0	8)
-    (-0.399999999999999	0.2	8.6)
-    (-0.299999999999999	0.4	9.8)
-    (-0.199999999999999	0.6	11.6)
-    (-0.099999999999999	0.8	14)))
+  (loop :for i :from 0 :to 5000
+     :collect
+       (let ((x1 (* 0.1 (+ 1 (random 100))))
+	     (x2 (* 0.1 (+ 1 (random 100)))))
+	 (list x1 x2 (foo x1 x2)))))
 
-(fff 2.4 4.93)
+(progn 
+  (sb-profile:profile matr-mnk lu-solve lu-solve-extmatr)
+  (lu-solve-extmatr 
+   (matr->2d-list
+    (matr-mnk '(x1 x2 yy) 
+	      '((x1 x1 )(x2 x2) (x1 x2)  (x1) (x2) (1.0) (x1 x1 x1) (x2 x2 x2) (yy))
+	      *data*)))
 
+  (matr-osr-func '(x1 x2 yy)
+		 '((x1 x1 )(x2 x2) (x1 x2)  (x1) (x2) (1.0) (x1 x1 x1) (x2 x2 x2) (yy))
+		 *data*
+		 'fff)
+  (sb-profile:report)
+  (sb-profile:reset))
 
-
-(lu-solve-extmatr 
- (matr->2d-list
-  (matr-mnk '(x1 x2 yy) 
-	    '((x1 x1 )(x2 x2)  (x1 x2)  (x1) (x2) (1.0) (yy))
-	    *data*)))
-#m(12.000000779935279d0 1.999999797660067d0 4.999999737704854d0 5.999998441971560d0 7.000000899416466d0 7.999999274872341d0)
-
-(matr-osr-func '(x1 x2 yy) 
-	    '((x1 x1 )(x2 x2)  (x1 x2)  (x1) (x2) (1.0) (yy))
-	    *data*
-	    'fff)
-
-(defun list-matr-detach-last-col (2d-list)
-  (mapcar
-   #'(lambda(el) (reverse (cdr (reverse el))))
-   2d-list))
-
-(defun list-matr-get-last-col (2d-list)
-  (mapcar
-   #'(lambda(el) (car (last el)))
-   2d-list))
-
-
-(matr-osr-func '(xx yy) 
-	       '((xx xx xx) (xx xx) (xx) (1.0) (yy))
-	       '((-2.0 4.0) (-1.0 1.0) (0.0 0.0) (2.0 4.0) (3.0 9.0))
-	       'coool-func)
 
 (let ((x (append '(  -2000. -50.0) (make-random-value-list 100.0 :std-deviation 1.0 :n 8 ))))
   (values
@@ -202,3 +150,26 @@
 
 
 (list-matr-print (list-matr-make 2 3 '(1 2 3 4 5 6)))
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+matr-set_ij
+
+(defun matr-set-ij (matr value i j)
+  (setf (cdr (nth (matr-index matr i j)(fourth matr))) value))
+
+
+
+(progn 
+  (sb-profile:profile matr-mnk-new matr-mnk)
+  (matr-mnk '(x1 x2 yy) 
+	    '((x1 x1 )(x2 x2) (x1 x2)  (x1) (x2) (1.0) (x1 x1 x1) (x2 x2 x2) (yy))
+	    *data*)
+  (matr-mnk-new '(x1 x2 yy) 
+		'((x1 x1 )(x2 x2) (x1 x2)  (x1) (x2) (1.0) (x1 x1 x1) (x2 x2 x2) (yy))
+		*data*)
+  (sb-profile:report)
+  (sb-profile:reset))
+
+

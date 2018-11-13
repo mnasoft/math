@@ -18,6 +18,11 @@
 m-количест во столбцов в матрице"
   (+ (* i m) j))
 
+(defun matr-index (matr i j)
+  "Вычисляет индекс (i,j) элемента матрицы индексы начинаются с нуля
+m-количест во столбцов в матрице"
+  (matr-idx i j (matr-cols matr)))
+
 (defun matr-rows (matr)
   "Возвращает количество строк в матрице
 (matr-rows '(\"Matr\" 2 3 ((0 . 0.0) (1 . 0.0) (2 . 0.0) (3 . 0.0) (4 . 0.0) (5 . 0.0))))
@@ -86,6 +91,9 @@ m-количест во столбцов в матрице"
 		    (assoc (matr-idx i j m) li)
 		    li))
     (list (matr-name) n m li)))
+
+(defun matr-set-ij (matr value i j)
+  (setf (cdr (nth (matr-index matr i j)(fourth matr))) value))
 
 (defun matr-set-row(matr i pts)
   "Пример использования:
@@ -309,17 +317,27 @@ ex_pts - '((-1.0 1.0) (2.0 4.0) (3.0 9.0))  - задает
 ;
 =>(\"Matr\" 1 3 ((0 . 1.0d0) (1 . 0.0d0) (2 . 0.0d0)))
 "
-  (let* ((m (length ff))
-	 (n (1- m))
-	 (mtr (matr-new n m)))
-    (mapcar #'(lambda (el)
-		(dotimes (i n)
-		  (dotimes (j m)
-		    (setf mtr (matr-set_ij mtr (+ (apply (eval (list 'lambda  vv (cons '* (append (nth i ff) (nth j ff))))) el)
-						  (matr-ij mtr i j))
-					   i j)))))
-	    ex_pts)
+  (let* ((m          (length ff))
+	 (n          (1- m))
+	 (mtr        (matr-new n m))
+	 (mtr-lambda (matr-new n m)))
+    (dotimes (i n)
+      (dotimes (j m)
+	(matr-set-ij
+	 mtr-lambda
+	 (eval (list 'lambda  vv (cons '* (append (nth i ff) (nth j ff))))) i j)))
+    (mapc
+     #'(lambda (el)
+	 (dotimes (i n)
+	   (dotimes (j m)
+	     (matr-set-ij
+	      mtr
+	      (+ (apply (matr-ij mtr-lambda i j) el)
+		 (matr-ij mtr i j))
+	      i j))))
+     ex_pts)
     mtr))
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -444,9 +462,9 @@ Matr 3 4
 =>(\"Matr\" 1 3 ((0 . 1.0d0) (1 . 0.0d0) (2 . 0.0d0)))
 "
   (let ((kk (cons '+ (mapcar #'(lambda(el1 el2) (cons '* (cons el1 el2)))
-			     (math:matr-to-point 
-			      (math:matr-las-gauss
-			       (math:matr-mnk vv ff ex_pts)))
+			     (matr-to-point 
+			      (matr-las-gauss
+			       (matr-mnk vv ff ex_pts)))
 			     ff)))
 	(rez nil))
     (setf rez (list 'defun func-name (reverse (cdr(reverse vv))) kk))
