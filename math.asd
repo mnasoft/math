@@ -14,4 +14,5 @@
 	       (:file "mult-matr-vect")
 	       (:file "las-rotation")
 	       (:file "list-matr")
+	       (:file "lu-solve")
 	       ))

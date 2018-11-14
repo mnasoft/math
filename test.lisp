@@ -34,7 +34,9 @@
 		 *data*
 		 'fff)
   (sb-profile:report)
-  (sb-profile:reset))
+  (sb-profile:reset)
+  (sb-profile:unprofile)
+  )
 
 
 (let ((x (append '(  -2000. -50.0) (make-random-value-list 100.0 :std-deviation 1.0 :n 8 ))))
