@@ -78,7 +78,15 @@
     (loop :for r :from 0 :below (matr-rows-* mm)
        :collect (aref data r col))))
 
+(defmethod major-diagonal ((mm matrix))
+  (loop :for i :from 0 :below (min (matr-rows-* mm) (matr-cols-* mm))
+     :collect (matr-ij-* mm i i)))
 
+(defmethod minor-diagonal ((mm matrix))
+  (loop
+     :for c :from 0 :below (matr-cols-* mm)
+     :for r :downfrom (- (matr-rows-* mm) 1) :to 0
+     :collect (matr-ij-* mm c r)))
 
 (defmethod matr-eval ((mm matrix))
   (let ((rows (matr-rows-* mm))
@@ -90,11 +98,13 @@
 	  :do (setf (aref (matrix-data mm) i j) (eval (aref (matrix-data mm) i j)))))
   mm-cp))
 
+(defparameter *mm* (matr-new 3 4) )
+(matr-set-col-* *mm* 0 '(1 2 3))
+(matr-get-row-* *mm* 2)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defclass x-o (matrix) ())
-
-(defparameter *xo* (make-instance 'x-o ))
 
 (defmethod matr-name ((mm x-o)) "X-O")
 
@@ -110,22 +120,124 @@
 	 (format s "]"))))
 
 (defmethod initialize-instance ((mm x-o) &key (rows 3) (cols 3) )
-  (setf (matrix-data mm) (make-array (list rows cols) :initial-element 0)))  
+  (setf (matrix-data mm) (make-array (list rows cols) :initial-element 0)))
+
+(defmethod x-o-reset ((mm x-o))
+  (loop :for i :from 0 :below (array-dimension (matrix-data mm) 0)
+     :do
+     (loop :for j :from 0 :below (array-dimension (matrix-data mm) 1)
+	:do (setf (aref (matrix-data mm) i j) 0))))
+
+(defparameter *xo* (make-instance 'x-o ))
   
-(defparameter *mm* (matr-new 3 4) )
-(matr-set-col-* *mm* 0 '(1 2 3))
-(matr-get-row-* *mm* 2)
-
-(make-instance 'x-o)
-
 ;;;;;
 
-(defmethod x-o-is-1-win ((mm x-o))
-  (loop :for r :from 0 :below (matr-rows-* mm)
-     :collect (matr-get-row-* mm r)))
+(defun mate-value (value lst)
+  (every #'(lambda (el) (eq value el)) lst))
 
-(or (mapcar #'(lambda (el) (member 1 (remove-duplicates el))) (x-o-is-1-win *xo*)))
+(defun check-value (value lst)
+  (let ((v-y (count-if     #'(lambda (el) (= value el)) lst))
+	(v-n (- (count-if-not #'(lambda (el) (= value el)) lst)
+		(count-if     #'(lambda (el) (= 0     el)) lst))))
+    (and (<= v-n 0) (= v-y 2))))
 
+(defun half-check-value (value lst)
+  (let ((v-y (count-if     #'(lambda (el) (= value el)) lst))
+	(v-n (- (count-if-not #'(lambda (el) (= value el)) lst)
+		(count-if     #'(lambda (el) (= 0     el)) lst))))
+     (and (<= v-n 0) (= v-y 1))))
+
+
+(defmethod x-o-lines ((mm x-o))
+  (append
+   (loop :for r :from 0 :below (matr-rows-*  mm)
+      :collect (matr-get-row-* mm r))
+   (loop :for c :from 0 :below (matr-cols-*  mm)
+      :collect (matr-get-col-* mm c))
+   (list (major-diagonal mm) (minor-diagonal mm))))
+
+(defmethod x-o-winp ((mm x-o) player)
+  "Определяет для расстановки x-o выиграл-ли игрок player"
+  (let ((lst (mapcar #'(lambda (el)
+		     (mate-value player el) )
+		 (x-o-lines mm))))
+    (some #'(lambda (el) el) lst)))
+
+
+(defmethod x-o-check-num ((mm x-o) player)
+  "Определяет количество шахов"
+  (let ((lst (mapcar #'(lambda (el)
+			 (check-value player el) )
+		     (x-o-lines mm))))
+    (count t lst)))
+
+(defmethod x-o-1/2-check-num ((mm x-o) player)
+  "Определяет количество полушахов"
+  (let ((lst (mapcar #'(lambda (el)
+			 (half-check-value player el) )
+		     (x-o-lines mm))))
+    (count t lst)))
+
+(x-o-check-num *xo* 1)
+
+(x-o-1/2-check-num *xo* 1)
+
+(x-o-winp *xo* 2)
+
+(x-o-lines *xo*)
+
+X-O 3х3
+[ 1  2  3 ]
+[ 3  5  6 ]
+[ 7  8  9 ]
+
+((1 2 3)
+ (3 5 6)
+ (7 8 9)
+ (1 3 7)
+ (2 5 8)
+ (3 6 9)
+ (1 5 9)
+ (3 5 7))
+
+(progn (matr-set-row-* *xo* 0 '(0 0 0))
+       (matr-set-row-* *xo* 1 '(0 1 0)) 
+       (matr-set-row-* *xo* 2 '(0 0 0)))
+
+
+
+
+(if (member t
+	(mapcar
+	 #'(lambda (el)
+	     (if (mate-value 1 el) t nil))
+	 (x-o-is-1-win *xo*)))
+    t nil)
+
+(defun xo-dialog (xo)
+  (do ((rr nil)
+       (done nil))
+      (done )
+    (print xo)
+    (setf rr (read-line))
+    (print rr)
+    (cond
+      ((string=  rr "exit")  (setf done t))
+      ((string=  rr "reset") (x-o-reset xo))
+      (t (apply
+	  'matr-set-ij-*
+	  (cons xo
+		(eval
+		 (read-from-string (concatenate 'string "(list " rr ")")))))))
+    
+    ))
+
+(defun play ()
+  (xo-dialog *xo*))
+
+(matr-set-row-* *xo* 1 '(1 1 1))
+
+(matr-set-ij-* *xo* 2 1 1)
 
 (defmethod x-o-is-2-win ((mm x-o))
   )
