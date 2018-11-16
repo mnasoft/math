@@ -48,7 +48,7 @@
 
 (defmethod matr-ij-*   ((mm matrix) i j) (aref (matrix-data mm) i j))
 
-(defmethod matr-set-ij-* ((mm matrix) value i j) (setf (aref (matrix-data mm) i j) value))
+(defmethod matr-set-ij-* ((mm matrix) value row col) (setf (aref (matrix-data mm) row col) value) mm)
 
 (defmethod matr-rows-* ((mm matrix)) (array-dimension (matrix-data mm) 0))
 
@@ -178,42 +178,6 @@
 		     (x-o-lines mm))))
     (count t lst)))
 
-(x-o-check-num *xo* 1)
-
-(x-o-1/2-check-num *xo* 1)
-
-(x-o-winp *xo* 2)
-
-(x-o-lines *xo*)
-
-X-O 3х3
-[ 1  2  3 ]
-[ 3  5  6 ]
-[ 7  8  9 ]
-
-((1 2 3)
- (3 5 6)
- (7 8 9)
- (1 3 7)
- (2 5 8)
- (3 6 9)
- (1 5 9)
- (3 5 7))
-
-(progn (matr-set-row-* *xo* 0 '(0 0 0))
-       (matr-set-row-* *xo* 1 '(0 1 0)) 
-       (matr-set-row-* *xo* 2 '(0 0 0)))
-
-
-
-
-(if (member t
-	(mapcar
-	 #'(lambda (el)
-	     (if (mate-value 1 el) t nil))
-	 (x-o-is-1-win *xo*)))
-    t nil)
-
 (defun xo-dialog (xo)
   (do ((rr nil)
        (done nil))
@@ -228,12 +192,90 @@ X-O 3х3
 	  'matr-set-ij-*
 	  (cons xo
 		(eval
-		 (read-from-string (concatenate 'string "(list " rr ")")))))))
-    
-    ))
+		 (read-from-string (concatenate 'string "(list " rr ")")))))))))
 
 (defun play ()
   (xo-dialog *xo*))
+
+(defmethod free-field ((mm x-o))
+  "Возвращает свободные поля"
+  (let ((rez nil))
+    (loop :for i :from 0 :below (array-dimension (matrix-data mm) 0)
+       :do (loop :for j :from 0 :below (array-dimension (matrix-data mm) 1)
+	      :do (when (= 0 (aref (matrix-data mm) i j))
+		    (push (list i j) rez))))
+    rez))
+
+(defun get-random-element (lst) (nth (random (length lst)) lst))
+
+(defmethod step-check-rule-back (rule (mm x-o) player r c)
+  (let ((rez (funcall rule (matr-set-ij-* mm player r c) player)))
+    (matr-set-ij-* mm 0 r c)
+    (list rez r c)))
+
+(defmethod check-rule (rule chek-for-payer (mm x-o) move-player r c)
+  (let ((rez (funcall rule (matr-set-ij-* mm move-player r c) chek-for-payer)))
+    (matr-set-ij-* mm 0 r c)
+    (list rez r c)))
+
+(defmethod map-check-rule (rule chek-for-payer (mm x-o) move-player)
+  (mapcar
+   #'(lambda (el)
+       (check-rule rule chek-for-payer mm move-player (first el) (second el)))
+   (free-field mm)))
+
+(defmethod map-step-check-rule-back (rule (mm x-o) player)
+  (mapcar
+   #'(lambda (el)
+       (step-check-rule-back rule mm player (first el) (second el)))
+   (free-field mm)))
+
+(defmethod may-win-next-step ((mm x-o) player)
+  (let* ((rez (map-step-check-rule-back #'x-o-winp mm player ))
+	   (win-coords nil ))
+      (mapcar #'(lambda (el) (when (first el) (push (cdr el) win-coords))) rez)
+      win-coords))
+
+(map-step-check-rule-back 'x-o-check-num *xo* 2)
+
+(defmethod ()
+    
+(map-check-rule 'x-o-winp 1 *xo* 2)
+(sort (map-check-rule 'x-o-check-num     1 *xo* 2) #'< :key #'first) 
+(sort (map-check-rule 'x-o-1/2-check-num 1 *xo* 2) #'< :key #'first)
+)
+
+((0 2 1) (1 2 2) (1 2 0) (1 1 2) (1 1 0) (1 0 2) (1 0 0))
+((2 0 2) (2 0 0) (3 2 2) (3 2 0) (3 1 2) (3 1 0) (4 2 1))
+
+(x-o-check-num *xo* 1)
+
+
+
+			  
+
+;;;;
+
+(x-o-winp *xo* 1)
+(free-field *xo*)
+(get-random-element (may-win-next-step *xo* 1))
+
+;;;;
+
+(progn (matr-set-row-* *xo* 0 '(0 1 0))
+       (matr-set-row-* *xo* 1 '(0 1 0)) 
+       (matr-set-row-* *xo* 2 '(0 0 0)))
+
+
+
+(if (member t
+	(mapcar
+	 #'(lambda (el)
+	     (if (mate-value 1 el) t nil))
+	 (x-o-is-1-win *xo*)))
+    t nil)
+
+
 
 (matr-set-row-* *xo* 1 '(1 1 1))
 
