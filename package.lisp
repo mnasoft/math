@@ -69,7 +69,8 @@
 	   math::list-matr-append-col
 	   math::list-matr-prepend-row
 	   math::list-matr-prepend-col
-;;;;
+;;;; x-o.lisp
+	   math::play
 	   ))
 
 ;;;;(declaim (optimize (space 0) (compilation-speed 0)  (speed 0) (safety 3) (debug 3)))
