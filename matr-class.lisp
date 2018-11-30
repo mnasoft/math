@@ -30,8 +30,19 @@
 		      ll (cdr ll))))
 	mm))
 
-(defmethod initialize-instance ((mm matrix) &key (rows 3) (cols 3) )
-  (setf (matrix-data mm) (make-array (list rows cols) :initial-element 0.0d0)))
+(defmethod initialize-instance ((mm matrix) &key (rows 3) (cols 3) initial-element initial-contents (element-type t))
+  (cond
+    (initial-element
+      (setf (matrix-data mm)
+	    (make-array (list rows cols)
+			:element-type element-type :initial-element initial-element)))
+    (initial-contents
+      (setf (matrix-data mm)
+	    (make-array (list rows cols)
+			:element-type element-type :initial-contents initial-contents)))
+    (t (setf (matrix-data mm)
+	    (make-array (list rows cols)
+			:element-type element-type :initial-element 0.0d0)))))
 
 (defmethod matr-copy-* ((mm-ref matrix))
   (let* ((rows (matr-rows-* mm-ref))
@@ -43,13 +54,13 @@
 	    :do (setf (aref (matrix-data mm) i j) (aref (matrix-data mm-ref) i j))))
     mm))
 
-(defmethod matr-ij-*   ((mm matrix) i j) (aref (matrix-data mm) i j))
+(defmethod matr-ij-*     ((mm matrix) i j) (aref (matrix-data mm) i j))
 
 (defmethod matr-set-ij-* ((mm matrix) value row col) (setf (aref (matrix-data mm) row col) value) mm)
 
-(defmethod matr-rows-* ((mm matrix)) (array-dimension (matrix-data mm) 0))
+(defmethod matr-rows-*   ((mm matrix)) (array-dimension (matrix-data mm) 0))
 
-(defmethod matr-cols-* ((mm matrix)) (array-dimension (matrix-data mm) 1))
+(defmethod matr-cols-*   ((mm matrix)) (array-dimension (matrix-data mm) 1))
 
 (defmethod matr-set-row-* ((mm matrix) row pts)
   (let ((data (matrix-data mm))
@@ -76,8 +87,24 @@
        :collect (aref data r col))))
 
 (defmethod major-diagonal ((mm matrix))
+  "Возвращает главную диагональ в виде списка
+Пример использования:
+ (defparameter *mm* (make-instance 'matrix
+				  :cols 4
+				  :initial-contents
+				  '(( 1  2  3  4)
+				    ( 5  6  7  8)
+				    ( 9 10 11 12))))
+ => Matr 3х4
+    [ 1  2  3  4 ]
+    [ 5  6  7  8 ]
+    [ 9 10 11 12 ]
+ (major-diagonal *mm*) => (1 6 11)
+"
   (loop :for i :from 0 :below (min (matr-rows-* mm) (matr-cols-* mm))
      :collect (matr-ij-* mm i i)))
+
+
 
 (defmethod minor-diagonal ((mm matrix))
   (loop
