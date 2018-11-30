@@ -30,8 +30,10 @@
 		      ll (cdr ll))))
 	mm))
 
-(defmethod initialize-instance ((mm matrix) &key (rows 3) (cols 3) )
-  (setf (matrix-data mm) (make-array (list rows cols) :initial-element 0.0d0)))
+(defmethod initialize-instance ((mm matrix) &key (rows 3) (cols 3) data)
+  (if data
+      (setf (matrix-data mm) (make-array (list rows cols) :initial-contents data))
+      (setf (matrix-data mm) (make-array (list rows cols) :initial-element 0.0d0))))
 
 (defmethod matr-copy-* ((mm-ref matrix))
   (let* ((rows (matr-rows-* mm-ref))
@@ -76,10 +78,36 @@
        :collect (aref data r col))))
 
 (defmethod major-diagonal ((mm matrix))
+  "Извлекает главную диагональ матрицы
+Пример использования:
+ (defparameter *mm* (make-instance 'matrix :rows 4  :data '((1d0 2d0 3d0) (4d0 5d0 6d0) (7d0 8d0 9d0) (10d0 11d0 12d0)))
+ =>
+ Matr 4х3
+ [ 1.0d0     2.0d0     3.0d0    ]
+ [ 4.0d0     5.0d0     6.0d0    ]
+ [ 7.0d0     8.0d0     9.0d0    ]
+ [ 10.0d0    11.0d0    12.0d0   ]
+
+ (major-diagonal *mm*)
+ (1.0d0 5.0d0 9.0d0)
+"
   (loop :for i :from 0 :below (min (matr-rows-* mm) (matr-cols-* mm))
      :collect (matr-ij-* mm i i)))
 
 (defmethod minor-diagonal ((mm matrix))
+  "Извлекает побочную диагональ матрицы
+Пример использования:
+ (defparameter *mm* (make-instance 'matrix :rows 4  :data '((1d0 2d0 3d0) (4d0 5d0 6d0) (7d0 8d0 9d0) (10d0 11d0 12d0))))
+ =>
+ Matr 4х3
+ [ 1.0d0     2.0d0     3.0d0    ]
+ [ 4.0d0     5.0d0     6.0d0    ]
+ [ 7.0d0     8.0d0     9.0d0    ]
+ [ 10.0d0    11.0d0    12.0d0   ]
+
+ (minor-diagonal *mm*)
+
+"  
   (loop
      :for c :from 0 :below (matr-cols-* mm)
      :for r :downfrom (- (matr-rows-* mm) 1) :to 0
