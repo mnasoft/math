@@ -88,6 +88,9 @@
   "Вычисляет среднее значение по элементам матрицы (списка списков)"
   (mapcar #'averange-not-nil-value lst))
 
+(defun list-matr-max-row-not-nil-value (lst)
+   (mapcar #'(lambda (el) (apply #'max (exclude-nil-from-list el))) lst))
+
 ;;;;
 
 (defun list-matr-averange-col-value (lst)
@@ -97,6 +100,9 @@
 (defun list-matr-averange-col-not-nil-value (lst)
   "Вычисляет среднее значение по элементам матрицы (списка списков)"
   (list-matr-averange-row-not-nil-value (list-matr-transpose lst)))
+
+(defun list-matr-max-col-not-nil-value (lst)
+  (list-matr-max-row-not-nil-value (list-matr-transpose lst)))
 
 ;;;; print
 

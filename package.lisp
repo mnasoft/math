@@ -61,14 +61,17 @@
 	   math::list-matr-averange-not-nil-value
 	   math::list-matr-averange-row-value
 	   math::list-matr-averange-row-not-nil-value
+	   math::list-matr-max-row-not-nil-value 
 	   math::list-matr-averange-col-value
 	   math::list-matr-averange-col-not-nil-value
+	   math::list-matr-max-col-not-nil-value 
 	   math::list-matr-print
 	   math::list-vector-print
 	   math::list-matr-append-row
 	   math::list-matr-append-col
 	   math::list-matr-prepend-row
 	   math::list-matr-prepend-col
+
 ;;;; x-o.lisp
 	   math::play
 	   math::depth-sphere-along-cone
