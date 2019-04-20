@@ -17,6 +17,7 @@
 	       (:file "las-rotation")
 	       (:file "list-matr")
 ;;;;	       (:file "lu-solve")
-	       (:file "matr-class")
-	       (:file "x-o")
+
+;;;;	       (:file "matr-class")
+;;;;	       (:file "x-o")	       
 	       ))
