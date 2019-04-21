@@ -2,9 +2,13 @@
 
 (in-package #:math)
 
+(export 'matrix)
 (defclass matrix ()
   ((data :accessor matrix-data :initform nil :initarg :data)))
 
+(export 'matrix-data)
+
+(export 'matr-name-*)
 (defmethod matr-name-* ((mm matrix)) "Matr")
 
 (defmethod print-object ((mm matrix) s)
@@ -18,8 +22,7 @@
 	    :do (format s " ~8A " (aref (matrix-data mm) i j)))
 	 (format s "]"))))
 
-
-
+(export 'matr-new*)
 (defun matr-new* (rows cols &optional (lst nil))
   "Примечание:
  (matr-new 3 4 '(1 2 3 4 5 6 7 8 9 10)) "
@@ -43,7 +46,8 @@
       (setf (matrix-data mm)
 	    (make-array (list rows cols)
 			:element-type element-type :initial-contents initial-contents)))
-    (t (setf (matrix-data mm)
+    (t
+     (setf (matrix-data mm)
 	    (make-array (list rows cols)
 			:element-type element-type :initial-element 0.0d0)))))
 
@@ -178,3 +182,29 @@
      ex_pts)
 
     mtr))
+
+(defmethod matr-equal* ((m1 matrix) (m2 matrix) &key (test #'equal))
+  (let ((rez t))
+    (when (and (= (matr-rows-* m1) (matr-rows-* m2))
+	       (= (matr-cols-* m1) (matr-cols-* m2))
+	       (loop :for r :from 0 :below (matr-rows-* m1) :do
+		    (loop :for c :from 0 :below (matr-cols-* m1) :do
+			 (setf rez (and rez (funcall test (matr-ij-* *m1* r c ) (matr-ij-* *m1* r c) ))))))
+      t)))
+
+(matr-cols-* m1) (matr-cols-* m1)
+(defparameter *m1*
+  (make-instance
+   'matrix :rows 3 :cols 5
+   :initial-contents
+   '((1 2 3 4 5)
+     (1 2 3 4 5)
+     (1 2 3 4 5))))
+
+
+(let ((r(random 10)) (c(random 10))) (incf r) (incf c)
+     (let ((mm  (make-instance 'matrix :rows r :cols c )))
+       (when (and (= r (matr-rows-* mm)) (= c (matr-cols-* mm)))
+	 t)))
+
+(matr-set-ij-* *m1* 1 0 0)
