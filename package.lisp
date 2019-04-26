@@ -2,9 +2,15 @@
 
 (defpackage #:math)
 
-(defpackage #:math	       
+(defpackage #:math 
   (:use #:cl #:cl-utilities)
-  (:export math::appr_table)
+;;;; approximation.lisp
+  (:intern math::appr_table)
+  (:export 
+	   math::appr-linear
+           math::appr-bilinear
+	   math::approximate
+	   )
 ;;;; matr.lisp     
   (:export math::matr-name
 	   math::matr-rows

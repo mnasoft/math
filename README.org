@@ -1,0 +1,23 @@
+#+INCLUDE: "~/org/header/header.org"
+
+\[ z = \frac {\sum_i w(d_i) \cdot z_i} {\sum_i w(d_i) } \]
+
+\[ d_i = \sqrt { \left( \frac{x-x_i}{dx} \right)^2 + \left(\frac{y-y_i}{dy} \right)^2 } \]
+
+
+
+ gauss    w(d) = exp(-d^2)                                   
+                         
+ cauchy   w(d) = 1/(1+d^2)                                                            
+
+ exp      w(d) = exp(-d)                                                              
+
+ box      w(d) = 1 if d < 1; w(d) = 0 otherwise                                       
+
+ hann     w(d) = (1-cos(2πd)) if |d| < 1; w(d) = 0 otherwise 
+
+
+
+
+
+
