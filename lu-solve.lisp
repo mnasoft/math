@@ -25,3 +25,5 @@
 		 :initial-contents
 		 (list-matr-get-last-col    matrix-vector))))
     (lu-solve matrix vector)))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(require :gsll)

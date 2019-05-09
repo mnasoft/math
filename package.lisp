@@ -7,10 +7,10 @@
 ;;;; approximation.lisp
   (:intern math::appr_table)
   (:export 
-	   math::appr-linear
-           math::appr-bilinear
-	   math::approximate
-	   )
+   math::appr-linear
+   math::appr-bilinear
+   math::approximate
+   )
 ;;;; matr.lisp     
   (:export math::matr-name
 	   math::matr-rows
@@ -77,11 +77,34 @@
 	   math::list-matr-append-col
 	   math::list-matr-prepend-row
 	   math::list-matr-prepend-col
-
-;;;; x-o.lisp
-	   math::play
-	   math::depth-sphere-along-cone
 	   )
+;;;; matr-class.lisp
+  (:export math::matrix
+	   math::matrix-data
+	   math::matr-name-*
+	   math::matr-new*
+	   math::matr-copy-*
+	   math::matr-ij-*
+	   math::matr-set-ij-*
+	   math::matr-rows-*
+	   math::matr-cols-*
+	   math::matr-set-row-*
+	   math::matr-get-row-*
+	   math::matr-set-col-*
+	   math::matr-get-col-*
+	   math::major-diagonal
+	   math::minor-diagonal
+	   math::matr-eval-*
+	   math::matr-mnk*
+	   math::matr-equal*
+   
+
+   )
+;;;; x-o.lisp
+  (:export
+   math::play
+   math::depth-sphere-along-cone
+   )
   )
 
 ;;;;(declaim (optimize (space 0) (compilation-speed 0)  (speed 0) (safety 3) (debug 3)))
