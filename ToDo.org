@@ -80,12 +80,41 @@ done
     + [X] столбцов;                               -- swap-cols   ((mm matrix) i j)
   - [X] Преобразования [100%]
     + [X] в matrix->2d-list                       -- matrix->2d-list ((mm matrix))
-* Определить функции тестирования для матриц
+* TODO Определить функции тестирования для матриц
+** Отделить макросы в отдельный проект
+Взято из книги PCL Practical Common Lisp
+
+(defmacro deftest (name parameters &body body)
+  "Define a test function. Within a test function we can call
+   other test functions or use 'check' to run individual test
+   cases."
+  `(defun ,name ,parameters
+    (let ((*test-name* (append *test-name* (list ',name))))
+      ,@body)))
+
+(defmacro check (&body forms)
+  "Run each expression in 'forms' as a test case."
+  `(combine-results
+    ,@(loop for f in forms collect `(report-result ,f ',f))))
+
+(defmacro combine-results (&body forms)
+  "Combine the results (as booleans) of evaluating 'forms' in order."
+  (with-gensyms (result)
+    `(let ((,result t))
+      ,@(loop for f in forms collect `(unless ,f (setf ,result nil)))
+      ,result)))
+
+(defun report-result (result form)
+  "Report the results of a single test case. Called by 'check'."
+  (format t "~:[FAIL~;pass~] ... ~a: ~a~%" result *test-name* form)
+  result)
+
 * Рефакторинг
 
  matr-class.lisp - файл, содержащий определение класса matrix и его функции и методы, он временно исключен;
 В данном файле определения функций должны в конце имени иметь "-*";
 
  x-o.lisp        - файл, содержащий определение класса x-o крестики-нолики, он времено исключен
+
 
 
