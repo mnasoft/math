@@ -68,9 +68,9 @@
     (print-matr 'm1 m1)
     (print-matr 'm2 m2)
     (print-matr 'm3 m3)
-    (pcl:check (matr-equal* m1 m2))
-    (pcl:check (not (matr-equal* m1 (setf (mref m2 2 3) 230 ))))
-    (pcl:check (not (matr-equal* m1 m3)))))
+    (pcl:check (equivalent m1 m2))
+    (pcl:check (not (equivalent m1 (setf (mref m2 2 3) 230 ))))
+    (pcl:check (not (equivalent m1 m3)))))
 
 (pcl:deftest test-matrix-get-row ()
   "Пример использования: (test-matrix-get-row)"
@@ -92,13 +92,13 @@
 	  (row m2 2) '(5 4 3 2 1 ))
     (print-matr 'm1 m1)
     (print-matr 'm2 m2)
-    (pcl:check (matr-equal* (make-instance
+    (pcl:check (equivalent (make-instance
 			 'matrix
 			 :initial-contents '(( 1  2  3  4  5)
 					     (21 22 23 24 25)
 					     ( 5  4  3  2  1)))
 			m2))
-    (pcl:check (not (matr-equal* m1 m2)))
+    (pcl:check (not (equivalent m1 m2)))
     (pcl:check (equal (row m2 0) '(1 2 3 4 5)))))
 
 
@@ -123,13 +123,13 @@
 	  (col m2 4) '(3 2 1))
     (print-matr 'm1 m1)
     (print-matr 'm2 m2)
-    (pcl:check (matr-equal* (make-instance
+    (pcl:check (equivalent (make-instance
 			 'matrix
 			 :initial-contents '(( 1 12 13 14  3)
 					     ( 2 22 23 24  2)
 					     ( 3 32 33 34  1)))
 			m2))
-    (pcl:check (not (matr-equal* m1 m2)))
+    (pcl:check (not (equivalent m1 m2)))
     (pcl:check (equal (col m2 0) '(1 2 3 )))))
 
 (pcl:deftest test-main-diagonal ()
@@ -189,12 +189,12 @@
 							(51 52 53 )))))
     (print-matr 'm1 m1)
     (print-matr 'm3 m3)
-    (pcl:check (matr-equal*
+    (pcl:check (equivalent
 	    (setf (main-diagonal m1)  '(1 2 3))
 	    (make-instance 'matrix :initial-contents '(( 1 12 13 14 15)
 						       (21  2 23 24 25)
 						       (31 32  3 34 35)))))
-    (pcl:check (matr-equal*
+    (pcl:check (equivalent
 	    (make-instance 'matrix :initial-contents '(( 1 12 13 )
 						       (21  2 23 )
 						       (31 32  3 )
@@ -211,7 +211,7 @@
 							(51 52 53 54 55)))))
     (print-matr 'm2 m2)
     (pcl:check (equal (anti-diagonal m2) '(15 24 33 42 51)))
-    (pcl:check (matr-equal* (setf (anti-diagonal (matr-new* 3 3 '( 1 2 3 4 5 6 7 8 9))) '(11 12 13))
+    (pcl:check (equivalent (setf (anti-diagonal (matr-new* 3 3 '( 1 2 3 4 5 6 7 8 9))) '(11 12 13))
 			(make-instance 'matrix :initial-contents '(( 1  2 11 )
 								   ( 4 12  6 )
 								   (13  8  9 )))))))
@@ -240,10 +240,10 @@
 				       (funcall ff-2
 						x1 x2)) rez )))
 		 rez)))
-    (pcl:check (matr-equal* m1 (matr-mnk* '(xx yy) 
+    (pcl:check (equivalent m1 (make-least-squares-matrix '(xx yy) 
 				      '((xx xx) (xx) (1.0) (yy)) 
 				      pts-1 )))
-    (pcl:check (matr-equal* m2 (matr-mnk* '(x1 x2 yy) 
+    (pcl:check (equivalent m2 (make-least-squares-matrix '(x1 x2 yy) 
 				      '((x1 x2)  (x1) (x2) (1.0) (yy)) 
 				      pts-2)))))
 
@@ -257,7 +257,7 @@
     							  ( 0.0 0.0 1.0 3.0 )))))
     (print-matr 'm1 m1)
     (print-matr 'm1-tr m1-tr)
-    (pcl:check (matr-equal* m1-tr (matr-triang* m1)))))
+    (pcl:check (equivalent m1-tr (matr-triang* m1)))))
 
 (pcl:deftest test-matr-obrhod ()
   "Пример использования: (test-matr-obrhod)"
@@ -267,7 +267,7 @@
 	(m1-obrhod (make-instance 'matrix :initial-contents '(( 1.0 2.0 3.0 )))))
     (print-matr 'm1 m1)
     (print-matr 'm1-obrhod m1-obrhod)
-    (pcl:check (matr-equal* m1-obrhod (matr-obrhod* m1)))))
+    (pcl:check (equivalent m1-obrhod (matr-obrhod* m1)))))
 
 (pcl:deftest test-matr-las-gauss ()
   "Пример использования: (test-matr-las-gauss)"
@@ -277,7 +277,7 @@
 	(m1-gau (make-instance 'matrix :initial-contents '(( 1/3 16/3 1 )))))
     (print-matr 'm1 m1)
     (print-matr 'm1-gau m1-gau)
-    (pcl:check (matr-equal* (matr-las-gauss* m1) m1-gau))))
+    (pcl:check (equivalent (matr-las-gauss* m1) m1-gau))))
 
 (pcl:deftest test-matr-osr ()
   "Пример использования: (test-matr-osr)"
@@ -300,10 +300,10 @@
 
 (pcl:deftest test-matr-sum ()
   "Пример использования: (test-matr-sum)"
-  (pcl:check (matr-equal* 
+  (pcl:check (equivalent 
 	  (matr-sum* (matr-new* 2 2 '(1 2 3 4)) (matr-new* 2 2 '(1 2 3 4)))
 	  (matr-new* 2 2 '(2 4 6 8))))
-  (pcl:check (matr-equal* 
+  (pcl:check (equivalent 
 	  (matr-sum* (matr-new* 2 2 '(1 2 3 4)) (matr-new* 2 2 '(4 3 2 1)))
 	  (matr-new* 2 2 '(5 5 5 5 )))))
 
@@ -311,7 +311,7 @@
 
 (pcl:deftest test-matr-mult ()
   "Пример использования: (test-matr-mult)"
-  (pcl:check (matr-equal*
+  (pcl:check (equivalent
 	  (matr-mult*  (matr-new* 2 3 '(1.0 2.0 3.0
 					4.0 5.0 6.0))
 		       (matr-new* 3 2 '(1.0 2.0
@@ -319,11 +319,11 @@
 					5.0 6.0)))
 	  (matr-new* 2 2 '(22.0 28.0
 			   49.0 64.0))))
-  (pcl:check (matr-equal*
+  (pcl:check (equivalent
 	  (matr-mult*  (matr-new* 3 2 '(1.0 2.0 3.0 4.0 5.0 6.0))
 		       (matr-new* 2 3 '(1.0 2.0 3.0 4.0 5.0 6.0)))
 	  (matr-new* 3 3 '( 9.0 12.0 15.0 19.0 26.0 33.0 29.0 40.0 51.0 ))))
-  (pcl:check (matr-equal*  (matr-mult* 2 (matr-new* 3 2 '(1.0 2.0 3.0 4.0 5.0 6.0)))
+  (pcl:check (equivalent  (matr-mult* 2 (matr-new* 3 2 '(1.0 2.0 3.0 4.0 5.0 6.0)))
 		       (matr-new* 3 2 '(2.0 4.0 6.0 8.0 10.0 12.0)))))
 
 (pcl:deftest test-matrix->2d-list ()

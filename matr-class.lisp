@@ -63,7 +63,7 @@
 
 (defmethod cols ((mm matrix)) (array-dimension (matrix-data mm) 1))
 
-(defmethod matr-equal* ((m1 matrix) (m2 matrix) &key (test #'equal))
+(defmethod equivalent ((m1 matrix) (m2 matrix) &key (test #'equal))
   (let ((rez t))
     (if (and (= (rows m1) (rows m2))
 	     (= (cols m1) (cols m2)))
@@ -167,7 +167,10 @@
        (setf (mref mm c r) e))
   mm)
 
-(defun matr-mnk* (vv ff ex_pts)
+
+
+
+(defun make-least-squares-matrix (vv ff ex_pts)
   "Формирует точки для расчета коэффициентов по методу наименьших квадратов
  vv     - '(xx yy) - список, состоящий из имен факторов влияния
          и имени функции отклика;
@@ -326,7 +329,7 @@ Matr 3 4
 	     (mapcar
 	      #'(lambda(el1 el2)
 		  (cons '* (cons el1 el2)))
-	      (row (matr-las-gauss* (matr-mnk* vv ff ex_pts)) 0)
+	      (row (matr-las-gauss* (make-least-squares-matrix vv ff ex_pts)) 0)
 	      ff)))
 	(rez nil))
     (setf rez (list (reverse (cdr(reverse vv))) kk))
