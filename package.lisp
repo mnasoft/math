@@ -83,22 +83,17 @@
 	   math::matrix-data
 	   math::matr-name-*
 	   math::matr-new*
-	   math::matr-copy-*
-	   math::matr-ij-*
-	   math::matr-set-ij-*
-	   math::matr-rows-*
-	   math::matr-cols-*
-	   math::matr-set-row-*
-	   math::matr-get-row-*
-	   math::matr-set-col-*
-	   math::matr-get-col-*
-	   math::major-diagonal
-	   math::minor-diagonal
+	   math::copy
+	   math::mref
+	   math::rows
+	   math::cols
+	   math::row
+	   math::col
+	   math::main-diagonal
+	   math::anti-diagonal
 	   math::matr-eval-*
 	   math::matr-mnk*
 	   math::matr-equal*
-   
-
    )
 ;;;; x-o.lisp
   (:export

@@ -52,7 +52,7 @@
 						       (21 22 23 24 25)
 						       (31 32 33 34 35)))))
     (print-matr 'm1 m1)
-    (check (= (matr-cols-* m1) 5))))
+    (check (= (cols m1) 5))))
 
 (deftest test-matrix-rows ()
   "Пример использования: (test-matrix-rows)"
@@ -60,30 +60,39 @@
 						       (21 22 23 24 25)
 						       (31 32 33 34 35)))))
     (print-matr 'm1 m1)
-    (check (= (matr-rows-* m1) 3))))
+    (check (= (rows m1) 3))))
+
+(deftest test-matrix-dimensions ()
+  "Пример использования: (test-matrix-dimensions)"
+  (let ((m1 (make-instance 'matrix :initial-contents '((11 12 13 14 15)
+						       (21 22 23 24 25)
+						       (31 32 33 34 35)))))
+    (print-matr 'm1 m1)
+    (check (equal (dimensions m1) '(3 5)))))
+
 
 (deftest test-matrix-get ()
   (let ((m1 (make-instance 'matrix :initial-contents '((11 12 13 14 15)
 						       (21 22 23 24 25)
 						       (31 32 33 34 35)))))
     (check
-      (= (matr-ij-* m1 0 0 ) 11)
-      (= (matr-ij-* m1 0 1 ) 12)
-      (= (matr-ij-* m1 0 2 ) 13)
-      (= (matr-ij-* m1 0 3 ) 14)
-      (= (matr-ij-* m1 0 4 ) 15)
+      (= (mref m1 0 0 ) 11)
+      (= (mref m1 0 1 ) 12)
+      (= (mref m1 0 2 ) 13)
+      (= (mref m1 0 3 ) 14)
+      (= (mref m1 0 4 ) 15)
 ;;;;
-      (= (matr-ij-* m1 1 0 ) 21)
-      (= (matr-ij-* m1 1 1 ) 22)
-      (= (matr-ij-* m1 1 2 ) 23)
-      (= (matr-ij-* m1 1 3 ) 24)
-      (= (matr-ij-* m1 1 4 ) 25)
+      (= (mref m1 1 0 ) 21)
+      (= (mref m1 1 1 ) 22)
+      (= (mref m1 1 2 ) 23)
+      (= (mref m1 1 3 ) 24)
+      (= (mref m1 1 4 ) 25)
 ;;;;
-      (= (matr-ij-* m1 2 0 ) 31)
-      (= (matr-ij-* m1 2 1 ) 32)
-      (= (matr-ij-* m1 2 2 ) 33)
-      (= (matr-ij-* m1 2 3 ) 34)
-      (= (matr-ij-* m1 2 4 ) 35))))
+      (= (mref m1 2 0 ) 31)
+      (= (mref m1 2 1 ) 32)
+      (= (mref m1 2 2 ) 33)
+      (= (mref m1 2 3 ) 34)
+      (= (mref m1 2 4 ) 35))))
 
 (defun print-matr (m-str m-name)
 	     (format t "~A ~A~%" m-str m-name ))
@@ -102,24 +111,27 @@
     (print-matr 'm2 m2)
     (print-matr 'm3 m3)
     (check (matr-equal* m1 m2))
-    (check (not (matr-equal* m1 (matr-set-ij-* m2 230 2 3))))
+    (check (not (matr-equal* m1 (setf (mref m2 2 3) 230 ))))
     (check (not (matr-equal* m1 m3)))))
 
 (deftest test-matrix-get-row ()
+  "Пример использования: (test-matrix-get-row)"
   (let ((m1 (make-instance 'matrix :initial-contents '((11 12 13 14 15)
 						       (21 22 23 24 25)
 						       (31 32 33 34 35)))))
     (print-matr 'm1 m1)
-    (check (equal (matr-get-row-* m1 0) '(11 12 13 14 15)))
-    (check (equal (matr-get-row-* m1 1) '(21 22 23 24 25)))
-    (check (equal (matr-get-row-* m1 2) '(31 32 33 34 35)))))
+    (check (equal (row m1 0) '(11 12 13 14 15)))
+    (check (equal (row m1 1) '(21 22 23 24 25)))
+    (check (equal (row m1 2) '(31 32 33 34 35)))))
 
 (deftest test-matrix-set-row ()
     "Пример использования: (test-matrix-set-row)"
   (let* ((m1 (make-instance 'matrix :initial-contents '((11 12 13 14 15)
 							(21 22 23 24 25)
 							(31 32 33 34 35))))
-	 (m2 (matr-set-row-* (matr-set-row-* (matr-copy-* m1) 0 '(1 2 3 4 5)) 2 '(5 4 3 2 1 ))))
+	 (m2 (copy m1)))
+    (setf (row m2 0) '(1 2 3 4 5)
+	  (row m2 2) '(5 4 3 2 1 ))
     (print-matr 'm1 m1)
     (print-matr 'm2 m2)
     (check (matr-equal* (make-instance
@@ -129,7 +141,7 @@
 					     ( 5  4  3  2  1)))
 			m2))
     (check (not (matr-equal* m1 m2)))
-    (check (equal (matr-get-row-* m2 0) '(1 2 3 4 5)))))
+    (check (equal (row m2 0) '(1 2 3 4 5)))))
 
 
 (deftest test-matrix-get-col ()
@@ -137,18 +149,20 @@
 						       (21 22 23 24 25)
 						       (31 32 33 34 35)))))
     (print-matr 'm1 m1)
-    (check (equal (matr-get-col-* m1 0) '(11 21 31)))
-    (check (equal (matr-get-col-* m1 1) '(12 22 32)))
-    (check (equal (matr-get-col-* m1 2) '(13 23 33)))
-    (check (equal (matr-get-col-* m1 3) '(14 24 34)))
-    (check (equal (matr-get-col-* m1 4) '(15 25 35)))))
+    (check (equal (col m1 0) '(11 21 31)))
+    (check (equal (col m1 1) '(12 22 32)))
+    (check (equal (col m1 2) '(13 23 33)))
+    (check (equal (col m1 3) '(14 24 34)))
+    (check (equal (col m1 4) '(15 25 35)))))
 
 (deftest test-matrix-set-col ()
   "Пример использования: (test-matrix-set-col)"
   (let* ((m1 (make-instance 'matrix :initial-contents '((11 12 13 14 15)
 							(21 22 23 24 25)
 							(31 32 33 34 35))))
-	 (m2 (matr-set-col-* (matr-set-col-* (matr-copy-* m1) 0 '(1 2 3 )) 4 '(3 2 1 )  )))
+	 (m2 (copy m1)))
+    (setf (col m2 0) '(1 2 3)
+	  (col m2 4) '(3 2 1))
     (print-matr 'm1 m1)
     (print-matr 'm2 m2)
     (check (matr-equal* (make-instance
@@ -158,7 +172,7 @@
 					     ( 3 32 33 34  1)))
 			m2))
     (check (not (matr-equal* m1 m2)))
-    (check (equal (matr-get-col-* m2 0) '(1 2 3 )))))
+    (check (equal (col m2 0) '(1 2 3 )))))
 
 (deftest test-main-diagonal ()
   "Пример использования: (test-main-diagonal)"
@@ -218,7 +232,7 @@
     (print-matr 'm1 m1)
     (print-matr 'm3 m3)
     (check (matr-equal*
-	    (main-diagonal-set m1  '(1 2 3))
+	    (setf (main-diagonal m1)  '(1 2 3))
 	    (make-instance 'matrix :initial-contents '(( 1 12 13 14 15)
 						       (21  2 23 24 25)
 						       (31 32  3 34 35)))))
@@ -228,7 +242,7 @@
 						       (31 32  3 )
 						       (41 42 43 )
 						       (51 52 53 )))
-	    (main-diagonal-set m3  '(1 2 3))))))
+	    (setf (main-diagonal m3)  '(1 2 3))))))
 
 (deftest test-anti-diagonal ()
   "Пример использования: (test-anti-diagonal)"
@@ -238,11 +252,15 @@
 							(41 42 43 44 45)
 							(51 52 53 54 55)))))
     (print-matr 'm2 m2)
-    (check (equal (anti-diagonal m2) '(15 24 33 42 51)))))
+    (check (equal (anti-diagonal m2) '(15 24 33 42 51)))
+    (check (matr-equal* (setf (anti-diagonal (matr-new* 3 3 '( 1 2 3 4 5 6 7 8 9))) '(11 12 13))
+			(make-instance 'matrix :initial-contents '(( 1  2 11 )
+								   ( 4 12  6 )
+								   (13  8  9 )))))))
 
 (deftest test-matr-mnk ()
   "Пример использования: (test-matr-mnk)"
-  (let ((m1 (make-instance 'matrix :initial-contents '(( 98.0d0    34.0d0    14.0d0    98.0d0 )
+  (let* ((m1 (make-instance 'matrix :initial-contents '(( 98.0d0    34.0d0    14.0d0    98.0d0 )
 						       ( 34.0d0    14.0d0    4.0d0     34.0d0 )
 						       ( 14.0d0    4.0d0     4.0d0     14.0d0 ))))
 	(pts-1 '((-1.0 1.0) (0.0 0.0) (2.0 4.0) (3.0 9.0)))
@@ -340,13 +358,32 @@
 (deftest test-matr-mult ()
   "Пример использования: (test-matr-mult)"
   (check (matr-equal*
-	  (matr-mult*  (matr-new* 2 3 '(1.0 2.0 3.0 4.0 5.0 6.0))
-		       (matr-new* 3 2 '(1.0 2.0 3.0 4.0 5.0 6.0)))
-	  (matr-new* 2 2 '( 22.0 28.0 49.0 64.0 ))))
-    (check (matr-equal*
-	    (matr-mult*  (matr-new* 3 2 '(1.0 2.0 3.0 4.0 5.0 6.0))
-			 (matr-new* 2 3 '(1.0 2.0 3.0 4.0 5.0 6.0)))
-	    (matr-new* 3 3 '( 9.0 12.0 15.0 19.0 26.0 33.0 29.0 40.0 51.0 )))))
+	  (matr-mult*  (matr-new* 2 3 '(1.0 2.0 3.0
+					4.0 5.0 6.0))
+		       (matr-new* 3 2 '(1.0 2.0
+					3.0 4.0
+					5.0 6.0)))
+	  (matr-new* 2 2 '(22.0 28.0
+			   49.0 64.0))))
+  (check (matr-equal*
+	  (matr-mult*  (matr-new* 3 2 '(1.0 2.0 3.0 4.0 5.0 6.0))
+		       (matr-new* 2 3 '(1.0 2.0 3.0 4.0 5.0 6.0)))
+	  (matr-new* 3 3 '( 9.0 12.0 15.0 19.0 26.0 33.0 29.0 40.0 51.0 ))))
+  (check (matr-equal*  (matr-mult* 2 (matr-new* 3 2 '(1.0 2.0 3.0 4.0 5.0 6.0)))
+		       (matr-new* 3 2 '(2.0 4.0 6.0 8.0 10.0 12.0)))))
+
+(deftest test-matrix->2d-list ()
+  "Пример использования: (test-matrix->2d-list)"
+  (check (equal (matrix->2d-list (matr-new* 3 2 '(1 2 3 4 5 6))) '((1 2) (3 4) (5 6)))))
+
+(require :lst-arr)
+(transpose '(1 2 3 4 5 6))
+
+(deftest test-matrix-transpose ()
+  "Пример использования: (test-matrix-transpose)"
+  (let ((lst '((1 2) (3 4) (5 6))))
+    (check (equal lst
+		  (transpose (matrix->2d-list (transpose (make-instance 'matrix :initial-contents lst))))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -367,19 +404,12 @@
     (test-matr-triang)
     (test-matr-obrhod)
     (test-matr-las-gauss)
-    (test-matr-matr-osr)
+;    (test-matr-matr-osr)
     (test-matr-sum)
-    (test-matr-mult)))
+    (test-matr-mult)
+    (test-matrix->2d-list)
+    (test-matrix-transpose)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;(test-matrix) 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(defmethod (setf mref) (value (mm matrix) i j)
-  (setf (aref (matrix-data mm) i j) value))
-
-(defmethod mref ((mm matrix) i j)
-    (aref (matrix-data mm) i j))
-
-
-
