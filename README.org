@@ -20,4 +20,19 @@
 
 
 
+#+BEGIN_SRC lisp
+  (defparameter *a*
+   (let ((rez 1))
+     (dotimes (i 30000 rez)
+       (setf rez (* rez (random 1000000000000000000000000))))))
 
+  (defparameter *b*
+   (let ((rez 1))
+     (dotimes (i 30000 rez)
+       (setf rez (* rez (random 1000000000000000000000000))))))
+
+  (let ((rez (* *a* *b*)))
+    'done)
+
+
+#+END_SRC
