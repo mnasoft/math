@@ -1,0 +1,15 @@
+* Публикация изменений на удаленных серверах
+
+#+BEGIN_SRC bash
+for i in github.com gitlab.com
+do
+git push ${i} master
+done
+#+END_SRC
+
+#+RESULTS:
+
+** Перечень удаленных репозиториев
+#+BEGIN_SRC bash
+git remote
+#+END_SRC

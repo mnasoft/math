@@ -6,6 +6,7 @@
   :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"  
   :serial t
   :depends-on (:cl-utilities
+	       :pcl-test
 ;;;; :gsll
 	       )
   :components ((:file "package")
@@ -17,7 +18,10 @@
 	       (:file "las-rotation")
 	       (:file "list-matr")
 ;;;;	       (:file "lu-solve")
-
-;;;;	       (:file "matr-class")
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;	       (:file "matr-generics") ;;
+	       (:file "matr-class") ;;
+	       (:file "matr-test")  ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;	       
 ;;;;	       (:file "x-o")	       
 	       ))

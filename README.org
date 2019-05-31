@@ -1,5 +1,6 @@
-#+INCLUDE: "~/org/header/header.org"
+\#+INCLUDE: "~/org/header/header.org"
 
+* Аппроксимация
 \[ z = \frac {\sum_i w(d_i) \cdot z_i} {\sum_i w(d_i) } \]
 
 \[ d_i = \sqrt { \left( \frac{x-x_i}{dx} \right)^2 + \left(\frac{y-y_i}{dy} \right)^2 } \]
@@ -15,8 +16,24 @@
  box      w(d) = 1 if d < 1; w(d) = 0 otherwise                                       
 
  hann     w(d) = (1-cos(2πd)) if |d| < 1; w(d) = 0 otherwise 
+* Установка gsll
 
+** 64
 
+#+BEGIN_SRC bash
+  pacman -S mingw64/mingw-w64-x86_64-gsl
+  cd /mingw64/bin
+  ln -s libgsl-23.dll libgsl-0.dll
+#+END_SRC
+
+** 32
+#+BEGIN_SRC bash
+  pacman -S mingw32/mingw-w64-i686-gsl
+  cd /mingw32/bin
+  ln -s libgsl-23.dll libgsl-0.dll
+#+END_SRC
+
+#+RESULTS:
 
 
 

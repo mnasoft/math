@@ -1,4 +1,4 @@
-;;;; matr-class.lisp
+;;;; matr-generics.lisp
 
 (in-package #:math)
 
@@ -56,4 +56,5 @@
 
 (defgeneric matr-eval-* (matrix) (:documentation "Matr"))
 
-(defgeneric matr-equal* (matrix1 matrix2) (:documentation "Проверка матриц на равенство"))
+(defgeneric matr-equal* (matrix1 matrix2 &key test) (:documentation "Проверка матриц на равенство"))
+
