@@ -1,7 +1,7 @@
 * Публикация изменений на удаленных серверах
 
 #+BEGIN_SRC bash
-for i in github.com gitlab.com
+for i in github.com 
 do
 git push ${i} master
 done
@@ -13,3 +13,15 @@ done
 #+BEGIN_SRC bash
 git remote
 #+END_SRC
+
+#+RESULTS:
+| KO11-118383   |
+| MNASOFT-01    |
+| MNASOFT-10    |
+| N118389       |
+| github.com    |
+| hp1.zorya.com |
+| mnasoft-00    |
+| mnasoft-dev   |
+| mnasoft-pi    |
+| share         |
