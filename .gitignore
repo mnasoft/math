@@ -1,6 +1,7 @@
 *.FASL
 *.fasl
 *.lisp-temp
+*.html
 *~
 #*
 .#*
