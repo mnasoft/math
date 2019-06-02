@@ -6,27 +6,22 @@ git commit -a -m "$DATE"
 
 * Публикация изменений на удаленных серверах
 
-#+BEGIN_SRC bash
+#+BEGIN_SRC bash :results none
 for i in github.com 
 do
 git push ${i} master
 done
 #+END_SRC
 
-* Получение изменений са удаленных серверов
-#+BEGIN_SRC bash
+* Получение изменений с удаленных серверов
+#+BEGIN_SRC bash :results none
 for i in github.com 
 do
 git pull ${i} master
 done
 #+END_SRC
 
-
-
-#+RESULTS:
-
 ** Перечень удаленных репозиториев
-#+BEGIN_SRC bash
+#+BEGIN_SRC bash 
 git remote
 #+END_SRC
-

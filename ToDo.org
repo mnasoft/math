@@ -7,21 +7,25 @@ done
 #+END_SRC
 
 #+RESULTS:
-| [[file:./approximation.lisp]]   |
-| [[file:./gsll-samples.lisp]]    |
-| [[file:./las-rotation.lisp]]    |
-| [[file:./list-matr.lisp]]       |
-| [[file:./lu-solve.lisp]]        |
-| [[file:./math.lisp]]            |
-| [[file:./matr-class.lisp]]      |
-| [[file:./matr-class-temp.lisp]] |
-| [[file:./matr.lisp]]            |
-| [[file:./mult-matr-vect.lisp]]  |
-| [[file:./package.lisp]]         |
-| [[file:./statistics.lisp]]      |
-| [[file:./test.lisp]]            |
-| [[file:./x-o.lisp]]             |
-| [[file:./x-o-testing.lisp]]     |
+| [[file:./approximation.lisp]]      |
+| [[file:./approximation-test.lisp]] |
+| [[file:./gsll-samples.lisp]]       |
+| [[file:./las-rotation.lisp]]       |
+| [[file:./list-matr.lisp]]          |
+| [[file:./lu-solve.lisp]]           |
+| [[file:./math.lisp]]               |
+| [[file:./matr-class.lisp]]         |
+| [[file:./matr-class-temp.lisp]]    |
+| [[file:./matr-exclude.lisp]]       |
+| [[file:./matr-generics.lisp]]      |
+| [[file:./matr.lisp]]               |
+| [[file:./matr-test.lisp]]          |
+| [[file:./mult-matr-vect.lisp]]     |
+| [[file:./package.lisp]]            |
+| [[file:./statistics.lisp]]         |
+| [[file:./test.lisp]]               |
+| [[file:./x-o.lisp]]                |
+| [[file:./x-o-testing.lisp]]        |
 
 
 * TODO Разобраться с функциями с целью исключеия какой-либо из них. [0/3]
@@ -81,7 +85,7 @@ done
   - [X] Преобразования [100%]
     + [X] в matrix->2d-list                       -- matrix->2d-list ((mm matrix))
 * TODO Определить функции тестирования для матриц
-** Отделить макросы в отдельный проект
+** DONE Отделить макросы в отдельный проект
 Взято из книги PCL Practical Common Lisp
 
 (defmacro deftest (name parameters &body body)

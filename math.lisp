@@ -43,7 +43,20 @@
      (SR_ARIFM X)))
 
 (defun e-value (n)
-  "Возвращает приближенное значение числа e"  
+  "Возвращает приближенное значение числа e
+Пример использования:
+  (coerce (e-value      1) 'double-float) 2.0d0
+  (coerce (e-value      2) 'double-float) 2.5d0
+  (coerce (e-value      4) 'double-float) 2.7083333333333335d0
+  (coerce (e-value      6) 'double-float) 2.7180555555555554d0
+  (coerce (e-value      8) 'double-float) 2.71827876984127d0
+  (coerce (e-value     10) 'double-float) 2.7182818011463845d0
+  (coerce (e-value     15) 'double-float) 2.7182818284589945d0
+  (coerce (e-value     16) 'double-float) 2.7182818284590424d0
+  (coerce (e-value     17) 'double-float) 2.718281828459045d0
+  (coerce (e-value  10000) 'double-float) 2.718281828459045d0
+  (exp 1.0d0)                             2.718281828459045d0
+"  
   (let ((rez 1)
 	(nf 1))
     (dotimes (i n rez)

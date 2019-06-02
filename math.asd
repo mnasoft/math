@@ -11,7 +11,7 @@
 	       )
   :components ((:file "package")
                (:file "math")
-               (:file "matr")
+;;;;           (:file "matr")  ;; Взамен него действует matr-class
 	       (:file "approximation")	       
 	       (:file "statistics")
 	       (:file "mult-matr-vect")
