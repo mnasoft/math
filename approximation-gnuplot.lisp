@@ -2,7 +2,6 @@
 
 (in-package #:math)
 
-
 (defun d-i (x xi &key (dx 1.0))
   (let* ((rez (/ (- x xi) dx)))
     (sqrt (* rez rez))))
@@ -26,15 +25,14 @@
 (defun mann-w-1d (d)
   "Моя отсебятина"
   (if (< -1 d 1)
-      ( cos (* 1/2 pi d))
+      (cos (* 0.5 pi d))
       0))
 
 (defun spline-1d (x dx arr-2xN &key (w-func #'gauss-w-1d))
   (let ((w-summ 0.0)
 	(w-z-summ 0.0)
 	(w 0.0)
-	(z 0.0)
-	)
+	(z 0.0))
     (loop :for i :from 0 :below  (array-dimension arr-2xN 0) :do
 	 (progn
 	   (setf w (funcall w-func (d-i x (aref arr-2xN i 0 ) :dx dx))
@@ -45,12 +43,115 @@
 	   ))
     (/ w-z-summ w-summ)))
 
-(defparameter *arr-2xN* (make-array '(5 2) :initial-contents '((-2.0 0.91553) (-1.0 1.15765) (0.0 1.68105) (1.0 1.15759) (2.0 0.9213))))
-
-
 (defun make-2d-list-by-func (func &key (x-from 0) (x-to 1) (step 100))
     (loop :for i :from x-from :to x-to :by (/ (- x-to x-from) step) :collect
 	 (list (coerce i 'float) (coerce (funcall func i) 'float))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defun gauss-1-approximation-array (a-const &key (dx0 1.0) (delta 0.001) (iterations 10000))
+  "Вычисляет такой массив, что при сглаживании его по формуле Гаусса
+с характерным размером dx0, сумма расстояний до 2d точек заданных массивом a-const не превысит
+delta
+"
+  (labels
+      ((summ-distance (a1 a2)
+	 "Возвращает сумму расстояний между 2d-точками, содержащимися в массивах a1 и a2"
+	 (let ((summ 0.0))
+	   (loop :for i :from 0 :below (array-dimension a1 0) :do
+		(setf summ
+		      (+ summ
+			 (sqrt (apply #'+
+				      (mapcar
+				       #'(lambda (x) (* x x))
+				       (list (- (aref a1 i 0) (aref a2 i 0))
+					     (- (aref a1 i 1) (aref a2 i 1)))))))))
+	   summ))
+       (start-V1 (a-rez a-iter a-const &key (dx0 0.8))
+	 (loop :for i :from 0 :below (array-dimension a-const 0) :do
+	      (setf (aref a-rez i 1) (spline-1d (aref a-iter i 0) dx0 a-iter)))
+	 (summ-distance a-rez a-const))
+       (iterate (a-rez a-iter a-const)
+	 (loop :for i :from 0 :below (array-dimension a-const 0) :do
+	      (setf (aref a-iter i 1)
+		    (+ (aref a-iter i 1) (* 1 (- (aref a-const i 1) (aref a-rez i 1)) )))))
+       )
+    (let ((a-iter (copy-array a-const))
+	  (a-rez  (copy-array a-const)))
+      (do* ((i    0 (1+ i))
+	    (dist (start-V1 a-rez a-iter a-const :dx0 dx0 ) (start-V1 a-rez a-iter a-const :dx0 dx0)))
+	   ((or (> i iterations) (< dist delta))
+	    (if (< i iterations)
+		(values a-iter t)
+		(values a-iter nil)))
+	(iterate a-rez a-iter a-const)
+	;(format t "I=~D; DIST=~F; AITER~S;~%" i dist a-iter )
+	))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defun gauss-2-approximation-array (a-const &key (dx0 (list 1.0 1.0)) (delta 0.001) (iterations 10000))
+  "Вычисляет такой массив, что при сглаживании его по формуле Гаусса
+с характерным размером dx0, сумма расстояний до 2d точек заданных массивом a-const не превысит
+delta
+"
+  (labels
+      ((summ-distance (a1 a2)
+	 "Возвращает сумму расстояний между 2d-точками, содержащимися в массивах a1 и a2"
+	 (let ((summ 0.0))
+	   (loop :for i :from 0 :below (array-dimension a1 0) :do
+		(setf summ
+		      (+ summ
+			 (sqrt (apply #'+
+				      (mapcar
+				       #'(lambda (x) (* x x))
+				       (list (- (aref a1 i 0) (aref a2 i 0))
+					     (- (aref a1 i 1) (aref a2 i 1)))))))))
+	   summ))
+       (start-V1 (a-rez a-iter a-const &key (dx0 0.8))
+	 (loop :for i :from 0 :below (array-dimension a-const 0) :do
+	      (setf (aref a-rez i 1) (spline-1d (aref a-iter i 0) dx0 a-iter)))
+	 (summ-distance a-rez a-const))
+       (iterate (a-rez a-iter a-const)
+	 (loop :for i :from 0 :below (array-dimension a-const 0) :do
+	      (setf (aref a-iter i 1)
+		    (+ (aref a-iter i 1) (* 1 (- (aref a-const i 1) (aref a-rez i 1)) )))))
+       )
+    (let ((a-iter (copy-array a-const))
+	  (a-rez  (copy-array a-const)))
+      (do* ((i    0 (1+ i))
+	    (dist (start-V1 a-rez a-iter a-const :dx0 dx0 ) (start-V1 a-rez a-iter a-const :dx0 dx0)))
+	   ((or (> i iterations) (< dist delta))
+	    (if (< i iterations)
+		(values a-iter t)
+		(values a-iter nil)))
+	(iterate a-rez a-iter a-const)
+	;(format t "I=~D; DIST=~F; AITER~S;~%" i dist a-iter )
+	))))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defparameter *arr-2xN* (make-array '(5 2) :initial-contents '((-2.0 0.91553) (-1.0 1.15765) (0.0 1.68105) (1.0 1.15759) (2.0 0.9213))))
+
+(defparameter *a-rez* (gauss-1-approximation-array *arr-2xN* :dx0 1.0 :delta 0.000001 :iterations 100))
+
+(defmethod gnuplot-data-to-file ((lst cons ) f-name)
+  (with-open-file (os f-name :direction :output :if-exists :supersede )
+    (mapc #'(lambda (el) (format os "~{~F ~}~%" el)) lst)))
+
+(defun g-1-0 (x) (spline-1d x 1.0 *a-rez*))
+
+(gnuplot-data-to-file (make-2d-list-by-func 'g-1-0 :x-from -25/10 :x-to 25/10 :step 100) "~/apr.data")
+
+(defmethod gnuplot-data-to-file ((ar array) f-name)
+  (with-open-file (os f-name :direction :output :if-exists :supersede )
+    (loop :for i :from 0 :below (array-dimension ar 0) :do
+	 (loop :for j :from 0 :below (array-dimension ar 1) :do
+	      (format os "~F " (aref ar i j)))
+	 (format os "~%" ))))
+
+(gnuplot-data-to-file *arr-2xn* "~/pts.data")
+	 
+(make-2d-list-by-func 'g-1-0 :x-from -25/10 :x-to 25/10 :step 100)
 
 (defun g-1-0 (x) (spline-1d x 1.0 *arr-2xN*))
 (defun g-0-8 (x) (spline-1d x 0.8 *arr-2xN*))
@@ -84,9 +185,7 @@
 (defun e3-0-6 (x) (spline-1d x 0.6 *arr-2xN* :W-FUNC 'exp-3-w-1d ))
 (defun e3-0-4 (x) (spline-1d x 0.6 *arr-2xN* :W-FUNC 'exp-3-w-1d ))
 
-(defun gnuplot-list-to-file (lst f-name)
-  (with-open-file (os f-name :direction :output :if-exists :supersede )
-    (mapc #'(lambda (el) (format os "~{~F ~}~%" el)) lst)))
+
 
 (gnuplot-list-to-file (make-2d-list-by-func 'g-1-0 :x-from -25/10 :x-to 25/10 :step 100)  "~/gauss-1.0.data")
 (gnuplot-list-to-file (make-2d-list-by-func 'g-0-8 :x-from -25/10 :x-to 25/10 :step 100)  "~/gauss-0.8.data")
