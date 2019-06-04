@@ -121,6 +121,7 @@
 	(appr-linear-a1d-func a-l)
 	(make-linear-approximation-array x1 a1d)))
 
+
 (defmethod approximate ((point number) (a-l appr-linear))
   (approximation-linear point (appr-linear-x1 a-l) (appr-linear-a1d-func a-l)))
 
