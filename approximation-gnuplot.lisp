@@ -90,6 +90,29 @@ delta
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;;;;(require :temperature-fild)
+(defparameter *h-r*
+  (vector
+   (reverse
+    (temperature-fild:t-fild-termopara-hight-relative
+     temperature-fild:*dn80*))))
+
+(defparameter *x-r*
+  (vector (list -2 -1  0  1  2)))
+
+(defparameter *a* (make-array '(5 5) :initial-contents
+			      '((117.0 120.5 118.5 112.5 115.0)
+				(115.0 125.5 119.5 122.5 112.0)
+				(113.0 135.5 129.5 132.5 117.0)
+				(112.0 122.5 123.5 122.5 112.0)
+				(111.0 115.5 119.5 102.5 102.0))))
+
+ (defparameter *a-3* (make-array
+		     (list
+		      (apply '*
+			     (array-dimensions  *a*)) 3)
+		     :initial-element 0.0))
+ 
 (defun gauss-2-approximation-array (a-const &key (dx0 (list 1.0 1.0)) (delta 0.001) (iterations 10000))
   "Вычисляет такой массив, что при сглаживании его по формуле Гаусса
 с характерным размером dx0, сумма расстояний до 2d точек заданных массивом a-const не превысит
