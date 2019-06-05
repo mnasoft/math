@@ -6,172 +6,46 @@
     (loop :for i :from x-from :to x-to :by (/ (- x-to x-from) step) :collect
 	 (list (coerce i 'float) (coerce (funcall func i) 'float))))
 
-(defun spline-1d (x dx arr-Nx2 &key (w-func #'gauss-smoothing))
-"Пример использования:
- (spline-1d 1.0 0.6 (make-array '(5 2) :initial-contents '((0.0 0.0) (1.0 1.0) (2.0 2.0) (3.0 3.0) (4.0 4.0)))) 1.0000265 1.0000265
- (spline-1d 1.0 0.4 (make-array '(5 2) :initial-contents '((0.0 0.0) (1.0 1.0) (2.0 2.0) (3.0 3.0) (4.0 4.0)))) 1.0 1.0
- (spline-1d 1.0 0.8 (make-array '(5 2) :initial-contents '((0.0 0.0) (1.0 1.0) (2.0 2.0) (3.0 3.0) (4.0 4.0)))) 1.0027183 1.0027183
- (spline-1d 1.0 1.0 (make-array '(5 2) :initial-contents '((0.0 0.0) (1.0 1.0) (2.0 2.0) (3.0 3.0) (4.0 4.0)))) 1.0210931 1.0210931
- (spline-1d 1.0 1.5 (make-array '(5 2) :initial-contents '((0.0 0.0) (1.0 1.0) (2.0 2.0) (3.0 3.0) (4.0 4.0)))) 1.1591185 1.1591185
-"
-  (let ((w-summ 0.0)
-	(w-z-summ 0.0)
-	(w 0.0)
-	(z 0.0))
-    (loop :for i :from 0 :below  (array-dimension arr-Nx2 0) :do
-	 (progn
-	   (setf w (funcall w-func (distance-relative x (aref arr-Nx2 i 0 ) dx))
-		 w-summ (+ w-summ w)
-		 z (aref arr-Nx2 i 1)
-		 w-z-summ (+ w-z-summ (* w z )))))
-    (/ w-z-summ w-summ)))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(defgeneric approx-by-points (x dx points values &key w-func)
-  (:documentation "COOOOOOOOOOL"))
-
-(defmethod approx-by-points ((x number) (dx number) (points vector) (values vector) &key (w-func #'gauss-smoothing))
-  "Пример использования:
- (approx-by-points 1.0 0.6 (vector 0.0 1.0 2.0 3.0 4.0) (vector 0.0 1.0 2.0 3.0 4.0)) 1.0000265
- (approx-by-points 1.0 0.4 (vector 0.0 1.0 2.0 3.0 4.0) (vector 0.0 1.0 2.0 3.0 4.0)) 1.0
- (approx-by-points 1.0 0.8 (vector 0.0 1.0 2.0 3.0 4.0) (vector 0.0 1.0 2.0 3.0 4.0)) 1.0027183
- (approx-by-points 1.0 1.0 (vector 0.0 1.0 2.0 3.0 4.0) (vector 0.0 1.0 2.0 3.0 4.0)) 1.0210931
- (approx-by-points 1.0 1.5 (vector 0.0 1.0 2.0 3.0 4.0) (vector 0.0 1.0 2.0 3.0 4.0)) 1.1591185
-"
-  (assert (= (length points) (length values)))
-  (let ((w-summ 0.0)
-	(w-z-summ 0.0)
-	(w 0.0)
-	(z 0.0))
-    (loop :for i :from 0 :below  (array-dimension points 0) :do
-	 (progn
-	   (setf w (funcall w-func (distance-relative x (aref points i) dx))
-		 w-summ (+ w-summ w)
-		 z (aref values i)
-		 w-z-summ (+ w-z-summ (* w z )))))
-    (/ w-z-summ w-summ)))
-
-
-
-(defmethod approx-by-points ((x vector) (dx vector) (points array) (values vector) &key (w-func #'gauss-smoothing))
-  "Пример использования:
- 
- (approx-by-points (vector 0.0 0.0) (vector 1.0 1.0) (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) (vector 0.0 1.0 1.0 2.0)) 0.53788286
- (approx-by-points (vector 0.0 0.0) (vector 0.6 0.6) (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) (vector 0.0 1.0 1.0 2.0)) 0.117073804
- (approx-by-points (vector 0.0 0.0) (vector 0.4 0.4) (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) (vector 0.0 1.0 1.0 2.0)) 0.0038534694
-
- (approx-by-points (vector 1.0 0.0) (vector 1.0 1.0) (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) (vector 0.0 1.0 1.0 2.0)) 1.0
- (approx-by-points (vector 1.0 0.0) (vector 0.6 0.6) (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) (vector 0.0 1.0 1.0 2.0)) 0.9999999
- (approx-by-points (vector 1.0 0.0) (vector 0.4 0.4) (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) (vector 0.0 1.0 1.0 2.0)) 1.0
-
- (approx-by-points (vector 0.0 1.0) (vector 1.0 1.0) (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) (vector 0.0 1.0 1.0 2.0)) 1.0
- (approx-by-points (vector 0.0 1.0) (vector 0.6 0.6) (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) (vector 0.0 1.0 1.0 2.0)) 1.0
- (approx-by-points (vector 0.0 1.0) (vector 0.4 0.4) (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) (vector 0.0 1.0 1.0 2.0)) 1.0
-
- (approx-by-points (vector 1.0 1.0) (vector 1.0 1.0) (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) (vector 0.0 1.0 1.0 2.0)) 1.4621171
- (approx-by-points (vector 1.0 1.0) (vector 0.6 0.6) (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) (vector 0.0 1.0 1.0 2.0)) 1.8829262
- (approx-by-points (vector 1.0 1.0) (vector 0.4 0.4) (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) (vector 0.0 1.0 1.0 2.0)) 1.9961466
-
- (approx-by-points (vector 0.5 0.5) (vector 1.0 1.0) (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) (vector 0.0 1.0 1.0 2.0)) 1.0
- (approx-by-points (vector 0.5 0.5) (vector 0.6 0.6) (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) (vector 0.0 1.0 1.0 2.0)) 1.0
- (approx-by-points (vector 0.5 0.5) (vector 0.4 0.4) (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) (vector 0.0 1.0 1.0 2.0)) 1.0
-"
-  (assert (= (array-rank points) 2))
-  (assert (= (array-dimension points 0) (length values)))
-  (assert (= (array-dimension points 1) (length x) (length dx)))
-  (let ((w-summ 0.0)
-	(w-z-summ 0.0)
-	(w 0.0)
-	(z 0.0))
-    (loop :for i :from 0 :below  (array-dimension points 0) :do
-	 (progn
-	   (setf w (funcall w-func (distance-relative x (row i points) dx))
-		 w-summ (+ w-summ w)
-		 z (aref values i)
-		 w-z-summ (+ w-z-summ (* w z )))))
-    (/ w-z-summ w-summ)))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defun gauss-1-approximation-array (a-const &key (dx0 1.0) (delta 0.001) (iterations 10000))
-  "Вычисляет такой массив, что при сглаживании его по формуле Гаусса
-с характерным размером dx0, сумма расстояний до 2d точек заданных массивом a-const не превысит
-delta
-"
-  (labels
-      ((summ-distance (a1 a2)
-	 "Возвращает сумму расстояний между 2d-точками, содержащимися в массивах a1 и a2"
-	 (let ((summ 0.0))
-	   (loop :for i :from 0 :below (array-dimension a1 0) :do
-		(setf summ
-		      (+ summ
-			 (sqrt (apply #'+
-				      (mapcar
-				       #'(lambda (x) (* x x))
-				       (list (- (aref a1 i 0) (aref a2 i 0))
-					     (- (aref a1 i 1) (aref a2 i 1)))))))))
-	   summ))
-       (start-V1 (a-rez a-iter a-const &key (dx0 0.8))
-	 (loop :for i :from 0 :below (array-dimension a-const 0) :do
-	      (setf (aref a-rez i 1) (spline-1d (aref a-iter i 0) dx0 a-iter)))
-	 (summ-distance a-rez a-const))
-       (iterate (a-rez a-iter a-const)
-	 (loop :for i :from 0 :below (array-dimension a-const 0) :do
-	      (setf (aref a-iter i 1)
-		    (+ (aref a-iter i 1) (* 1 (- (aref a-const i 1) (aref a-rez i 1)) )))))
-       )
-    (let ((a-iter (copy-array a-const))
-	  (a-rez  (copy-array a-const)))
-      (do* ((i    0 (1+ i))
-	    (dist (start-V1 a-rez a-iter a-const :dx0 dx0 ) (start-V1 a-rez a-iter a-const :dx0 dx0)))
-	   ((or (> i iterations) (< dist delta))
-	    (if (< i iterations)
-		(values a-iter t)
-		(values a-iter nil)))
-	(iterate a-rez a-iter a-const)
-	;(format t "I=~D; DIST=~F; AITER~S;~%" i dist a-iter )
-	))))
+(defgeneric refine-approximation-values (points values dx0 &key w-func delta iterations)
+  (:documentation
+   "Выполняет поиск массива значений такого, что:
+- при сглаживании функцией w-func;
+- с размером сглаживания dx0;
+- в точках points (аргументы функции);
+- сумма отклонений сглаженных значений от значений, заданных в узлах не превысит значения delta."))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; ;;; ;;;
-(defgeneric gauss-2-approximation-array (points values dx0 &key delta iterations)
-  (:documentation "COOOOOOOOOOOOOL"))
-
-(defmethod gauss-2-approximation-array ((points array) (values vector) (dx0 vector) &key (delta 0.001) (iterations 10000))
+(defmethod refine-approximation-values ((points array) (values vector) (dx0 vector) &key (w-func #'gauss-smoothing) (delta 0.001) (iterations 10000))
   "Вычисляет такой массив, что при сглаживании его по формуле Гаусса
 с характерным размером dx0, сумма расстояний до 2d точек заданных массивом points не превысит
 delta
 Тестирование:
- (gauss-2-approximation-array (make-array '(5 2) :initial-element 0.0) (vector 1.0 2.0 3.0 4.0 5.0) (vector 1.0 1.0))
+ (refine-approximation-values (make-array '(5 2) :initial-element 0.0) (vector 1.0 2.0 3.0 4.0 5.0) (vector 1.0 1.0))
 
   Пример использования:
 
- (gauss-2-approximation-array (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) (vector 0.0 1.0 1.0 2.0) (vector 1.0 1.0))
- (gauss-2-approximation-array (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) (vector 0.0 1.0 1.0 2.0) (vector 0.6 0.6))
- (gauss-2-approximation-array (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) (vector 0.0 1.0 1.0 2.0) (vector 0.4 0.4))
+ (refine-approximation-values (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) (vector 0.0 1.0 1.0 2.0) (vector 1.0 1.0))
+ (refine-approximation-values (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) (vector 0.0 1.0 1.0 2.0) (vector 0.6 0.6))
+ (refine-approximation-values (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) (vector 0.0 1.0 1.0 2.0) (vector 0.4 0.4))
 
- (gauss-2-approximation-array (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) (vector 0.0 1.0 1.0 2.0) (vector 1.0 1.0)) 
- (gauss-2-approximation-array (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) (vector 0.0 1.0 1.0 2.0) (vector 0.6 0.6)) 
- (gauss-2-approximation-array (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) (vector 0.0 1.0 1.0 2.0) (vector 0.4 0.4)) 
+ (refine-approximation-values (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) (vector 0.0 1.0 1.0 2.0) (vector 1.0 1.0)) 
+ (refine-approximation-values (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) (vector 0.0 1.0 1.0 2.0) (vector 0.6 0.6)) 
+ (refine-approximation-values (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) (vector 0.0 1.0 1.0 2.0) (vector 0.4 0.4)) 
 
- (gauss-2-approximation-array (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) (vector 0.0 1.0 1.0 2.0) (vector 1.0 1.0)) 
- (gauss-2-approximation-array (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) (vector 0.0 1.0 1.0 2.0) (vector 0.6 0.6)) 
- (gauss-2-approximation-array (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) (vector 0.0 1.0 1.0 2.0) (vector 0.4 0.4)) 
+ (refine-approximation-values (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) (vector 0.0 1.0 1.0 2.0) (vector 1.0 1.0)) 
+ (refine-approximation-values (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) (vector 0.0 1.0 1.0 2.0) (vector 0.6 0.6)) 
+ (refine-approximation-values (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) (vector 0.0 1.0 1.0 2.0) (vector 0.4 0.4)) 
 
- (gauss-2-approximation-array (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) (vector 0.0 1.0 1.0 2.0) (vector 1.0 1.0)) 
- (gauss-2-approximation-array (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) (vector 0.0 1.0 1.0 2.0) (vector 0.6 0.6)) 
- (gauss-2-approximation-array (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) (vector 0.0 1.0 1.0 2.0) (vector 0.4 0.4)) 
+ (refine-approximation-values (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) (vector 0.0 1.0 1.0 2.0) (vector 1.0 1.0)) 
+ (refine-approximation-values (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) (vector 0.0 1.0 1.0 2.0) (vector 0.6 0.6)) 
+ (refine-approximation-values (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) (vector 0.0 1.0 1.0 2.0) (vector 0.4 0.4)) 
 
- (gauss-2-approximation-array (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) (vector 0.0 1.0 1.0 2.0) (vector 1.0 1.0)) 
- (gauss-2-approximation-array (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) (vector 0.0 1.0 1.0 2.0) (vector 0.6 0.6)) 
- (gauss-2-approximation-array (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) (vector 0.0 1.0 1.0 2.0) (vector 0.4 0.4)) 
+ (refine-approximation-values (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) (vector 0.0 1.0 1.0 2.0) (vector 1.0 1.0)) 
+ (refine-approximation-values (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) (vector 0.0 1.0 1.0 2.0) (vector 0.6 0.6)) 
+ (refine-approximation-values (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) (vector 0.0 1.0 1.0 2.0) (vector 0.4 0.4)) 
 "
-
+  (assert (member w-func (list #'gauss-smoothing #'exp-smoothing #'cauchy-smoothing #'hann-smoothing)))
   (assert (= (array-rank points) 2))
   (assert (= (array-dimension points 0) (length values)))
   (assert (= (array-dimension points 1) (length dx0)))
@@ -179,7 +53,7 @@ delta
 	(v-rez  (copy-array values)))
     (labels ((start-V1 (v-rez v-iter)
 	       (loop :for i :from 0 :below (array-dimension points 0) :do
-		    (setf (svref v-rez i) (approx-by-points (row i points) dx0 points v-iter )))
+		    (setf (svref v-rez i) (approx-by-points (row i points) dx0 points v-iter :w-func w-func)))
 	       (summ-distance v-rez values))
 	     (iterate (v-rez v-iter)
 	       (loop :for i :from 0 :below (array-dimension points 0) :do
@@ -195,10 +69,13 @@ delta
 	(format t "I=~D; DIST=~F; V-ITER~S;~%" i dist v-iter )
 	))))
 
-(gauss-2-approximation-array
+(refine-approximation-values
  (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0)))
  (vector 0.0 1.0 1.0 2.0)
- (vector 0.8 0.8) :delta 0.00001 :iterations 10) 
+ (vector 0.8 0.8) :delta 0.00001 :iterations 10)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
@@ -220,18 +97,60 @@ delta
 				(112.0 122.5 123.5 122.5 112.0)
 				(111.0 115.5 119.5 102.5 102.0))))
 
+(defparameter *v-ref* 
+  (let* ((pts-vals (multiple-value-list (make-points-values *a* *h-r* *x-r*)))
+	 (d-pts (vector 0.2 1.0))
+	 (pts  (first pts-vals))
+	 (vals (second  pts-vals))
+	 (r-vals (refine-approximation-values pts vals d-pts :delta 0.01))
+	 (ch-vals (make-array (list (length *h-r*) (length *x-r* )) :initial-element 0.0))
+	 (line  nil)
+	 (net-v nil)
+	 )
 
-+++++++++++++++++++++++++++++++++++++++++++++++++
-(defmethod make-tmpr ((t-fild array) (r-hight vector) (r-length vector))
-  (assert (= (array-rank t-fild) 2))
-  (assert (= (array-dimension t-fild 0) (length r-hight)))
-  (assert (= (array-dimension t-fild 1) (length r-length)))
-  (let ((pts (make-array (* ))
-  (loo
-  "ZBS"
-  )
-+++++++++++++++++++++++++++++++++++++++++++++++++
-(make-tmpr *a* *h-r* *x-r*)
+    (loop :for i :from 0 :below (length *h-r*) :do
+	 (loop :for j :from 0 :below (length *x-r*) :do
+	      (setf (aref ch-vals i j) (approx-by-points  (vector (svref *h-r* i) (svref *x-r* j)) d-pts pts r-vals))))
+        ch-vals
+
+    (loop :for i :from 1 :downto 0 :by 1/100 :collect 
+	 (loop :for j :from -25/10 :to 25/10 :by 50/1000 :collect
+	      (list  (coerce  j 'float) (coerce  i 'float)
+		    (approx-by-points  (vector  i j) d-pts pts r-vals))))
+    
+    ))
+
+(defun gnuplot-data-splot (f-name data)
+  (assert (consp data))
+  (assert (consp (first data)))
+  (assert (consp (first (first data))))
+  (with-open-file (os f-name :direction :output :if-exists :supersede)
+    (format os "#   ~8A ~8A ~8A~%" "X" "Y" "Z" )
+    (format os "~{~{~{~8F ~}~%~}~%~}"     data )
+    (format t "set palette defined (0 'blue', 0.1 'white', 0.2 'cyan', 0.3 'white', 0.4 'green', 0.5 'white', 0.6 'yellow', 0.7 'white', 0.8 'orange', 0.9 'white', 1 'red')~%")
+    (format t "set pm3d map~%")
+    (format t "splot '~A' u 1:2:3~%" f-name)))
+
+(gnuplot-data-splot "~/splot.data" *v-ref*)
+
+
+
+gnuplot splot 'splot.data' u 1:2:3 w l
+
+
+
+splot "grid" u 1:2:3 w l
+splot "matrix" nonuniform matrix u 1:2:3 w l
+pos( k, origin, spacing ) = origin + k*spacing
+splot "packedmatrix" matrix u (pos($1,0,1)):(pos($2,-1,1)):3 w l
+
+
+
+
+ (loop :for i :from 10 :downto 0 :by 1/10 :collect i)
+
+
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -345,5 +264,63 @@ delta
 gnuplot
 plot "test.data" with lines, "test1.data" with lines, "test2.data" with lines, "test3.data" with lines, "test4.data" with lines;
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(/ 1 0.61805)
+(defun spline-1d (x dx arr-Nx2 &key (w-func #'gauss-smoothing))
+"Пример использования:
+ (spline-1d 1.0 0.6 (make-array '(5 2) :initial-contents '((0.0 0.0) (1.0 1.0) (2.0 2.0) (3.0 3.0) (4.0 4.0)))) 1.0000265 1.0000265
+ (spline-1d 1.0 0.4 (make-array '(5 2) :initial-contents '((0.0 0.0) (1.0 1.0) (2.0 2.0) (3.0 3.0) (4.0 4.0)))) 1.0 1.0
+ (spline-1d 1.0 0.8 (make-array '(5 2) :initial-contents '((0.0 0.0) (1.0 1.0) (2.0 2.0) (3.0 3.0) (4.0 4.0)))) 1.0027183 1.0027183
+ (spline-1d 1.0 1.0 (make-array '(5 2) :initial-contents '((0.0 0.0) (1.0 1.0) (2.0 2.0) (3.0 3.0) (4.0 4.0)))) 1.0210931 1.0210931
+ (spline-1d 1.0 1.5 (make-array '(5 2) :initial-contents '((0.0 0.0) (1.0 1.0) (2.0 2.0) (3.0 3.0) (4.0 4.0)))) 1.1591185 1.1591185
+"
+  (let ((w-summ 0.0)
+	(w-z-summ 0.0)
+	(w 0.0)
+	(z 0.0))
+    (loop :for i :from 0 :below  (array-dimension arr-Nx2 0) :do
+	 (progn
+	   (setf w (funcall w-func (distance-relative x (aref arr-Nx2 i 0 ) dx))
+		 w-summ (+ w-summ w)
+		 z (aref arr-Nx2 i 1)
+		 w-z-summ (+ w-z-summ (* w z )))))
+    (/ w-z-summ w-summ)))
+
+(defun gauss-1-approximation-array (a-const &key (dx0 1.0) (delta 0.001) (iterations 10000))
+  "Вычисляет такой массив, что при сглаживании его по формуле Гаусса
+с характерным размером dx0, сумма расстояний до 2d точек заданных массивом a-const не превысит
+delta
+"
+  (labels
+      ((summ-distance (a1 a2)
+	 "Возвращает сумму расстояний между 2d-точками, содержащимися в массивах a1 и a2"
+	 (let ((summ 0.0))
+	   (loop :for i :from 0 :below (array-dimension a1 0) :do
+		(setf summ
+		      (+ summ
+			 (sqrt (apply #'+
+				      (mapcar
+				       #'(lambda (x) (* x x))
+				       (list (- (aref a1 i 0) (aref a2 i 0))
+					     (- (aref a1 i 1) (aref a2 i 1)))))))))
+	   summ))
+       (start-V1 (a-rez a-iter a-const &key (dx0 0.8))
+	 (loop :for i :from 0 :below (array-dimension a-const 0) :do
+	      (setf (aref a-rez i 1) (spline-1d (aref a-iter i 0) dx0 a-iter)))
+	 (summ-distance a-rez a-const))
+       (iterate (a-rez a-iter a-const)
+	 (loop :for i :from 0 :below (array-dimension a-const 0) :do
+	      (setf (aref a-iter i 1)
+		    (+ (aref a-iter i 1) (* 1 (- (aref a-const i 1) (aref a-rez i 1)) )))))
+       )
+    (let ((a-iter (copy-array a-const))
+	  (a-rez  (copy-array a-const)))
+      (do* ((i    0 (1+ i))
+	    (dist (start-V1 a-rez a-iter a-const :dx0 dx0 ) (start-V1 a-rez a-iter a-const :dx0 dx0)))
+	   ((or (> i iterations) (< dist delta))
+	    (if (< i iterations)
+		(values a-iter t)
+		(values a-iter nil)))
+	(iterate a-rez a-iter a-const)
+	;(format t "I=~D; DIST=~F; AITER~S;~%" i dist a-iter )
+	))))

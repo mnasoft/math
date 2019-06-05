@@ -199,3 +199,97 @@
   (approximation-bilinear (aref point 0) (aref point 1) (appr-bilinear-x1 a-l) (appr-bilinear-x2 a-l) (appr-bilinear-a2d-func a-l)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;; Сглаживание методами gnuplot
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defmethod make-points-values ((table-values array) (row-values vector) (col-values vector))
+  "Формирует массив точек и массив значений
+Массив точек    - в строках содержит аргументы функции.
+Массив значений - в строках содержит значения функции.
+Строки массива точек соответствуют строкам массива значений.
+  Тестирование:
+ (make-points-values *a* *h-r* *x-r*)
+"
+  (assert (= (array-rank table-values) 2))
+  (assert (= (array-dimension table-values 0) (length row-values)))
+  (assert (= (array-dimension table-values 1) (length col-values)))
+  (let* ((dims (array-dimensions table-values))
+	 (len  (apply #'* dims))
+	 (cols (second dims))
+	 (points (make-array (list len 2 ) :initial-element 0.0))
+	 (values (make-array (list len   ) :initial-element 1.0)))
+    (loop :for i :from 0 :below (array-dimension table-values 0) :do
+	 (loop :for j :from 0 :below (array-dimension table-values 1) :do
+	      (setf (aref  points (+ j (* i cols)) 0) (svref row-values  i)
+		    (aref  points (+ j (* i cols)) 1) (svref col-values j)
+		    (svref values (+ j (* i cols))  ) (aref  table-values i j))))
+    (values points values)))
+
+
+(export 'approx-by-points)
+(defgeneric approx-by-points (pnt d-pnt points values &key w-func)
+  (:documentation
+   "Вычисляет функцию, заданную точками points и значениями values
+в точке pnt, используя размер влияния, заданный параметром d-pnt.
+"))
+
+(defmethod approx-by-points ((x number) (dx number) (points vector) (values vector) &key (w-func #'gauss-smoothing))
+  "Пример использования:
+ (approx-by-points 1.0 0.6 (vector 0.0 1.0 2.0 3.0 4.0) (vector 0.0 1.0 2.0 3.0 4.0)) 1.0000265
+ (approx-by-points 1.0 0.4 (vector 0.0 1.0 2.0 3.0 4.0) (vector 0.0 1.0 2.0 3.0 4.0)) 1.0
+ (approx-by-points 1.0 0.8 (vector 0.0 1.0 2.0 3.0 4.0) (vector 0.0 1.0 2.0 3.0 4.0)) 1.0027183
+ (approx-by-points 1.0 1.0 (vector 0.0 1.0 2.0 3.0 4.0) (vector 0.0 1.0 2.0 3.0 4.0)) 1.0210931
+ (approx-by-points 1.0 1.5 (vector 0.0 1.0 2.0 3.0 4.0) (vector 0.0 1.0 2.0 3.0 4.0)) 1.1591185
+"
+  (assert (= (length points) (length values)))
+  (let ((w-summ 0.0)
+	(w-z-summ 0.0)
+	(w 0.0)
+	(z 0.0))
+    (loop :for i :from 0 :below  (array-dimension points 0) :do
+	 (progn
+	   (setf w (funcall w-func (distance-relative x (aref points i) dx))
+		 w-summ (+ w-summ w)
+		 z (aref values i)
+		 w-z-summ (+ w-z-summ (* w z )))))
+    (/ w-z-summ w-summ)))
+
+
+
+(defmethod approx-by-points ((x vector) (dx vector) (points array) (values vector) &key (w-func #'gauss-smoothing))
+  "Пример использования:
+ 
+ (approx-by-points (vector 0.0 0.0) (vector 1.0 1.0) (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) (vector 0.0 1.0 1.0 2.0)) 0.53788286
+ (approx-by-points (vector 0.0 0.0) (vector 0.6 0.6) (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) (vector 0.0 1.0 1.0 2.0)) 0.117073804
+ (approx-by-points (vector 0.0 0.0) (vector 0.4 0.4) (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) (vector 0.0 1.0 1.0 2.0)) 0.0038534694
+
+ (approx-by-points (vector 1.0 0.0) (vector 1.0 1.0) (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) (vector 0.0 1.0 1.0 2.0)) 1.0
+ (approx-by-points (vector 1.0 0.0) (vector 0.6 0.6) (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) (vector 0.0 1.0 1.0 2.0)) 0.9999999
+ (approx-by-points (vector 1.0 0.0) (vector 0.4 0.4) (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) (vector 0.0 1.0 1.0 2.0)) 1.0
+
+ (approx-by-points (vector 0.0 1.0) (vector 1.0 1.0) (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) (vector 0.0 1.0 1.0 2.0)) 1.0
+ (approx-by-points (vector 0.0 1.0) (vector 0.6 0.6) (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) (vector 0.0 1.0 1.0 2.0)) 1.0
+ (approx-by-points (vector 0.0 1.0) (vector 0.4 0.4) (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) (vector 0.0 1.0 1.0 2.0)) 1.0
+
+ (approx-by-points (vector 1.0 1.0) (vector 1.0 1.0) (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) (vector 0.0 1.0 1.0 2.0)) 1.4621171
+ (approx-by-points (vector 1.0 1.0) (vector 0.6 0.6) (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) (vector 0.0 1.0 1.0 2.0)) 1.8829262
+ (approx-by-points (vector 1.0 1.0) (vector 0.4 0.4) (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) (vector 0.0 1.0 1.0 2.0)) 1.9961466
+
+ (approx-by-points (vector 0.5 0.5) (vector 1.0 1.0) (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) (vector 0.0 1.0 1.0 2.0)) 1.0
+ (approx-by-points (vector 0.5 0.5) (vector 0.6 0.6) (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) (vector 0.0 1.0 1.0 2.0)) 1.0
+ (approx-by-points (vector 0.5 0.5) (vector 0.4 0.4) (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) (vector 0.0 1.0 1.0 2.0)) 1.0
+"
+  (assert (= (array-rank points) 2))
+  (assert (= (array-dimension points 0) (length values)))
+  (assert (= (array-dimension points 1) (length x) (length dx)))
+  (let ((w-summ 0.0)
+	(w-z-summ 0.0)
+	(w 0.0)
+	(z 0.0))
+    (loop :for i :from 0 :below  (array-dimension points 0) :do
+	 (progn
+	   (setf w (funcall w-func (distance-relative x (row i points) dx))
+		 w-summ (+ w-summ w)
+		 z (aref values i)
+		 w-z-summ (+ w-z-summ (* w z )))))
+    (/ w-z-summ w-summ)))

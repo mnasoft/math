@@ -62,3 +62,11 @@ PHILIPP K. JANERT
 
 
 #+END_SRC
+* Gnuplot
+
+** Примеры правильного формата пути для OS Windows
+
+splot 'D:\\PRG\\msys32\\home\\namatv\\splot.data' u 1:2:3
+splot "D:\\PRG\\msys32\\home\\namatv\\splot.data" u 1:2:3
+splot "D:/PRG/msys32/home/namatv/splot.data" u 1:2:3
+splot 'D:/PRG/msys32/home/namatv/splot.data' u 1:2:3
