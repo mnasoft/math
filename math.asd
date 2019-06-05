@@ -11,6 +11,9 @@
 	       )
   :components ((:file "package")
                (:file "math")
+	       (:file "array")
+	       (:file "smoothing")
+	       (:file "gnuplot")	       
 ;;;;           (:file "matr")  ;; Взамен него действует matr-class
 	       (:file "approximation")	       
 	       (:file "statistics")

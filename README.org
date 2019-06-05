@@ -5,6 +5,11 @@
 [[\\solver\dfni$\%D0%93%D1%80%D0%B0%D1%84%D0%B8%D0%BA%D0%B0\Gnuplot\Janert%20P.%20K.%20-%20Gnuplot%20in%20Action,%20Second%20Edition%20-%202016.pdf][Janert P. K. - Gnuplot in Action, Second Edition - 2016]]
 С18-С20
 
+Gnuplot in Action
+SECOND EDITION
+PHILIPP K. JANERT
+
+
 \[ z = \frac {\sum_i w(d_i) \cdot z_i} {\sum_i w(d_i) } \]
 
 \[ d_i = \sqrt { \left( \frac{x-x_i}{dx} \right)^2 + \left(\frac{y-y_i}{dy} \right)^2 } \]
