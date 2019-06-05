@@ -73,9 +73,49 @@
 	      (approximate (vector xx1 xx2) apr-2)))
     (pcl:check (= (approximate (vector -2 -20) apr-2) 117.0))
     ))
-    
-    
 
+(pcl:deftest test-refine-approximation-values ()
+  (let ((a-points (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))))
+	(a-values  (vector 0.0 1.0 1.0 2.0))
+	(a-base-dists (make-vector-n 1.5 2))
+        (a-base-dists-1.0 (make-vector-n 1.0 2))
+	(a-base-dists-0.6 (make-vector-n 0.6 2))
+	(a-base-dists-0.4 (make-vector-n 0.4 2))
+	(v-points  (vector -4 -3 -2 -1  0  1  2  3  4))
+	(v-values  (vector  16 9  4  1  0  1  4  9 16))
+	(v-base-dist 1.0)
+	)
+    (pcl:check (refine-approximation-values a-points a-values a-base-dists :delta 0.00001 :iterations 100 :w-func #'gauss-smoothing  ))
+    (pcl:check (refine-approximation-values a-points a-values a-base-dists :delta 0.00001 :iterations 100 :w-func #'exp-smoothing    ))
+    (pcl:check (refine-approximation-values a-points a-values a-base-dists :delta 0.00001 :iterations 100 :w-func #'cauchy-smoothing ))
+    (pcl:check (refine-approximation-values a-points a-values a-base-dists :delta 0.00001 :iterations 100 :w-func #'hann-smoothing   ))
+
+    (pcl:check (refine-approximation-values a-points a-values a-base-dists-1.0))
+    (pcl:check (refine-approximation-values a-points a-values a-base-dists-0.6))
+    (pcl:check (refine-approximation-values a-points a-values a-base-dists-0.4))
+
+    (pcl:check (refine-approximation-values a-points a-values a-base-dists-1.0)) 
+    (pcl:check (refine-approximation-values a-points a-values a-base-dists-0.6)) 
+    (pcl:check (refine-approximation-values a-points a-values a-base-dists-0.4)) 
+
+    (pcl:check (refine-approximation-values a-points a-values a-base-dists-1.0)) 
+    (pcl:check (refine-approximation-values a-points a-values a-base-dists-0.6)) 
+    (pcl:check (refine-approximation-values a-points a-values a-base-dists-0.4)) 
+
+    (pcl:check (refine-approximation-values a-points a-values a-base-dists-1.0)) 
+    (pcl:check (refine-approximation-values a-points a-values a-base-dists-0.6)) 
+    (pcl:check (refine-approximation-values a-points a-values a-base-dists-0.4)) 
+
+    (pcl:check (refine-approximation-values a-points a-values a-base-dists-1.0)) 
+    (pcl:check (refine-approximation-values a-points a-values a-base-dists-0.6)) 
+    (pcl:check (refine-approximation-values a-points a-values a-base-dists-0.4)) 
+
+    (pcl:check (refine-approximation-values v-points v-values v-base-dist :delta 0.00001 :iterations 1000 :w-func #'gauss-smoothing  ))
+    (pcl:check (refine-approximation-values v-points v-values v-base-dist :delta 0.00001 :iterations 1000 :w-func #'exp-smoothing    ))
+    (pcl:check (refine-approximation-values v-points v-values v-base-dist :delta 0.00001 :iterations 1000 :w-func #'cauchy-smoothing ))
+    (pcl:check (refine-approximation-values v-points v-values v-base-dist :delta 0.00001 :iterations 1000 :w-func #'hann-smoothing   ))
+
+    ))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -84,16 +124,13 @@
   (pcl:combine-results
     (test-approximation-appr_table)
     (test-approximation-make-linear-interpolation )
-    (test-approximation-make-linear-approximation-array)))
+    (test-approximation-make-linear-approximation-array)
+    (test-refine-approximation-values)
+    ))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;(test-approximation)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-
-
-
-
 
 (defparameter *apr-1* (make-instance 'appr-linear :x1 (vector 0 1)  :a1d (vector 0 1 )))
 

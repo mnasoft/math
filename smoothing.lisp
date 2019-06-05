@@ -35,6 +35,6 @@
  (loop :for d :from 0 :to 4 :by 1/10 :collect
      (list d (hann-smoothing d)))
 "
-  (if (< d 0.5)
-      (* 1/2 ( + 1 ( cos (* 2 pi d))))
+  (if (< d 1)
+      (* 1/2 ( + 1 ( cos (* pi d))))
       0))

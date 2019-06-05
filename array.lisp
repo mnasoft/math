@@ -29,3 +29,9 @@
   (assert (< -1 col (array-dimension a 1)))
   (apply #'vector (loop :for i :from 0 :below (array-dimension a 0) :collect
 		       (aref a i col))))
+
+(defun make-vector-n (element n)
+  "Пример использования:
+ (make-vector-n 1.5 3) => #(1.5 1.5 1.5)"
+  (make-array (list n) :initial-element element))
+

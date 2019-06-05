@@ -254,8 +254,6 @@
 		 w-z-summ (+ w-z-summ (* w z )))))
     (/ w-z-summ w-summ)))
 
-
-
 (defmethod approx-by-points ((x vector) (dx vector) (points array) (values vector) &key (w-func #'gauss-smoothing))
   "Пример использования:
  
@@ -293,3 +291,90 @@
 		 z (aref values i)
 		 w-z-summ (+ w-z-summ (* w z )))))
     (/ w-z-summ w-summ)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(export 'refine-approximation-values)
+(defgeneric refine-approximation-values (points values base-dist-s &key w-func delta iterations)
+  (:documentation
+   "Выполняет поиск массива значений такого, что:
+- при сглаживании функцией w-func;
+- с размером сглаживания dx0;
+- в точках points (аргументы функции);
+- сумма отклонений сглаженных значений от значений, заданных в узлах не превысит значения delta."))
+
+(defmethod refine-approximation-values ((points array) (values vector) (base-dists vector) &key (w-func #'gauss-smoothing) (delta 0.001) (iterations 10000))
+  "Вычисляет такой массив, что при сглаживании его по формуле Гаусса
+с характерным размером base-dists, сумма расстояний до 2d точек заданных массивом points не превысит delta
+
+  Пример использования:
+
+ (refine-approximation-values (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) (vector 0.0 1.0 1.0 2.0) (vector 1.0 1.0))
+ (refine-approximation-values (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) (vector 0.0 1.0 1.0 2.0) (vector 0.6 0.6))
+ (refine-approximation-values (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) (vector 0.0 1.0 1.0 2.0) (vector 0.4 0.4))
+
+ (refine-approximation-values (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) (vector 0.0 1.0 1.0 2.0) (vector 1.0 1.0)) 
+ (refine-approximation-values (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) (vector 0.0 1.0 1.0 2.0) (vector 0.6 0.6)) 
+ (refine-approximation-values (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) (vector 0.0 1.0 1.0 2.0) (vector 0.4 0.4)) 
+
+ (refine-approximation-values (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) (vector 0.0 1.0 1.0 2.0) (vector 1.0 1.0)) 
+ (refine-approximation-values (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) (vector 0.0 1.0 1.0 2.0) (vector 0.6 0.6)) 
+ (refine-approximation-values (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) (vector 0.0 1.0 1.0 2.0) (vector 0.4 0.4)) 
+
+ (refine-approximation-values (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) (vector 0.0 1.0 1.0 2.0) (vector 1.0 1.0)) 
+ (refine-approximation-values (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) (vector 0.0 1.0 1.0 2.0) (vector 0.6 0.6)) 
+ (refine-approximation-values (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) (vector 0.0 1.0 1.0 2.0) (vector 0.4 0.4)) 
+
+ (refine-approximation-values (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) (vector 0.0 1.0 1.0 2.0) (vector 1.0 1.0)) 
+ (refine-approximation-values (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) (vector 0.0 1.0 1.0 2.0) (vector 0.6 0.6)) 
+ (refine-approximation-values (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) (vector 0.0 1.0 1.0 2.0) (vector 0.4 0.4)) 
+"
+  (assert (member w-func (list #'gauss-smoothing #'exp-smoothing #'cauchy-smoothing #'hann-smoothing)))
+  (assert (= (array-rank points) 2))
+  (assert (= (array-dimension points 0) (length values)))
+  (assert (= (array-dimension points 1) (length base-dists)))
+  (let ((v-iter (copy-array values))
+	(v-rez  (copy-array values)))
+    (labels ((start-V1 (v-rez v-iter)
+	       (loop :for i :from 0 :below (length values) :do
+		    (setf (svref v-rez i) (approx-by-points (row i points) base-dists points v-iter :w-func w-func)))
+	       (summ-distance v-rez values))
+	     (iterate (v-rez v-iter)
+	       (loop :for i :from 0 :below (length values) :do
+		    (setf (svref v-iter i)
+			  (+ (svref v-iter i) (* 1 (- (svref values i) (svref v-rez i))))))))
+      (do ((i    0 (1+ i))
+	   (dist (start-V1 v-rez v-iter ) (start-V1 v-rez v-iter)))
+	  ((or (> i iterations) (< dist delta))
+	   (progn (format t "I=~D; DIST=~F;~%V-ITER~S;~%V-REZ=~S~%" i dist v-iter v-rez )
+		  (if (< i iterations)
+		      (values v-iter t   i dist v-rez values)
+		      (values v-iter nil i dist v-rez values))))
+	(iterate v-rez v-iter)))))
+
+(defmethod refine-approximation-values ((points vector) (values vector) (base-dist number) &key (w-func #'gauss-smoothing) (delta 0.001) (iterations 10000))
+  (assert (member w-func (list #'gauss-smoothing #'exp-smoothing #'cauchy-smoothing #'hann-smoothing)))
+  (assert (= (length points) (length values)))
+  (let ((v-iter (copy-array values))
+	(v-rez  (copy-array values)))
+    (labels ((start-V1 (v-rez v-iter)
+	       (loop :for i :from 0 :below (length values) :do
+		    (setf (svref v-rez i)
+			  (approx-by-points (svref points i) base-dist points v-iter :w-func w-func)))
+	       (summ-distance v-rez values))
+	     (iterate (v-rez v-iter)
+	       (loop :for i :from 0 :below (length values) :do
+		    (setf (svref v-iter i)
+			  (+ (svref v-iter i) (* 1 (- (svref values i) (svref v-rez i))))))))
+      (do ((i    0 (1+ i))
+	   (dist (start-V1 v-rez v-iter ) (start-V1 v-rez v-iter)))
+	  ((or (> i iterations) (< dist delta))
+	   (progn (format t "I=~D; DIST=~F;~%V-ITER~S;~%V-REZ=~S~%" i dist v-iter v-rez )
+		  (if (< i iterations)
+		      (values v-iter t   i dist v-rez values)
+		      (values v-iter nil i dist v-rez values))))
+	(iterate v-rez v-iter)))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
