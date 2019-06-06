@@ -6,6 +6,7 @@
     (loop :for i :from x-from :to x-to :by (/ (- x-to x-from) step) :collect
 	 (list (coerce i 'float) (coerce (funcall func i) 'float))))
 
+(export 'split-range)
 (defun split-range (from to steps)
   "Пример использования:
  (split-range 10 20 5) =>(10.0 12.0 14.0 16.0 18.0 20.0) "
@@ -13,7 +14,7 @@
 	   (coerce (+ from (* (/ i steps ) (- to from))) 'float)))
 
 
-
+(export 'split-range-by-func)
 (defun split-range-by-func (from to steps &key
 					    (func #'(lambda (x) (log x 10)))
 					    (anti-func #'(lambda (x) (expt 10 x))))
@@ -23,7 +24,83 @@
    #'(lambda (el)(funcall anti-func el))
    (split-range (funcall func from) (funcall func to) steps)))
 
+(export 'make-table)
+(defun make-table (lst-1 lst-2)
+  "Выполняет формирование списка точек, разделенного на группы.
+Пример использования:
+ (make-table (split-range 1.0 0.0 2) (split-range -3 0 3)) =>
+ (((1.0 -3.0) (1.0 -2.0) (1.0 -1.0) (1.0 0.0))
+  ((0.5 -3.0) (0.5 -2.0) (0.5 -1.0) (0.5 0.0))
+  ((0.0 -3.0) (0.0 -2.0) (0.0 -1.0) (0.0 0.0)))"
+  (assert (consp lst-1)) 
+  (assert (consp lst-2))
+  (assert (not (find-if-not #'numberp lst-1)))
+  (assert (not (find-if-not #'numberp lst-2)))
+  (labels ((v-lst (val lst)
+	     (mapcar
+	      #'(lambda (el) (list val el))
+	      lst)))
+    (mapcar
+     #'(lambda (el-1) (v-lst el-1 lst-2))
+     lst-1)))
 
+(export 'table-apply)
+(defun table-apply (table func &rest second-and-others &key )
+  "Пример использования:
+  (table-apply (make-table (split-range 1 4 3) (split-range 5 7 2))  #'* 10.) =>
+  (table-apply (make-table (split-range 1 4 3) (split-range 5 7 2))  #'vector)
+
+ (((1.0 5.0 #(1.0 5.0)) (1.0 6.0 #(1.0 6.0)) (1.0 7.0 #(1.0 7.0)))
+ ((2.0 5.0 #(2.0 5.0)) (2.0 6.0 #(2.0 6.0)) (2.0 7.0 #(2.0 7.0)))
+ ((3.0 5.0 #(3.0 5.0)) (3.0 6.0 #(3.0 6.0)) (3.0 7.0 #(3.0 7.0)))
+ ((4.0 5.0 #(4.0 5.0)) (4.0 6.0 #(4.0 6.0)) (4.0 7.0 #(4.0 7.0))))
+
+ (((1.0 5.0 50.0) (1.0 6.0 60.0) (1.0 7.0 70.0))
+  ((2.0 5.0 100.0) (2.0 6.0 120.0) (2.0 7.0 140.0))
+  ((3.0 5.0 150.0) (3.0 6.0 180.0) (3.0 7.0 210.0))
+  ((4.0 5.0 200.0) (4.0 6.0 240.0) (4.0 7.0 280.0)))"
+  (assert (consp table))
+  (mapcar
+   #'(lambda (el)
+       (mapcar
+	#'(lambda (el-1)
+	    (append el-1 (list (apply func (append el-1 second-and-others)))))
+	el))
+   table))
+
+(defun table-apply-0 (table func &rest second-and-others &key )
+  "Пример использования:
+   (table-apply-0 (make-table (split-range 1 4 3) (split-range 5 7 2))  #'vector) =>
+   ((#(1.0 5.0) #(1.0 6.0) #(1.0 7.0))
+    (#(2.0 5.0) #(2.0 6.0) #(2.0 7.0))
+    (#(3.0 5.0) #(3.0 6.0) #(3.0 7.0))
+    (#(4.0 5.0) #(4.0 6.0) #(4.0 7.0))) "
+  (assert (consp table))
+  (mapcar
+   #'(lambda (el)
+       (mapcar
+	#'(lambda (el-1)
+	    (apply func (append el-1 second-and-others)))
+	el))
+   table))
+
+(defun table-apply-1 (table func &rest second-and-others)
+  "Пример использования:
+  ;;(table-apply (make-table (split-range 1 4 3) (split-range 5 7 2))  #'*  10.) 
+
+=>
+ (((1.0 5.0 50.0) (1.0 6.0 60.0) (1.0 7.0 70.0))
+  ((2.0 5.0 100.0) (2.0 6.0 120.0) (2.0 7.0 140.0))
+  ((3.0 5.0 150.0) (3.0 6.0 180.0) (3.0 7.0 210.0))
+  ((4.0 5.0 200.0) (4.0 6.0 240.0) (4.0 7.0 280.0)))"
+  (assert (consp table))
+  (mapcar
+   #'(lambda (el)
+       (mapcar
+	#'(lambda (el-1)
+	    (append el-1 (list (apply func (cons (apply #' vector el-1) second-and-others)))))
+	el))
+   table))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
