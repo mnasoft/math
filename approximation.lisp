@@ -2,13 +2,14 @@
 
 (in-package #:math)
 
+(export 'appr_table)
 (defun appr_table (x table)
   "Выполняет линейную интерполяцию и экстраполяцию для значения x на таблице table
 Пример использования:
-(appr_table 0.5 '((0.0 0.0) (1.0 1.0) (2.0 4.0) (4.0 0.0)))
-(appr_table 1.5 '((0.0 0.0) (1.0 1.0) (2.0 4.0) (4.0 0.0)))
-(appr_table 3.0 '((0.0 0.0) (1.0 1.0) (2.0 4.0) (4.0 0.0)))
-Тест: (test-approximation-appr_table)
+ (appr_table 0.5 '((0.0 0.0) (1.0 1.0) (2.0 4.0) (4.0 0.0)))
+ (appr_table 1.5 '((0.0 0.0) (1.0 1.0) (2.0 4.0) (4.0 0.0)))
+ (appr_table 3.0 '((0.0 0.0) (1.0 1.0) (2.0 4.0) (4.0 0.0)))
+ Тест: (test-approximation-appr_table)
 "
   (labels ((appr-line( XX PP0 PP1)
 	     (multiple-value-bind (x p0 p1)
