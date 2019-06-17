@@ -4,30 +4,6 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(progn 
-  (require :temperature-fild)
-  (defparameter *h-r*
-    (apply #'vector
-	   (reverse
-	    (temperature-fild:t-fild-termopara-hight-relative
-	     temperature-fild:*dn80*))))
-
-  (defparameter *x-r*
-    (apply #'vector (split-range -112/100 112/100 4)))
-
-;;;; (split-range -140/100 140/100 10)
-;;;; (split-range -112/100 112/100 4)
-
-  (defparameter *a* (make-array '(5 5) :initial-contents
-				'((117.0 120.5 118.5 112.5 115.0)
-				  (115.0 125.5 119.5 122.5 112.0)
-				  (113.0 135.5 129.5 132.5 117.0)
-				  (112.0 122.5 123.5 122.5 112.0)
-				  (111.0 115.5 119.5 102.5 102.0)))))
-
-(gnuplot-data-splot "splot1" (make-t-fild-data *a* *h-r* *x-r* :hights '(1 0 1000) :ocr '(-140/100 140/100 1000)))
-
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defparameter *v-ref* 

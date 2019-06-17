@@ -17,6 +17,7 @@
 ;;;;           (:file "matr")  ;; Взамен него действует matr-class
 	       (:file "approximation")	       
 	       (:file "statistics")
+	       (:file "coordinate-system")
 	       (:file "mult-matr-vect")
 	       (:file "las-rotation")
 	       (:file "list-matr")
