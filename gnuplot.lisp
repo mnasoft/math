@@ -150,6 +150,7 @@
 			   (terminal "set terminal pngcairo size 1400,500 enhanced font 'Verdana,10'")
 			   (output   (concatenate 'string "set output '" f-name ".png'"))
 			   (palette  "set palette defined (0 'blue', 0.1 'white', 0.2 'cyan', 0.3 'white', 0.4 'green', 0.5 'white', 0.6 'yellow', 0.7 'white', 0.8 'orange', 0.9 'white', 1 'red')")
+;;;;			   (palette  "set palette defined (0.05 'blue', 0.2 'cyan', 0.4 'green', 0.6 'yellow', 0.8 'orange', 0.95 'red')")					 
 			   (pm3d     "set pm3d map")
 			   (splot    (concatenate 'string "splot '" f-name ".data' u 2:1:3")))
   (assert (consp data))
