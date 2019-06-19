@@ -187,3 +187,34 @@
 ;;;; splot "matrix" nonuniform matrix u 1:2:3 w l
 ;;;; pos( k, origin, spacing ) = origin + k*spacing
 ;;;; splot "packedmatrix" matrix u (pos($1,0,1)):(pos($2,-1,1)):3 w l
+
+
+(export 'gnuplot-data-plot)
+(defun gnuplot-data-plot (
+			  f-name data &key
+			  (terminal "set terminal pngcairo size 1400,500 enhanced font 'Verdana,10'")
+			  (output   (concatenate 'string "set output '" f-name ".png'"))
+			  (plot    (concatenate 'string "plot '" f-name ".data' u 2:1"))
+;;;; :plot "plot 'plot2.data' u 1:2 with lines lt 1, 'plot2.data' u 1:3 with lines lt 2 ")					
+					)
+  "Примеры использования:
+Пример 1
+ (math:gnuplot-data-plot
+ \"plot2\"
+ (mapcar #'(lambda (x) (list x (sin x)(sqrt x)) )
+	 (math:split-range 0.0 10 1000) )
+ :plot \"plot 'plot2.data' u 1:2 with lines lt 1, 'plot2.data' u 1:3 with lines lt 2 \")
+"
+  (assert (consp data))
+  (assert (consp (first data)))
+  (with-open-file (os (concatenate 'string f-name "." "data") :direction :output :if-exists :supersede)
+    (format os "#   ~8A ~8A~%" "X" "Y" )
+    (format os "~{~{~8F ~}~%~}"     data ))
+  (with-open-file (gp (concatenate 'string f-name "." "gp") :direction :output :if-exists :supersede)
+    (when terminal (format gp "~A~%" terminal)) 
+    (when output   (format gp "~A~%" output)) 
+    (when plot    (format gp "~A~%" plot)))
+  (with-open-file (sh (concatenate 'string f-name "." "sh") :direction :output :if-exists :supersede)
+    (format sh "#!/bin/bash~%" )
+    (format sh "gnuplot ~A.gp~%" f-name))
+  (uiop:run-program (concatenate 'string "sh" " " f-name "." "sh") :ignore-error-status t))
