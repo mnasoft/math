@@ -203,30 +203,6 @@
 ;;;; Сглаживание методами gnuplot
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defmethod make-points-values ((table-values array) (row-values vector) (col-values vector))
-  "Формирует массив точек и массив значений
-Массив точек    - в строках содержит аргументы функции.
-Массив значений - в строках содержит значения функции.
-Строки массива точек соответствуют строкам массива значений.
-  Тестирование:
- (make-points-values *a* *h-r* *x-r*)
-"
-  (assert (= (array-rank table-values) 2))
-  (assert (= (array-dimension table-values 0) (length row-values)))
-  (assert (= (array-dimension table-values 1) (length col-values)))
-  (let* ((dims (array-dimensions table-values))
-	 (len  (apply #'* dims))
-	 (cols (second dims))
-	 (points (make-array (list len 2 ) :initial-element 0.0))
-	 (values (make-array (list len   ) :initial-element 1.0)))
-    (loop :for i :from 0 :below (array-dimension table-values 0) :do
-	 (loop :for j :from 0 :below (array-dimension table-values 1) :do
-	      (setf (aref  points (+ j (* i cols)) 0) (svref row-values  i)
-		    (aref  points (+ j (* i cols)) 1) (svref col-values j)
-		    (svref values (+ j (* i cols))  ) (aref  table-values i j))))
-    (values points values)))
-
-
 (export 'approx-by-points)
 (defgeneric approx-by-points (pnt d-pnt points values &key w-func)
   (:documentation

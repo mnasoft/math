@@ -132,19 +132,6 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(export 'make-t-fild-data)
-(defun make-t-fild-data (a-temperatures r-hights r-ocr 
-			 &key (d-pts (vector 0.2 0.5)) (delta 0.1) (hights '(1 0 100)) (ocr '(-140/100 140/100 100)))
-  (assert (arrayp a-temperatures))
-;;;; *default-pathname-defaults*
-  (let* ((pts-vals (multiple-value-list (make-points-values a-temperatures r-hights r-ocr)))
-	 (pts  (first pts-vals))
-	 (vals (second  pts-vals))
-	 (r-vals (refine-approximation-values pts vals d-pts :delta delta)))
-    (table-apply-1
-     (make-table (apply #'split-range hights) (apply #'split-range ocr))
-     #'approx-by-points d-pts pts r-vals)))
-
 (export 'gnuplot-data-splot)
 (defun gnuplot-data-splot (
 			   f-name data &key
