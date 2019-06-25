@@ -132,14 +132,23 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(export '*palette-defined*)
+(defparameter *palette-defined* "set palette defined (0.05 'blue', 0.2 'cyan', 0.4 'green', 0.6 'yellow', 0.8 'orange', 1.0 'red')")
+
+(export '*palette-defined-01*)
+(defparameter *palette-defined-01* "set palette defined (0 'blue', 0.1 'white', 0.2 'cyan', 0.3 'white', 0.4 'green', 0.5 'white', 0.6 'yellow', 0.7 'white', 0.8 'orange', 0.9 'white', 1 'red')")
+
+(export '*pm3d-map*)
+(defparameter *pm3d-map* "set pm3d map")
+
 (export 'gnuplot-data-splot)
 (defun gnuplot-data-splot (
 			   f-name data &key
 			   (terminal "set terminal pngcairo size 1350,500 enhanced font 'Verdana,10'")
 			   (output   (concatenate 'string "set output '" f-name ".png'"))
-;;;;			   (palette  "set palette defined (0 'blue', 0.1 'white', 0.2 'cyan', 0.3 'white', 0.4 'green', 0.5 'white', 0.6 'yellow', 0.7 'white', 0.8 'orange', 0.9 'white', 1 'red')")
-			   (palette  "set palette defined (0.05 'blue', 0.2 'cyan', 0.4 'green', 0.6 'yellow', 0.8 'orange', 0.95 'red')")					 
-			   (pm3d     "set pm3d map")
+			   (preamble  nil)
+			   (palette  *palette-defined*) 
+			   (pm3d     *pm3d-map*)
 			   (splot    (concatenate 'string "splot '" f-name ".data' u 2:1:3")))
   (assert (consp data))
   (assert (consp (first data)))
@@ -148,7 +157,8 @@
     (format os "#   ~8A ~8A ~8A~%" "X" "Y" "Z" )
     (format os "~{~{~{~8F ~}~%~}~%~}"     data ))
   (with-open-file (gp (concatenate 'string f-name "." "gp") :direction :output :if-exists :supersede)
-    (when terminal (format gp "~A~%" terminal)) 
+    (when terminal (format gp "~A~%" terminal))
+    (when preamble (format gp "~A~%" preamble))
     (when output   (format gp "~A~%" output)) 
     (when palette  (format gp "~A~%" palette))
     (when pm3d     (format gp "~A~%" pm3d))
@@ -159,9 +169,6 @@
   (uiop:run-program (concatenate 'string "sh" " " f-name "." "sh") :ignore-error-status t))
 
 
-
-
-;;;;
 ;;;; set terminal pngcairo size 1000,600 enhanced font 'Verdana,10'
 ;;;; set output 'introduction.png'
 ;;;; set palette defined (0 'blue', 0.1 'white', 0.2 'cyan', 0.3 'white', 0.4 'green', 0.5 'white', 0.6 'yellow', 0.7 'white', 0.8 'orange', 0.9 'white', 1 'red')
@@ -180,10 +187,11 @@
 (defun gnuplot-data-plot (
 			  f-name data &key
 			  (terminal "set terminal pngcairo size 1400,500 enhanced font 'Verdana,10'")
+			  (preamble "set xrange [0:2.5]")
 			  (output   (concatenate 'string "set output '" f-name ".png'"))
 			  (plot    (concatenate 'string "plot '" f-name ".data' u 2:1"))
 ;;;; :plot "plot 'plot2.data' u 1:2 with lines lt 1, 'plot2.data' u 1:3 with lines lt 2 ")					
-					)
+			  )
   "Примеры использования:
 Пример 1
  (math:gnuplot-data-plot
@@ -198,7 +206,28 @@
     (format os "#   ~8A ~8A~%" "X" "Y" )
     (format os "~{~{~8F ~}~%~}"     data ))
   (with-open-file (gp (concatenate 'string f-name "." "gp") :direction :output :if-exists :supersede)
-    (when terminal (format gp "~A~%" terminal)) 
+    (when terminal (format gp "~A~%" terminal))
+    (when preamble (format gp "~A~%" preamble)) 
+    (when output   (format gp "~A~%" output)) 
+    (when plot    (format gp "~A~%" plot)))
+  (with-open-file (sh (concatenate 'string f-name "." "sh") :direction :output :if-exists :supersede)
+    (format sh "#!/bin/bash~%" )
+    (format sh "gnuplot ~A.gp~%" f-name))
+  (uiop:run-program (concatenate 'string "sh" " " f-name "." "sh") :ignore-error-status t))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+
+(export 'gnuplot-plot)
+(defun gnuplot-plot (f-name &key
+		     (terminal "set terminal pngcairo size 1400,500 enhanced font 'Verdana,10'")
+		     (preamble "set xrange [0:2.5]")
+		     (output   (concatenate 'string "set output '" f-name ".png'"))
+		     (plot    (concatenate 'string "plot '" f-name ".data' u 2:1")))
+  (with-open-file (gp (concatenate 'string f-name "." "gp") :direction :output :if-exists :supersede)
+    (when terminal (format gp "~A~%" terminal))
+    (when preamble (format gp "~A~%" preamble)) 
     (when output   (format gp "~A~%" output)) 
     (when plot    (format gp "~A~%" plot)))
   (with-open-file (sh (concatenate 'string f-name "." "sh") :direction :output :if-exists :supersede)
