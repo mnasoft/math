@@ -44,12 +44,20 @@
 ;;;; => 0.8"
   (apply #'min x))
 
+(export 'min-not-nil-value)
+(defun min-not-nil-value (x)
+  (min-value (exclude-nil-from-list x)))
+
 (defun max-value (x)
   "Возврвщает максимальное значение для списка величин;
 Пример использования:
 ;;;; (max-value '(1.1 1.0 0.9 1.2 0.8))
 ;;;; => 1.2"
   (apply #'max x))
+
+(export 'max-not-nil-value)
+(defun max-not-nil-value (x)
+  (max-value (exclude-nil-from-list x)))
 
 (defun dispersion(x)
   "Дисперсия случайной величины
