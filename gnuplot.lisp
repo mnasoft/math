@@ -144,8 +144,8 @@
 (export 'gnuplot-data-splot)
 (defun gnuplot-data-splot (
 			   f-name data &key
-			   (terminal "set terminal pngcairo size 1350,500 enhanced font 'Verdana,10'")
-			   (output   (concatenate 'string "set output '" f-name ".png'"))
+			   (terminal "set terminal pdfcairo enhanced font 'Arial,14' size 13.5 cm, 5.0 cm ")
+			   (output   (concatenate 'string "set output '" f-name ".pdf'"))
 			   (preamble  nil)
 			   (palette  *palette-defined*) 
 			   (pm3d     *pm3d-map*)
@@ -217,8 +217,6 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-
-
 (export 'gnuplot-plot)
 (defun gnuplot-plot (f-name &key
 		     (terminal "set terminal pngcairo size 1400,500 enhanced font 'Verdana,10'")
@@ -234,3 +232,17 @@
     (format sh "#!/bin/bash~%" )
     (format sh "gnuplot ~A.gp~%" f-name))
   (uiop:run-program (concatenate 'string "sh" " " f-name "." "sh") :ignore-error-status t))
+
+(export 'make-plot-data-file)
+(defun make-plot-data-file (f-name data)
+  "Примеры использования:
+Пример 1
+ (make-plot-data-file
+ \"plot2\"
+ (mapcar #'(lambda (x) (list x (sin x)(sqrt x)) )
+	 (math:split-range 0.0 10 1000) ) )
+"
+  (assert (consp data))
+  (assert (consp (first data)))
+  (with-open-file (os (concatenate 'string f-name "." "data") :direction :output :if-exists :supersede :external-format :utf8)
+    (format os "~{~{~8F ~}~%~}" data )))
