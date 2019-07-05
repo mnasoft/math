@@ -141,6 +141,32 @@
 (export '*pm3d-map*)
 (defparameter *pm3d-map* "set pm3d map")
 
+
+(export 'gnuplot-splot)
+(defun gnuplot-splot (f-name
+		      &key
+			(terminal "set terminal pdfcairo enhanced font 'Arial,14' size 13.5 cm, 5.0 cm ")
+			(output   (concatenate 'string "set output '" f-name ".pdf'"))
+			(preamble  nil)
+			(palette  *palette-defined*) 
+			(pm3d     *pm3d-map*)
+			(splot    (concatenate 'string "splot '" f-name ".data' u 2:1:3")))
+  "Осуществляет подготовку данных, содержащихся в файле f-name с расширением data.
+Данные в файле должны иметь формат gp-list
+"
+  (assert (probe-file (concatenate 'string f-name ".data")))
+  (with-open-file (gp (concatenate 'string f-name "." "gp") :direction :output :if-exists :supersede :external-format :utf8)
+    (when terminal (format gp "~A~%" terminal))
+    (when preamble (format gp "~A~%" preamble))
+    (when output   (format gp "~A~%" output)) 
+    (when palette  (format gp "~A~%" palette))
+    (when pm3d     (format gp "~A~%" pm3d))
+    (when splot    (format gp "~A~%" splot)))
+  (with-open-file (sh (concatenate 'string f-name "." "sh") :direction :output :if-exists :supersede :external-format :utf8)
+    (format sh "#!/bin/bash~%" )
+    (format sh "gnuplot ~A.gp~%" f-name))
+  (uiop:run-program (concatenate 'string "sh" " " f-name "." "sh") :ignore-error-status t))
+
 (export 'gnuplot-data-splot)
 (defun gnuplot-data-splot (
 			   f-name data &key
@@ -219,9 +245,9 @@
 
 (export 'gnuplot-plot)
 (defun gnuplot-plot (f-name &key
-		     (terminal "set terminal pngcairo size 1400,500 enhanced font 'Verdana,10'")
+		     (terminal "set terminal enhanced font 'Arial,14' pdfcairo size 42 cm, 29.7 cm")
 		     (preamble "set xrange [0:2.5]")
-		     (output   (concatenate 'string "set output '" f-name ".png'"))
+		     (output   (concatenate 'string "set output '" f-name ".pdf'"))
 		     (plot    (concatenate 'string "plot '" f-name ".data' u 2:1")))
   (with-open-file (gp (concatenate 'string f-name "." "gp") :direction :output :if-exists :supersede :external-format :utf8)
     (when terminal (format gp "~A~%" terminal))
