@@ -2,6 +2,15 @@
 
 (in-package #:math)
 
+(defmethod rows ((a array))
+  (assert (= (array-rank a) 2))
+  (array-dimension a 0))
+
+(defmethod cols ((a array))
+  (assert (= (array-rank a) 2))
+  (array-dimension a 1))
+
+
 (defmethod row ((row integer) (a array))
   "
 Тестирование:
@@ -30,8 +39,57 @@
   (apply #'vector (loop :for i :from 0 :below (array-dimension a 0) :collect
 		       (aref a i col))))
 
+(defmethod (setf row) ((new-row cons) (a array) row)
+  (assert (= (array-rank a) 2))
+  (assert (< -1 row (rows a)))
+  (assert (= (cols a) (length new-row)))
+  (let ((ll new-row))
+    (loop :for c :from 0 :below (cols a)
+       :do (setf (aref a row c) (car ll)
+		 ll (cdr ll)))
+    a))
+
+(defmethod (setf col) ((new-col cons) (a array) col )
+  (assert (= (array-rank a) 2))
+  (assert (< -1 col (cols a)))
+  (assert (= (rows a) (length new-col)))
+  (let ((ll new-col))
+    (loop :for r :from 0 :below (rows a)
+       :do (setf (aref a r col) (car ll)
+		 ll (cdr ll)))
+    a))
+
+(defmethod (setf row) ((new-row vector) (a array) row)
+  (assert (= (array-rank a) 2))
+  (assert (< -1 row (rows a)))
+  (assert (= (cols a) (length new-row)))
+  (loop :for c :from 0 :below (cols a) :do (setf (aref a row c) (svref new-row c)))
+  a)
+
+(defmethod (setf col) ((new-col vector) (a array) col )
+  (assert (= (array-rank a) 2))
+  (assert (< -1 col (cols a)))
+  (assert (= (rows a) (length new-col)))
+  (loop :for r :from 0 :below (rows a) :do (setf (aref a r col) (svref new-col r)))
+  a)
+
+(defmethod (setf row) ((new-val number) (a array) row)
+  (assert (= (array-rank a) 2))
+  (assert (< -1 row (rows a)))
+  (loop :for c :from 0 :below (cols a) :do (setf (aref a row c) new-val))
+  a)
+
+(defmethod (setf col) ((new-val number) (a array) col )
+  (assert (= (array-rank a) 2))
+  (assert (< -1 col (cols a)))
+  (loop :for r :from 0 :below (rows a) :do (setf (aref a r col) new-val))
+  a)
+
 (defun make-vector-n (element n)
   "Пример использования:
  (make-vector-n 1.5 3) => #(1.5 1.5 1.5)"
   (make-array (list n) :initial-element element))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defparameter *a* (make-array '(2 3) :initial-contents '((1 2 3)(4 5 6))))
