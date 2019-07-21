@@ -272,3 +272,42 @@
   (assert (consp (first data)))
   (with-open-file (os (concatenate 'string f-name "." "data") :direction :output :if-exists :supersede :external-format :utf8)
     (format os "~{~{~8F ~}~%~}" data )))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defclass gnuplot-vector ()
+  ((orign     :accessor gnuplot-vector-origin    :initform (vector 0.0 0.0 0.0) :initarg :orign)
+   (direction :accessor gnuplot-vector-direction :initform (vector 1.0 0.0 0.0) :initarg :direction)))
+
+(defmethod print-object ((v gnuplot-vector) s)
+  (format s "~{~A ~}" (coerce (gnuplot-vector-origin    v) 'list ))
+  (format s "~{~A ~}" (coerce (gnuplot-vector-direction v) 'list )))
+
+(defgeneric move (obj diplaysment))
+
+(defgeneric move (obj diplaysment))
+
+(defmethod move ((obj gnuplot-vector) (diplaysment vector))
+  (with-slots (orign) obj
+    (assert (= (length diplaysment) (length orign )))
+    (loop :for i :from 0 :below (length (gnuplot-vector-origin obj)) :do
+	 (setf (svref orign i)  (+ (svref orign i)  (svref diplaysment i))))
+    obj))
+
+(defmethod rotate ((obj gnuplot-vector) (angle number) (o vector))
+  (with-slots (orign) obj
+    (assert (= (length diplaysment) (length orign )))
+    (loop :for i :from 0 :below (length (gnuplot-vector-origin obj)) :do
+	 (setf (svref orign i)  (+ (svref orign i)  (svref diplaysment i))))
+    obj))
+
+(make-instance 'matrix :dimensions '(3 3))
+
+
+
+(make-instance 'vector 
+
+(defparameter *gp-v* (make-instance 'gnuplot-vector ))
+
+(move  *gp-v* #(-10. -10. -10.))
+
