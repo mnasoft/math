@@ -301,13 +301,11 @@
 	 (setf (svref orign i)  (+ (svref orign i)  (svref diplaysment i))))
     obj))
 
-(make-instance 'matrix :dimensions '(3 3))
+;(make-instance 'matrix :dimensions '(3 3))
 
+;(make-instance 'vector 
 
+;(defparameter *gp-v* (make-instance 'gnuplot-vector ))
 
-(make-instance 'vector 
-
-(defparameter *gp-v* (make-instance 'gnuplot-vector ))
-
-(move  *gp-v* #(-10. -10. -10.))
+;(move  *gp-v* #(-10. -10. -10.))
 
