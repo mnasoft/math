@@ -2,41 +2,112 @@
 
 (in-package #:math)
 
-(export 'dtr)
+(annot:enable-annot-syntax)
+
+@export
+@annot.doc:doc
+"@b(Описание:) dtr переводит значение, 
+заданное в градусах, в радианы.
+ @b(Пример использования:)
+
+@begin[lang=lisp](code)
+ (dtr (rtd 1/2))
+@end(code)
+"
 (defun dtr (degree) (* pi 1/180 degree ))
 
-(export 'rtd)
-(defun rtd (radian) (/ radian pi 1/180))
-    
-;;;; (rtd (dtr 45))
+@export
+@annot.doc:doc
+"@b(Описание:) rtd переводит значение, 
+заданное в радианах, в градусы.
 
-(export 'polar->cartesian)
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+  (rtd (dtr 45))
+@end(code)
+"
+(defun rtd (radian) (/ radian pi 1/180))
+
+
+@export
+@annot.doc:doc
+"@b(Описание:) polar->cartesian переводит полярные координаты в декартовы.
+
+ @b(Переменые:)
+@begin(list)
+ @item(radius-angle - список, состоящий из двух элементов: радиус-вектора 
+и угла, заданного в радианах.)
+@end(list)
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (polar->cartesian (list 10.0 (dtr 45))) => (7.0710678118654755d0 7.071067811865475d0)
+@end(code)
+"
 (defun polar->cartesian (radius-angle)
   (let ((radius (first  radius-angle))
 	(angle  (second radius-angle)))
     (list (* radius (cos angle)) (* radius (sin angle)))))
 
-(export 'cartesian->polar)
+@export
+"@b(Описание:) cartesian->polar переводит декартовы координаты в полярные.
+
+ @b(Переменые:)
+@begin(list)
+ @item(radius-angle - список, состоящий из двух элементов: радиус-вектора 
+и угла, заданного в радианах.)
+@end(list)
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (polar->cartesian (list 10.0 (dtr 45))) => (7.0710678118654755d0 7.071067811865475d0)
+@end(code)
+"
 (defun cartesian->polar (x-y)
   (let ((radius (sqrt (apply #'+ (mapcar #'square x-y))))
 	(angle  (atan (second x-y) (first x-y))))
     (list radius angle)))
 
-(export 'spherical->cartesian)
-(defun spherical->cartesian (r φ θ)
-  "Выполняет преобразование координат из сферических в полярые
- r - расстояние от начала координат до заданной точки;
- φ - азимутальный угол (в плоскости X0Y);
- θ - зенитный угол;
+@export
+@annot.doc:doc
+"@b(Описание:) spherical->cartesian выполняет преобразование координат 
+из сферических в декартовы.
+
+ @b(Переменые:)
+@begin(list)
+ @item(r - расстояние от начала координат до заданной точки;)
+ @item(φ - азимутальный угол (в плоскости X0Y);)
+ @item(θ - зенитный угол.)
+@end(list)
+
+@b(Пример использования:)
+@begin[lang=lisp](code)
+ (spherical->cartesian 100 (dtr 30) (dtr 45)) 
+ => (61.237243569579455d0 35.35533905932737d0 70.71067811865476d0)
+@end(code)
 "
+(defun spherical->cartesian (r φ θ)
   (let ((x (* r (cos φ) (sin θ)))
 	(y (* r (sin φ) (sin θ)))
 	(z (* r (cos θ))))
     (list x y z)))
 
-;;;; (cartesian->spherical (spherical->cartesian 100 (dtr 30) (dtr 45)))
+@export
+@annot.doc:doc
+"@b(Описание:) cartesian->spherical выполняет преобразование координат 
+из декартовых в сферические.
 
-(export 'cartesian->spherical)
+ @b(Переменые:)
+@begin(list)
+ @item(x-y-z - список, содержащий соответствующие координаты.)
+@end(list)
+
+@b(Пример использования:)
+@begin[lang=lisp](code)
+ (cartesian->spherical '(61.237243569579455d0 35.35533905932737d0 70.71067811865476d0))
+ =>(100.0d0 0.5235987755982988d0 0.7853981633974483d0)
+@end(code)
+"
 (defun cartesian->spherical (x-y-z)
   (let* ((x (first  x-y-z))
 	 (y (second x-y-z))
@@ -45,8 +116,3 @@
 	 (φ (atan y x))
 	 (θ (atan (sqrt (+ (* x x) (* y y))) z)))
     (list r φ θ)))
-
-;;;; (cartesian->polar (polar->cartesian (list 5 (dtr 45))))
-
-
-;;;; (cartesian->polar '(5d0 3d0))
