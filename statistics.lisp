@@ -44,6 +44,14 @@
 ;;;; => 0.8"
   (apply #'min x))
 
+(export 'delta-min-value)
+(defun delta-min-value (x)
+  "Возврвщает минимальное значение для списка величин;
+Пример использования:
+;;;; (min-value '(1.1 1.0 0.9 1.2 0.8))
+;;;; => 0.8"
+    (- (min-value x) (averange-value x)))
+
 (export 'min-not-nil-value)
 (defun min-not-nil-value (x)
   (min-value (exclude-nil-from-list x)))
@@ -54,6 +62,10 @@
 ;;;; (max-value '(1.1 1.0 0.9 1.2 0.8))
 ;;;; => 1.2"
   (apply #'max x))
+
+(export 'delta-max-value)
+(defun delta-max-value (x)
+  (- (max-value x) (averange-value x)))
 
 (export 'max-not-nil-value)
 (defun max-not-nil-value (x)
