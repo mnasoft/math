@@ -70,3 +70,31 @@ splot 'D:\\PRG\\msys32\\home\\namatv\\splot.data' u 1:2:3
 splot "D:\\PRG\\msys32\\home\\namatv\\splot.data" u 1:2:3
 splot "D:/PRG/msys32/home/namatv/splot.data" u 1:2:3
 splot 'D:/PRG/msys32/home/namatv/splot.data' u 1:2:3
+
+* git 
+** Перечень удаленных репозиториев
+ #+BEGIN_SRC bash 
+ git remote
+ #+END_SRC
+** Коммит
+ #+BEGIN_SRC bash :results none
+ DATE=`date`
+ git commit -a -m "$DATE"
+ #+END_SRC
+
+** Публикация изменений на удаленных серверах
+
+ #+BEGIN_SRC bash :results none
+ for i in github.com 
+ do
+ git push ${i} master
+ done
+ #+END_SRC
+
+** Получение изменений с удаленных серверов
+ #+BEGIN_SRC bash :results none
+ for i in github.com 
+ do
+ git pull ${i} master
+ done
+ #+END_SRC

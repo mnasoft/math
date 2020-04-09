@@ -2,47 +2,91 @@
 
 (in-package #:math)
 
-;;; "math" goes here. Hacks and glory await!
+(annot:enable-annot-syntax)
 
+@export
+@annot.doc:doc
+"Возвращает квадрат значения"
 (defun square(x)
-  "Возвращает квадрат значения"
   (* x x))
 
+@export
+@annot.doc:doc
+  "Возвращает среднее значение для списка величин;
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+(averange-value '(1.1 1.0 0.9 1.2 0.8)) => 1.0
+@end(code)
+"
 (defun averange-value (x)
-  "Возврвщает среднее значение для списка величин;
-Пример использования:
-;;;; (averange-value '(1.1 1.0 0.9 1.2 0.8))
-;;;; => 1.0"
   (/ (apply #'+ x) (length x)))
 
+@export
+@annot.doc:doc
+  "@b(Описание:) функция max-value возвращает максимальное значение для списка величин
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+(max-value '(1.1 1.0 0.9 1.2 0.8)) => 1.2 
+@end(code)
+"
 (defun max-value (x)
   (apply #'max x))
 
+@export
+@annot.doc:doc
+"@b(Описание:) функция min-value возвращает максимальное значение для списка величин
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+(min-value '(1.1 1.0 0.9 1.2 0.8)) => 0.8 
+@end(code)
+"
 (defun min-value (x)
   (apply #'min x))
 
+@export
+@annot.doc:doc
+"@b(Описание:) функция dispersion возвращает дисперсию для списка величин.
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (dispersion '(1.1 1.0 0.9 1.2 0.8)) => 0.025000006
+@end(code)
+"
 (defun dispersion(x)
-  "
-;;;; (dispersion '(1.1 1.0 0.9 1.2 0.8))
-;;;; => 0.025000006"
   (let* ((x-sr (averange-value x))
 	 (n-1 (1- (length x)))
 	 (summ (apply #'+ (mapcar #'(lambda (el) (square (- el x-sr))) x))))
     (/ summ n-1)))
 
-(defun standard-deviation (x)
-  "(standard-deviation '(1.1 1.0 0.9 1.2 0.8))
-"
-  (sqrt (dispersion x)))
+@export
+@annot.doc:doc
+"@b(Описание:) возвращает среднеквадратичное (стандартное) отклонение для списка величин.
 
-(defun variation-coefficient (x)
-  "Коэффициент вариации
-(variation-coefficient '(1.1 1.0 0.9 1.2 0.8))
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (standard-deviation '(1.1 1.0 0.9 1.2 0.8)) => 0.1581139
+@end(code)
 "
+(defun standard-deviation (x) (sqrt (dispersion x)))
+
+@export
+@annot.doc:doc
+"@b(Описание:) возвращает коэффициент вариации для списка величин.
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (variation-coefficient '(1.1 1.0 0.9 1.2 0.8))
+@end(code)
+"
+(defun variation-coefficient (x)
+
   (/ (standard-deviation x)
      (SR_ARIFM X)))
 
-(defun e-value (n)
+@annot.doc:doc
   "Возвращает приближенное значение числа e
 Пример использования:
   (coerce (e-value      1) 'double-float) 2.0d0
@@ -56,44 +100,52 @@
   (coerce (e-value     17) 'double-float) 2.718281828459045d0
   (coerce (e-value  10000) 'double-float) 2.718281828459045d0
   (exp 1.0d0)                             2.718281828459045d0
-"  
+" 
+(defun e-value (n)
   (let ((rez 1)
 	(nf 1))
     (dotimes (i n rez)
       (setf nf  (/ nf (1+ i))
 	    rez (+ rez nf)))))
 
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+@export
+@annot.doc:doc
+"@b(Описание:) функция depth-sphere-along-cone возвращает 
+заглубление сферы с радиусом R в конуc с углом при вершине 
+равным alpha от линии пересечения конуса с цилиндром."
 (defun depth-sphere-along-cone (r alpha)
-  "Заглубление сферы радиуса R в конуc 
-с углом при вершине равным alpha  
-от линии пересечения конуса с цилиндром."
   (let ((betta (- pi (/ alpha 2))))
     (- r (* r (tan (/ betta  2))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(export 'distance)
+@export
 (defgeneric distance (x1 x2)
   (:documentation "Возвращает расстояние между x1 и x2"))
 
-(defmethod distance ((x1 number) (x2 number) )
-  "Пример использования:
- (distance 1 0 ) 1.0
- (distance 2 0 ) 2.0
- (distance 2 1 ) 1.0
+@export
+@annot.doc:doc
+"@b(Описание:) 
+
+@b(Пример использования:)
+ (distance 1 0 ) => 1.0
+ (distance 2 0 ) => 2.0
+ (distance 2 1 ) => 1.0
 "
+(defmethod distance ((x1 number) (x2 number) )
   (let ((rez (- x1 x2)))
     (sqrt (* rez rez))))
 
-(defmethod distance ((x1-lst cons) (x2-lst cons))
+@export
+@annot.doc:doc
   "Пример использования:
  (distance '(1 1 1) '(0 0 0) ) 1.7320508
  (distance '(2 2 2) '(0 0 0) ) 3.4641016
  (distance '(2 1 2) '(0 0 0) ) 3.0
 "
+(defmethod distance ((x1-lst cons) (x2-lst cons))
   (assert (= (length x1-lst) (length x1-lst)))
   (sqrt (apply #'+ (mapcar
 		    #'(lambda (x1 x2)
@@ -101,74 +153,84 @@
 			  (* rez rez)))
 		    x1-lst x2-lst))))
 
-(defmethod distance ((x1 vector) (x2 vector))
+@export
+@annot.doc:doc
   "Пример использования:
  (distance (vector 1 1 1) (vector 0 0 0)) 1.7320508
  (distance (vector 2 2 2) (vector 0 0 0)) 3.4641016
  (distance (vector 2 1 2) (vector 0 0 0)) 3.0
 "
+(defmethod distance ((x1 vector) (x2 vector))
   (assert (= (length x1) (length x2)))
   (sqrt (apply #'+
 	       (loop :for i :from 0 :below (array-dimension x1 0) :collect
 		    (let ((rez (- (svref x1 i) (svref x2 i)))) (* rez rez))))))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(export 'distance-relative)
+@export
 (defgeneric distance-relative (x xi dx)
   (:documentation "Возвращает относительную длину между x и xi, длина приведения dx"))
 
-(defmethod distance-relative ((x number) (xi number) (dx number))
+@export
+@annot.doc:doc
   "Пример использования:
  (distance-relative 1 0 1) 1.0
  (distance-relative 2 0 1) 2.0
  (distance-relative 2 0 2) 1.0
 "
+(defmethod distance-relative ((x number) (xi number) (dx number))
   (let ((rez (/ (- x xi) dx)))
     (sqrt (* rez rez))))
 
-(defmethod distance-relative ((x-lst cons) (xi-lst cons) (dx-lst cons))
-   "Пример использования:
+@export
+@annot.doc:doc
+ "Пример использования:
  (distance-relative '(1 1 1) '(0 0 0) '(1 1 1)) 1.7320508
  (distance-relative '(2 2 2) '(0 0 0) '(1 1 1)) 3.4641016
  (distance-relative '(2 2 2) '(0 0 0) '(1 2 2)) 2.4494898
 " 
+(defmethod distance-relative ((x-lst cons) (xi-lst cons) (dx-lst cons))
+
   (sqrt (apply #'+ (mapcar
 		    #'(lambda (x xi dx)
 			(let ((rez (/ (- x xi) dx)))
 			  (* rez rez)))
 		    x-lst xi-lst dx-lst))))
-
-(defmethod distance-relative ((x vector) (xi vector) (dx vector))
-  "Пример использования:
+@export
+@annot.doc:doc
+"Пример использования:
  (distance-relative (vector 1 1 1) (vector 0 0 0) (vector 1 1 1)) 1.7320508 
  (distance-relative (vector 2 2 2) (vector 0 0 0) (vector 1 1 1)) 3.4641016
  (distance-relative (vector 2 2 2) (vector 0 0 0) (vector 1 2 2)) 2.4494898
 "
+(defmethod distance-relative ((x vector) (xi vector) (dx vector))
   (sqrt (apply #'+
   (loop :for i :from 0 :below (array-dimension x 0) :collect
-       (let ((rez (/ (- (svref x i) (svref xi i)) (svref dx i)))) (* rez rez))
-       ))))
+       (let ((rez (/ (- (svref x i) (svref xi i)) (svref dx i)))) (* rez rez))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(export 'summ-distance)
-
+@export
 (defgeneric summ-distance (x1 x2)(:documentation "COOOL"))
 
-(defmethod summ-distance ((x1 vector) (x2 vector))
-    "
+@export
+@annot.doc:doc
+ "
 Тестирование:
  (summ-distance (vector 1 2 3) (vector 2 3 4)) 3
 "
+(defmethod summ-distance ((x1 vector) (x2 vector))
   (assert (= (length x1) (length x2)))
   (apply #'+ (loop :for i :from 0 :below (length x1) :collect
 		  (abs (- (svref x1 i) (svref x2 i))))))
 
-(defmethod summ-distance ((x1 cons) (x2 cons))
+@export
+@annot.doc:doc
   "
 Тестирование:
  (summ-distance '(1 2 3) '(2 3 4)) 3
 "
+(defmethod summ-distance ((x1 cons) (x2 cons))
   (assert (= (length x1) (length x2)))
   (apply #'+
 	 (mapcar
@@ -180,37 +242,39 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defun gauss-smoothing (d)
+@annot.doc:doc
   "
 Тестирование:
  (loop :for d :from 0 :to 4 :by 1/10 :collect
      (list d (gauss-smoothing d)))
 "
+(defun gauss-smoothing (d)
   (exp (* -1 d d)))
 
-
-(defun exp-smoothing (d)
+@annot.doc:doc
   "
  (loop :for d :from 0 :to 4 :by 1/10 :collect
      (list d (exp-smoothing d)))
 "
+(defun exp-smoothing (d)
   (exp (* -1 d)))
 
-(defun cauchy-smoothing (d)
+@annot.doc:doc
   "
 Тестирование:
  (loop :for d :from 0 :to 4 :by 1/10 :collect
      (list d (cauchy-smoothing d)))
 "
+(defun cauchy-smoothing (d)
   (/ 1 (+ 1 (* d d))))
 
-
-(defun hann-smoothing (d)
+@annot.doc:doc
   "
 Тестирование:
  (loop :for d :from 0 :to 4 :by 1/10 :collect
      (list d (hann-smoothing d)))
 "
+(defun hann-smoothing (d)
   (if (< d 0.5)
       (* 1/2 ( + 1 ( cos (* 2 pi d))))
       0))
