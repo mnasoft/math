@@ -1,16 +1,19 @@
 ;;;; array.lisp
 
 (in-package #:math)
+(annot:enable-annot-syntax)
 
+@export
 (defmethod rows ((a array))
   (assert (= (array-rank a) 2))
   (array-dimension a 0))
 
+@export
 (defmethod cols ((a array))
   (assert (= (array-rank a) 2))
   (array-dimension a 1))
 
-
+@export
 (defmethod row ((row integer) (a array))
   "
 Тестирование:
@@ -23,8 +26,9 @@
   (assert (= (array-rank a) 2))
   (assert (< -1 row (array-dimension a 0)))
   (apply #'vector (loop :for j :from 0 :below (array-dimension a 1) :collect
-		       (aref a row j))))
+								    (aref a row j))))
 
+@export
 (defmethod col ((col integer) (a array))
   "
 Тестирование:

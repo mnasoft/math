@@ -1,8 +1,9 @@
 ;;;; approximation.lisp
 
 (in-package #:math)
+(annot:enable-annot-syntax)
 
-(export 'appr_table)
+@export
 (defun appr_table (x table)
   "Выполняет линейную интерполяцию и экстраполяцию для значения x на таблице table
 Пример использования:
@@ -107,23 +108,24 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defclass appr-linear ()
+@annot.class:export-class
+(defclass <appr-linear> ()
   ((x1       :accessor appr-linear-x1)
    (a1d-func :accessor appr-linear-a1d-func)))
 
-(defmethod print-object ((a-l appr-linear) s)
-  (format s "#appr-linear (~A ~A)"
+(defmethod print-object ((a-l <appr-linear>) s)
+  (format s "#<appr-linear> (~A ~A)"
 	  (appr-linear-x1       a-l)
 	  (appr-linear-a1d-func a-l)))
 
-(defmethod initialize-instance ((a-l appr-linear) &key (x1 (vector -2 -1 0 1 2)) (a1d (vector 4 1 0 1 4)))
+(defmethod initialize-instance ((a-l <appr-linear>) &key (x1 (vector -2 -1 0 1 2)) (a1d (vector 4 1 0 1 4)))
   (setf (appr-linear-x1       a-l)
 	x1
 	(appr-linear-a1d-func a-l)
 	(make-linear-approximation-array x1 a1d)))
 
-
-(defmethod approximate ((point number) (a-l appr-linear))
+@export
+(defmethod approximate ((point number) (a-l <appr-linear>))
   (approximation-linear point (appr-linear-x1 a-l) (appr-linear-a1d-func a-l)))
 
 
@@ -180,30 +182,32 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defclass appr-bilinear ()
+
+(defclass <appr-bilinear> ()
   ((x1       :accessor appr-bilinear-x1)
    (x2       :accessor appr-bilinear-x2)
    (a2d-func :accessor appr-bilinear-a2d-func)))
 
-(defmethod print-object ((a-l appr-bilinear) s)
-  (format s "#appr-bilinear (~A ~A ~A)"
+(defmethod print-object ((a-l <appr-bilinear>) s)
+  (format s "#<appr-bilinear> (~A ~A ~A)"
 	  (appr-bilinear-x1       a-l)
  	  (appr-bilinear-x2       a-l)
 	  (appr-bilinear-a2d-func a-l)))
 
-(defmethod initialize-instance ((a-l appr-bilinear) &key (x1 (vector -1 0 1 )) (x2 (vector 0 1 )) (a2d '#2A((1 2) (3 4) (5 6))))
+(defmethod initialize-instance ((a-l <appr-bilinear>) &key (x1 (vector -1 0 1 )) (x2 (vector 0 1 )) (a2d '#2A((1 2) (3 4) (5 6))))
   (setf (appr-bilinear-x1       a-l) x1
 	(appr-bilinear-x2       a-l) x2
 	(appr-bilinear-a2d-func a-l) (make-bilinear-approximation-array  a2d x1 x2)))
 
-(defmethod approximate (point (a-l appr-bilinear))
+@export
+(defmethod approximate (point (a-l <appr-bilinear>))
   (approximation-bilinear (aref point 0) (aref point 1) (appr-bilinear-x1 a-l) (appr-bilinear-x2 a-l) (appr-bilinear-a2d-func a-l)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;; Сглаживание методами gnuplot
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(export 'approx-by-points)
+@export
 (defgeneric approx-by-points (pnt d-pnt points values &key w-func)
   (:documentation
    "Вычисляет функцию, заданную точками points и значениями values
@@ -353,5 +357,6 @@
 	(iterate v-rez v-iter)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 
 

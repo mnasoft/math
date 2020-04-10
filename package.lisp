@@ -6,37 +6,7 @@
   (:use #:cl #:cl-utilities)
 ;;;; approximation.lisp
   (:intern math::appr_table)
-  (:export 
-   math::appr-linear
-   math::appr-bilinear
-   math::approximate
-   )
-;;;; matr.lisp     
-  (:export math::matr-name
-	   math::matr-rows
-	   math::matr-cols
-	   ;; matr-elements
-	   math::matr-ij    
-	   math::matr-set_ij  
-	   math::matr-set-row 
-	   math::matr-get-row 
-	   math::matr-set-col 
-	   math::matr-get-col 
-	   math::matr-new     
-	   ;; matr-eval
-	   math::matr-mult
-	   math::matr->2d-list
-	   math::2d-list->matr
-	   math::matr-to-point
-	   math::point-to-matr
-	   math::matr-copy
-	   math::matr-to-string
-	   math::matr-print
-	   math::matr-mnk
-	   math::matr-triang
-	   math::matr-las-gauss
-	   math::matr-osr-func
-	   )
+
 ;;;; statistics.lisp  
   (:export
    math::square
@@ -80,43 +50,6 @@
    math::list-matr-prepend-row
    math::list-matr-prepend-col
    )
-;;;; matr-class.lisp
-  (:export
-;;;;defclass
-   math::matrix
-   math::matrix-data
-;;;;defun
-   math::matr-new*
-   math::make-least-squares-matrix
-   math::matr-osr-body*
-   math::matr-osr-lambda*
-   math::matr-osr-func*
-;;;;defmethods
-   math::mref 
-   math::copy
-   math::dimensions 
-   math::rows 
-   math::cols 
-   math::equivalent 
-   math::row 
-   math::col 
-   math::main-diagonal 
-   math::squarep 
-   math::anti-diagonal 
-   math::matr-triang* 
-   math::matr-obrhod* 
-   math::matr-las-gauss* 
-   math::matr-sum* 
-   math::matr-mult* 
-   math::matrix->2d-list 
-   math::transpose 
-   math::swap-rows*  
-   math::swap-cols*  
-   math::swap-rows  
-   math::swap-cols  
-   math::matr-eval-* 
-   )
-
   
 ;;;; x-o.lisp
   (:export
