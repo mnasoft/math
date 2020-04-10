@@ -5,7 +5,7 @@
   :author "Nick Matvyeyev <mnasoft@gmail.com>"
   :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"  
   :serial t
-  :depends-on (:cl-annot
+  :depends-on (;;:cl-annot
 	       :cl-utilities
 	       :pcl-test
 ;;;; :gsll
@@ -15,7 +15,6 @@
 	       (:file "array")
 	       (:file "smoothing")
 	       (:file "gnuplot")	       
-;;;;           (:file "matr")  ;; Взамен него действует matr-class
 	       (:file "approximation")	       
 	       (:file "statistics")
 	       (:file "coordinate-system")
