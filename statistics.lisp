@@ -236,7 +236,6 @@
 @annot.doc:doc
 "Критерий Граббса для максимального значения"
 (defun grubbs-2 (x)
-  "Критерий Граббса для минимального значения"
   (let ((rez (sort (copy-list x) #'< )))
     (/ (- (averange-value rez) (first rez))
        (standard-deviation rez))))
@@ -273,7 +272,7 @@
 
 @export
 @annot.doc:doc
-"Создает список случайных величин
+"Создает список случайных величин:
 
  @b(Переменые:)
 @begin(list)
@@ -281,8 +280,8 @@
  @item(std-deviation - стандартное отклонение;)
  @item(n             - количество точек; )
  @item(top-level     - дискретизация точек)
-"
 @end(list)
+"
 (defun make-random-value-list ( mid-value  &key (std-deviation 1.0) (n 40) (top-level 1000000))
   (let ((x nil))
     (dotimes (i n)
@@ -300,7 +299,6 @@
 @annot.doc:doc
 "Удаляет из статистики грубые промахи"
 (defun clean-min-flagrant-error (x)
-  "Удаляет из статистики грубые промахи"
   (do* ((lst (sort (copy-list x) #'<))
 	(n (length lst) (1- n))
 	(gr-2 (grubbs-2 lst) (grubbs-2 lst))
@@ -315,7 +313,6 @@
 @annot.doc:doc
 "Удаляет из статистики грубые промахи"
 (defun clean-max-flagrant-error (x)
-  "Удаляет из статистики грубые промахи"
   (do* ((lst (sort (copy-list x) #'<))
 	(n (length lst) (1- n))
 	(gr-1 (grubbs-1 lst) (grubbs-1 lst))
