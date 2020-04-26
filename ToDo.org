@@ -3,120 +3,101 @@
 for i in `ls *.lisp` 
 do
  echo [[./${i}]]
-done
+ done
 #+END_SRC
 
 #+RESULTS:
-| [[file:./approximation.lisp]]      |
-| [[file:./approximation-test.lisp]] |
-| [[file:./gsll-samples.lisp]]       |
-| [[file:./las-rotation.lisp]]       |
-| [[file:./list-matr.lisp]]          |
-| [[file:./lu-solve.lisp]]           |
-| [[file:./math.lisp]]               |
-| [[file:./matr-class.lisp]]         |
-| [[file:./matr-class-temp.lisp]]    |
-| [[file:./matr-exclude.lisp]]       |
-| [[file:./matr-generics.lisp]]      |
-| [[file:./matr.lisp]]               |
-| [[file:./matr-test.lisp]]          |
-| [[file:./mult-matr-vect.lisp]]     |
-| [[file:./package.lisp]]            |
-| [[file:./statistics.lisp]]         |
-| [[file:./test.lisp]]               |
-| [[file:./x-o.lisp]]                |
-| [[file:./x-o-testing.lisp]]        |
+| [[file:./approximation-gnuplot.lisp]] |
+| [[file:./approximation.lisp]]         |
+| [[file:./approximation-test.lisp]]    |
+| [[file:./array.lisp]]                 |
+| [[file:./array-test.lisp]]            |
+| [[file:./coordinate-system.lisp]]     |
+| [[file:./gnuplot.lisp]]               |
+| [[file:./gsll-samples.lisp]]          |
+| [[file:./las-rotation.lisp]]          |
+| [[file:./list-matr.lisp]]             |
+| [[file:./lu-solve.lisp]]              |
+| [[file:./math.lisp]]                  |
+| [[file:./matr-class.lisp]]            |
+| [[file:./matr-class-temp.lisp]]       |
+| [[file:./matr-exclude.lisp]]          |
+| [[file:./matr-generics.lisp]]         |
+| [[file:./matr-test.lisp]]             |
+| [[file:./mult-matr-vect.lisp]]        |
+| [[file:./package.lisp]]               |
+| [[file:./smoothing.lisp]]             |
+| [[file:./statistics.lisp]]            |
+| [[file:./test.lisp]]                  |
+| [[file:./x-o.lisp]]                   |
+| [[file:./x-o-testing.lisp]]           |
 
+* Задачи
+1. [3/3] Разобраться с функциями с целью исключеия какой-либо из них. [3/3]
+   - [X] matr-ij (matr i j) - исключена;
+   - [X] matr-set_ij (matr elem i j) - исключена;
+   - [X] matr-set-ij (matr value i j) - исключена;
+2. [X] Выполнить оптимизацию вычисления для функции matr-mnk за счет создания матрицы содержащей функции для аддитивного вычисления коэффициентов.  SCHEDULED: <2018-11-30 Пт>
+3. [3/4] Определить класс matrix при помощи массива (array 2d) [75%]
+   - [X] Файл -  [[./matr-class.lisp]]
+   - [X] Класс - matrix 
+   - [X] Файл -  [[./matr-class-temp.lisp]] - содержит заготовки функций, которые необходимо переделать под класс  matrix.
+   - [ ] По окончании пределки функций данный файл подлежит удалению из проекта.
+4. [10/10] Определить операции для класса matrix
+   - [X] вывода строки, определяющией тип матрицы    -- matr-name-*  ((mm matrix));
+   - [X] создания матрицы                            -- make-instance 'matrix
+   - [X] инициализации матрицы                       -- initialize-instance  ((mm matrix) &key dimensions initial-element initial-contents data (element-type t));
+   - [X] копирования матрицы                         -- copy  ((mm-ref matrix));
+   - [X] проверка на квадратность                    -- squarep  ((mm matrix));
+   - [X] определения:[100%] 
+     + [X] размерностей                              -- dimensions ((mm matrix));
+     + [X] количества строк                          -- rows ((mm matrix));
+     + [X] количества столбцов                       -- cols ((mm matrix));
+   - [X] печати                                      -- print-object ((mm matrix) s);
+   - [X] извлечения: [100%] 
+     + [X] элментов;                                 -- mref ((mm matrix) i j);
+     + [X] строк;                                    -- row  ((mm matrix) row);
+     + [X] столбцов;                                 -- col  ((mm matrix) col);
+     + [X] диагонали: [100%] 
+       - [X] главной                                 -- main-diagonal  ((mm matrix));
+       - [X] побочной                                -- anti-diagonal  ((mm matrix));
+   - [X] записи:
+     + [X] элементов                                 -- (setf mref) (matrix row col);
+     + [X] строки                                    -- (setf row)  (new-value-lst (mm matrix) row);
+     + [X] столбца                                   -- (setf col)  (new-value-lst (mm matrix) col);
+     + [X] [100%] диагонали
+       - [X] главной                                 -- (setf main-diagonal) (elements (mm matrix));
+       - [X] побочной                                -- (setf anti-diagonal) (elements (mm matrix));
+   - [X] Опреции: [100%]
+     - [X] проверки равентсва                        -- matr-equal* ((m1 matrix) (m2 matrix) &key (test #'equal));
+     - [X] Сложения                                  -- matr-sum*   ((a matrix ) (b matrix));
+     - [X] Умножения [100%]
+       - [X] на матрицу                              -- matr-mult*  ((a matrix ) (b matrix));
+       - [X] на число                                -- matr-mult*  ((a number ) (b matrix));
+     - [X] транспонирования: [100%]
+       - [X] транспонирования                        -- transpose   ((mm matrix));
+       - [X] транспонирования                        -- transpose   ((mm cons));
+     - [X] перестановки: [100%]
+       + [X] строк;                                  -- swap-rows*  ((mm matrix) i j)
+       + [X] строк;                                  -- swap-rows   ((mm matrix) i j)
+       + [X] столбцов;                               -- swap-cols*  ((mm matrix) i j)
+       + [X] столбцов;                               -- swap-cols   ((mm matrix) i j)
+     - [X] Преобразования [100%]
+       + [X] в matrix->2d-list                       -- matrix->2d-list ((mm matrix))
+5. Определить функции тестирования для матриц
+6. [ ] Рефакторинг
+   - [ ] matr-class.lisp - в данном файле определения функций должны в конце имени иметь "-*";
+   - [ ] x-o.lisp        - файл, содержащий определение класса x-o крестики-нолики, выделить в отдельный проект.
+     - [ ] matr-set-ij-* - заменить на, что-то что применяется в настоящий момент.
+     - [ ] matr-rows-* - заменить на, что-то что применяется в настоящий момент.
+     - [ ] matr-cols-* - заменить на, что-то что применяется в настоящий момент.
+     - [ ] matr-set-row-* - заменить на, что-то что применяется в настоящий момент.
+     - [ ] matr-get-row-* - заменить на, что-то что применяется в настоящий момент.
+     - [ ] matr-get-col-* - заменить на, что-то что применяется в настоящий момент.
+* link FiveAm
 
-* TODO Разобраться с функциями с целью исключеия какой-либо из них. [0/3]
-- [ ] matr-ij (matr i j)
-- [ ] matr-set_ij (matr elem i j)
-- [ ] matr-set-ij (matr value i j)
+http://turtleware.eu/posts/Tutorial-Working-with-FiveAM.html
 
-** DONE Выполнить оптимизацию вычисления для функции matr-mnk за счет создания матрицы содержащей функции для аддитивного вычисления коэффициентов
-   SCHEDULED: <2018-11-30 Пт>
+https://common-lisp.net/project/fiveam/
 
-* DONE Определить класс matrix при помощи массива (array 2d) [%]
-Файл -  [[./matr-class.lisp]]
-Класс - matrix 
-
-Файл -  [[./matr-class-temp.lisp]] - содержит заготовки функций, которые необходимо переделать под класс  matrix.
-По окончании пределки функций данный файл подлежит удалению из проекта.
-
-* DONE Определить операции для класса matrix [100%]
-- [X] вывода строки, определяющией тип матрицы    -- matr-name-*  ((mm matrix));
-- [X] создания матрицы                            -- make-instance 'matrix
-- [X] инициализации матрицы                       -- initialize-instance  ((mm matrix) &key dimensions initial-element initial-contents data (element-type t));
-- [X] копирования матрицы                         -- copy  ((mm-ref matrix));
-- [X] проверка на квадратность                    -- squarep  ((mm matrix));
-- [X] определения:[100%] 
-  + [X] размерностей                              -- dimensions ((mm matrix));
-  + [X] количества строк                          -- rows ((mm matrix));
-  + [X] количества столбцов                       -- cols ((mm matrix));
-- [X] печати                                      -- print-object ((mm matrix) s);
-- [X] извлечения: [100%] 
-  + [X] элментов;                                 -- mref ((mm matrix) i j);
-  + [X] строк;                                    -- row  ((mm matrix) row);
-  + [X] столбцов;                                 -- col  ((mm matrix) col);
-  + [X] диагонали: [100%] 
-    - [X] главной                                 -- main-diagonal  ((mm matrix));
-    - [X] побочной                                -- anti-diagonal  ((mm matrix));
-- [X] записи:
-  + [X] элементов                                 -- (setf mref) (matrix row col);
-  + [X] строки                                    -- (setf row)  (new-value-lst (mm matrix) row);
-  + [X] столбца                                   -- (setf col)  (new-value-lst (mm matrix) col);
-  + [X] [100%] диагонали
-    - [X] главной                                 -- (setf main-diagonal) (elements (mm matrix));
-    - [X] побочной                                -- (setf anti-diagonal) (elements (mm matrix));
-- [X] Опреции: [100%]
-  - [X] проверки равентсва                        -- matr-equal* ((m1 matrix) (m2 matrix) &key (test #'equal));
-  - [X] Сложения                                  -- matr-sum*   ((a matrix ) (b matrix));
-  - [X] Умножения [100%]
-    - [X] на матрицу                              -- matr-mult*  ((a matrix ) (b matrix));
-    - [X] на число                                -- matr-mult*  ((a number ) (b matrix));
-  - [X] транспонирования: [100%]
-    - [X] транспонирования                        -- transpose   ((mm matrix));
-    - [X] транспонирования                        -- transpose   ((mm cons));
-  - [X] перестановки: [100%]
-    + [X] строк;                                  -- swap-rows*  ((mm matrix) i j)
-    + [X] строк;                                  -- swap-rows   ((mm matrix) i j)
-    + [X] столбцов;                               -- swap-cols*  ((mm matrix) i j)
-    + [X] столбцов;                               -- swap-cols   ((mm matrix) i j)
-  - [X] Преобразования [100%]
-    + [X] в matrix->2d-list                       -- matrix->2d-list ((mm matrix))
-* TODO Определить функции тестирования для матриц
-** DONE Отделить макросы в отдельный проект
-Взято из книги PCL Practical Common Lisp
-
-(defmacro deftest (name parameters &body body)
-  "Define a test function. Within a test function we can call
-   other test functions or use 'check' to run individual test
-   cases."
-  `(defun ,name ,parameters
-    (let ((*test-name* (append *test-name* (list ',name))))
-      ,@body)))
-
-(defmacro check (&body forms)
-  "Run each expression in 'forms' as a test case."
-  `(combine-results
-    ,@(loop for f in forms collect `(report-result ,f ',f))))
-
-(defmacro combine-results (&body forms)
-  "Combine the results (as booleans) of evaluating 'forms' in order."
-  (with-gensyms (result)
-    `(let ((,result t))
-      ,@(loop for f in forms collect `(unless ,f (setf ,result nil)))
-      ,result)))
-
-(defun report-result (result form)
-  "Report the results of a single test case. Called by 'check'."
-  (format t "~:[FAIL~;pass~] ... ~a: ~a~%" result *test-name* form)
-  result)
-
-* Рефакторинг
-
- matr-class.lisp - файл, содержащий определение класса matrix и его функции и методы, он временно исключен;
-В данном файле определения функций должны в конце имени иметь "-*";
-
- x-o.lisp        - файл, содержащий определение класса x-o крестики-нолики, он времено исключен
-
+https://www.darkchestnut.com/2018/how-to-write-5am-test-fixtures/

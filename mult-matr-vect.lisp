@@ -14,7 +14,7 @@
 		(70.0 8.0  10.0 3.0))))
 ;
 (mult-matr-vect  *m-test* ; Проверка правильности решения (системы линейных алгебраических уравнений) СЛАУ
-		 (matr-rotation (copy-array *m-test*)))
+		 (solve-linear-system-rotation (copy-array *m-test*)))
 "
   (let* ((n (array-dimension vect 0))
 	 (vect-rez (make-array n :initial-element 0.0d0)))

@@ -14,7 +14,7 @@
 "
   (let ((kk (cons '+ (mapcar #'(lambda(el1 el2) (cons '* (cons el1 el2)))
 			     (matr-to-point 
-			      (matr-las-gauss
+			      (solve-linear-system-gauss
 			       (matr-mnk vv ff ex_pts)))
 			     ff)))
 	(rez nil))

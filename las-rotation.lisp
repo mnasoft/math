@@ -1,7 +1,9 @@
 ;;;; las-rotation.lisp
 (in-package #:math)
+(annot:enable-annot-syntax)
 
-(defun matr-rotation (matr)
+@export
+@annot.doc:doc
   "Решение системы линейных алгебраических уравнений (СЛАУ) методом вращения, состоящего из:
 - сведения СЛАУ к треугольной системе;
 - нахождение корней методом обратного хода метода Гаусса
@@ -13,12 +15,13 @@ Matr - массив, у которого количество строк (пер
 Данная матрица меняется в процессе в процессе вычисления функции
 ;
 Пример использования:
-(let* ((data '((0.0d0 0.0d0 1.0d0 3.0d0)
-	       (0.0d0 1.0d0 0.0d0 2.0d0)
-	       (1.0d0 0.0d0 1.0d0 4.0d0)))
+ (require :cl-utilities)
+ (let* ((data '((0.0d0 0.0d0 1.0d0 3.0d0)
+                (0.0d0 1.0d0 0.0d0 2.0d0)
+                (1.0d0 0.0d0 1.0d0 4.0d0)))
        (mtr (make-array '(3 4) :initial-contents data))
        (m (cl-utilities:copy-array mtr)))
-  (values (math:matr-rotation mtr)))
+  (values (math:solve-linear-system-rotation mtr)))
 => #(1.0d0 2.0d0 3.0d0)
 ;
 (let* ((data '((1.0d0 0.0d0 1.0d0 4.0d0)
@@ -27,7 +30,7 @@ Matr - массив, у которого количество строк (пер
 	       ))
        (mtr (make-array '(3 4) :initial-contents data))
        (m (cl-utilities:copy-array mtr)))
-  (values (math:matr-rotation mtr)))
+  (values (math:solve-linear-system-rotation mtr)))
 => #(1.0d0 2.0d0 3.0d0)
 ;
 (let ((m-test (make-array '(3 4)
@@ -36,16 +39,17 @@ Matr - массив, у которого количество строк (пер
 			    (15.0d0 17.0d0  21.0d0  2.0d0)
 			    (70.0 8.0  10.0 3.0))
 			  )))
-  (matr-rotation (copy-array m-test)))
+  (solve-linear-system-rotation (copy-array m-test)))
 =>#(0.03588235294117642d0 2.182352941176469d0 -1.6970588235294102d0)
 ;
 Есть необходимость доработки с точки зрения решения разреженной СЛАУ!
 "
+(defun solve-linear-system-rotation (matr)
   (let ((n (array-dimension matr 0))	; Количество строк
 	(m (array-dimension matr 1))	; Количество столбцов
 	)
     (if (/= (1+ n) m)			; Проверка размерности
-	(break "ERROR IN FUNC matr-rotation:~%n+1 != m~%" ))
+	(break "ERROR IN FUNC solve-linear-system-rotation:~%n+1 != m~%" ))
     (do ((i 0 (1+ i)))
 	((not (< i n)) matr)
       (do ((a nil) (b nil) (c nil) (s nil) (tmp nil)

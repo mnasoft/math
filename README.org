@@ -26,7 +26,6 @@ PHILIPP K. JANERT
 
  hann     w(d) = (1-cos(2πd)) if |d| < 1; w(d) = 0 otherwise 
 * Установка gsll
-
 ** 64
 
 #+BEGIN_SRC bash
@@ -76,6 +75,11 @@ splot 'D:/PRG/msys32/home/namatv/splot.data' u 1:2:3
  #+BEGIN_SRC bash 
  git remote
  #+END_SRC
+
+ #+RESULTS:
+ | github.com |
+ | pi         |
+
 ** Коммит
  #+BEGIN_SRC bash :results none
  DATE=`date`
@@ -98,136 +102,4 @@ splot 'D:/PRG/msys32/home/namatv/splot.data' u 1:2:3
  git pull ${i} master
  done
  #+END_SRC
-* Temp
-
-| play                                 |            |   |
-| matr-cols                            |            |   |
-| 2d-list->matr                        |            |   |
-| point-to-matr                        |            |   |
-| matr-get-col                         |            |   |
-| matr-get-row                         |            |   |
-| matr-print                           |            |   |
-| matr-las-gauss                       |            |   |
-| matr-copy                            |            |   |
-| matr-set-row                         |            |   |
-| matr-to-string                       |            |   |
-| matr-new                             |            |   |
-| matr-name                            |            |   |
-| matr-to-point                        |            |   |
-| matr-osr-func                        |            |   |
-| matr-rows                            |            |   |
-| matr-mnk                             |            |   |
-| matr-ij                              |            |   |
-| matr-set_ij                          |            |   |
-| matr-mult                            |            |   |
-| matr->2d-list                        |            |   |
-| matr-triang                          |            |   |
-| matr-set-col                         |            |   |
-| matrix                               | cla        |   |
-| appr-bilinear                        | cla        |   |
-| appr-linear                          | cla        |   |
-| max-value                            | fn         |   |
-| list-matr-averange-not-nil-value     | fn         |   |
-| rtd                                  | fn         |   |
-| list-matr-row                        | fn         |   |
-| list-matr-prepend-col                | fn         |   |
-| gnuplot-data-plot                    | fn         |   |
-| exclude-nil-from-list                | fn         |   |
-| cartesian->spherical                 | fn         |   |
-| split-range                          | fn         |   |
-| square                               | fn         | + |
-| list-matr-append-row                 | fn         |   |
-| clean-flagrant-error                 | fn         |   |
-| list-matr-transpose                  | fn         |   |
-| averange-value                       | fn         |   |
-| make-table                           | fn         |   |
-| clean-min-flagrant-error             | fn         |   |
-| list-matr-averange-col-not-nil-value | fn         |   |
-| max-not-nil-value                    | fn         |   |
-| list-matr-averange-value             | fn         |   |
-| matr-osr-lambda*                     | fn         |   |
-| list-matr-averange-col-value         | fn         |   |
-| split-range-by-func                  | fn         |   |
-| list-matr-prepend-row                | fn         |   |
-| make-random-value-list               | fn         |   |
-| dtr                                  | fn         |   |
-| matr-rotation                        | fn         |   |
-| variation-coefficient                | fn         |   |
-| dispersion                           | fn         |   |
-| table-apply                          | fn         |   |
-| make-plot-data-file                  | fn         |   |
-| delta-max-value                      | fn         |   |
-| spherical->cartesian                 | fn         |   |
-| matr-osr-body*                       | fn         |   |
-| gauss-smoothing                      | fn         |   |
-| clean-max-flagrant-error             | fn         |   |
-| list-matr-col                        | fn         |   |
-| cauchy-smoothing                     | fn         |   |
-| list-matr-cols                       | fn         |   |
-| make-least-squares-matrix            | fn         |   |
-| averange-not-nil-value               | fn         |   |
-| hann-smoothing                       | fn         |   |
-| depth-sphere-along-cone              | fn         |   |
-| averange                             | fn         |   |
-| list-matr-append-col                 | fn         |   |
-| matr-osr-func*                       | fn         |   |
-| list-matr-max-col-not-nil-value      | fn         |   |
-| list-matr-print                      | fn         |   |
-| delta-min-value                      | fn         |   |
-| standard-deviation                   | fn         |   |
-| list-matr-make                       | fn         |   |
-| min-not-nil-value                    | fn         |   |
-| gnuplot-plot                         | fn         |   |
-| matr-new*                            | fn         |   |
-| gnuplot-data-splot                   | fn         |   |
-| polar->cartesian                     | fn         |   |
-| gnuplot-splot                        | fn         |   |
-| min-value                            | fn         |   |
-| list-matr-rows                       | fn         |   |
-| exp-smoothing                        | fn         |   |
-| list-vector-print                    | fn         |   |
-| list-matr-averange-row-value         | fn         |   |
-| list-matr-union                      | fn         |   |
-| appr_table                           | fn         |   |
-| list-matr-averange-row-not-nil-value | fn         |   |
-| list-matr-max-row-not-nil-value      | fn         |   |
-| swap-rows                            | generic-fn |   |
-| swap-rows*                           | generic-fn |   |
-| distance                             | generic-fn |   |
-| col                                  | generic-fn |   |
-| matr-triang*                         | generic-fn |   |
-| cols                                 | generic-fn |   |
-| matr-las-gauss*                      | generic-fn |   |
-| mref                                 | generic-fn |   |
-| matr-mult*                           | generic-fn |   |
-| gnuplot-data-to-file                 | generic-fn |   |
-| approximate                          | generic-fn |   |
-| main-diagonal                        | generic-fn |   |
-| transpose                            | generic-fn |   |
-| equivalent                           | generic-fn |   |
-| anti-diagonal                        | generic-fn |   |
-| swap-cols*                           | generic-fn |   |
-| distance-relative                    | generic-fn |   |
-| swap-cols                            | generic-fn |   |
-| matrix->2d-list                      | generic-fn |   |
-| approx-by-points                     | generic-fn |   |
-| dimensions                           | generic-fn |   |
-| copy                                 | generic-fn |   |
-| matr-sum*                            | generic-fn |   |
-| matr-obrhod*                         | generic-fn |   |
-| matrix-data                          | generic-fn |   |
-| rows                                 | generic-fn |   |
-| row                                  | generic-fn |   |
-| summ-distance                        | generic-fn |   |
-| refine-approximation-values          | generic-fn |   |
-| squarep                              | generic-fn |   |
-| matr-eval-*                          | generic-fn |   |
-| *apr-args-1*                         | var        |   |
-| *palette-defined-01*                 | var        |   |
-| *palette-defined*                    | var        |   |
-| *apr-func-1-3*                       | var        |   |
-| *apr-func-1-2*                       | var        |   |
-| *apr-func-1-4*                       | var        |   |
-| *pm3d-map*                           | var        |   |
-| *apr-func-1-5*                       | var        |   |
 

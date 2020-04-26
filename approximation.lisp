@@ -4,7 +4,7 @@
 (annot:enable-annot-syntax)
 
 @export
-(defun appr_table (x table)
+@annot.doc:doc
   "Выполняет линейную интерполяцию и экстраполяцию для значения x на таблице table
 Пример использования:
  (appr_table 0.5 '((0.0 0.0) (1.0 1.0) (2.0 4.0) (4.0 0.0)))
@@ -12,6 +12,7 @@
  (appr_table 3.0 '((0.0 0.0) (1.0 1.0) (2.0 4.0) (4.0 0.0)))
  Тест: (test-approximation-appr_table)
 "
+(defun appr_table (x table)
   (labels ((appr-line( XX PP0 PP1)
 	     (multiple-value-bind (x p0 p1)
 		 (values XX PP0 PP1)
@@ -49,35 +50,36 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
-(export '*apr-args-1*)
-(defparameter *apr-args-1* '(x1 yy)
-  "Шаблон для построения линейной функции одного параметра: x1 с двумя коэффициентами.")
+@export
+@annot.doc:doc
+"Шаблон для построения линейной функции одного параметра: x1 с двумя коэффициентами."
+(defparameter *apr-args-1* '(x1 yy))
 
-(export '*apr-func-1-2*)
-(defparameter *apr-func-1-2*
-  '((x1) (1.0) (yy))
-  "Шаблон для построения линейной функции одного параметра: x1 с двумя коэффициентами.")
+@export
+@annot.doc:doc
+ "Шаблон для построения линейной функции одного параметра: x1 с двумя коэффициентами."
+(defparameter *apr-func-1-2* '((x1) (1.0) (yy)))
 
-(export '*apr-func-1-3*)
-(defparameter *apr-func-1-3*
-  '((x1 x1) (x1) (1.0) (yy))
-  "Шаблон для построения квадратичной функции одного параметра: x1 c тремя коэффициентами.")
+@export
+@annot.doc:doc
+"Шаблон для построения квадратичной функции одного параметра: x1 c тремя коэффициентами."
+(defparameter *apr-func-1-3* '((x1 x1) (x1) (1.0) (yy)))
 
-(export '*apr-func-1-4*)
-(defparameter *apr-func-1-4*
-  '((x1 x1 x1) (x1 x1) (x1) (1.0) (yy))
-  "Шаблон для построения квадратичной функции одного параметра: x1 c четырьмя коэффициентами.")
+@export
+@annot.doc:doc
+"Шаблон для построения квадратичной функции одного параметра: x1 c четырьмя коэффициентами."
+(defparameter *apr-func-1-4* '((x1 x1 x1) (x1 x1) (x1) (1.0) (yy)))
 
-(export '*apr-func-1-5*)
-(defparameter *apr-func-1-5*
-  '((x1 x1 x1 x1) (x1 x1 x1) (x1 x1) (x1) (1.0) (yy))
-  "Шаблон для построения квадратичной функции одного параметра: x1 c пятью коэффициентами.")
+@export
+@annot.doc:doc
+"Шаблон для построения квадратичной функции одного параметра: x1 c пятью коэффициентами."
+(defparameter *apr-func-1-5* '((x1 x1 x1 x1) (x1 x1 x1) (x1 x1) (x1) (1.0) (yy)))
 
 (defun make-linear-interpolation (points &key (ff *apr-func-1-2*))
   "Интерполяция функцией одного переменного зависимости, представленной списком точек.
 Примеры использования см. (test-approximation-make-linear-interpolation)
 "
-  (eval (matr-osr-lambda* '(x1 yy) ff points)))
+  (eval (averaging-function-lambda '(x1 yy) ff points)))
 
 (defun make-linear-approximation-array (x1 a1d )
   (let ((a1-rez (make-array (mapcar #'1- (array-dimensions a1d)) :initial-element nil)))
@@ -146,7 +148,7 @@
 	 (1.0 0.0 5.0)
 	 (1.0 1.0 15.0)))
 "
-  (eval (matr-osr-lambda* '(x1 x2 yy) ff points)))
+  (eval (averaging-function-lambda '(x1 x2 yy) ff points)))
 
 (defun make-bilinear-approximation-array (a2d x1 x2)
   "Генерирует массив, содержащий в своих элементах функции двух переменных.

@@ -1,6 +1,7 @@
 ;;;; x-o.lisp
 
 (in-package #:math)
+(annot:enable-annot-syntax)
 
 (defclass x-o (matrix) ())
 
@@ -208,6 +209,7 @@ col    - [0..2] столбец, в который помещается ход и
 		       (read-from-string (concatenate 'string "(list " rr ")")))))
 	       (next-player)))))))
 
+@export
 (defun play ()
   (x-o-reset *xo*)
   (setf *player* 1)

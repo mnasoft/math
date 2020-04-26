@@ -1,60 +1,138 @@
 ;;;; matr-generics.lisp
 
 (in-package #:math)
+(annot:enable-annot-syntax)
 
-(export 'matr-name-*)
+@export
 (defgeneric matr-name-* (matrix) (:documentation "Matr"))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defgeneric matr-copy-* (matrix) (:documentation "Matr"))
+@export
+(defgeneric dimensions (matrix)
+  (:documentation
+   "@b(Описание:) обобщенная_функция @b(dimensions) возвращает список,
+содержащий размерности матрицы @b(matrix)."))
 
-(defgeneric matr-ij-*   (matrix row col) (:documentation "Matr"))
+@export
+(defgeneric rows (matrix)
+  (:documentation
+   "@b(Описание:) обобщенная_функция @b(rows) возврвщает количество строк
+матрицы @b(matrix)."))
 
-(defgeneric matr-set-ij-* (matrix value row col) (:documentation "Matr"))
+@export
+(defgeneric cols (matrix)
+  (:documentation
+   "@b(Описание:) обобщенная_функция @b(cols) возврвщает количество столбцов
+матрицы @b(matrix)."))
 
-(defgeneric matr-rows-*   (matrix) (:documentation "Matr"))
+@export
+(defgeneric equivalent (matrix-1 matrix-2 &key test) 
+    (:documentation "@b(Описание:) обобщенная_функция @b(equivalent) возвращает T,
+если матирицы @b(matrix-1) и @b(matrix-2) имеют одинаковые размерности и их 
+соответствующие элементы равны (для них функция @b(test) возвращает T )."))
 
-(defgeneric matr-cols-*   (matrix) (:documentation "Matr"))
+@export
+(defgeneric row (matrix row)
+    (:documentation "@b(Описание:) обобщенная_функция @b(row) 
+возвращает строку @(row) матрицы @b(matrix)."))
 
-(defgeneric matr-set-row-* (matrix row lst) (:documentation "Matr"))
+@export
+(defgeneric (setf row) (values matrix row)
+    (:documentation "@b(Описание:) обобщенная_функция @b((setf row))
+заменяет строку @b(row) матрицы @b(matrix) элементами, находящимися в списке @b(values)."))
 
-(defgeneric matr-get-row-* (matrix row) (:documentation "Matr"))
+@export
+(defgeneric col (matrix col)
+  (:documentation "@b(Описание:) обобщенная_функция @b(col) 
+возвращает строку @(col) матрицы @b(matrix)."))
 
-(defgeneric matr-set-col-* (matrix col lst) (:documentation "Matr"))
+@export
+(defgeneric (setf col) (values matrix col)
+    (:documentation "@b(Описание:) обобщенная_функция @b((setf col))
+заменяет столбец @b(col) матрицы @(matrix) элементами, находящимися в списке @b(values)."))
 
-(defgeneric matr-get-col-* (matrix col)  (:documentation "Matr"))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+@export
+(defgeneric main-diagonal (matrix)
+  (:documentation
+"@b(Описание:) обобщенная_функция @b(main-diagonal) извлекает главную диагональ матрицы.
 
-(defgeneric matr-major-diagonal* (matrix)
-  (:documentation 
-   "Извлекает главную диагональ матрицы
-Пример использования:
- (defparameter *mm* (make-instance 'matrix :rows 4  :data '((1d0 2d0 3d0) (4d0 5d0 6d0) (7d0 8d0 9d0) (10d0 11d0 12d0)))
- =>
- Matr 4х3
- [ 1.0d0     2.0d0     3.0d0    ]
- [ 4.0d0     5.0d0     6.0d0    ]
- [ 7.0d0     8.0d0     9.0d0    ]
- [ 10.0d0    11.0d0    12.0d0   ]
+ Элементы возвращаются в порядке возрастания строк."))
 
- (major-diagonal *mm*)
- (1.0d0 5.0d0 9.0d0)
+@export
+(defgeneric (setf main-diagonal) (elements matrix)
+  (:documentation
+"@b(Описание:) обобщенная_функция @b((setf main-diagonal)) устанавливет 
+новые значения элементам матрицы @b(matrix), находящимся на главной диагонали.
+
+ Элементы @b(elements) устанавливаются в порядке возрастания строк."))
+
+
+@export
+(defgeneric anti-diagonal (matrix)
+  (:documentation
+"@b(Описание:) обобщенная_функция @b(anti-diagonal)
+возвращает список элементов, находящихся на побочной диагонали матрицы.
+
+ В результирующем списке элементы следуют по строкам.
+
+ Д.б опредена только для квадратной матрицы."))
+
+@export
+(defgeneric (setf anti-diagonal) (elements matrix)
+  (:documentation
+"@b(Описание:) обобщенная_функция @b((setf anti-diagonal)) устанавливет 
+новые значения элементам матрицы @b(matrix), на побочной диагонали матрицы.
+
+ Элементы @b(elements) устанавливаются в порядке возрастания строк."))
+
+@export
+(defgeneric squarep (matrix) 
+  (:documentation
+   "@b(Описание:) обобщенная_функция @b(squarep) возвращает T, 
+если матрица @b(matrix) является квадратной."))
+
+@export
+(defgeneric mref (matrix row col)
+  (:documentation
+   "@b(Описание:) обобщенная_функция @b(mref) возвращает элемент матрицы,
+находяшийся в строке @b(row) и столбце @b(col)."))
+
+@export
+(defgeneric (setf mref) (value matrix row col)
+  (:documentation
+   "@b(Описание:) обобщенная_функция @b(mref) устанавливает
+значение @b(value) элементу матрицы, находящемуся в 
+строке @b(row) и столбце @b(col) ."))
+
+@export
+(defgeneric copy (obj)
+  (:documentation
+   "@b(Описание:) обобщенная_функция @b(copy) возвращает ссылку на новый объект,
+созданный на основе @b(obj)."))
+
+@export
+(defgeneric convert-to-triangular (matrix)
+  (:documentation
+   "@b(Описание:) обобщенная_функция @b(copy) 
+выполняет приведение  матрицы @b(matrix) к треугольному виду,
+для решения системы ЛУ методом Гаусса."))
+
+
+@export
+(defgeneric solve-linear-system-gauss (matrix)
+  (:documentation
+   "@b(Описание:) обобщенная_функция @b(solve-linear-system-gauss)
+возвращает матрицу, содержащую корни решения системы линейных уравений.
+
+ Решение системы линейных уравнений выполняется методом Гаусса.
 "))
 
-(defgeneric matr-minor-diagonal* (matrix)
-  (:documentation 
-   "Извлекает побочную диагональ матрицы
-Пример использования:
- (defparameter *mm* (make-instance 'matrix :rows 4  :data '((1d0 2d0 3d0) (4d0 5d0 6d0) (7d0 8d0 9d0) (10d0 11d0 12d0))))
- =>
- Matr 4х3
- [ 1.0d0     2.0d0     3.0d0    ]
- [ 4.0d0     5.0d0     6.0d0    ]
- [ 7.0d0     8.0d0     9.0d0    ]
- [ 10.0d0    11.0d0    12.0d0   ]
-
- (minor-diagonal *mm*)
-"))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defgeneric matr-eval-* (matrix) (:documentation "Matr"))
 
 (defgeneric matr-equal* (matrix1 matrix2 &key test) (:documentation "Проверка матриц на равенство"))
 
+;;;; (setf *print-case* :downcase)
+;;;; (setf *print-case* :upcase)
