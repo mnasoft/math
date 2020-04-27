@@ -34,7 +34,7 @@
 @export
 (defgeneric row (matrix row)
     (:documentation "@b(Описание:) обобщенная_функция @b(row) 
-возвращает строку @(row) матрицы @b(matrix)."))
+возвращает строку @b(row) матрицы @b(matrix)."))
 
 @export
 (defgeneric (setf row) (values matrix row)
@@ -44,12 +44,12 @@
 @export
 (defgeneric col (matrix col)
   (:documentation "@b(Описание:) обобщенная_функция @b(col) 
-возвращает строку @(col) матрицы @b(matrix)."))
+возвращает строку @b(col) матрицы @b(matrix)."))
 
 @export
 (defgeneric (setf col) (values matrix col)
     (:documentation "@b(Описание:) обобщенная_функция @b((setf col))
-заменяет столбец @b(col) матрицы @(matrix) элементами, находящимися в списке @b(values)."))
+заменяет столбец @b(col) матрицы @b(matrix) элементами, находящимися в списке @b(values)."))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 @export
@@ -114,7 +114,7 @@
 @export
 (defgeneric convert-to-triangular (matrix)
   (:documentation
-   "@b(Описание:) обобщенная_функция @b(copy) 
+   "@b(Описание:) обобщенная_функция @b(convert-to-triangular) 
 выполняет приведение  матрицы @b(matrix) к треугольному виду,
 для решения системы ЛУ методом Гаусса."))
 
@@ -128,6 +128,16 @@
  Решение системы линейных уравнений выполняется методом Гаусса.
 "))
 
+@export
+(defgeneric add (a b)
+  (:documentation "@b(Описание:) обобщенная_функция @b(multiply)
+выполняет сложение аргументов @b(a) и @b(b)."))
+
+@export
+(defgeneric multiply (a b)
+    (:documentation "@b(Описание:) обобщенная_функция @b(multiply) 
+выполняет выполняет перемножение аргументов @b(a) и @b(b)."))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defgeneric matr-eval-* (matrix) (:documentation "Matr"))
@@ -136,3 +146,4 @@
 
 ;;;; (setf *print-case* :downcase)
 ;;;; (setf *print-case* :upcase)
+

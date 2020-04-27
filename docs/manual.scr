@@ -147,7 +147,10 @@ learn how to do this.
    @cl:doc(setf-generic main-diagonal)   
 
    @cl:doc(generic anti-diagonal)
-   @cl:doc(setf-generic anti-diagonal)   
+   @cl:doc(setf-generic anti-diagonal)
+
+   @cl:doc(generic add)
+   @cl:doc(generic multiply)
 
    @cl:doc(generic solve-linear-system-gauss)
    )

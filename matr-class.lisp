@@ -3,6 +3,7 @@
 (in-package #:math)
 (annot:enable-annot-syntax)
 
+
 @annot.class:export-class
 (defclass <matrix> ()
   ((data :accessor matrix-data :initform nil :initarg :data)))
@@ -106,17 +107,16 @@
 			      (funcall test (aref a1 i j) (aref a2 i j)))))
 	   :initial-value t))
 @export
-(defmethod equivalent ((m1 math:<matrix>) (a2 array) &key (test #'semi-equal))
+(defmethod equivalent ((m1 <matrix>) (a2 array) &key (test #'semi-equal))
   (declare (type (array * (* *)) a2))  
-  (math:equivalent m1 (make-instance 'math:<matrix> :data a2) :test test))
+  (equivalent m1 (make-instance '<matrix> :data a2) :test test))
 
 @export
-(defmethod equivalent ((a1 array) (m2 math:<matrix>) &key (test #'semi-equal))
+(defmethod equivalent ((a1 array) (m2 <matrix>) &key (test #'semi-equal))
   (declare (type (array * (* *)) a1))
-  (math:equivalent (make-instance 'math:<matrix> :data a1) m2 :test test))
+  (equivalent (make-instance '<matrix> :data a1) m2 :test test))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 
 @export
 (defmethod row ((mm <matrix>) row)
@@ -470,11 +470,11 @@
   (cons 'defun (cons func-name (averaging-function-body vv ff ex_pts))))
 
 @export
-(defmethod matr-sum* ((a <matrix> ) (b <matrix>))
+(defmethod add ((a <matrix> ) (b <matrix>))
   "Выполняет сложение матриц a и b.
 Пример использования:
- (matr-sum* (matr-new 2 2 '(1 2 3 4)) (matr-new 2 2 '(1 2 3 4)))
- (matr-sum* (matr-new 2 2 '(1 2 3 4)) (matr-new 2 2 '(4 3 2 1)))
+ (add (matr-new 2 2 '(1 2 3 4)) (matr-new 2 2 '(1 2 3 4)))
+ (add (matr-new 2 2 '(1 2 3 4)) (matr-new 2 2 '(4 3 2 1)))
 "
   (assert (and (= (rows a) (rows b)) (= (cols a) (cols b))) (a b)
 	  "Матрицы A[~A,~A] и B[~A,~A] имеют отличаюшиеся размеры"
@@ -487,16 +487,30 @@
     a+b))
 
 @export
-(defmethod matr-mult* ((a <matrix> ) (b <matrix>))
-  "Выполняет перемножение матриц a и b
- (matr-mult  '(\"Matr\" 2 3
-	     ((0 . 1.0) (1 . 2.0) (2 . 3.0)
-	      (3 . 4.0) (4 . 5.0) (5 . 6.0)))
-	     '(\"Matr\" 3 2
-	       ((0 . 1.0) (1 . 2.0)
-		(2 . 3.0) (3 . 4.0)
-		(4 . 5.0) (5 . 6.0)))
-	     )
+(defmethod multiply ((a <matrix> ) (b <matrix>))
+  "@b(Описание:) метод @b(multiply (a <matrix> ) (b <matrix>))
+вполняет операцию умножения матриц a и b.
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (multiply (matr-new 2 3 '(1.0 2.0 3.0
+			   4.0 5.0 6.0))
+	   (matr-new 3 2 '(1.0 2.0
+			   3.0 4.0
+			   5.0 6.0)))
+ => Matr 2х2
+    [ 22.0 28.0 ]
+    [ 49.0 64.0 ]
+ (multiply (matr-new 3 2 '(1.0 2.0
+			   3.0 4.0
+			   5.0 6.0))
+	   (matr-new 2 3 '(1.0 2.0 3.0
+			   4.0 5.0 6.0)))
+ => Matr 3х3
+    [ 9.0  12.0 15.0 ]
+    [ 19.0 26.0 33.0 ]
+    [ 29.0 40.0 51.0 ]
+@end(code)
 "
   (let ((a_n (rows a))
 	(a_m (cols a))
@@ -504,7 +518,7 @@
 	(b_m (cols b))
 	(c nil))
     (assert (= a_m b_n) (a_m b_n) "Запрещенные размеры матриц для перемножения: A[~A,~A] x B[~A,~A]" a_n a_m b_n b_m)
-    (setf c (make-instance '<matrix> :dimensions (list a_n b_m) :initial-element 0.0))
+    (setf c (make-instance '<matrix> :dimensions (list a_n b_m) :initial-element 0))
     
     (do ((i 0 (1+ i))
 	 (a-row nil))
@@ -519,7 +533,7 @@
     c))
 
 @export
-(defmethod matr-mult* ((a number ) (b <matrix>))
+(defmethod multiply ((a number ) (b <matrix>))
   (let ((rez (make-instance '<matrix> :dimensions (dimensions b))))
     (loop :for i :from 0 :below (rows b) :do
 	 (loop :for j :from 0 :below (cols b) :do

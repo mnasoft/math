@@ -144,9 +144,23 @@
   (with-fixture fix-<matrix>-m1-3x5 ()
     (is-true (equal (math:row m1-3x5 0) '(11 12 13 14 15)))
     (is-true (equal (math:row m1-3x5 1) '(21 22 23 24 25)))
-    (is-true (equal (math:row m1-3x5 2) '(31 32 33 34 35)))))
+    (is-true (equal (math:row m1-3x5 2) '(31 32 33 34 35))))
+  (let ((arr (make-array '(5 2)
+			 :initial-contents '((0 1)
+					     (2 3)
+					     (4 5)
+					     (6 7)
+					     (8 9))))
+	(arr-1 (make-array '(5 2 3) :initial-element 0)))
+;;;(signal (row -1 arr)) ; => error
+;;;(signal (row  5 arr)) ; => error
+    (is-true (equalp (math:row  0 arr) #(0 1)))
+    (is-true (equalp (math:row  2 arr) #(4 5)))
+    (is-true (equalp (math:row  4 arr) #(8 9)))
+;;; (is-true (equal (row 2 arr-1)))
+    ))
 
-(def-test test-matrix-set-row ()
+(def-test matrix-set-row-tests ()
   "Пример использования: (test-matrix-set-row)"
   (with-fixture fix-<matrix>-m1-3x5 ()
     (let ((m-cp (math:copy m1-3x5)))
@@ -250,19 +264,19 @@
     (is-true (setf  (math:anti-diagonal m-5x5) '(1 2 3 4 5)))
     (is-true (math:equivalent m-5x5 m-5x5-d))))
 
-(def-test matrix-sum-tests ()
-  "Проверка операций сложения"
+(def-test matrix-add-tests ()
+  "Проверка операций сложения."
   (is-true (math:equivalent 
-	    (math:matr-sum* (math:matr-new 2 2 '(1 2 3 4)) (math:matr-new 2 2 '(1 2 3 4)))
+	    (math:add (math:matr-new 2 2 '(1 2 3 4)) (math:matr-new 2 2 '(1 2 3 4)))
 	    (math:matr-new 2 2 '(2 4 6 8))))
   (is-true (math:equivalent 
-	    (math:matr-sum* (math:matr-new 2 2 '(1 2 3 4)) (math:matr-new 2 2 '(4 3 2 1)))
+	    (math:add (math:matr-new 2 2 '(1 2 3 4)) (math:matr-new 2 2 '(4 3 2 1)))
 	    (math:matr-new 2 2 '(5 5 5 5 )))))
 
-(def-test matrix-mult-tests ()
-  "Проверка опрераций умноженея"
+(def-test matrix-multiply-tests ()
+  "Проверка опрераций умножения."
   (is-true (math:equivalent
-	    (math:matr-mult*  (math:matr-new 2 3 '(1.0 2.0 3.0
+	    (math:multiply  (math:matr-new 2 3 '(1.0 2.0 3.0
 						   4.0 5.0 6.0))
 			      (math:matr-new 3 2 '(1.0 2.0
 						   3.0 4.0
@@ -270,14 +284,14 @@
 	    (math:matr-new 2 2 '(22.0 28.0
 				 49.0 64.0))))
   (is-true (math:equivalent
-	    (math:matr-mult*  (math:matr-new 3 2 '(1.0 2.0 3.0 4.0 5.0 6.0))
+	    (math:multiply  (math:matr-new 3 2 '(1.0 2.0 3.0 4.0 5.0 6.0))
 			      (math:matr-new 2 3 '(1.0 2.0 3.0 4.0 5.0 6.0)))
 	    (math:matr-new 3 3 '( 9.0 12.0 15.0 19.0 26.0 33.0 29.0 40.0 51.0 ))))
-  (is-true (math:equivalent  (math:matr-mult* 2 (math:matr-new 3 2 '(1.0 2.0 3.0 4.0 5.0 6.0)))
+  (is-true (math:equivalent  (math:multiply 2 (math:matr-new 3 2 '(1.0 2.0 3.0 4.0 5.0 6.0)))
 			     (math:matr-new 3 2 '(2.0 4.0 6.0 8.0 10.0 12.0)))))
 
 (def-test matrix-transpose-tests ()
-  "Пример использования: (test-matrix-transpose)"
+  "Проверка операции транспонирования."
   (is-true  (math:transpose
 	     (math:matr-new 2 3 '(11 12 13
 				  21 22 23)))

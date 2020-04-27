@@ -15,15 +15,29 @@
 
 @export
 (defmethod row ((row integer) (a array))
-  "
-Тестирование:
- (row -1 (make-array '(5 2) :initial-contents '((0 1)(2 3)(4 5)(6 7)(8 9)))) 
- (row  5 (make-array '(5 2) :initial-contents '((0 1)(2 3)(4 5)(6 7)(8 9)))) 
- (row  0 (make-array '(5 2) :initial-contents '((0 1)(2 3)(4 5)(6 7)(8 9)))) #(0 1)
- (row  2 (make-array '(5 2) :initial-contents '((0 1)(2 3)(4 5)(6 7)(8 9)))) #(4 5)
- (row  4 (make-array '(5 2) :initial-contents '((0 1)(2 3)(4 5)(6 7)(8 9)))) #(8 9)
+  "@b(Описание:) метод @b(row) возвращает строку @b(row) из масства @d(a).
+Строка возвращается в виде вектора vector.
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+  (let ((arr (make-array '(5 2)
+			 :initial-contents '((0 1)
+					     (2 3)
+					     (4 5)
+					     (6 7)
+					     (8 9))))
+	(arr-1 (make-array '(5 2 3) :initial-element 0)))
+
+;;;(row -1 arr)             ; => error
+;;;(row  5 arr)             ; => error
+   (row  0 arr)		    ;=> #(0 1)
+   (row  2 arr)	            ;=> #(4 5)
+   (row  4 arr)		    ;=> #(8 9)
+   (row 2 arr-1)
+   )
+@end(code)
 "
-  (assert (= (array-rank a) 2))
+  (when (/= (array-rank a) 2) (error 'row-operation-not-appicable))
   (assert (< -1 row (array-dimension a 0)))
   (apply #'vector (loop :for j :from 0 :below (array-dimension a 1) :collect
 								    (aref a row j))))
