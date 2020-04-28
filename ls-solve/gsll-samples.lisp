@@ -5,33 +5,22 @@
 
 (defparameter *v* '(10d0 30d0 100d0 354d0))
 
-(defparameter *x* '((1.000000000000004d0)
-		    (1.999999999999995d0)
-		    (3.000000000000001d0)
-		    (4.000000000000000d0)))
-
 (let ((matrix (grid:make-foreign-array 'double-float :initial-contents *m*))
       (vec (grid:make-foreign-array 'double-float :initial-contents *v*)))
-  (multiple-value-bind (matrix perm) (gsll:lu-decomposition matrix)
-    (grid:copy-to (gsll:lu-solve matrix vec perm))))
+  (multiple-value-bind (matrix perm) (gsll:lu-decomposition matrix) (gsll:lu-solve matrix vec perm)))
 
-(let ((mm (grid:make-foreign-array 'double-float :initial-contents *m*))
-      (vv (grid:make-foreign-array 'double-float :initial-contents *v*))
-      )
-  (multiple-value-bind (matrix perm) (gsll:lu-decomposition mm)
-    (let ((x (gsll:lu-solve matrix vv perm)))
-      (format t "~S~%" x)
-      (gsll:matrix-product  (grid:make-foreign-array 'double-float :initial-contents *m*)
-			    (grid:make-foreign-array 'double-float :initial-contents *x*)))))
+(grid:copy-to (gsll:lu-solve matrix vec perm) grid:*default-grid-type*)
 
-    (grid:copy-to
-     (gsll:permute-inverse
-      perm
-      (gsll:matrix-product-triangular
+(MULTIPLE-VALUE-BIND (matrix PERM) (GSLL:LU-DECOMPOSITION *m*)
+  (LET ((GSLL::X (GSLL:LU-SOLVE matrix *v* PERM)))
+    (GRID:COPY-TO
+     (GSLL:PERMUTE-INVERSE
+      PERM
+      (GSLL:MATRIX-PRODUCT-TRIANGULAR
        matrix
-       (gsll:matrix-product-triangular matrix x 1 :upper :notrans :nonunit) 1 :lower :notrans :unit)))
+       (GSLL:MATRIX-PRODUCT-TRIANGULAR matrix GSLL::X 1 :UPPER :NOTRANS :NONUNIT) 1 :LOWER :NOTRANS :UNIT)))))
 
-    (gsll:matrix-product (gsll:matrix-transpose matrix)  )
+
 
 
 
