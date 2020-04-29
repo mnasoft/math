@@ -24,20 +24,61 @@ learn how to do this.
 @end(section)
 
 @begin(section)
+ @title(Преобразования_Координат) 
+ @cl:with-package[name="math"](
+  @cl:doc(function dtr)
+  @cl:doc(function rtd)
+  @cl:doc(function cartesian->polar)    
+  @cl:doc(function polar->cartesian)
+  @cl:doc(function cartesian->spherical)  
+  @cl:doc(function spherical->cartesian))
+@end(section)
+
+@begin(section)
+ @title(Статистические)
+  @cl:with-package[name="math"](
+   @cl:doc(function average)
+   @cl:doc(function average-value)
+   @cl:doc(function average-not-nil-value)
+   @cl:doc(function dispersion)
+
+   @cl:doc(function max-not-nil-value)
+   @cl:doc(function min-not-nil-value)  
+   @cl:doc(function max-value)
+   @cl:doc(function min-value)
+  
+   @cl:doc(function delta-max-value)
+   @cl:doc(function delta-min-value)
+  
+   @cl:doc(function exclude-nil-from-list)
+   @cl:doc(function square)
+   @cl:doc(function standard-deviation)
+   @cl:doc(function variation-coefficient))
+@end(section)
+
+@begin(section)
+ @title(Статистические-1)
+
+  @cl:doc(function grubbs)
+  @cl:doc(function grubbs-1)
+  @cl:doc(function grubbs-2)
+
+  @cl:doc(function make-random-value-list)
+
+  @cl:doc(function clean-flagrant-error)
+  @cl:doc(function clean-max-flagrant-error)
+  @cl:doc(function clean-min-flagrant-error)
+@end(section)
+
+@begin(section)
  @title(Функции)
+
 @begin(section)
  @title(Экспортируемые)
  @cl:with-package[name="math"](
   @cl:doc(function appr_table)
-
-
-  @cl:doc(function cartesian->spherical)
   @cl:doc(function cauchy-smoothing)
-
   @cl:doc(function depth-sphere-along-cone)
-
-  @cl:doc(function dtr)
-
   @cl:doc(function exp-smoothing)
   @cl:doc(function gauss-smoothing)
   @cl:doc(function gnuplot-data-plot)
@@ -78,51 +119,13 @@ learn how to do this.
   @cl:doc(function matr-osr-lambda*)
   @cl:doc(function solve-linear-system-rotation)
 
-  @cl:doc(function polar->cartesian)
-
-  @cl:doc(function rtd)
-  @cl:doc(function spherical->cartesian)
   @cl:doc(function split-range)
   @cl:doc(function split-range-by-func)
 
   @cl:doc(function table-apply))
 @end(section)
 
-@begin(section)
- @title(Статистические)
-  @cl:with-package[name="math"](
-   @cl:doc(function average)
-   @cl:doc(function average-value)
-   @cl:doc(function average-not-nil-value)
-   @cl:doc(function dispersion)
 
-   @cl:doc(function max-not-nil-value)
-   @cl:doc(function min-not-nil-value)  
-   @cl:doc(function max-value)
-   @cl:doc(function min-value)
-  
-   @cl:doc(function delta-max-value)
-   @cl:doc(function delta-min-value)
-  
-   @cl:doc(function exclude-nil-from-list)
-   @cl:doc(function square)
-   @cl:doc(function standard-deviation)
-   @cl:doc(function variation-coefficient))
-@end(section)
-
-@begin(section)
- @title(Статистические-1)
-
-  @cl:doc(function grubbs)
-  @cl:doc(function grubbs-1)
-  @cl:doc(function grubbs-2)
-
-  @cl:doc(function make-random-value-list)
-
-  @cl:doc(function clean-flagrant-error)
-  @cl:doc(function clean-max-flagrant-error)
-  @cl:doc(function clean-min-flagrant-error)
-@end(section)
   
 @end(section)
 

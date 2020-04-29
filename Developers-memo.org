@@ -46,7 +46,7 @@ basename `pwd`
 
 #+RESULTS: make-graph
 : #GRAPH(VC=18 RC=9)
-: (T:"make-belinear-interpolation" T:"make-bilinear-approximation-array" T:"grubbs" T:"gnuplot-splot" T:"gnuplot-data-splot" T:"make-linear-interpolation" T:"make-linear-approximation-array" T:"*apr-func-2-4*" T:"*a*" T:"*g-t*" T:"*palette-defined*" T:"*palette-defined-01*" T:"*apr-args-1*" T:"*pm3d-map*" T:"*apr-func-1-5*" T:"*apr-func-1-2*" T:"*apr-func-1-4*" T:"*apr-func-1-3*" )
+: (T:"make-belinear-interpolation" T:"make-bilinear-approximation-array" T:"grubbs" T:"gnuplot-splot" T:"gnuplot-data-splot" T:"make-linear-interpolation" T:"make-linear-approximation-array" T:"*a*" T:"*apr-func-2-4*" T:"*g-t*" T:"*palette-defined*" T:"*palette-defined-01*" T:"*apr-args-1*" T:"*pm3d-map*" T:"*apr-func-1-5*" T:"*apr-func-1-2*" T:"*apr-func-1-4*" T:"*apr-func-1-3*" )
 : ((T:"make-belinear-interpolation"->T:"*apr-func-2-4*") (T:"make-bilinear-approximation-array"->T:"*apr-func-2-4*") (T:"grubbs"->T:"*g-t*") (T:"gnuplot-splot"->T:"*palette-defined*") (T:"gnuplot-data-splot"->T:"*palette-defined*") (T:"gnuplot-splot"->T:"*pm3d-map*") (T:"gnuplot-data-splot"->T:"*pm3d-map*") (T:"make-linear-interpolation"->T:"*apr-func-1-2*") (T:"make-linear-approximation-array"->T:"*apr-func-1-2*") ))
 
 * Публикация

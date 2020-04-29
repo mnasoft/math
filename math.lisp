@@ -30,7 +30,7 @@
 
 @export
 @annot.doc:doc
-"@b(Описание:) функция depth-sphere-along-cone возвращает 
+"@b(Описание:) функция @b(depth-sphere-along-cone) возвращает 
 заглубление сферы с радиусом R в конуc с углом при вершине 
 равным alpha от линии пересечения конуса с цилиндром."
 (defun depth-sphere-along-cone (r alpha)

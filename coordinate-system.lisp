@@ -6,32 +6,31 @@
 
 @export
 @annot.doc:doc
-"@b(Описание:) dtr переводит значение, 
-заданное в градусах, в радианы.
+"@b(Описание:) функция @b(dtr) переводит значение, заданное в градусах, в радианы.
+
  @b(Пример использования:)
 
 @begin[lang=lisp](code)
- (dtr (rtd 1/2))
+ (dtr (rtd 1/2)) => 0.5d0
 @end(code)
 "
 (defun dtr (degree) (* pi 1/180 degree ))
 
 @export
 @annot.doc:doc
-"@b(Описание:) rtd переводит значение, 
+"@b(Описание:) функция @b(rtd) переводит значение, 
 заданное в радианах, в градусы.
 
  @b(Пример использования:)
 @begin[lang=lisp](code)
-  (rtd (dtr 45))
+  (rtd (dtr 45)) => 45.0d0
 @end(code)
 "
 (defun rtd (radian) (/ radian pi 1/180))
 
-
 @export
 @annot.doc:doc
-"@b(Описание:) polar->cartesian переводит полярные координаты в декартовы.
+"@b(Описание:) функция @b(polar->cartesian) переводит полярные координаты в декартовы.
 
  @b(Переменые:)
 @begin(list)
@@ -50,7 +49,8 @@
     (list (* radius (cos angle)) (* radius (sin angle)))))
 
 @export
-"@b(Описание:) cartesian->polar переводит декартовы координаты в полярные.
+@annot.doc:doc
+"@b(Описание:) функция @b(cartesian->polar) переводит декартовы координаты в полярные.
 
  @b(Переменые:)
 @begin(list)
@@ -60,7 +60,7 @@
 
  @b(Пример использования:)
 @begin[lang=lisp](code)
- (polar->cartesian (list 10.0 (dtr 45))) => (7.0710678118654755d0 7.071067811865475d0)
+ (cartesian->polar (list 10.0 (dtr 45))) => (10.030795096853893d0 0.07837892038914972d0) 
 @end(code)
 "
 (defun cartesian->polar (x-y)
@@ -70,7 +70,7 @@
 
 @export
 @annot.doc:doc
-"@b(Описание:) spherical->cartesian выполняет преобразование координат 
+"@b(Описание:) функция @b(spherical->cartesian) выполняет преобразование координат 
 из сферических в декартовы.
 
  @b(Переменые:)
@@ -94,7 +94,7 @@
 
 @export
 @annot.doc:doc
-"@b(Описание:) cartesian->spherical выполняет преобразование координат 
+"@b(Описание:) функция @b(cartesian->spherical) выполняет преобразование координат 
 из декартовых в сферические.
 
  @b(Переменые:)
