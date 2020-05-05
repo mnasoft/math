@@ -1,3 +1,4 @@
+
 * Ссылки
 1) Операции git  [[file:~/org/sbcl/Git-memo.org][Git-memo.org]]
 2) [[file:~/org/sbcl/codex.org][Генерирование документации при помощи Codex]]
@@ -46,8 +47,8 @@ basename `pwd`
 
 #+RESULTS: make-graph
 : #GRAPH(VC=18 RC=9)
-: (T:"make-belinear-interpolation" T:"make-bilinear-approximation-array" T:"grubbs" T:"gnuplot-splot" T:"gnuplot-data-splot" T:"make-linear-interpolation" T:"make-linear-approximation-array" T:"*a*" T:"*apr-func-2-4*" T:"*g-t*" T:"*palette-defined*" T:"*palette-defined-01*" T:"*apr-args-1*" T:"*pm3d-map*" T:"*apr-func-1-5*" T:"*apr-func-1-2*" T:"*apr-func-1-4*" T:"*apr-func-1-3*" )
-: ((T:"make-belinear-interpolation"->T:"*apr-func-2-4*") (T:"make-bilinear-approximation-array"->T:"*apr-func-2-4*") (T:"grubbs"->T:"*g-t*") (T:"gnuplot-splot"->T:"*palette-defined*") (T:"gnuplot-data-splot"->T:"*palette-defined*") (T:"gnuplot-splot"->T:"*pm3d-map*") (T:"gnuplot-data-splot"->T:"*pm3d-map*") (T:"make-linear-interpolation"->T:"*apr-func-1-2*") (T:"make-linear-approximation-array"->T:"*apr-func-1-2*") ))
+: (t:"make-belinear-interpolation" t:"make-bilinear-approximation-array" t:"grubbs" t:"gnuplot-splot" t:"gnuplot-data-splot" t:"make-linear-interpolation" t:"make-linear-approximation-array" t:"*a*" t:"*apr-func-2-4*" t:"*g-t*" t:"*palette-defined*" t:"*palette-defined-01*" t:"*apr-args-1*" t:"*pm3d-map*" t:"*apr-func-1-5*" t:"*apr-func-1-2*" t:"*apr-func-1-4*" t:"*apr-func-1-3*" )
+: ((t:"make-belinear-interpolation"->t:"*apr-func-2-4*") (t:"make-bilinear-approximation-array"->t:"*apr-func-2-4*") (t:"grubbs"->t:"*g-t*") (t:"gnuplot-splot"->t:"*palette-defined*") (t:"gnuplot-data-splot"->t:"*palette-defined*") (t:"gnuplot-splot"->t:"*pm3d-map*") (t:"gnuplot-data-splot"->t:"*pm3d-map*") (t:"make-linear-interpolation"->t:"*apr-func-1-2*") (t:"make-linear-approximation-array"->t:"*apr-func-1-2*") ))
 
 * Публикация
 #+name: publish
