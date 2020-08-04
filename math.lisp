@@ -160,39 +160,3 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-@annot.doc:doc
-  "
-Тестирование:
- (loop :for d :from 0 :to 4 :by 1/10 :collect
-     (list d (gauss-smoothing d)))
-"
-(defun gauss-smoothing (d)
-  (exp (* -1 d d)))
-
-@annot.doc:doc
-  "
- (loop :for d :from 0 :to 4 :by 1/10 :collect
-     (list d (exp-smoothing d)))
-"
-(defun exp-smoothing (d)
-  (exp (* -1 d)))
-
-@annot.doc:doc
-  "
-Тестирование:
- (loop :for d :from 0 :to 4 :by 1/10 :collect
-     (list d (cauchy-smoothing d)))
-"
-(defun cauchy-smoothing (d)
-  (/ 1 (+ 1 (* d d))))
-
-@annot.doc:doc
-  "
-Тестирование:
- (loop :for d :from 0 :to 4 :by 1/10 :collect
-     (list d (hann-smoothing d)))
-"
-(defun hann-smoothing (d)
-  (if (< d 0.5)
-      (* 1/2 ( + 1 ( cos (* 2 pi d))))
-      0))

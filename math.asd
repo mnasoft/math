@@ -11,9 +11,10 @@
 ;;;; :gsll
 	       )
   :components ((:file "package")
+	       (:file "smoothing")
                (:file "math")
 	       (:file "array")
-	       (:file "smoothing")
+
 	       (:file "gnuplot")	       
 	       (:file "approximation")	       
 	       (:file "statistics")

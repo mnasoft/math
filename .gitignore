@@ -4,7 +4,7 @@
 *.FASL
 *.fasl
 *.lisp-temp
-build
+build/
 \#*\#
 
 README.pdf

@@ -1,13 +1,39 @@
 ;;;; matr-class.lisp
 
 (in-package #:math)
-(annot:enable-annot-syntax)
 
+(annot:enable-annot-syntax) 
 
-@annot.class:export-class
+@export-class
 (defclass <matrix> ()
-  ((data :accessor matrix-data :initform nil :initarg :data)))
+  ((data :accessor matrix-data :initform nil :initarg :data
+	 :documentation "Сдержимое матрицы."))
+  (:documentation "Представляет матрицу, определенную через массив.
 
+Создание:
+@begin(list)
+ @item(при помощи функции matr-new)
+ @item( )
+@end(list)
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (matr-new 2 3)
+ => Matr 2х3
+    [ 0.0d0     0.0d0     0.0d0    ]
+    [ 0.0d0     0.0d0     0.0d0    ]
+ (matr-new 3 2 '(1 2 3 4 5))
+ => Matr 3х2
+    [ 1         2        ]
+    [ 3         4        ]
+    [ 5         NIL      ]
+@end(code)
+
+"))
+
+@doc
+"@b(Описание:) функция|метод|обобщенная_функция| @b(...)
+"
 (defmethod matr-name-* ((mm <matrix>)) "Matr")
 
 (defmethod print-object ((mm <matrix>) s)
@@ -168,8 +194,8 @@
 	:collect (mref mm i i)))
 
 @export
-(defmethod (setf main-diagonal) (elements (mm <matrix>) )
-  "@b(Пример использования:)
+@doc
+"@b(Пример использования:)
 @begin[lang=lisp](code)
  (defparameter *mm* 
    (make-instance '<matrix> 
@@ -190,14 +216,16 @@
         [ 7.0d0     8.0d0     33.0d0   ]
         [ 10.0d0    11.0d0    12.0d0   ]
 @end(code)"  
+(defmethod (setf main-diagonal) (elements (mm <matrix>) )
+
   (loop :for i :from 0 :below (min (rows mm) (cols mm))
 	:for el :in elements :by #'cdr  :do
 	  (setf (mref  mm i i) el))
   mm)
 
 @export
-(defmethod (setf main-diagonal) ((element number) (mm <matrix>) )
-  "@b(Пример использования:)
+@doc
+"@b(Пример использования:)
 @begin[lang=lisp](code)
  (defparameter *mm* 
    (make-instance '<matrix> 
@@ -224,13 +252,14 @@
   [ 7.0d0     8.0d0     11.0d0   ]
   [ 10.0d0    11.0d0    12.0d0   ]
 @end(code)"  
+(defmethod (setf main-diagonal) ((element number) (mm <matrix>) )
   (loop :for i :from 0 :below (min (rows mm) (cols mm))
 	:do (setf (mref  mm i i) element))
   mm)
 
 @export
-(defmethod  squarep ((mm <matrix>))
-  "@b(Пример использования:)
+@doc
+"@b(Пример использования:)
 @begin[lang=lisp](code)
   (defparameter *mm* (make-instance '<matrix>   :dimensions '(2 3)))
   *mm* => Matr 2х3
@@ -241,11 +270,13 @@
   (squarep *mm*)
 @end(code)
 "
+(defmethod  squarep ((mm <matrix>))
+
   (= (cols mm) (rows mm) ))
 
 @export
-(defmethod anti-diagonal ((mm <matrix>))
-  "@b(Пример использования:)
+@doc
+"@b(Пример использования:)
 @begin[lang=lisp](code)
  (defparameter *mm* 
   (make-instance '<matrix> 
@@ -260,6 +291,7 @@
 
   (anti-diagonal  *mm*) => (3.0d0 5.0d0 7.0d0)
   @end(code)"
+(defmethod anti-diagonal ((mm <matrix>))
   (assert (squarep mm) (mm) "Матрица не является квадратной~%~S" mm)
   (loop
      :for c :from 0 :below (cols mm)
@@ -351,9 +383,8 @@
     mtr))
 
 @export
-(defmethod convert-to-triangular ((matr <matrix> ))
-  "
- @b(Пример использования:)
+@doc
+"@b(Пример использования:)
 @begin[lang=lisp](code)
  (convert-to-triangular 
   (make-instance '<matrix> 
@@ -379,6 +410,7 @@
      [ 0.0d0     0.0d0     0.0d0     8.881784197001252d-16 ]
 
 @end(code)"
+(defmethod convert-to-triangular ((matr <matrix> ))
   (do ((n (rows matr)) (ie nil) (j 0 (1+ j)) (row-j nil) (row-i nil))
       ((>= j n) matr)
     (setf ie (1- n))
@@ -403,9 +435,12 @@
 	    (row matr i) row-i))))
 
 @export
+@doc
+"Обратный ход при вычислении решения системы линейных уравнений.
+
+Матрица matr должна быть приведена к треугольной;"
 (defmethod solve-linear-system-gauss-backward-run ((matr <matrix>))
-  "Обратный ход при вычислении решения системы линейных уравнений ;
-  Матрица matr должна быть приведена к треуголной		  ;"
+  
   (let* ((n (rows matr)) ;; Количество строк в матрице (матрица расширенная)
 	 (x (matr-new 1 n))) ;; Вектор результат
     (do ((i 0 (+ 1 i)))

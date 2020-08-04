@@ -1,6 +1,7 @@
 ;;;; approximation.lisp
 
 (in-package #:math)
+
 (annot:enable-annot-syntax)
 
 @export
@@ -114,10 +115,52 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-@annot.class:export-class
+@export-class
+@doc
+"@b(Описание:) Класс представляет линейную интерполяцию.
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (let ((a1 (make-instance '<appr-linear>
+			  :x1  (vector 1 2 3)
+			  :a1d (vector 1 4 9)))
+       (a2 (make-instance '<appr-linear>
+ 			  :x1  (vector 2 3  4)
+ 			  :a1d (vector 4 9 16))))
+   (loop :for i :from 0 :to 5 :by 1/5 :do
+     (format t \"| ~5F | ~5F | ~5F |~%\" i (approximate i a1) (approximate i a2))))
+ =>
+    | 0.0 |  -2.0 |  -6.0 |
+    | 0.2 |  -1.4 |  -5.0 |
+    | 0.4 |  -0.8 |  -4.0 |
+    | 0.6 |  -0.2 |  -3.0 |
+    | 0.8 |   0.4 |  -2.0 |
+    | 1.0 |   1.0 |  -1.0 |
+    | 1.2 |   1.6 |  -0.0 |
+    | 1.4 |   2.2 |   1.0 |
+    | 1.6 |   2.8 |   2.0 |
+    | 1.8 |   3.4 |   3.0 |
+    | 2.0 |   4.0 |   4.0 |
+    | 2.2 |   5.0 |   5.0 |
+    | 2.4 |   6.0 |   6.0 |
+    | 2.6 |   7.0 |   7.0 |
+    | 2.8 |   8.0 |   8.0 |
+    | 3.0 |   9.0 |   9.0 |
+    | 3.2 |  10.0 |  10.4 |
+    | 3.4 |  11.0 |  11.8 |
+    | 3.6 |  12.0 |  13.2 |
+    | 3.8 |  13.0 |  14.6 |
+    | 4.0 |  14.0 |  16.0 |
+    | 4.2 |  15.0 |  17.4 |
+    | 4.4 |  16.0 |  18.8 |
+    | 4.6 |  17.0 |  20.2 |
+    | 4.8 |  18.0 |  21.6 |
+    | 5.0 |  19.0 |  23.0 |
+@end(code)
+"
 (defclass <appr-linear> ()
-  ((x1       :accessor appr-linear-x1)
-   (a1d-func :accessor appr-linear-a1d-func)))
+  ((x1       :accessor appr-linear-x1       :documentation "Вектор аргументов.")
+   (a1d-func :accessor appr-linear-a1d-func :documentation "Вектор функций.")))
 
 (defmethod print-object ((a-l <appr-linear>) s)
   (format s "#<appr-linear> (~A ~A)"
@@ -125,10 +168,8 @@
 	  (appr-linear-a1d-func a-l)))
 
 (defmethod initialize-instance ((a-l <appr-linear>) &key (x1 (vector -2 -1 0 1 2)) (a1d (vector 4 1 0 1 4)))
-  (setf (appr-linear-x1       a-l)
-	x1
-	(appr-linear-a1d-func a-l)
-	(make-linear-approximation-array x1 a1d)))
+  (setf (appr-linear-x1       a-l) x1
+	(appr-linear-a1d-func a-l) (make-linear-approximation-array x1 a1d)))
 
 @export
 (defmethod approximate ((point number) (a-l <appr-linear>))
@@ -281,14 +322,14 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(export 'refine-approximation-values)
-(defgeneric refine-approximation-values (points values base-dist-s &key w-func delta iterations)
-  (:documentation
-   "Выполняет поиск массива значений такого, что:
+@export
+@doc
+"Выполняет поиск массива значений такого, что:
 - при сглаживании функцией w-func;
 - с размером сглаживания dx0;
 - в точках points (аргументы функции);
-- сумма отклонений сглаженных значений от значений, заданных в узлах не превысит значения delta."))
+- сумма отклонений сглаженных значений от значений, заданных в узлах не превысит значения delta."
+(defgeneric refine-approximation-values (points values base-dist-s &key w-func delta iterations))
 
 (defmethod refine-approximation-values ((points array) (values vector) (base-dists vector) &key (w-func #'gauss-smoothing) (delta 0.001) (iterations 10000))
   "Вычисляет такой массив, что при сглаживании его по формуле Гаусса
