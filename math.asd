@@ -7,7 +7,8 @@
   :serial t
   :in-order-to ((test-op (test-op "math/tests")))
   :depends-on (
-               :pcl-test
+	       :cl-annot
+;;;; :pcl-test
 ;;;; :gsll
 	       )
   :components ((:file "package")
