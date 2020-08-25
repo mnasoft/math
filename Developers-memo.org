@@ -30,10 +30,10 @@
   then
       echo "mnasoft-00"
   fi
-  if [[ `hostname` == "n118383" ]]
+  if [[ `hostname` == "N118383" ]]
   then
-      echo "n118383"
-      rm -rf "\\\\n133619\\home\\_namatv\\public_html\\Site\\Development\\Common-Lisp-Programs\\$CDIR\\"
-      cp -rf ./docs/build/* "\\\\n133619\\home\\_namatv\\public_html\\Site\\Development\\Common-Lisp-Programs\\"
+      echo "N118383"
+      mkdir -p //n133619/home/_namatv/public_html/Site/Development/Common-Lisp-Programs/$CDIR
+      rsync -Pavzh ./docs/build/$CDIR/html/* //n133619/home/_namatv/public_html/Site/Development/Common-Lisp-Programs/$CDIR
    fi
 #+END_SRC
