@@ -312,22 +312,22 @@
   (format s "~{~A ~}" (coerce (gnuplot-vector-origin    v) 'list ))
   (format s "~{~A ~}" (coerce (gnuplot-vector-direction v) 'list )))
 
-(defgeneric move (obj diplaysment))
+(defgeneric move (obj displacement))
 
-(defgeneric move (obj diplaysment))
+(defgeneric move (obj displacement))
 
-(defmethod move ((obj gnuplot-vector) (diplaysment vector))
+(defmethod move ((obj gnuplot-vector) (displacement vector))
   (with-slots (orign) obj
-    (assert (= (length diplaysment) (length orign )))
+    (assert (= (length displacement) (length orign )))
     (loop :for i :from 0 :below (length (gnuplot-vector-origin obj)) :do
-	 (setf (svref orign i)  (+ (svref orign i)  (svref diplaysment i))))
+	 (setf (svref orign i)  (+ (svref orign i)  (svref displacement i))))
     obj))
 
 (defmethod rotate ((obj gnuplot-vector) (angle number) (o vector))
   (with-slots (orign) obj
-    (assert (= (length diplaysment) (length orign )))
+    (assert (= (length displacement) (length orign )))
     (loop :for i :from 0 :below (length (gnuplot-vector-origin obj)) :do
-	 (setf (svref orign i)  (+ (svref orign i)  (svref diplaysment i))))
+	 (setf (svref orign i)  (+ (svref orign i)  (svref displacement i))))
     obj))
 
 ;(make-instance 'matrix :dimensions '(3 3))
