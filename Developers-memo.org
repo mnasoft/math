@@ -10,92 +10,30 @@
    - [[https://www.darkchestnut.com/2018/how-to-write-5am-test-fixtures/][Fixtures]]
  
 * Генерироване документации
-#+name: pwd
-#+BEGIN_SRC shell
-pwd
-#+END_SRC
-
-#+RESULTS: pwd
-: /home/namatv/quicklisp/local-projects/clisp/math
-
-#+name: basename-pwd
-#+BEGIN_SRC shell
-basename `pwd`
-#+END_SRC
-
-#+RESULTS: basename-pwd
-: math
-
-#+name:make-graph
-#+BEGIN_SRC lisp :var pwd=pwd :var basename-pwd=basename-pwd
-  ;;;; (require :codex)
-  ;;;; (require :mnas-package)
-  ;;;;
-  ;;;; (require :math)
-  (let ((pkg (find-package :math))
-	(fpath (concatenate
-		'string
-		(cond ((uiop:getenv "MSYS_HOME")) (t ""))
-		pwd "/docs/build/"
-		basename-pwd "/html/")))
-    (codex:document pkg)
-    (mnas-package:view-call-graph   pkg :out-type "png" :viewer nil :fpath fpath :fname "call-graph")
-    (mnas-package:view-system-graph pkg :out-type "png" :viewer nil :fpath fpath :fname "system-graph")
-    (mnas-package:view-class-graph  pkg :out-type "png" :viewer nil :fpath fpath :fname "class-graph")
-    (mnas-package:view-symbol-graph pkg :out-type "png" :viewer nil :fpath fpath :fname "symbol-graph"))
-
-#+END_SRC
-
+#+name: make-html
 #+BEGIN_SRC lisp
-  (defun codex-documentation-html (system-designator package-designator)
-    (let ((system (asdf:find-system system-designator)))
-      (concatenate 'string
-		   (namestring (asdf:system-source-directory system))
-		   "docs/build/"
-		   (string-downcase (package-name (find-package package-designator)))
-		   "/html")))
-
-  (defun make-codex-documentation (system-designator package-designator)
-    (let ((pkg  package-designator)
-	  (fpath (codex-documentation-html system-designator package-designator)))
-      (codex:document pkg)
-      (mnas-package:view-call-graph   pkg :out-type "png" :viewer nil :fpath fpath :fname "call-graph")
-      (mnas-package:view-system-graph pkg :out-type "png" :viewer nil :fpath fpath :fname "system-graph")
-      (mnas-package:view-class-graph  pkg :out-type "png" :viewer nil :fpath fpath :fname "class-graph")
-      (mnas-package:view-symbol-graph pkg :out-type "png" :viewer nil :fpath fpath :fname "symbol-graph")))
-
-  (make-documentation :math :math)
-
-
+  (mnas-package:make-codex-documentation  :math :math)
 #+END_SRC
 
 #+RESULTS:
 : #GRAPH(VC=18 RC=9)
-: (T:"make-belinear-interpolation" T:"make-bilinear-approximation-array" T:"grubbs" T:"gnuplot-splot" T:"gnuplot-data-splot" T:"make-linear-approximation-array" T:"make-linear-interpolation" T:"*a*" T:"*apr-func-2-4*" T:"*g-t*" T:"*pm3d-map*" T:"*apr-func-1-5*" T:"*apr-func-1-4*" T:"*palette-defined-01*" T:"*palette-defined*" T:"*apr-func-1-3*" T:"*apr-args-1*" T:"*apr-func-1-2*" )
-: ((T:"make-belinear-interpolation"->T:"*apr-func-2-4*") (T:"make-bilinear-approximation-array"->T:"*apr-func-2-4*") (T:"grubbs"->T:"*g-t*") (T:"gnuplot-splot"->T:"*pm3d-map*") (T:"gnuplot-data-splot"->T:"*pm3d-map*") (T:"gnuplot-splot"->T:"*palette-defined*") (T:"gnuplot-data-splot"->T:"*palette-defined*") (T:"make-linear-approximation-array"->T:"*apr-func-1-2*") (T:"make-linear-interpolation"->T:"*apr-func-1-2*") ))
-
-#+RESULTS: make-graph
-: #GRAPH(VC=18 RC=9)
-: (T:"make-bilinear-approximation-array" T:"make-belinear-interpolation" T:"grubbs" T:"gnuplot-splot" T:"gnuplot-data-splot" T:"make-linear-approximation-array" T:"make-linear-interpolation" T:"*apr-func-2-4*" T:"*g-t*" T:"*a*" T:"*pm3d-map*" T:"*apr-func-1-5*" T:"*apr-func-1-4*" T:"*palette-defined-01*" T:"*palette-defined*" T:"*apr-func-1-3*" T:"*apr-args-1*" T:"*apr-func-1-2*" )
-: ((T:"make-bilinear-approximation-array"->T:"*apr-func-2-4*") (T:"make-belinear-interpolation"->T:"*apr-func-2-4*") (T:"grubbs"->T:"*g-t*") (T:"gnuplot-splot"->T:"*pm3d-map*") (T:"gnuplot-data-splot"->T:"*pm3d-map*") (T:"gnuplot-splot"->T:"*palette-defined*") (T:"gnuplot-data-splot"->T:"*palette-defined*") (T:"make-linear-approximation-array"->T:"*apr-func-1-2*") (T:"make-linear-interpolation"->T:"*apr-func-1-2*") ))
+: (T:"grubbs" T:"make-belinear-interpolation" T:"make-bilinear-approximation-array" T:"gnuplot-splot" T:"gnuplot-data-splot" T:"make-linear-approximation-array" T:"make-linear-interpolation" T:"*g-t*" T:"*a*" T:"*apr-func-2-4*" T:"*pm3d-map*" T:"*apr-func-1-5*" T:"*apr-func-1-4*" T:"*palette-defined-01*" T:"*palette-defined*" T:"*apr-func-1-3*" T:"*apr-args-1*" T:"*apr-func-1-2*" )
+: ((T:"grubbs"->T:"*g-t*") (T:"make-belinear-interpolation"->T:"*apr-func-2-4*") (T:"make-bilinear-approximation-array"->T:"*apr-func-2-4*") (T:"gnuplot-splot"->T:"*pm3d-map*") (T:"gnuplot-data-splot"->T:"*pm3d-map*") (T:"gnuplot-splot"->T:"*palette-defined*") (T:"gnuplot-data-splot"->T:"*palette-defined*") (T:"make-linear-approximation-array"->T:"*apr-func-1-2*") (T:"make-linear-interpolation"->T:"*apr-func-1-2*") ))
 
 * Публикация
 #+name: publish
-#+BEGIN_SRC shell :var make-graph=make-graph
+#+BEGIN_SRC shell :var make-html=make-html
+  mkdir -p "$HOME/public_html/Common-Lisp-Programs/"
+  CDIR=`basename $PWD`
+  rsync -Pavzh ./docs/build/$CDIR/html/* $HOME/public_html/Common-Lisp-Programs/$CDIR 
   if [[ `hostname` == "mnasoft-00" ]]
   then
       echo "mnasoft-00"
-      mkdir -p "$HOME/public_html/Common-Lisp-Programs/"
-      CDIR=`basename $PWD`
-      rm -rf "$HOME/public_html/Common-Lisp-Programs/$CDIR/"
-      cp -rf ./docs/build/* "$HOME/public_html/Common-Lisp-Programs/"
   fi
-  if [[ `hostname` == "ko11-118383" ]]
+  if [[ `hostname` == "n118383" ]]
   then
-      CDIR=`basename $PWD`
+      echo "n118383"
       rm -rf "\\\\n133619\\home\\_namatv\\public_html\\Site\\Development\\Common-Lisp-Programs\\$CDIR\\"
       cp -rf ./docs/build/* "\\\\n133619\\home\\_namatv\\public_html\\Site\\Development\\Common-Lisp-Programs\\"
    fi
 #+END_SRC
-
-#+RESULTS: publish
