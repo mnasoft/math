@@ -7,7 +7,7 @@
   :serial t
   :in-order-to ((test-op (test-op "math/tests")))
   :depends-on (
-	       :cl-annot
+	       #:cl-annot #:cl-utilities
 ;;;; :pcl-test
 ;;;; :gsll
 	       )
