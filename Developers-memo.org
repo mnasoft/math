@@ -14,12 +14,6 @@
 #+BEGIN_SRC lisp
   (mnas-package:make-codex-documentation  :math :math)
 #+END_SRC
-
-#+RESULTS:
-: #GRAPH(VC=18 RC=9)
-: (T:"grubbs" T:"make-belinear-interpolation" T:"make-bilinear-approximation-array" T:"gnuplot-splot" T:"gnuplot-data-splot" T:"make-linear-approximation-array" T:"make-linear-interpolation" T:"*g-t*" T:"*a*" T:"*apr-func-2-4*" T:"*pm3d-map*" T:"*apr-func-1-5*" T:"*apr-func-1-4*" T:"*palette-defined-01*" T:"*palette-defined*" T:"*apr-func-1-3*" T:"*apr-args-1*" T:"*apr-func-1-2*" )
-: ((T:"grubbs"->T:"*g-t*") (T:"make-belinear-interpolation"->T:"*apr-func-2-4*") (T:"make-bilinear-approximation-array"->T:"*apr-func-2-4*") (T:"gnuplot-splot"->T:"*pm3d-map*") (T:"gnuplot-data-splot"->T:"*pm3d-map*") (T:"gnuplot-splot"->T:"*palette-defined*") (T:"gnuplot-data-splot"->T:"*palette-defined*") (T:"make-linear-approximation-array"->T:"*apr-func-1-2*") (T:"make-linear-interpolation"->T:"*apr-func-1-2*") ))
-
 * Публикация
 #+name: publish
 #+BEGIN_SRC shell :var make-html=make-html

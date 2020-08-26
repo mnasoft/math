@@ -4,8 +4,13 @@
 (annot:enable-annot-syntax)
 
 @export
-@annot.doc:doc
+@doc
 "@b(Описание:) функция @b(square) возвращает квадрат значения.
+
+ @b(Переменые:)
+@begin(list)
+ @item(x - число.)
+@end(list)
 
  @b(Пример использования:)
 @begin[lang=lisp](code)
@@ -15,7 +20,8 @@
 "
 (defun square (x) (* x x))
 
-@export @annot.doc:doc
+@export
+@doc
 "@b(Описание:) функция @b(average) возврвщает среднее значение для перечня величин.
 
  @b(Пример использования:)
@@ -28,7 +34,7 @@
   (/ (apply #'+ x) (length x)))
 
 @export
-@annot.doc:doc
+@doc
 "@b(Описание:) функция @b(average-value) возвращает среднее значение для списка величин.
 
  @b(Пример использования:)
@@ -41,7 +47,7 @@
   (/ (apply #'+ x) (length x)))
 
 @export
-@annot.doc:doc
+@doc
 "@b(Описание:) функция @b(exclude-nil-from-list) возвращает список в котором нет nil-элементов (они исключаются).
 
  @b(Пример использования:)
@@ -56,7 +62,7 @@
       (when el (push el res )))))
 
 @export
-@annot.doc:doc
+@doc
 "@b(Описание:) функция @b(average-not-nil-value) возвращает среднее значение
 для списка величин.
 
@@ -75,7 +81,7 @@
 
 
 @export
-@annot.doc:doc
+@doc
 "@b(Описание:) функция @b(min-value) возвращает максимальное значение для списка величин
 
  @b(Пример использования:)
@@ -87,7 +93,7 @@
   (apply #'min x))
 
 @export
-@annot.doc:doc
+@doc
 "@b(Описание:) функция @b(delta-min-value)
 возвращает отклонение минимальной величины от среднего значения
 для списка величин.
@@ -100,13 +106,13 @@
 (defun delta-min-value (x) (- (min-value x) (average-value x)))
 
 @export
-@annot.doc:doc
+@doc
 "@b(Описание:) функция min-not-nil-value возвращает минимальное значение для списка величин.
 
  @b(Переменые:)
-@begin(deflist)
- @term(x) @def(Список, содержащий числовые значения или nil.)
-@end(deflist)
+@begin(list)
+ @item(x - список, содержащий числовые значения или nil.)
+@end(list)
 
  @b(Пример использования:)
 @begin[lang=lisp](code)
@@ -117,7 +123,7 @@
   (min-value (exclude-nil-from-list x)))
 
 @export
-@annot.doc:doc
+@doc
   "@b(Описание:) функция max-value возвращает максимальное значение для списка величин
 
  @b(Пример использования:)
@@ -129,7 +135,7 @@
   (apply #'max x))
 
 @export
-@annot.doc:doc
+@doc
 "Возвращает отклонение максимальной величины от среднего значения
 для списка величин.
 
@@ -142,13 +148,13 @@
   (- (max-value x) (average-value x)))
 
 @export
-@annot.doc:doc
+@doc
 "@b(Описание:) функция max-not-nil-value возвращает максимальное значение для списка величин.
 
  @b(Переменые:)
-@begin(deflist)
- @term(x) @def(Список, содержащий числовые значения или nil.)
-@end(deflist)
+@begin(list)
+ @item(x - список, содержащий числовые значения или nil.)
+@end(list)
 
  @b(Пример использования:)
 @begin[lang=lisp](code)
@@ -159,7 +165,7 @@
   (max-value (exclude-nil-from-list x)))
 
 @export
-@annot.doc:doc
+@doc
 "@b(Описание:) функция dispersion возвращает дисперсию для списка величин.
 
  @b(Пример использования:)
@@ -174,14 +180,14 @@
     (/ summ n-1)))
 
 @export
-@annot.doc:doc
+@doc
 "@b(Описание:) функция standard-deviation возвращает среднеквадратичное 
 (стандартное) отклонение для списка величин.
 
  @b(Переменые:)
-@begin(deflist)
- @term(x) @def(Список, содержащий числовые значения.)
-@end(deflist)
+@begin(list)
+ @item(x - список, содержащий числовые значения.)
+@end(list)
 
  @b(Пример использования:)
 @begin[lang=lisp](code)
@@ -191,7 +197,7 @@
 (defun standard-deviation (x) (sqrt (dispersion x)))
 
 @export
-@annot.doc:doc
+@doc
 "@b(Описание:) возвращает 
 @link[uri=\"https://ru.wikipedia.org/wiki/Коэффициент_вариации\"](коэффициент вариации)
 для списка величин.
@@ -264,14 +270,14 @@
   )
 
 @export
-@annot.doc:doc
+@doc
 "@b(Описание:) функция grubbs вычисляет значение критерия Граббса (см. п. 6.1 см. ГОСТ Р 8.736-2011).
 
  @b(Переменые:)
-@begin(deflist)
-@term(n) @def(Количество повторяющихся измерений величины.)
-@term(q) @def(Уровень значимости в доях.)
-@end(deflist)
+@begin(list)
+@item(n - количество повторяющихся измерений величины.)
+@item(q - уровень значимости в доях.)
+@end(list)
 
  @b(Пример использования:)
 @begin[lang=lisp](code)
@@ -286,14 +292,14 @@
     (funcall arg-num (assoc n *G-t*))))
 
 @export
-@annot.doc:doc
+@doc
 "@b(Описание:) функция grubbs-max возврвщает значения критерия Граббса 
 для максимального значения списка величин.
 
  @b(Переменые:)
-@begin(deflist)
-@term(x) @def(Список, содержащий числовые значения.)
-@end(deflist)
+@begin(list)
+@item(x - список, содержащий числовые значения.)
+@end(list)
 
  @b(Пример использования:)
 @begin[lang=lisp](code)
@@ -306,14 +312,14 @@
      (standard-deviation x)))
 
 @export
-@annot.doc:doc
+@doc
 "@b(Описание:) функция grubbs-min возврвщает значения критерия Граббса 
 для минимального значения списка величин.
 
  @b(Переменые:)
-@begin(deflist)
-@term(x) @def(Список, содержащий числовые значения.)
-@end(deflist)
+@begin(list)
+@item(x - список, содержащий числовые значения.)
+@end(list)
 
  @b(Пример использования:)
 @begin[lang=lisp](code)
@@ -326,8 +332,9 @@
      (standard-deviation x)))
 
 @export
-@annot.doc:doc
-"Удаляет из статистики грубые промахи
+@doc
+"@b(Описание:) функция @b(clean-flagrant-error) удаляет из статистики грубые промахи.
+
  @b(Пример использования:)
 @begin[lang=lisp](code)
  (let ((lst '(10.0 10.1 10.15 10.2 12.0 9.9 5.0 9.9 10.1)))
@@ -353,7 +360,7 @@
       (t (setf exiting t))))))
 
 @export
-@annot.doc:doc
+@doc
 "Создает список случайных величин:
 
  @b(Переменые:)
@@ -378,7 +385,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 @export
-@annot.doc:doc
+@doc
 "Удаляет из статистики грубые промахи"
 (defun clean-min-flagrant-error (x)
   (do* ((lst (sort (copy-list x) #'<))
@@ -392,7 +399,7 @@
       (t (setf exiting t)))))
 
 @export
-@annot.doc:doc
+@doc
 "Удаляет из статистики грубые промахи"
 (defun clean-max-flagrant-error (x)
   (do* ((lst (sort (copy-list x) #'<))

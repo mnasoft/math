@@ -37,13 +37,9 @@ Math is a mathematical library that implements some algorithms of linear algebra
   @end(section)
   
  @end(section)
- @begin(section) @title(<appr-linear>)
-  @cl:with-package[name="math"](
-   @cl:doc(class <appr-linear>))
- @end(section)
 @end(section)
 
- (class <appr-bilinear>)
+
 
 @begin(section)
  @title(Статистические)
@@ -71,8 +67,8 @@ Math is a mathematical library that implements some algorithms of linear algebra
  @title(Статистические-1)
 
   @cl:doc(function grubbs)
-  @cl:doc(function grubbs-1)
-  @cl:doc(function grubbs-2)
+  @cl:doc(function grubbs-min)
+  @cl:doc(function grubbs-max)
 
   @cl:doc(function make-random-value-list)
 
@@ -144,61 +140,26 @@ plot \
 
 @begin(section) @title(Функции)
 
-@begin(section)
- @title(Экспортируемые)
+@begin(section) @title(Экспортируемые)
  @cl:with-package[name="math"](
-  @cl:doc(function appr_table)
-
   @cl:doc(function depth-sphere-along-cone)
-  @cl:doc(function gnuplot-data-plot)
-  @cl:doc(function gnuplot-data-splot)
-  @cl:doc(function gnuplot-plot)
-  @cl:doc(function gnuplot-splot)
-  @cl:doc(function list-matr-append-col)
-  @cl:doc(function list-matr-append-row)
-  @cl:doc(function list-matr-average-col-not-nil-value)
-  @cl:doc(function list-matr-average-col-value)
-  @cl:doc(function list-matr-average-not-nil-value)
-  @cl:doc(function list-matr-average-row-not-nil-value)
-  @cl:doc(function list-matr-average-row-value)
-  @cl:doc(function list-matr-average-value)
-  @cl:doc(function list-matr-col)
-  @cl:doc(function list-matr-cols)
-  @cl:doc(function list-matr-detach-last-col)
-  @cl:doc(function list-matr-get-last-col)
-  @cl:doc(function list-matr-make)
-  @cl:doc(function list-matr-max-col-not-nil-value)
-  @cl:doc(function list-matr-max-row-not-nil-value)
-  @cl:doc(function list-matr-prepend-col)
-  @cl:doc(function list-matr-prepend-row)
-  @cl:doc(function list-matr-print)
-  @cl:doc(function list-matr-row)
-  @cl:doc(function list-matr-rows)
-  @cl:doc(function list-matr-transpose)
-  @cl:doc(function list-matr-union)
-  @cl:doc(function list-vector-print)
   @cl:doc(function make-least-squares-matrix)
   @cl:doc(function make-plot-data-file)
-
   @cl:doc(function make-table)
   @cl:doc(function matr-new*)
   @cl:doc(function averaging-function-body)
   @cl:doc(function averaging-function-defun)
   @cl:doc(function matr-osr-lambda*)
   @cl:doc(function solve-linear-system-rotation)
-
   @cl:doc(function split-range)
   @cl:doc(function split-range-by-func)
-
-  @cl:doc(function table-apply))
+  @cl:doc(function table-apply)
+ )
 @end(section)
-
-
   
 @end(section)
 
-@begin(section)
- @title(Обобщенные)
+@begin(section) @title(Обобщенные)
   @cl:with-package[name="math"](
    @cl:doc(generic copy)
    @cl:doc(generic dimensions)
@@ -223,4 +184,90 @@ plot \
 
    @cl:doc(generic solve-linear-system-gauss)
    )
-@end(section)   
+@end(section) 
+
+@begin(section) @title(List-Matr)
+ @cl:with-package[name="math"](
+  @cl:doc(function list-matr-append-col)
+  @cl:doc(function list-matr-append-row)
+  @cl:doc(function list-matr-average-col-not-nil-value)
+  @cl:doc(function list-matr-average-col-value)
+  @cl:doc(function list-matr-average-not-nil-value)
+  @cl:doc(function list-matr-average-row-not-nil-value)
+  @cl:doc(function list-matr-average-row-value)
+  @cl:doc(function list-matr-average-value)
+  @cl:doc(function list-matr-col)
+  @cl:doc(function list-matr-cols)
+  @cl:doc(function list-matr-detach-last-col)
+  @cl:doc(function list-matr-get-last-col)
+  @cl:doc(function list-matr-make)
+  @cl:doc(function list-matr-max-col-not-nil-value)
+  @cl:doc(function list-matr-max-row-not-nil-value)
+  @cl:doc(function list-matr-prepend-col)
+  @cl:doc(function list-matr-prepend-row)
+  @cl:doc(function list-matr-print)
+  @cl:doc(function list-matr-row)
+  @cl:doc(function list-matr-rows)
+  @cl:doc(function list-matr-transpose)
+  @cl:doc(function list-matr-union)
+  @cl:doc(function list-vector-print)
+ )
+@end(section)
+
+@begin(section) @title(Gnuplot)
+ @cl:with-package[name="math"](
+  @cl:doc(function gnuplot-data-plot)
+  @cl:doc(function gnuplot-data-splot)
+  @cl:doc(function gnuplot-plot)
+  @cl:doc(function gnuplot-splot)
+  @cl:doc(variable *palette-defined*)
+  @cl:doc(variable *palette-defined-01*)
+  @cl:doc(variable *pm3d-map*)
+ )
+@end(section)
+
+@begin(section) @title(Аппроксимация)
+ Здесь под аппроксимацией понимается замена функции, заданной таблично,
+ семейтсвом функций, заданных аналитически на некоторых интервалах.
+ @begin(section) @title(Линейная)
+  Для линейной аппроксимации функции одного переменного используйте:
+  @begin(list)
+   @item(функцию @b(appr-table);)
+   @item(объект класса @b(<appr-linear>) и метод @b(approximate).)
+  @end(list)
+
+  @cl:with-package[name="math"](
+   @cl:doc(function appr-table)
+   @cl:doc(class <appr-linear>)
+   @cl:doc(method approximate (point number) (a-l <appr-linear>))
+  )
+  
+ @cl:with-package[name="math"](
+
+  @cl:doc(function approximation-linear)  
+  @cl:doc(function make-linear-interpolation)
+  @cl:doc(function make-linear-approximation-array)
+  
+  @cl:doc(function approximation-bilinear)
+  @cl:doc(function make-belinear-interpolation)
+  @cl:doc(function make-bilinear-approximation-array)
+
+  @cl:doc(function index-by-value)
+  @cl:doc(generic approx-by-points)  
+ )
+ @end(section)
+ @begin(section) @title(БиЛинейная)
+  Для билинейной аппроксимации функции двух переменных используйте:
+  @begin(list)
+   @item(объект класса @b(<appr-bilinear>) и метод @b(approximate).)
+  @end(list)
+  @cl:with-package[name="math"](
+   @cl:doc(class <appr-bilinear>)
+   @cl:doc(method approximate point (a-l <appr-bilinear>))
+  )
+  
+ @end(section)
+@end(section)
+
+
+

@@ -6,18 +6,18 @@
 ;;;; Тестирование
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(pcl:deftest test-approximation-appr_table ()
-  "Пример использования: (test-approximation-appr_table)"
+(pcl:deftest test-approximation-appr-table ()
+  "Пример использования: (test-approximation-appr-table)"
   (let ((points '((0.0 0.0) (1.0 1.0) (2.0 4.0) (4.0 0.0))))
-    (pcl:check (= (appr_table -1.0 points) -1.0))
-    (pcl:check (= (appr_table 0.0 points) 0.0))
-    (pcl:check (= (appr_table 0.5 points) 0.5))
-    (pcl:check (= (appr_table 1.0 points) 1.0))
-    (pcl:check (= (appr_table 1.5 points) 2.5))
-    (pcl:check (= (appr_table 2.0 points) 4.0))
-    (pcl:check (= (appr_table 3.0 points) 2.0))
-    (pcl:check (= (appr_table 4.0 points) 0.0))
-    (pcl:check (= (appr_table 6.0 points) -4.0))))
+    (pcl:check (= (appr-table -1.0 points) -1.0))
+    (pcl:check (= (appr-table 0.0 points) 0.0))
+    (pcl:check (= (appr-table 0.5 points) 0.5))
+    (pcl:check (= (appr-table 1.0 points) 1.0))
+    (pcl:check (= (appr-table 1.5 points) 2.5))
+    (pcl:check (= (appr-table 2.0 points) 4.0))
+    (pcl:check (= (appr-table 3.0 points) 2.0))
+    (pcl:check (= (appr-table 4.0 points) 0.0))
+    (pcl:check (= (appr-table 6.0 points) -4.0))))
 
 (pcl:deftest test-approximation-make-linear-interpolation ()
   "Пример использования: (test-approximation-make-linear-interpolation)"
@@ -122,7 +122,7 @@
 (pcl:deftest test-approximation ()
  "(test-approximation)"
   (pcl:combine-results
-    (test-approximation-appr_table)
+    (test-approximation-appr-table)
     (test-approximation-make-linear-interpolation )
     (test-approximation-make-linear-approximation-array)
     (test-refine-approximation-values)

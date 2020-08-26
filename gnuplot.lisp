@@ -8,7 +8,7 @@
 	 (list (coerce i 'float) (coerce (funcall func i) 'float))))
 
 @export
-@annot.doc:doc
+@doc
 "@b(Описание:) split-range
 
  @b(Пример использования:)
@@ -23,7 +23,7 @@
 
 
 @export
-@annot.doc:doc
+@doc
 "@b(Описание:) split-range-by-func
 
  @b(Пример использования:)
@@ -41,7 +41,7 @@
    (split-range (funcall func from) (funcall func to) steps)))
 
 @export
-@annot.doc:doc
+@doc
 "@b(Описание:) make-table выполняет формирование списка точек, разделенного на группы.
 
  @b(Пример использования:)
@@ -66,23 +66,34 @@
      lst-1)))
 
 @export
-@annot.doc:doc
-"
+@doc
+"@b(Описание:) функция @b(table-apply)
+
  @b(Пример использования:)
-  (table-apply (make-table (split-range 1 4 3) (split-range 5 7 2))  #'* 10.) =>
-  (table-apply (make-table (split-range 1 4 3) (split-range 5 7 2))  #'vector)
+@begin[lang=lisp](code)
+ (make-table (split-range 1 4 3) (split-range 5 7 2)) 
+ => 
+ (((1.0 5.0) (1.0 6.0) (1.0 7.0)) 
+  ((2.0 5.0) (2.0 6.0) (2.0 7.0))
+  ((3.0 5.0) (3.0 6.0) (3.0 7.0)) 
+  ((4.0 5.0) (4.0 6.0) (4.0 7.0)))
 
- (((1.0 5.0 #(1.0 5.0)) (1.0 6.0 #(1.0 6.0)) (1.0 7.0 #(1.0 7.0)))
- ((2.0 5.0 #(2.0 5.0)) (2.0 6.0 #(2.0 6.0)) (2.0 7.0 #(2.0 7.0)))
- ((3.0 5.0 #(3.0 5.0)) (3.0 6.0 #(3.0 6.0)) (3.0 7.0 #(3.0 7.0)))
- ((4.0 5.0 #(4.0 5.0)) (4.0 6.0 #(4.0 6.0)) (4.0 7.0 #(4.0 7.0))))
-
- (((1.0 5.0 50.0) (1.0 6.0 60.0) (1.0 7.0 70.0))
+ (table-apply (make-table (split-range 1 4 3) (split-range 5 7 2))  #'* 10.) 
+ =>
+ (((1.0 5.0  50.0) (1.0 6.0  60.0) (1.0 7.0  70.0))
   ((2.0 5.0 100.0) (2.0 6.0 120.0) (2.0 7.0 140.0))
   ((3.0 5.0 150.0) (3.0 6.0 180.0) (3.0 7.0 210.0))
-  ((4.0 5.0 200.0) (4.0 6.0 240.0) (4.0 7.0 280.0)))"
+  ((4.0 5.0 200.0) (4.0 6.0 240.0) (4.0 7.0 280.0)))
 
-(defun table-apply (table func &rest second-and-others &key )
+ (table-apply (make-table (split-range 1 4 3) (split-range 5 7 2))  #'vector)
+ =>
+ (((1.0 5.0 #(1.0 5.0)) (1.0 6.0 #(1.0 6.0)) (1.0 7.0 #(1.0 7.0)))
+  ((2.0 5.0 #(2.0 5.0)) (2.0 6.0 #(2.0 6.0)) (2.0 7.0 #(2.0 7.0)))
+  ((3.0 5.0 #(3.0 5.0)) (3.0 6.0 #(3.0 6.0)) (3.0 7.0 #(3.0 7.0)))
+  ((4.0 5.0 #(4.0 5.0)) (4.0 6.0 #(4.0 6.0)) (4.0 7.0 #(4.0 7.0))))
+@end(code)
+"
+(defun table-apply (table func &rest second-and-others)
   (assert (consp table))
   (mapcar
    #'(lambda (el)
@@ -132,8 +143,8 @@
 (defgeneric gnuplot-data-to-file (f-name data)
   (:documentation "COOL"))
 
-@annot.doc:doc
-  "
+@doc
+"
 Тестирование:
  (gnuplot-data-to-file \"~/data.data\" '((0 0)(1 1)(2 4)(3 9)(4 16)))
 "
@@ -142,9 +153,8 @@
     (mapc #'(lambda (el) (format os "~{~F ~}~%" el)) data)
     (format t "gnuplot -e \"plot '~A'\"  " f-name)))
 
-@annot.doc:doc
-  "
-Тестирование:
+@doc
+"Тестирование:
  (gnuplot-data-to-file \"~/data.data\" (make-array '(5 2) :initial-contents '((0 0)(1 1)(2 4)(3 9)(4 16))))
 "
 (defmethod gnuplot-data-to-file (f-name (data array))
@@ -159,14 +169,20 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 @export
+@doc
+"STUB"
 (defparameter *palette-defined* "set palette defined (0.05 'blue', 0.2 'cyan', 0.4 'green', 0.6 'yellow', 0.8 'orange', 1.0 'red')")
 
 @export
-(defparameter *palette-defined-01* "set palette defined (0 'blue', 0.1 'white', 0.2 'cyan', 0.3 'white', 0.4 'green', 0.5 'white', 0.6 'yellow', 0.7 'white', 0.8 'orange', 0.9 'white', 1 'red')")
+@doc
+"STUB"
+(defparameter *palette-defined-01*
+  "set palette defined (0 'blue', 0.1 'white', 0.2 'cyan', 0.3 'white', 0.4 'green', 0.5 'white', 0.6 'yellow', 0.7 'white', 0.8 'orange', 0.9 'white', 1 'red')")
 
 @export
+@doc
+"STUB"
 (defparameter *pm3d-map* "set pm3d map")
-
 
 @export
 (defun gnuplot-splot (f-name
@@ -237,22 +253,25 @@
 
 
 @export
-(defun gnuplot-data-plot (
-			  f-name data &key
-			  (terminal "set terminal pngcairo size 1400,500 enhanced font 'Verdana,10'")
-			  (preamble "set xrange [0:2.5]")
-			  (output   (concatenate 'string "set output '" f-name ".png'"))
-			  (plot    (concatenate 'string "plot '" f-name ".data' u 2:1"))
-;;;; :plot "plot 'plot2.data' u 1:2 with lines lt 1, 'plot2.data' u 1:3 with lines lt 2 ")					
-			  )
-  "Примеры использования:
-Пример 1
+@doc
+"@b(Описание:) функция @b(gnuplot-data-plot)
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+;;;; Пример 1
  (math:gnuplot-data-plot
  \"plot2\"
  (mapcar #'(lambda (x) (list x (sin x)(sqrt x)) )
 	 (math:split-range 0.0 10 1000) )
  :plot \"plot 'plot2.data' u 1:2 with lines lt 1, 'plot2.data' u 1:3 with lines lt 2 \")
+@end(code)
 "
+(defun gnuplot-data-plot (f-name data &key
+			  (terminal "set terminal pngcairo size 1400,500 enhanced font 'Verdana,10'")
+			  (preamble "set xrange [0:2.5]")
+			  (output   (concatenate 'string "set output '" f-name ".png'"))
+			  (plot    (concatenate 'string "plot '" f-name ".data' u 2:1")))
+;;;; :plot "plot 'plot2.data' u 1:2 with lines lt 1, 'plot2.data' u 1:3 with lines lt 2 ") 
   (assert (consp data))
   (assert (consp (first data)))
   (with-open-file (os (concatenate 'string f-name "." "data") :direction :output :if-exists :supersede :external-format :utf8)
@@ -271,12 +290,13 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 @export
+@doc
+"STUB"
 (defun gnuplot-plot (f-name &key
 		     (terminal "set terminal enhanced font 'Arial,14' pdfcairo size 42 cm, 29.7 cm")
 		     (preamble "set xrange [0:2.5]")
 		     (output   (concatenate 'string "set output '" f-name ".pdf'"))
 			      (plot    (concatenate 'string "plot '" f-name ".data' u 2:1")))
-    "STUB"
   (with-open-file (gp (concatenate 'string f-name "." "gp") :direction :output :if-exists :supersede :external-format :utf8)
     (when terminal (format gp "~A~%" terminal))
     (when preamble (format gp "~A~%" preamble)) 
@@ -288,13 +308,19 @@
   (uiop:run-program (concatenate 'string "sh" " " f-name "." "sh") :ignore-error-status t))
 
 @export
-@annot.doc:doc
-  "Примеры использования:
-Пример 1
+@doc
+"@b(Описание:) функция @b(make-plot-data-file)
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+;;;; Пример 1
  (make-plot-data-file
- \"plot2\"
- (mapcar #'(lambda (x) (list x (sin x)(sqrt x)) )
-	 (math:split-range 0.0 10 1000) ) )
+  \"plot2\"
+  (mapcar
+   #'(lambda (x)
+       (list x (sin x) (sqrt x)))
+   (math:split-range 0.0 10 1000)))
+@end(code)
 "
 (defun make-plot-data-file (f-name data)
   (assert (consp data))

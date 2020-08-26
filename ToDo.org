@@ -94,6 +94,7 @@ do
      - [ ] matr-set-row-* - заменить на, что-то что применяется в настоящий момент.
      - [ ] matr-get-row-* - заменить на, что-то что применяется в настоящий момент.
      - [ ] matr-get-col-* - заменить на, что-то что применяется в настоящий момент.
+7. [ ] Определить функции кубической интерполяции для функции одного переменного, заданной табличными значениями.
 * link FiveAm
 
 http://turtleware.eu/posts/Tutorial-Working-with-FiveAM.html
@@ -117,8 +118,6 @@ https://www.darkchestnut.com/2018/how-to-write-5am-test-fixtures/
  \[ z = \frac {\sum_i w(d_i) \cdot z_i} {\sum_i w(d_i) } \]
 
  \[ d_i = \sqrt { \left( \frac{x-x_i}{dx} \right)^2 + \left(\frac{y-y_i}{dy} \right)^2 } \]
-
-
 
   gauss    w(d) = exp(-d^2)                                   
                          

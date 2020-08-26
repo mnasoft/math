@@ -5,19 +5,19 @@
 (annot:enable-annot-syntax)
 
 @export
-@annot.doc:doc
-  "@b(Описание:) функция @b(appr_table) возврвщвет результат
- линейной интерполяции (или экстраполяции) для значения @b(x) на таблице @b(table)
+@doc
+"@b(Описание:) функция @b(appr-table) возвращает результат линейной 
+интерполяции (или экстраполяции) для значения @b(x) на таблице @b(table).
 
  @b(Пример использования:)
 @begin[lang=lisp](code)
- (appr_table 0.5 '((0.0 0.0) (1.0 1.0) (2.0 4.0) (4.0 0.0))) => 0.5
- (appr_table 1.5 '((0.0 0.0) (1.0 1.0) (2.0 4.0) (4.0 0.0))) => 2.5
- (appr_table 3.0 '((0.0 0.0) (1.0 1.0) (2.0 4.0) (4.0 0.0))) => 2.0
- Тест: (test-approximation-appr_table)
+ (appr-table 0.5 '((0.0 0.0) (1.0 1.0) (2.0 4.0) (4.0 0.0))) => 0.5
+ (appr-table 1.5 '((0.0 0.0) (1.0 1.0) (2.0 4.0) (4.0 0.0))) => 2.5
+ (appr-table 3.0 '((0.0 0.0) (1.0 1.0) (2.0 4.0) (4.0 0.0))) => 2.0
+ Тест: (test-approximation-appr-table)
 @end(code)
 "
-(defun appr_table (x table)
+(defun appr-table (x table)
   (labels ((appr-line( XX PP0 PP1)
 	     (multiple-value-bind (x p0 p1)
 		 (values XX PP0 PP1)
@@ -56,34 +56,41 @@
 
 
 @export
-@annot.doc:doc
+@doc
 "Шаблон для построения линейной функции одного параметра: x1 с двумя коэффициентами."
 (defparameter *apr-args-1* '(x1 yy))
 
 @export
-@annot.doc:doc
+@doc
  "Шаблон для построения линейной функции одного параметра: x1 с двумя коэффициентами."
 (defparameter *apr-func-1-2* '((x1) (1.0) (yy)))
 
 @export
-@annot.doc:doc
+@doc
 "Шаблон для построения квадратичной функции одного параметра: x1 c тремя коэффициентами."
 (defparameter *apr-func-1-3* '((x1 x1) (x1) (1.0) (yy)))
 
 @export
-@annot.doc:doc
+@doc
 "Шаблон для построения квадратичной функции одного параметра: x1 c четырьмя коэффициентами."
 (defparameter *apr-func-1-4* '((x1 x1 x1) (x1 x1) (x1) (1.0) (yy)))
 
 @export
-@annot.doc:doc
+@doc
 "Шаблон для построения квадратичной функции одного параметра: x1 c пятью коэффициентами."
 (defparameter *apr-func-1-5* '((x1 x1 x1 x1) (x1 x1 x1) (x1 x1) (x1) (1.0) (yy)))
 
-(defun make-linear-interpolation (points &key (ff *apr-func-1-2*))
-  "Интерполяция функцией одного переменного зависимости, представленной списком точек.
-Примеры использования см. (test-approximation-make-linear-interpolation)
+@doc
+"@b(Описание:) функция @b(make-linear-interpolation)
+Интерполяция функцией одного переменного зависимости, представленной списком точек.
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+Примеры использования см. 
+ (test-approximation-make-linear-interpolation)
+@end(code)
 "
+(defun make-linear-interpolation (points &key (ff *apr-func-1-2*))
   (eval (averaging-function-lambda '(x1 yy) ff points)))
 
 (defun make-linear-approximation-array (x1 a1d )
@@ -97,6 +104,10 @@
 		:ff *apr-func-1-2*)))
     a1-rez))
 
+@doc
+"@b(Описание:) функция @b(index-by-value)
+ (index-by-value 10 (vector 1 2 3 4 5))
+"
 (defun index-by-value (val vect)
   (let ((rez+ 0)
 	(rez- (- (array-dimension vect 0) 2)))
@@ -110,6 +121,9 @@
 	    (when (>= val (svref vect i)) (setf rez- (1- i))))
        rez-))))
 
+@doc
+"@b(Описание:) функция @b(approximation-linear) 
+"
 (defun approximation-linear (x1 a-x1 a-func)
   (funcall (aref a-func (index-by-value x1 a-x1)) x1))
 
@@ -117,7 +131,7 @@
 
 @export-class
 @doc
-"@b(Описание:) Класс представляет линейную интерполяцию.
+"@b(Описание:) Класс @b(<appr-linear>) представляет линейную интерполяцию.
 
  @b(Пример использования:)
 @begin[lang=lisp](code)
@@ -172,9 +186,12 @@
 	(appr-linear-a1d-func a-l) (make-linear-approximation-array x1 a1d)))
 
 @export
+@doc
+"@b(Описание:) метод @b(approximate) возвращает значение функции одного переменного 
+в точке point для функции заданой таблично и аппроксимированной объектом @b(a-l).
+"
 (defmethod approximate ((point number) (a-l <appr-linear>))
   (approximation-linear point (appr-linear-x1 a-l) (appr-linear-a1d-func a-l)))
-
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;; Линейная интерполяции функции двух переменных (билинейная интерполяция)
@@ -229,7 +246,9 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-
+@export-class
+@doc
+"@b(Описание:) Класс @b(<appr-bilinear>) представляет билинейную интерполяцию."
 (defclass <appr-bilinear> ()
   ((x1       :accessor appr-bilinear-x1)
    (x2       :accessor appr-bilinear-x2)
@@ -247,6 +266,9 @@
 	(appr-bilinear-a2d-func a-l) (make-bilinear-approximation-array  a2d x1 x2)))
 
 @export
+@doc
+"@b(Описание:) метод @b(approximate)
+"
 (defmethod approximate (point (a-l <appr-bilinear>))
   (approximation-bilinear (aref point 0) (aref point 1) (appr-bilinear-x1 a-l) (appr-bilinear-x2 a-l) (appr-bilinear-a2d-func a-l)))
 
