@@ -93,6 +93,8 @@
 (defun make-linear-interpolation (points &key (ff *apr-func-1-2*))
   (eval (averaging-function-lambda '(x1 yy) ff points)))
 
+@doc
+"STUB"
 (defun make-linear-approximation-array (x1 a1d )
   (let ((a1-rez (make-array (mapcar #'1- (array-dimensions a1d)) :initial-element nil)))
     (loop :for r :from 0 :below (array-dimension a1-rez 0) :do
@@ -212,10 +214,12 @@
 "
   (eval (averaging-function-lambda '(x1 x2 yy) ff points)))
 
-(defun make-bilinear-approximation-array (a2d x1 x2)
-  "Генерирует массив, содержащий в своих элементах функции двух переменных.
+@doc
+"@b(Описание:) функция @b(make-bilinear-approximation-array) генерирует 
+массив, содержащий в своих элементах функции двух переменных.
 Функции представляют билинейную интерполяцию массива a2d.
 Результирующий массив имеет размерности на единицу меньшую по всем направлениям (строкам и столбцам).
+@begin[lang=lisp](code)
 |-------+---+----------+----------+----------+----------+----------|
 |       |   | x2[0]    | x2[1]    | x2[2]    | x2[3]    | x2[4]    |
 |-------+---+----------+----------+----------+----------+----------|
@@ -225,8 +229,9 @@
 | x1[2] |   | a2d[2,0] | a2d[2,1] | a2d[2,2] | a2d[2,3] | a2d[2,4] |
 | x1[3] |   | a2d[3,0] | a2d[3,1] | a2d[3,2] | a2d[3,3] | a2d[3,4] |
 | x1[4] |   | a2d[4,0] | a2d[4,1] | a2d[4,2] | a2d[4,3] | a2d[4,4] |
-
+@end(code)
 "
+(defun make-bilinear-approximation-array (a2d x1 x2)
   (when (/= 2 (array-rank a2d)) (error "In make-bilinear-approximation-array: (/= 2 (array-rank a2d))"))
   (let ((a2-rez (make-array (mapcar #'1- (array-dimensions a2d)) :initial-element nil)))
     (loop :for r :from 0 :below (array-dimension a2-rez 0) :do
@@ -241,6 +246,8 @@
 		     :ff *apr-func-2-4*))))
     a2-rez))
 
+@doc
+"STUB"
 (defun approximation-bilinear (v1 v2 a-x1 a-x2 a-func)
   (funcall (aref a-func (index-by-value v1 a-x1) (index-by-value v2 a-x2)) v1 v2))
 
@@ -250,9 +257,10 @@
 @doc
 "@b(Описание:) Класс @b(<appr-bilinear>) представляет билинейную интерполяцию."
 (defclass <appr-bilinear> ()
-  ((x1       :accessor appr-bilinear-x1)
-   (x2       :accessor appr-bilinear-x2)
-   (a2d-func :accessor appr-bilinear-a2d-func)))
+  ((x1       :accessor appr-bilinear-x1 :documentation "Вектор реперных значений по первому направлению (измерению).")
+   (x2       :accessor appr-bilinear-x2 :documentation "Вектор реперных значений по второму направлению (измерению).")
+   (a2d-func :accessor appr-bilinear-a2d-func :documentation "Двумерный массив функций размерности которого, на единицу 
+меньше количества реперных значений по соответствующему направлению (измерению).")))
 
 (defmethod print-object ((a-l <appr-bilinear>) s)
   (format s "#<appr-bilinear> (~A ~A ~A)"

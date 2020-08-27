@@ -31,3 +31,9 @@
       rsync -Pavzh ./docs/build/$CDIR/html/* //n133619/home/_namatv/public_html/Site/Development/Common-Lisp-Programs/$CDIR
    fi
 #+END_SRC
+
+#+RESULTS: publish
+| sending    | incremental | file  | list     |         |       |          |           |
+| sent       | 769         | bytes | received |      13 | bytes | 1.56K    | bytes/sec |
+| total      | size        | is    | 5.09M    | speedup | is    | 6,507.64 |           |
+| mnasoft-00 |             |       |          |         |       |          |           |
