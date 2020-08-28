@@ -490,54 +490,6 @@
     x))
 
 @export
-(defun averaging-function-body (vv ff ex_pts)
-  " @b(Пример использования:)
-@begin[lang=lisp](code)
- (averaging-function-body '(xx yy) 
-		 '((xx xx) (xx) (1.0) (yy)) 
-		 '((-1.0 1.0) (0.0 0.0) (2.0 4.0) (3.0 9.0)))
-
- => ((XX) (+ (* 1.0d0 XX XX) (* 0.0d0 XX) (* 0.0d0 1.0)))
-@end(code)
-"
-  (let ((kk
-	 (cons '+
-	     (mapcar
-	      #'(lambda(el1 el2)
-		  (cons '* (cons el1 el2)))
-	      (row (solve-linear-system-gauss (make-least-squares-matrix vv ff ex_pts)) 0)
-	      ff)))
-	(rez nil))
-    (setf rez (list (reverse (cdr(reverse vv))) kk))
-    rez))
-
-@export
-(defun averaging-function-lambda (vv ff ex_pts)
-  "
- @b(Пример использования:)
-@begin[lang=lisp](code)
- (averaging-function-lambda '(xx yy) 
-		 '((xx xx) (xx) (1.0) (yy)) 
-		 '((-1.0 1.0) (0.0 0.0) (2.0 4.0) (3.0 9.0)))
- => (LAMBDA (XX) (+ (* 1.0d0 XX XX) (* 0.0d0 XX) (* 0.0d0 1.0)))
-@end(code)"
-  (cons 'lambda (averaging-function-body vv ff ex_pts)))
-
-@export
-(defun averaging-function-defun (vv ff ex_pts func-name)
-  "
- @b(Пример использования:)
-@begin[lang=lisp](code)
- (averaging-function-defun '(xx yy) 
-			   '((xx xx) (xx) (1.0) (yy)) 
-			   '((-1.0 1.0) (0.0 0.0) (2.0 4.0) (3.0 9.0))
-			   'coool-func)
- => (DEFUN COOOL-FUNC (XX) (+ (* 1.0d0 XX XX) (* 0.0d0 XX) (* 0.0d0 1.0)))
-@end(code)
-"
-  (cons 'defun (cons func-name (averaging-function-body vv ff ex_pts))))
-
-@export
 (defmethod add ((a <matrix> ) (b <matrix>))
   "Выполняет сложение матриц a и b.
 Пример использования:

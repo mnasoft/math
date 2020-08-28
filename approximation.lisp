@@ -53,10 +53,64 @@
 	 (setf res (list i (1+ i))))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;; Разработка линейной интерполяции функции одного переменного
+;;;; Аппроксимационные полиномиальные зависимости функции нескольких переменных.
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 @export
+@doc
+" @b(Пример использования:)
+@begin[lang=lisp](code)
+ (averaging-function-body '(xx yy) 
+		 '((xx xx) (xx) (1.0) (yy)) 
+		 '((-1.0 1.0) (0.0 0.0) (2.0 4.0) (3.0 9.0)))
+
+ => ((XX) (+ (* 1.0d0 XX XX) (* 0.0d0 XX) (* 0.0d0 1.0)))
+@end(code)
+"
+(defun averaging-function-body (vv ff ex_pts)
+  (let ((kk
+	 (cons '+
+	     (mapcar
+	      #'(lambda(el1 el2)
+		  (cons '* (cons el1 el2)))
+	      (row (solve-linear-system-gauss (make-least-squares-matrix vv ff ex_pts)) 0)
+	      ff)))
+	(rez nil))
+    (setf rez (list (reverse (cdr(reverse vv))) kk))
+    rez))
+
+@export
+@doc
+"
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (averaging-function-lambda '(xx yy) 
+		 '((xx xx) (xx) (1.0) (yy)) 
+		 '((-1.0 1.0) (0.0 0.0) (2.0 4.0) (3.0 9.0)))
+ => (LAMBDA (XX) (+ (* 1.0d0 XX XX) (* 0.0d0 XX) (* 0.0d0 1.0)))
+@end(code)"
+(defun averaging-function-lambda (vv ff ex_pts)
+  (cons 'lambda (averaging-function-body vv ff ex_pts)))
+
+@export
+@doc
+"
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (averaging-function-defun '(xx yy) 
+			   '((xx xx) (xx) (1.0) (yy)) 
+			   '((-1.0 1.0) (0.0 0.0) (2.0 4.0) (3.0 9.0))
+			   'coool-func)
+ => (DEFUN COOOL-FUNC (XX) (+ (* 1.0d0 XX XX) (* 0.0d0 XX) (* 0.0d0 1.0)))
+@end(code)
+"
+(defun averaging-function-defun (vv ff ex_pts func-name)
+  (cons 'defun (cons func-name (averaging-function-body vv ff ex_pts))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;; Разработка линейной интерполяции функции одного переменного
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 @doc
 "@b(Описание:) функция @b(make-linear-interpolation) возвращает функциональной 
 зависимость, аппроксимируемую по функции одного переменного, заданной таблично.
