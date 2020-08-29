@@ -1,8 +1,10 @@
 ;;;; approximation.lisp
 
+(annot:enable-annot-syntax)
+
 (in-package #:math)
 
-(annot:enable-annot-syntax)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 @export
 @doc
@@ -51,47 +53,99 @@
 	 (setf res (list i (1+ i))))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;; Аппроксимационные полиномиальные зависимости функции нескольких переменных.
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+@export
+@doc
+" @b(Пример использования:)
+@begin[lang=lisp](code)
+ (averaging-function-body '(xx yy) 
+		 '((xx xx) (xx) (1.0) (yy)) 
+		 '((-1.0 1.0) (0.0 0.0) (2.0 4.0) (3.0 9.0)))
+
+ => ((XX) (+ (* 1.0d0 XX XX) (* 0.0d0 XX) (* 0.0d0 1.0)))
+@end(code)
+"
+(defun averaging-function-body (vv ff ex_pts)
+  (let ((kk
+	 (cons '+
+	     (mapcar
+	      #'(lambda(el1 el2)
+		  (cons '* (cons el1 el2)))
+	      (row (solve-linear-system-gauss (make-least-squares-matrix vv ff ex_pts)) 0)
+	      ff)))
+	(rez nil))
+    (setf rez (list (reverse (cdr(reverse vv))) kk))
+    rez))
+
+@export
+@doc
+"
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (averaging-function-lambda '(xx yy) 
+		 '((xx xx) (xx) (1.0) (yy)) 
+		 '((-1.0 1.0) (0.0 0.0) (2.0 4.0) (3.0 9.0)))
+ => (LAMBDA (XX) (+ (* 1.0d0 XX XX) (* 0.0d0 XX) (* 0.0d0 1.0)))
+@end(code)"
+(defun averaging-function-lambda (vv ff ex_pts)
+  (cons 'lambda (averaging-function-body vv ff ex_pts)))
+
+@export
+@doc
+"
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (averaging-function-defun '(xx yy) 
+			   '((xx xx) (xx) (1.0) (yy)) 
+			   '((-1.0 1.0) (0.0 0.0) (2.0 4.0) (3.0 9.0))
+			   'coool-func)
+ => (DEFUN COOOL-FUNC (XX) (+ (* 1.0d0 XX XX) (* 0.0d0 XX) (* 0.0d0 1.0)))
+@end(code)
+"
+(defun averaging-function-defun (vv ff ex_pts func-name)
+  (cons 'defun (cons func-name (averaging-function-body vv ff ex_pts))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;; Разработка линейной интерполяции функции одного переменного
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-
-@export
 @doc
-"Шаблон для построения линейной функции одного параметра: x1 с двумя коэффициентами."
-(defparameter *apr-args-1* '(x1 yy))
+"@b(Описание:) функция @b(make-linear-interpolation) возвращает функциональной 
+зависимость, аппроксимируемую по функции одного переменного, заданной таблично.
 
-@export
-@doc
- "Шаблон для построения линейной функции одного параметра: x1 с двумя коэффициентами."
-(defparameter *apr-func-1-2* '((x1) (1.0) (yy)))
-
-@export
-@doc
-"Шаблон для построения квадратичной функции одного параметра: x1 c тремя коэффициентами."
-(defparameter *apr-func-1-3* '((x1 x1) (x1) (1.0) (yy)))
-
-@export
-@doc
-"Шаблон для построения квадратичной функции одного параметра: x1 c четырьмя коэффициентами."
-(defparameter *apr-func-1-4* '((x1 x1 x1) (x1 x1) (x1) (1.0) (yy)))
-
-@export
-@doc
-"Шаблон для построения квадратичной функции одного параметра: x1 c пятью коэффициентами."
-(defparameter *apr-func-1-5* '((x1 x1 x1 x1) (x1 x1 x1) (x1 x1) (x1) (1.0) (yy)))
-
-@doc
-"@b(Описание:) функция @b(make-linear-interpolation)
-Интерполяция функцией одного переменного зависимости, представленной списком точек.
+ @b(Переменые:)
+@begin(list)
+@item(points - список, состоящий из аргумента и значения;)
+@item(ff - вид функциональной зависимости см. *apr-func-1-2* --- *apr-func-1-5*.)
+@end(list)
 
  @b(Пример использования:)
 @begin[lang=lisp](code)
-Примеры использования см. 
- (test-approximation-make-linear-interpolation)
+ (let* ((points-01 '((0.0 0.0) (1.0 1.0) (2.0 2.0)))
+	(func-1 (make-linear-interpolation points-01)))
+   (loop :for x :from 0 :to 2 :by 1/10
+	 :collect (mapcar #'(lambda (el) (coerce el 'single-float))
+			  (list x
+				(funcall func-1 x)))))
+ =>  ((0.0 0.0) (0.1 0.1) (0.2 0.2) (0.3 0.3) (0.4 0.4) (0.5 0.5) (0.6 0.6)
+      (0.7 0.7) (0.8 0.8) (0.9 0.9) (1.0 1.0) (1.1 1.1) (1.2 1.2) (1.3 1.3)
+      (1.4 1.4) (1.5 1.5) (1.6 1.6) (1.7 1.7) (1.8 1.8) (1.9 1.9) (2.0 2.0))
+
+ (let* ((points-02 '((0.0 0.0) (1.0 1.0) (2.0 4.0) (3.0 9.0)))
+	(func-2 (make-linear-interpolation points-02 :ff *apr-func-1-3*)))
+   (loop :for x :from 1 :to 3 :by 1/10
+	 :collect (mapcar #'(lambda (el) (coerce el 'single-float))
+			  (list x
+				(funcall func-2 x)))))
+  =>  ((1.0 1.0) (1.1 1.21) (1.2 1.44) (1.3 1.69) (1.4 1.96) (1.5 2.25) (1.6 2.56)
+       (1.7 2.89) (1.8 3.24) (1.9 3.61) (2.0 4.0) (2.1 4.41) (2.2 4.84) (2.3 5.29)
+       (2.4 5.76) (2.5 6.25) (2.6 6.76) (2.7 7.29) (2.8 7.84) (2.9 8.41) (3.0 9.0))
 @end(code)
 "
 (defun make-linear-interpolation (points &key (ff *apr-func-1-2*))
-  (eval (averaging-function-lambda '(x1 yy) ff points)))
+  (eval (averaging-function-lambda *apr-args-1* ff points)))
 
 @doc
 "STUB"
@@ -187,9 +241,7 @@
   (setf (appr-linear-x1       a-l) x1
 	(appr-linear-a1d-func a-l) (make-linear-approximation-array x1 a1d)))
 
-@export
-@doc
-"@b(Описание:) метод @b(approximate) возвращает значение функции одного переменного 
+@export @doc "@b(Описание:) метод @b(approximate) возвращает значение функции одного переменного 
 в точке point для функции заданой таблично и аппроксимированной объектом @b(a-l).
 "
 (defmethod approximate ((point number) (a-l <appr-linear>))
@@ -198,10 +250,6 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;; Линейная интерполяции функции двух переменных (билинейная интерполяция)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(defparameter *apr-func-2-4*
-  '((x1 x2) (x1) (x2) (1.0) (yy))
-  "Шаблон для построения функции двух параметров: x1 и x2 c четырьмя коэффициентами.")
 
 (defun make-belinear-interpolation (points &key (ff *apr-func-2-4*))
   "Создает объект билинейной интерполяции
@@ -284,8 +332,7 @@
 ;;;; Сглаживание методами gnuplot
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-@export
-(defgeneric approx-by-points (pnt d-pnt points values &key w-func)
+@export (defgeneric approx-by-points (pnt d-pnt points values &key w-func)
   (:documentation
    "Вычисляет функцию, заданную точками points и значениями values
 в точке pnt, используя размер влияния, заданный параметром d-pnt.

@@ -16,7 +16,8 @@
                (:file "math")
 	       (:file "array")
 
-	       (:file "gnuplot")	       
+	       (:file "gnuplot")
+       	       (:file "appr-func-temptate")
 	       (:file "approximation")	       
 	       (:file "statistics")
 	       (:file "coordinate-system")
