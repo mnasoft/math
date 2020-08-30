@@ -88,7 +88,7 @@
 
 @export
 (defmethod copy ((mm-ref <matrix>))
-  (make-instance '<matrix> :data (copy-array (matrix-data mm-ref))))
+  (make-instance '<matrix> :data (cl-utilities:copy-array (matrix-data mm-ref))))
 
 @export
 (defmethod dimensions ((mm <matrix>)) (array-dimensions (matrix-data mm)))

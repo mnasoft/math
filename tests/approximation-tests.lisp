@@ -47,7 +47,7 @@
   "Пример использования: (test-averaging-function)"
   (is-true (equal
 	  '((xx) (+ (* 1.0d0 xx xx) (* 0.0d0 xx) (* 0.0d0 1.0)))
-	  (math:averaging-function-body '(xx yy) 
+	  (math::averaging-function-body '(xx yy) 
 			  '((xx xx) (xx) (1.0) (yy)) 
 			  '((-1.0 1.0) (0.0 0.0) (2.0 4.0) (3.0 9.0)))))
   (is-true (equal
