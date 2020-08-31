@@ -1,19 +1,18 @@
 ;;;; array.lisp
 
 (in-package #:math)
-(annot:enable-annot-syntax)
 
-@export
+(export 'rows)
 (defmethod rows ((a array))
   (assert (= (array-rank a) 2))
   (array-dimension a 0))
 
-@export
+(export 'cols)
 (defmethod cols ((a array))
   (assert (= (array-rank a) 2))
   (array-dimension a 1))
 
-@export
+(export 'row)
 (defmethod row ((row integer) (a array))
   "@b(Описание:) метод @b(row) возвращает строку @b(row) из масства @d(a).
 Строка возвращается в виде вектора vector.
@@ -37,7 +36,7 @@
 			:collect
 			(aref a row j))))
 
-@export
+(export 'col)
 (defmethod col ((col integer) (a array))
   "@b(Описание:) метод @b(col) возвращает столбец @b(col) из масства @b(a).
 Столбец возвращается в виде вектора (vector).

@@ -2,15 +2,14 @@
 
 (in-package #:math)
 
-(annot:enable-annot-syntax) 
-
-@export-class
+(export '<matrix>)
+(export 'matrix-data)
 (defclass <matrix> ()
   ((data :accessor matrix-data :initform nil :initarg :data
 	 :documentation "Сдержимое матрицы."))
   (:documentation "Представляет матрицу, определенную через массив.
 
-Создание:
+ Создание:
 @begin(list)
  @item(при помощи функции matr-new)
  @item( )
@@ -28,13 +27,11 @@
     [ 3         4        ]
     [ 5         NIL      ]
 @end(code)
-
 "))
 
-@doc
-"@b(Описание:) функция|метод|обобщенная_функция| @b(...)
-"
-(defmethod matr-name-* ((mm <matrix>)) "Matr")
+(defmethod matr-name-* ((mm <matrix>))
+  "@b(Описание:) функция|метод|обобщенная_функция| @b(...) "
+  "Matr")
 
 (defmethod print-object ((mm <matrix>) s)
   (format s "~A " (matr-name-* mm))
@@ -47,7 +44,7 @@
 	    :do (format s " ~8A " (aref (matrix-data mm) i j)))
 	 (format s "]"))))
 
-@export
+(export 'initialize-instance)
 (defmethod initialize-instance ((mm <matrix>) &key dimensions initial-element initial-contents data (element-type t))
   (when (and (consp dimensions) (/= (length dimensions) 2))
     (error "(/= (length dimensions) 2):"))
@@ -68,7 +65,7 @@
     (t (error "(defmethod initialize-instance ((mm <matrix>) &key dimensions initial-element initial-contents (element-type t))
 Что-то пошло не так!"))))
 
-@export
+(export 'matr-new)
 (defun matr-new (rows cols &optional (lst nil))
   "Примечание:
  (matr-new 3 4 '(1 2 3 4 5 6 7 8 9 10)) "
@@ -81,33 +78,33 @@
 			ll (cdr ll)))))
     mm))
 
-@export
+(export 'mref)
 (defmethod mref ((mm <matrix>) i j) (aref (matrix-data mm) i j))
 
 (defmethod (setf mref) (value (mm <matrix>) i j) (setf (aref (matrix-data mm) i j) value) mm)
 
-@export
+(export 'copy)
 (defmethod copy ((mm-ref <matrix>))
   (make-instance '<matrix> :data (cl-utilities:copy-array (matrix-data mm-ref))))
 
-@export
+(export 'dimensions)
 (defmethod dimensions ((mm <matrix>)) (array-dimensions (matrix-data mm)))
 
-@export
+(export 'rows)
 (defmethod rows ((mm <matrix>)) (array-dimension (matrix-data mm) 0))
 
-@export
+(export 'cols)
 (defmethod cols ((mm <matrix>)) (array-dimension (matrix-data mm) 1))
 
 
 ;;;;;;;;;; equivalent ;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-@export
+(export 'semi-equal)
 (defun semi-equal (x y &key (tolerance (+ (* 0.000001 (sqrt (+ (* y y) (* x x)))) 0.000001)))
   (labels ((distance (x y) (abs (- x y))))
     (< (distance x y) tolerance)))
 
-@export
+(export 'equivalent)
 (defmethod equivalent ((m1 <matrix>) (m2 <matrix>) &key (test #'semi-equal))
   (let ((rez t))
     (if (and (= (rows m1) (rows m2))
@@ -118,7 +115,7 @@
 	(setf rez nil))
     rez))
 
-@export
+(export 'equivalent )
 (defmethod equivalent ((a1 array) (a2 array) &key (test #'semi-equal))
    (declare (type (array * (* *)) a1 a2))
    (when (not (equal (array-dimensions a1)
@@ -132,19 +129,20 @@
 			      :collect
 			      (funcall test (aref a1 i j) (aref a2 i j)))))
 	   :initial-value t))
-@export
+
+(export ' equivalent)
 (defmethod equivalent ((m1 <matrix>) (a2 array) &key (test #'semi-equal))
   (declare (type (array * (* *)) a2))  
   (equivalent m1 (make-instance '<matrix> :data a2) :test test))
 
-@export
+(export ' equivalent )
 (defmethod equivalent ((a1 array) (m2 <matrix>) &key (test #'semi-equal))
   (declare (type (array * (* *)) a1))
   (equivalent (make-instance '<matrix> :data a1) m2 :test test))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-@export
+(export ' row )
 (defmethod row ((mm <matrix>) row)
   (let ((data (matrix-data mm)))
     (loop :for c :from 0 :below (cols mm)
@@ -158,7 +156,7 @@
 		 ll (cdr ll)))
     mm))
 
-@export
+(export ' col )
 (defmethod col ((mm <matrix>) col)
   (let ((data (matrix-data mm)))
     (loop :for r :from 0 :below (rows mm)
@@ -172,7 +170,7 @@
 		 ll (cdr ll)))
     mm))
 
-@export
+(export 'main-diagonal)
 (defmethod main-diagonal ((mm <matrix>))
   " @b(Пример использования:)
 @begin[lang=lisp](code)
@@ -193,9 +191,9 @@
   (loop :for i :from 0 :below (min (rows mm) (cols mm))
 	:collect (mref mm i i)))
 
-@export
-@doc
-"@b(Пример использования:)
+(export '(setf main-diagonal))
+(defmethod (setf main-diagonal) (elements (mm <matrix>))
+  "@b(Пример использования:)
 @begin[lang=lisp](code)
  (defparameter *mm* 
    (make-instance '<matrix> 
@@ -215,16 +213,14 @@
         [ 4.0d0     22.0d0    6.0d0    ]
         [ 7.0d0     8.0d0     33.0d0   ]
         [ 10.0d0    11.0d0    12.0d0   ]
-@end(code)"  
-(defmethod (setf main-diagonal) (elements (mm <matrix>) )
-
+@end(code)"        
   (loop :for i :from 0 :below (min (rows mm) (cols mm))
 	:for el :in elements :by #'cdr  :do
 	  (setf (mref  mm i i) el))
   mm)
 
-@export
-@doc
+(export 'main-diagonal)
+(defmethod (setf main-diagonal) ((element number) (mm <matrix>) )
 "@b(Пример использования:)
 @begin[lang=lisp](code)
  (defparameter *mm* 
@@ -251,14 +247,13 @@
   [ 4.0d0     11.0d0    6.0d0    ]
   [ 7.0d0     8.0d0     11.0d0   ]
   [ 10.0d0    11.0d0    12.0d0   ]
-@end(code)"  
-(defmethod (setf main-diagonal) ((element number) (mm <matrix>) )
+@end(code)"    
   (loop :for i :from 0 :below (min (rows mm) (cols mm))
 	:do (setf (mref  mm i i) element))
   mm)
 
-@export
-@doc
+(export 'squarep)
+(defmethod  squarep ((mm <matrix>))
 "@b(Пример использования:)
 @begin[lang=lisp](code)
   (defparameter *mm* (make-instance '<matrix>   :dimensions '(2 3)))
@@ -270,12 +265,10 @@
   (squarep *mm*)
 @end(code)
 "
-(defmethod  squarep ((mm <matrix>))
-
   (= (cols mm) (rows mm) ))
 
-@export
-@doc
+(export 'anti-diagonal)
+(defmethod anti-diagonal ((mm <matrix>))
 "@b(Пример использования:)
 @begin[lang=lisp](code)
  (defparameter *mm* 
@@ -290,14 +283,14 @@
  [ 7.0d0     8.0d0     9.0d0    ]
 
   (anti-diagonal  *mm*) => (3.0d0 5.0d0 7.0d0)
-  @end(code)"
-(defmethod anti-diagonal ((mm <matrix>))
+  @end(code)"  
   (assert (squarep mm) (mm) "Матрица не является квадратной~%~S" mm)
   (loop
      :for c :from 0 :below (cols mm)
      :for r :downfrom (- (rows mm) 1) :to 0
      :collect (mref mm c r)))
 
+(export 'anti-diagonal)
 (defmethod (setf anti-diagonal) (elements (mm <matrix>) )
   (assert (squarep mm) (mm) "Матрица не является квадратной~%~S" mm)
   (loop
@@ -307,7 +300,7 @@
        (setf (mref mm c r) e))
   mm)
 
-@export
+(export 'make-least-squares-matrix)
 (defun make-least-squares-matrix (vv ff ex_pts)
   "@b(Описание:) функция @b(make-least-squares-matrix) возвращает матрицу
 для расчета коэффициентов полиномиальной зависимости вида @b(ff) со 
@@ -382,8 +375,8 @@
      ex_pts)
     mtr))
 
-@export
-@doc
+(export 'convert-to-triangular)
+(defmethod convert-to-triangular ((matr <matrix> ))
 "@b(Пример использования:)
 @begin[lang=lisp](code)
  (convert-to-triangular 
@@ -408,9 +401,7 @@
      [ 1.0d0     2.0d0     3.0d0     4.0d0    ]
      [ -0.0d0    1.0d0     2.0d0     2.9999999999999996d0 ]
      [ 0.0d0     0.0d0     0.0d0     8.881784197001252d-16 ]
-
-@end(code)"
-(defmethod convert-to-triangular ((matr <matrix> ))
+@end(code)"  
   (do ((n (rows matr)) (ie nil) (j 0 (1+ j)) (row-j nil) (row-i nil))
       ((>= j n) matr)
     (setf ie (1- n))
@@ -434,13 +425,13 @@
 	    row-i (mapcar #'(lambda (el1 el2) (- el1 el2)) row-i row-j)
 	    (row matr i) row-i))))
 
-@export
-@doc
-"Обратный ход при вычислении решения системы линейных уравнений.
-
-Матрица matr должна быть приведена к треугольной;"
+(export 'solve-linear-system-gauss-backward-run)
 (defmethod solve-linear-system-gauss-backward-run ((matr <matrix>))
-  
+"Кандидат в intern.
+
+ Обратный ход при вычислении решения системы линейных уравнений.
+ Матрица matr должна быть приведена к треугольной;
+ "  
   (let* ((n (rows matr)) ;; Количество строк в матрице (матрица расширенная)
 	 (x (matr-new 1 n))) ;; Вектор результат
     (do ((i 0 (+ 1 i)))
@@ -453,7 +444,7 @@
 	(setf summ (+ summ (* (mref matr i j) (mref x 0 j)))))
       (setf (mref x 0 i) (/ (- (mref matr i n) summ) (mref matr i i))))))
 
-@export
+(export 'solve-linear-system-gauss)
 (defmethod solve-linear-system-gauss ((matr <matrix>))
   "@b(Пример использования 1.1:)
 @begin[lang=lisp](code)
@@ -484,12 +475,12 @@
   => Matr 1х3
      [ 1         2         3        ]
 @end(code)
-"
+"  
   (let* ((matr-tr (convert-to-triangular matr))
 	 (x (solve-linear-system-gauss-backward-run matr-tr)))
     x))
 
-@export
+(export 'add)
 (defmethod add ((a <matrix> ) (b <matrix>))
   "Выполняет сложение матриц a и b.
 Пример использования:
@@ -506,7 +497,7 @@
 		    (+ (mref a r c ) (mref b r c)))))
     a+b))
 
-@export
+(export 'multiply)
 (defmethod multiply ((a <matrix> ) (b <matrix>))
   "@b(Описание:) метод @b(multiply (a <matrix> ) (b <matrix>))
 вполняет операцию умножения матриц a и b.
@@ -552,7 +543,7 @@
 	      (apply #'+ (mapcar #'* a-row b-col)))))
     c))
 
-@export
+(export 'multiply)
 (defmethod multiply ((a number ) (b <matrix>))
   (let ((rez (make-instance '<matrix> :dimensions (dimensions b))))
     (loop :for i :from 0 :below (rows b) :do
@@ -560,12 +551,12 @@
 	      (setf (mref rez i j) (* a (mref b i j)))))
     rez))
 
-@export
+(export 'matrix->2d-list)
 (defmethod matrix->2d-list ((mm <matrix>))
   (loop :for i :from 0 :below (rows mm) :collect
        (row mm i)))
 
-@export
+(export 'transpose)
 (defmethod transpose ((mm <matrix>))
   (let ((rez (make-instance '<matrix> :dimensions (nreverse(dimensions mm)))))
     (loop :for i :from 0 :below (rows mm) :do
@@ -573,11 +564,12 @@
 	      (setf (mref rez j i) (mref mm i j))))
     rez))
 
+(export 'transpose)
 (defmethod transpose ((mm cons))
   "Выполняет транспонирование"
   (apply #'mapcar #'list mm))
 
-@export
+(export 'swap-rows*)
 (defmethod swap-rows*  ((mm <matrix>) i j)
   (assert (and (< -1 i (rows mm)) (< -1 j (rows mm))))
   (when (/= i j)
@@ -587,7 +579,7 @@
 	    (row mm j) row-i)))
   mm)
 
-@export
+(export 'swap-cols*)
 (defmethod swap-cols*  ((mm <matrix>) i j)
   (assert (and (< -1 i (cols mm)) (< -1 j (cols mm))))
   (when (/= i j)
@@ -597,18 +589,15 @@
 	    (col mm j) col-i)))
   mm)
 
-@export
+(export 'swap-rows)
 (defmethod swap-rows  ((mm <matrix>) i j)
   (swap-rows* (copy mm) i j))
 
-@export
+(export 'swap-cols)
 (defmethod swap-cols  ((mm <matrix>) i j)
   (swap-cols* (copy mm) i j))
 
- 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-@export
+(export 'matr-eval-*)
 (defmethod matr-eval-* ((mm <matrix>))
   "Мутная функция и непонятно как ее использовать и где?"
   (let ((rows (rows mm))
