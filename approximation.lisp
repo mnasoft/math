@@ -1,8 +1,8 @@
 ;;;; approximation.lisp
 
-(annot:enable-annot-syntax)
-
 (in-package #:math)
+
+(annot:enable-annot-syntax)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -130,8 +130,8 @@
 			    '((-2.0 -8.0) (-1.0 -1.0) (0.0 0.0) (1.0 1.0) (2.0 8.0)))
  => (LAMBDA (XX) (+ (* 1.0d0 XX XX XX) (* 0.0d0 XX XX) (* 0.0d0 XX) (* 0.0d0 1.0)))
 @end(code)"
-(defun averaging-function-lambda (vv ff ex_pts)
-  `(lambda ,@(averaging-function-body vv ff ex_pts)))
+(defun averaging-function-lambda (args-fuc-names func-view args-results)
+  `(lambda ,@(averaging-function-body args-fuc-names func-view args-results)))
 
 @export
 @doc
@@ -169,12 +169,47 @@
   `(defun ,func-name ,@(averaging-function-body args-fuc-names func-view args-results)))
 
 @export
-(defun make-approximation-lambda (args-fuc-names func-view args-results)
- (eval (averaging-function-lambda  args-fuc-names func-view args-results)))
+@doc
+"@b(Описание:) макрос @b(make-approximation-lambda) определяет
+ аппроксимиующую lambda-функцию, построенную на основании списка,
+ каждый элемент которого является списком, содержащим значения 
+ аргументов функции и значение функции, соответствующее этим аргументам.
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (let ((func 
+ (make-approximation-defun (xx yy) 
+			   ((xx xx) (xx) (1.0) (yy)) 
+			   ((0.0 0.0) (1.0 1.0) (2.0 4.0) (3.0 9.0))
+			   square-func)))
+ (funcall func 1.0)  ;=>  1.0d0 
+ (funcall func 3.0)  ;=>  9.0d0
+ (funcall func 5.0)) ;=> 25.0d0
+@end(code)
+"
+(defmacro make-approximation-lambda (args-fuc-names func-view args-results)
+  (averaging-function-lambda  args-fuc-names func-view args-results))
 
 @export
-(defun make-approximation-defun (args-fuc-names func-view args-results func-name)
-  (eval (averaging-function-defun args-fuc-names func-view args-results func-name)))
+@doc
+"@b(Описание:) макрос @b(make-approximation-defun) определяет
+аппроксимиующую функцию с именем @b(func-name), построенной на
+основании списка, каждый элемент которого является списком, содержащим значения 
+ аргументов функции и значение функции, соответствующее этим аргументам.
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (make-approximation-defun (xx yy) 
+			   ((xx xx) (xx) (1.0) (yy)) 
+			   ((0.0 0.0) (1.0 1.0) (2.0 4.0) (3.0 9.0))
+			   square-func)
+ (square-func 1.0) =>  1.0d0
+ (square-func 3.0) =>  9.0d0
+ (square-func 5.0) => 25.0d0
+@end(code)
+"
+(defmacro make-approximation-defun (args-fuc-names func-view args-results func-name)
+  (averaging-function-defun args-fuc-names func-view args-results func-name))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -311,11 +346,19 @@
   (setf (appr-linear-x1       a-l) x1
 	(appr-linear-a1d-func a-l) (make-linear-approximation-array x1 a1d)))
 
-@export @doc "@b(Описание:) метод @b(approximate) возвращает значение функции одного переменного 
-											в точке point для функции заданой таблично и аппроксимированной объектом @b(a-l).
-											"
+@export
+@doc "@b(Описание:) метод @b(approximate) возвращает значение функции одного переменного 
+ в точке point для функции заданой таблично и аппроксимированной объектом @b(a-l).
+ "
 (defmethod approximate ((point number) (a-l <appr-linear>))
   (approximation-linear point (appr-linear-x1 a-l) (appr-linear-a1d-func a-l)))
+
+@export
+(defun make-appr-linear (args-resuls)
+  (let ((appr-1d (make-instance 'math:<appr-linear>
+				:x1 (apply #'vector  (mapcar #'first args-resuls))
+				:a1d (apply #'vector (mapcar #'second args-resuls)))))
+    #'(lambda (el) (math:approximate el appr-1d))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;; Линейная интерполяции функции двух переменных (билинейная интерполяция)

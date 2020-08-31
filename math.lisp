@@ -4,7 +4,7 @@
 
 (annot:enable-annot-syntax)
 
-@annot.doc:doc
+@doc
   "Возвращает приближенное значение числа e
 Пример использования:
   (coerce (e-value      1) 'double-float) 2.0d0
@@ -29,7 +29,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 @export
-@annot.doc:doc
+@doc
 "@b(Описание:) функция @b(depth-sphere-along-cone) возвращает 
 заглубление сферы с радиусом R в конуc с углом при вершине 
 равным alpha от линии пересечения конуса с цилиндром."
@@ -44,7 +44,7 @@
   (:documentation "Возвращает расстояние между x1 и x2"))
 
 @export
-@annot.doc:doc
+@doc
 "@b(Описание:) 
 
 @b(Пример использования:)
@@ -57,7 +57,7 @@
     (sqrt (* rez rez))))
 
 @export
-@annot.doc:doc
+@doc
   "Пример использования:
  (distance '(1 1 1) '(0 0 0) ) 1.7320508
  (distance '(2 2 2) '(0 0 0) ) 3.4641016
@@ -72,7 +72,7 @@
 		    x1-lst x2-lst))))
 
 @export
-@annot.doc:doc
+@doc
   "Пример использования:
  (distance (vector 1 1 1) (vector 0 0 0)) 1.7320508
  (distance (vector 2 2 2) (vector 0 0 0)) 3.4641016
@@ -90,7 +90,7 @@
   (:documentation "Возвращает относительную длину между x и xi, длина приведения dx"))
 
 @export
-@annot.doc:doc
+@doc
   "Пример использования:
  (distance-relative 1 0 1) 1.0
  (distance-relative 2 0 1) 2.0
@@ -101,7 +101,7 @@
     (sqrt (* rez rez))))
 
 @export
-@annot.doc:doc
+@doc
  "Пример использования:
  (distance-relative '(1 1 1) '(0 0 0) '(1 1 1)) 1.7320508
  (distance-relative '(2 2 2) '(0 0 0) '(1 1 1)) 3.4641016
@@ -115,7 +115,7 @@
 			  (* rez rez)))
 		    x-lst xi-lst dx-lst))))
 @export
-@annot.doc:doc
+@doc
 "Пример использования:
  (distance-relative (vector 1 1 1) (vector 0 0 0) (vector 1 1 1)) 1.7320508 
  (distance-relative (vector 2 2 2) (vector 0 0 0) (vector 1 1 1)) 3.4641016
@@ -132,7 +132,7 @@
 (defgeneric summ-distance (x1 x2)(:documentation "COOOL"))
 
 @export
-@annot.doc:doc
+@doc
  "
 Тестирование:
  (summ-distance (vector 1 2 3) (vector 2 3 4)) 3
@@ -142,9 +142,8 @@
   (apply #'+ (loop :for i :from 0 :below (length x1) :collect
 		  (abs (- (svref x1 i) (svref x2 i))))))
 
-@export
-@annot.doc:doc
-  "
+@export @doc
+"
 Тестирование:
  (summ-distance '(1 2 3) '(2 3 4)) 3
 "

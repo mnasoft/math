@@ -228,7 +228,25 @@ plot \
 
 @begin(section) @title(Аппроксимация)
  Здесь под аппроксимацией понимается замена функции, заданной таблично,
- семейтсвом функций, которые заданы аналитически на некоторых интервалах.
+ функцией или семейтсвом функций, заданных аналитически на некоторых интервалах.
+ @begin(section) @title(Полиномиальная)
+  Функции  @b(averaging-function-lambda), @b(averaging-function-defun) позволяют
+  найти аппроксимирующую функцию одного или нескольких переменных,
+  представленную в виде полинома.
+
+  Макросы @b(make-approximation-lambda), @b(make-approximation-defun) позволяют
+  определить аппроксимирующую функцию одного или нескольких переменных,
+  представленную в виде полинома.
+    
+ @cl:with-package[name="math"](
+  @cl:doc(function averaging-function-lambda)
+  @cl:doc(function averaging-function-defun)
+  @cl:doc(macro make-approximation-lambda)
+  @cl:doc(macro make-approximation-defun)
+  )
+
+ @end(section)
+
  @begin(section) @title(Линейная)
   Для линейной аппроксимации функции одного переменного используйте:
   @begin(list)

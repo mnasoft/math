@@ -7,6 +7,7 @@ do
 #+END_SRC
 
 #+RESULTS:
+| [[file:./appr-func-temptate.lisp]]    |
 | [[file:./approximation-gnuplot.lisp]] |
 | [[file:./approximation.lisp]]         |
 | [[file:./approximation-test.lisp]]    |
@@ -14,16 +15,11 @@ do
 | [[file:./array-test.lisp]]            |
 | [[file:./coordinate-system.lisp]]     |
 | [[file:./gnuplot.lisp]]               |
-| [[file:./gsll-samples.lisp]]          |
 | [[file:./las-rotation.lisp]]          |
 | [[file:./list-matr.lisp]]             |
-| [[file:./lu-solve.lisp]]              |
 | [[file:./math.lisp]]                  |
 | [[file:./matr-class.lisp]]            |
-| [[file:./matr-class-temp.lisp]]       |
-| [[file:./matr-exclude.lisp]]          |
 | [[file:./matr-generics.lisp]]         |
-| [[file:./matr-test.lisp]]             |
 | [[file:./mult-matr-vect.lisp]]        |
 | [[file:./package.lisp]]               |
 | [[file:./smoothing.lisp]]             |
@@ -33,17 +29,36 @@ do
 | [[file:./x-o-testing.lisp]]           |
 
 * Задачи
-1. [3/3] Разобраться с функциями с целью исключеия какой-либо из них. [3/3]
+1. [ ] Определить функции кубической интерполяции для функции одного переменного, заданной табличными значениями.
+2. [ ] При определении коэффициентов в функции =averaging-function-body= необходимо выполнить нормализацию диапазона аргументов и значений функций.
+3. [X] Определить функцию генерирующую замыкание для функции интерполяции одного переменного -- make-appr-linear.
+4. [ ] Документирование
+   - [ ] Аппроксимация
+     - make-appr-linear
+5. [ ] Рефакторинг
+   - [ ] Разделить проект на отдельные части:
+     - Матрицы
+     - Аппроксимация
+     - Матрицы в виде списков
+   - [ ] matr-class.lisp - в данном файле определения функций должны в конце имени иметь "-*";
+   - [ ] x-o.lisp        - файл, содержащий определение класса x-o крестики-нолики, выделить в отдельный проект.
+     - [ ] matr-set-ij-* - заменить на, что-то что применяется в настоящий момент.
+     - [ ] matr-rows-* - заменить на, что-то что применяется в настоящий момент.
+     - [ ] matr-cols-* - заменить на, что-то что применяется в настоящий момент.
+     - [ ] matr-set-row-* - заменить на, что-то что применяется в настоящий момент.
+     - [ ] matr-get-row-* - заменить на, что-то что применяется в настоящий момент.
+     - [ ] matr-get-col-* - заменить на, что-то что применяется в настоящий момент.
+6. [3/3] Разобраться с функциями с целью исключеия какой-либо из них. [3/3]
    - [X] matr-ij (matr i j) - исключена;
    - [X] matr-set_ij (matr elem i j) - исключена;
    - [X] matr-set-ij (matr value i j) - исключена;
-2. [X] Выполнить оптимизацию вычисления для функции matr-mnk за счет создания матрицы содержащей функции для аддитивного вычисления коэффициентов.  SCHEDULED: <2018-11-30 Пт>
-3. [3/4] Определить класс matrix при помощи массива (array 2d) [75%]
+7. [X] Выполнить оптимизацию вычисления для функции matr-mnk за счет создания матрицы содержащей функции для аддитивного вычисления коэффициентов.  SCHEDULED: <2018-11-30 Пт>
+8. [3/4] Определить класс matrix при помощи массива (array 2d) [75%]
    - [X] Файл -  [[./matr-class.lisp]]
    - [X] Класс - matrix 
    - [X] Файл -  [[./matr-class-temp.lisp]] - содержит заготовки функций, которые необходимо переделать под класс  matrix.
    - [ ] По окончании пределки функций данный файл подлежит удалению из проекта.
-4. [10/10] Определить операции для класса matrix
+9. [10/10] Определить операции для класса matrix
    - [X] вывода строки, определяющией тип матрицы    -- matr-name-*  ((mm matrix));
    - [X] создания матрицы                            -- make-instance 'matrix
    - [X] инициализации матрицы                       -- initialize-instance  ((mm matrix) &key dimensions initial-element initial-contents data (element-type t));
@@ -84,17 +99,7 @@ do
        + [X] столбцов;                               -- swap-cols   ((mm matrix) i j)
      - [X] Преобразования [100%]
        + [X] в matrix->2d-list                       -- matrix->2d-list ((mm matrix))
-5. Определить функции тестирования для матриц
-6. [ ] Рефакторинг
-   - [ ] matr-class.lisp - в данном файле определения функций должны в конце имени иметь "-*";
-   - [ ] x-o.lisp        - файл, содержащий определение класса x-o крестики-нолики, выделить в отдельный проект.
-     - [ ] matr-set-ij-* - заменить на, что-то что применяется в настоящий момент.
-     - [ ] matr-rows-* - заменить на, что-то что применяется в настоящий момент.
-     - [ ] matr-cols-* - заменить на, что-то что применяется в настоящий момент.
-     - [ ] matr-set-row-* - заменить на, что-то что применяется в настоящий момент.
-     - [ ] matr-get-row-* - заменить на, что-то что применяется в настоящий момент.
-     - [ ] matr-get-col-* - заменить на, что-то что применяется в настоящий момент.
-7. [ ] Определить функции кубической интерполяции для функции одного переменного, заданной табличными значениями.
+10. Определить функции тестирования для матриц
 * link FiveAm
 
 http://turtleware.eu/posts/Tutorial-Working-with-FiveAM.html
@@ -205,16 +210,3 @@ https://www.darkchestnut.com/2018/how-to-write-5am-test-fixtures/
   git pull ${i} master
   done
   #+END_SRC
-
-
-
-* quicklisp
-
-Please add math
-
-Math is a mathematical library that implements some algorithms of linear algebra, statistics, finding approximating polynomials on Common Lisp
-
-Author: Nick Matvyeyev
-License: GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007
-Homepage: https://github.com/mnasoft/math
-Sources: https://github.com/mnasoft/math.git

@@ -2,6 +2,23 @@
 
 (in-package #:math)
 
+(defparameter *f1* 
+  (make-appr-linear
+   (loop :for i :from 0 :to 1000
+	 :collect (list (* 1.0d0 i) (* 1.0d0 i i)))))
+
+(funcall *f1* 1.2)
+
+
+(defparameter *f2* (make-appr-linear
+ (loop :for i :from 0 :to 1000 :collect (* 1.0d0 i))
+ (loop :for i :from 0 :to 1000 :collect (* 0.001d0 i i))))
+
+(defparameter *f* *)
+
+(funcall *f* 1.0)
+
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;; Тестирование
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
