@@ -17,8 +17,7 @@
 	       (:file "array")
 
 	       (:file "gnuplot")
-       	       (:file "appr-func-temptate")
-	       (:file "approximation")	       
+	       
 	       (:file "statistics")
 	       (:file "coordinate-system")
 	       (:file "mult-matr-vect")
@@ -31,6 +30,21 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;	       
 ;;;;	       (:file "x-o")	    ;; Игра крестики-нолики     
 	       ))
+
+(defsystem #:math/appr
+  :description "Describe math here"
+  :author "Nick Matvyeyev <mnasoft@gmail.com>"
+  :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"  
+  :serial t
+  :in-order-to ((test-op (test-op "math/appr/tests")))
+  :depends-on (:math)
+  :components ((:module "appr"
+		:serial t
+                :components ((:file "package")
+			     (:file "appr-func-temptate"  ) 
+			     (:file "approximation") 
+			     ))))
+
 
 (defsystem #:math/ls-solve
   :description "Describe math here"

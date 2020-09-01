@@ -1,6 +1,6 @@
 ;;;; appr-func-temptate.lisp
 
-(in-package #:math)
+(in-package #:math.appr)
 
 (export '*apr-args-1*)
 (defparameter *apr-args-1* '(x1 yy)
