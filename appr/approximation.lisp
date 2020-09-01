@@ -1,6 +1,6 @@
 ;;;; approximation.lisp
 
-(in-package #:math)
+(in-package #:math.appr )
 
 (export 'appr-table)
 (defun appr-table (x table)
@@ -400,10 +400,10 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(export-class '<appr-bilinear>)
-(export-class 'appr-bilinear-x1)
-(export-class 'appr-bilinear-x2)
-(export-class 'appr-bilinear-a2d-func)
+(export '<appr-bilinear>)
+(export 'appr-bilinear-x1)
+(export 'appr-bilinear-x2)
+(export 'appr-bilinear-a2d-func)
 (defclass <appr-bilinear> ()
   ((x1       :accessor appr-bilinear-x1 :documentation "Вектор реперных значений по первому направлению (измерению).")
    (x2       :accessor appr-bilinear-x2 :documentation "Вектор реперных значений по второму направлению (измерению).")
