@@ -1,8 +1,17 @@
 ;;;; smoothing.lisp
 
-(in-package #:math)
+(defpackage #:math/smooth
+  (:use #:cl)
+  (:export gauss-smoothing
+	   exp-smoothing
+	   cauchy-smoothing
+	   hann-smoothing)  
+  )
+
+(in-package :math/smooth)
 
 (export 'gauss-smoothing)
+
 (defun gauss-smoothing (d)
   "@b(Описание:) функция @b(gauss-smoothing)
 
@@ -15,6 +24,7 @@
   (exp (* -1 d d)))
 
 (export 'exp-smoothing)
+
 (defun exp-smoothing (d)
   "@b(Описание:) функция @b(exp-smoothing)
 
@@ -27,6 +37,7 @@
   (exp (* -1 d)))
 
 (export 'cauchy-smoothing)
+
 (defun cauchy-smoothing (d)
   "@b(Описание:) функция @b(cauchy-smoothing)
 
@@ -39,6 +50,7 @@
   (/ 1 (+ 1 (* d d))))
 
 (export 'hann-smoothing)
+
 (defun hann-smoothing (d)
   "@b(Описание:) функция @b(hann-smoothing)
 
@@ -54,4 +66,3 @@
 @end(code)
 "
   (if (< d 1) (* 1/2 ( + 1 ( cos (* pi d)))) 0))
-

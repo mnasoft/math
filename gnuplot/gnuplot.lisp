@@ -1,6 +1,11 @@
 ;;;; gnuplot.lisp
 
-(in-package #:math)
+(defpackage #:math/gnuplot
+  (:use #:cl)
+;;;;  (:export )
+  )
+
+(in-package :math/gnuplot)
 
 (defun make-2d-list-by-func (func &key (x-from 0) (x-to 1) (step 100))
     (loop :for i :from x-from :to x-to :by (/ (- x-to x-from) step) :collect

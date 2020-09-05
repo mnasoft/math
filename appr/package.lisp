@@ -1,9 +1,10 @@
 ;;;; ./appr/package.lisp
 
-(defpackage #:math.appr 
-  (:use #:cl #:math)
-  (:export math:refine-approximation-values
-	   math:approx-by-points
+(defpackage #:math/appr 
+  (:use #:cl #:math/arr-matr)
+  (:export
+      refine-approximation-values
+	   approx-by-points
 	   appr-bilinear-x2
 	   *apr-func-2-5*
 	   *apr-func-2-6*

@@ -1,6 +1,11 @@
 ;;;; array.lisp
 
-(in-package #:math)
+(defpackage #:math/2d-array
+  (:use #:cl)
+  )
+
+(in-package :math/2d-array)
+
 
 (export 'rows)
 (defmethod rows ((a array))

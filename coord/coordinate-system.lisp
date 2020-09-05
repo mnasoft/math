@@ -1,6 +1,17 @@
 ;;;; coordinate-system.lisp
 
-(in-package #:math)
+
+(defpackage #:math/coord
+  (:use #:cl)
+  (:export dtr
+	   rtd
+	   polar->cartesian
+	   cartesian->polar
+	   spherical->cartesian
+	   cartesian->spherical
+	   ))
+
+(in-package :math/coord)
 
 (export 'dtr )
 (defun dtr (degree)

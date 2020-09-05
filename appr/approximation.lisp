@@ -1,6 +1,6 @@
 ;;;; approximation.lisp
 
-(in-package #:math.appr )
+(in-package #:math/appr )
 
 (export 'appr-table)
 (defun appr-table (x table)
@@ -432,7 +432,8 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (export 'approx-by-points)
-(defmethod approx-by-points ((x number) (dx number) (points vector) (values vector) &key (w-func #'gauss-smoothing))
+(defmethod approx-by-points ((x number) (dx number) (points vector) (values vector)
+			     &key (w-func #'math/smooth:gauss-smoothing))
   "Пример использования:
  (approx-by-points 1.0 0.6 (vector 0.0 1.0 2.0 3.0 4.0) (vector 0.0 1.0 2.0 3.0 4.0)) 1.0000265
  (approx-by-points 1.0 0.4 (vector 0.0 1.0 2.0 3.0 4.0) (vector 0.0 1.0 2.0 3.0 4.0)) 1.0
@@ -454,7 +455,7 @@
     (/ w-z-summ w-summ)))
 
 (export 'approx-by-points)
-(defmethod approx-by-points ((x vector) (dx vector) (points array) (values vector) &key (w-func #'gauss-smoothing))
+(defmethod approx-by-points ((x vector) (dx vector) (points array) (values vector) &key (w-func #'math/smooth:gauss-smoothing))
   "Пример использования:
  
  (approx-by-points (vector 0.0 0.0) (vector 1.0 1.0) (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) (vector 0.0 1.0 1.0 2.0)) 0.53788286
@@ -495,7 +496,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (export 'refine-approximation-values)
-(defmethod refine-approximation-values ((points array) (values vector) (base-dists vector) &key (w-func #'gauss-smoothing) (delta 0.001) (iterations 10000))
+(defmethod refine-approximation-values ((points array) (values vector) (base-dists vector) &key (w-func #'math/smooth:gauss-smoothing) (delta 0.001) (iterations 10000))
   "Вычисляет такой массив, что при сглаживании его по формуле Гаусса
  с характерным размером base-dists, сумма расстояний до 2d точек заданных массивом points не превысит delta
  
@@ -521,7 +522,10 @@
  (refine-approximation-values (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) (vector 0.0 1.0 1.0 2.0) (vector 0.6 0.6)) 
  (refine-approximation-values (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) (vector 0.0 1.0 1.0 2.0) (vector 0.4 0.4)) 
  "
-  (assert (member w-func (list #'gauss-smoothing #'exp-smoothing #'cauchy-smoothing #'hann-smoothing)))
+  (assert (member w-func (list #'math/smooth:gauss-smoothing
+			       #'math/smooth:exp-smoothing
+			       #'math/smooth:cauchy-smoothing
+			       #'math/smooth:hann-smoothing)))
   (assert (= (array-rank points) 2))
   (assert (= (array-dimension points 0) (length values)))
   (assert (= (array-dimension points 1) (length base-dists)))
@@ -529,7 +533,8 @@
 	(v-rez  (cl-utilities:copy-array values)))
     (labels ((start-V1 (v-rez v-iter)
 	       (loop :for i :from 0 :below (length values) :do
-		 (setf (svref v-rez i) (approx-by-points (row i points) base-dists points v-iter :w-func w-func)))
+		 (setf (svref v-rez i)
+		       (approx-by-points (row i points) base-dists points v-iter :w-func w-func)))
 	       (summ-distance v-rez values))
 	     (iterate (v-rez v-iter)
 	       (loop :for i :from 0 :below (length values) :do
@@ -545,8 +550,11 @@
 	(iterate v-rez v-iter)))))
 
 (export 'refine-approximation-values)
-(defmethod refine-approximation-values ((points vector) (values vector) (base-dist number) &key (w-func #'gauss-smoothing) (delta 0.001) (iterations 10000))
-  (assert (member w-func (list #'gauss-smoothing #'exp-smoothing #'cauchy-smoothing #'hann-smoothing)))
+(defmethod refine-approximation-values ((points vector) (values vector) (base-dist number) &key (w-func #'math/smooth:gauss-smoothing) (delta 0.001) (iterations 10000))
+  (assert (member w-func (list #'math/smooth:gauss-smoothing
+			       #'math/smooth:exp-smoothing
+			       #'math/smooth:cauchy-smoothing
+			       #'math/smooth:hann-smoothing)))
   (assert (= (length points) (length values)))
   (let ((v-iter (cl-utilities:copy-array values))
 	(v-rez  (cl-utilities:copy-array values)))

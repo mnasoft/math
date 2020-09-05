@@ -3,7 +3,28 @@
 ;;; В данном файле определяются некоторые операции над матрицами,
 ;;; представленными 2d-list, (списком состоящим из списков)
 
-(in-package #:math)
+;;;; TODO list-matr-___ -> math/list-matr:___
+
+(defpackage #:math/list-matr
+  (:use #:cl)
+  (:export list-matr-average-not-nil-value
+	   list-matr-detach-last-col
+	   list-matr-prepend-col
+	   list-matr-max-row-not-nil-value
+	   list-matr-transpose list-vector-print
+	   list-matr-average-col-not-nil-value
+	   list-matr-average-row-not-nil-value
+	   list-matr-append-row list-matr-append-col
+	   list-matr-cols list-matr-print
+	   list-matr-col list-matr-get-last-col
+	   list-matr-union list-matr-average-col-value
+	   list-matr-row list-matr-prepend-row
+	   list-matr-make list-matr-rows
+	   list-matr-average-value
+	   list-matr-max-col-not-nil-value
+	   list-matr-average-row-value))
+
+(in-package :math/list-matr)
 
 (export 'list-matr-transpose)
 (defun list-matr-transpose (2d-list)

@@ -1,6 +1,27 @@
 ;;;; statistics.lisp
 
-(in-package #:math)
+(defpackage #:math.stat
+  (:use #:cl)
+  (:export make-random-value-list
+	   grubbs-min
+	   average-not-nil-value
+	   average-value
+	   grubbs-max
+	   delta-min-value average
+	   dispersion min-value
+	   square
+	   max-not-nil-value
+	   max-value
+	   exclude-nil-from-list
+	   variation-coefficient
+	   clean-max-flagrant-error
+	   grubbs delta-max-value
+	   min-not-nil-value
+	   standard-deviation
+	   clean-min-flagrant-error
+	   clean-flagrant-error))
+
+(in-package :math.stat)
 
 (export 'square )
 (defun square (x)
