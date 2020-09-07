@@ -9,8 +9,7 @@
 
 (in-package :math/ls-gauss)
 
-(export 'convert-to-triangular
-	)
+(export 'convert-to-triangular)
 
 (defmethod convert-to-triangular ((matr <matrix> ))
 "@b(Пример использования:)

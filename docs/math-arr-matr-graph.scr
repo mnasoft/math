@@ -1,0 +1,8 @@
+ @begin(section) @title(Графы math-arr-matr)
+  @begin(list)
+   @item(system-graph @image[src=./system-graph-math-arr-matr.gv.png]())
+   @item(call-graph   @image[src=./call-graph-math-arr-matr.gv.png]())
+   @item(symbol-graph @image[src=./symbol-graph-math-arr-matr.gv.png]())
+   @item(class-graph  @image[src=./class-graph-math-arr-matr.gv.png]())
+  @end(list)
+ @end(section)

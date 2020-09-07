@@ -1,0 +1,8 @@
+ @begin(section) @title(Графы math-smooth)
+  @begin(list)
+   @item(system-graph @image[src=./system-graph-math-smooth.gv.png]())
+   @item(call-graph   @image[src=./call-graph-math-smooth.gv.png]())
+   @item(symbol-graph @image[src=./symbol-graph-math-smooth.gv.png]())
+   @item(class-graph  @image[src=./class-graph-math-smooth.gv.png]())
+  @end(list)
+ @end(section)

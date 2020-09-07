@@ -1,0 +1,44 @@
+@begin(section) @title(Core)
+
+@begin(section) @title(Обзор)
+  Определяет некоторые функции повсеместно используемые в проекте.
+ @end(section)
+
+ @begin(section) @title(API)
+  @cl:with-package[name="math/core"](
+   @cl:doc(function square)
+   @cl:doc(function exclude-nil-from-list )
+   @cl:doc(function depth-sphere-along-cone )
+   )
+ @end(section)
+
+ @begin(section) @title(Generic)
+   @cl:with-package[name="math/core"](
+   @cl:doc(generic distance)
+   @cl:doc(generic summ-distance)
+   @cl:doc(generic distance-relative))
+ @end(section)
+ 
+ @begin(section) @title(Distance)
+  @cl:with-package[name="math/core"](
+   @cl:doc(method distance (x1 number) (x2 number))
+   @cl:doc(method distance (x1-lst cons) (x2-lst cons))
+   @cl:doc(method distance (x1 vector) (x2 vector))
+   )
+ @end(section)
+ 
+ @begin(section) @title(Distance-relative)
+  @cl:with-package[name="math/core"](
+   @cl:doc(method distance-relative (x number) (xi number) (dx number))
+   @cl:doc(method distance-relative (x-lst cons) (xi-lst cons) (dx-lst cons))
+   @cl:doc(method distance-relative (x vector) (xi vector) (dx vector))
+   )
+ @end(section)
+ 
+ @begin(section) @title(Distance-relative)
+  @cl:with-package[name="math/core"](
+   @cl:doc(method summ-distance (x1 vector) (x2 vector))
+   @cl:doc(method summ-distance (x1 cons) (x2 cons)))
+ @end(section)
+   
+@end(section)

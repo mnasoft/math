@@ -1,3 +1,3 @@
 (defpackage #:math/arr-matr
-  (:use #:cl)
+  (:use #:cl #:math/core)
   (:export ))

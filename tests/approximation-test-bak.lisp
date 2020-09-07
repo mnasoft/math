@@ -1,13 +1,18 @@
 ;;;; approximation-test.lisp
 
+;;;; Старая версия файла, использующая тестировщик pcl
+;;;; ToDo Перенести тесты в основную ветвь
+
 (in-package #:math)
 
 (defparameter *f1* 
-  (make-appr-linear
-   (loop :for i :from 0 :to 1000
-	 :collect (list (* 1.0d0 i) (* 1.0d0 i i)))))
+  (math/appr:make-appr-linear
+   (loop :for i :from 0 :to 10
+	 :collect (list (* 1.0d0 i) (* 0.1d0 i i)))))
 
-(funcall *f1* 1.2)
+(funcall *f1* 1.0)
+
+(math/appr:approximate '(1.2) *f1*)
 
 
 (defparameter *f2* (make-appr-linear

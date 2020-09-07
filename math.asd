@@ -1,12 +1,13 @@
 ;;;; math.asd
 
-(defsystem #:math
+(defsystem "math"
   :description "Describe math here"
   :author "Nick Matvyeyev <mnasoft@gmail.com>"
   :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"  
   :serial t
   :in-order-to ((test-op (test-op "math/tests")))
   :depends-on ("cl-utilities"
+	       "math/core"
 	       "math/list-matr"
 	       "math/2d-array"
 	       "math/appr"
@@ -16,21 +17,25 @@
 	       "math/arr-matr"
 	       "math/gnuplot"
 	       "math/ls-rotation"
-;;;;           "math/ls-solve"
-;;;;           "math/tests"
-	       ) ;;;;   #:cl-annot :pcl-test :gsll 
-  :components ((:file "package")
-               (:file "math")
-	       (:file "mult-matr-vect")
-	       
+	       ) ;;;; "math/ls-solve" "math/tests"
+  :components ((:module "src"
+		:serial t
+                :components ((:file "package")
+			     (:file "mult-matr-vect"))))) ;;;; (:file "matr-test")
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-      
-	       ;;	       (:file "matr-test")  ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;	       
-;;;;	       (:file "x-o")	    ;; Игра крестики-нолики     
-
-	       ))
+(defsystem "math/core"
+  :description "Describe math here"
+  :author "Nick Matvyeyev <mnasoft@gmail.com>"
+  :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"  
+  :serial t
+  :in-order-to ((test-op (test-op "math/core/tests")))
+;;;;  :depends-on ()
+  :components ((:module "src/core"
+		:serial nil
+                :components ((:file "math")
+			     (:file "generic"      :depends-on ("math"))
+			     (:file "generic-matr" :depends-on ("math"))
+			     (:file "method"       :depends-on ("math" "generic"))))))
 
 (defsystem #:math/ls-rotation
   :description "Describe math here"
@@ -39,7 +44,7 @@
   :serial t
   :in-order-to ((test-op (test-op "math/ls-rotation/tests")))
 ;;;;  :depends-on ()
-  :components ((:module "ls-rotation"
+  :components ((:module "src/ls-rotation"
 		:serial t
                 :components ((:file "las-rotation")))))
 
@@ -50,10 +55,9 @@
   :serial t
   :in-order-to ((test-op (test-op "math/arr-matr/tests")))
 ;;;;  :depends-on ()
-  :components ((:module "gnuplot"
+  :components ((:module "src/gnuplot"
 		:serial t
-                :components ((:file "gnuplot") 
-			     ))))
+                :components ((:file "gnuplot")))))
 
 (defsystem #:math/list-matr
   :description "Describe math here"
@@ -62,10 +66,9 @@
   :serial t
   :in-order-to ((test-op (test-op "math/arr-matr/tests")))
   :depends-on ("cl-utilities")
-  :components ((:module "list-matr"
+  :components ((:module "src/list-matr"
 		:serial t
-                :components ((:file "list-matr") 
-			     ))))
+                :components ((:file "list-matr")))))
 
 (defsystem #:math/ls-gauss
   :description "Describe math here"
@@ -74,7 +77,7 @@
   :serial t
   :in-order-to ((test-op (test-op "math/ls-gauss/tests")))
   :depends-on ("math/arr-matr")
-  :components ((:module "ls-gauss"
+  :components ((:module "src/ls-gauss"
 		:serial t
                 :components ((:file "ls-gauss")))))
 
@@ -85,7 +88,7 @@
   :serial t
   :in-order-to ((test-op (test-op "math/2d-array/tests")))
 ;;;  :depends-on (:math)
-  :components ((:module "2d-array"
+  :components ((:module "src/2d-array"
 		:serial t
                 :components ((:file "2d-array")))))
 
@@ -96,12 +99,11 @@
   :serial t
   :in-order-to ((test-op (test-op "math/appr/tests")))
   :depends-on ( "math/ls-gauss" "math/arr-matr" "math/smooth" ) ;;;; "math"
-  :components ((:module "appr"
+  :components ((:module "src/appr"
 		:serial t
                 :components ((:file "package")
-			     (:file "appr-func-temptate"  ) 
-			     (:file "approximation") 
-			     ))))
+			     (:file "appr-func-temptate") 
+			     (:file "approximation")))))
 
 (defsystem #:math/stat
   :description "Describe math here"
@@ -109,8 +111,8 @@
   :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"  
   :serial t
   :in-order-to ((test-op (test-op "math/stat/tests")))
-;;;  :depends-on (:math)
-  :components ((:module "stat"
+  :depends-on ("math/core")
+  :components ((:module "src/stat"
 		:serial t
                 :components ((:file "statistics")))))
 
@@ -121,7 +123,7 @@
   :serial t
   :in-order-to ((test-op (test-op "math/smooth/tests")))
 ;;;  :depends-on (:math)
-  :components ((:module "smooth"
+  :components ((:module "src/smooth"
 		:serial t
                 :components ((:file "smoothing")))))
 
@@ -132,7 +134,7 @@
   :serial t
   :in-order-to ((test-op (test-op "math/smooth/tests")))
 ;;;  :depends-on (:math)
-  :components ((:module "coord"
+  :components ((:module "src/coord"
 		:serial t
                 :components ((:file "coordinate-system")))))
 
@@ -143,12 +145,11 @@
   :serial t
   :in-order-to ((test-op (test-op "math/arr-matr/tests")))
   :depends-on ("cl-utilities")
-  :components ((:module "arr-matr"
+  :components ((:module "src/arr-matr"
 		:serial t
                 :components ((:file "package")
 			     (:file "matr-generics") 
 			     (:file "matr-class")))))
-	       
 
 (defsystem #:math/ls-solve
   :description "Describe math here"
@@ -157,12 +158,12 @@
   :serial t
   :in-order-to ((test-op (test-op "math/tests")))
   :depends-on (:math :gsll)
-  :components ((:module "ls-solve"
+  :components ((:module "src/ls-solve"
 		:serial t
                 :components ((:file "package")
-			     (:file "lu-solve")
-			     ))))
+			     (:file "lu-solve")))))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defsystem #:math/tests
   :depends-on (:math :fiveam)
@@ -175,5 +176,4 @@
 				     (:file "matrix")
 				     (:file "linear-system-tests")
 				     (:file "approximation-tests")				     
-				     (:file "main-run")
-				     ))))
+				     (:file "main-run")))))

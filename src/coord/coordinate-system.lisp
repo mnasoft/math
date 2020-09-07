@@ -2,7 +2,7 @@
 
 
 (defpackage #:math/coord
-  (:use #:cl)
+  (:use #:cl #:math/core)
   (:export dtr
 	   rtd
 	   polar->cartesian
@@ -68,7 +68,7 @@
 
  @b(Пример использования:)
 @begin[lang=lisp](code)
- (cartesian->polar (list 10.0 (dtr 45))) => (10.030795096853893d0 0.07837892038914972d0) 
+ (cartesian->polar (list 10.0 10)) (14.142136 0.7853982)
 @end(code)
 "
   (let ((radius (sqrt (apply #'+ (mapcar #'square x-y))))
@@ -89,7 +89,7 @@
 
 @b(Пример использования:)
 @begin[lang=lisp](code)
- (spherical->cartesian 100 (dtr 30) (dtr 45)) 
+ (spherical->cartesian 100 (dtr 30) (dtr 45))
  => (61.237243569579455d0 35.35533905932737d0 70.71067811865476d0)
 @end(code)
 "

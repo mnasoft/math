@@ -1,0 +1,63 @@
+@begin(section) @title(Stat)
+ @begin(section) @title(Обзор)
+ Среднее значение
+ @end(section)
+
+ @begin(section) @title(Создание статистики)
+  @cl:with-package[name="math/stat"](
+   @cl:doc(function make-random-value-list))
+  @end(section)
+
+ @begin(section) @title(Вспомогательные)
+  @cl:with-package[name="math/stat"](
+   @cl:doc(function square)
+   @cl:doc(function exclude-nil-from-list))
+  @end(section)
+
+ @begin(section) @title(Среднее значение)
+  @cl:with-package[name="math/stat"](
+   @cl:doc(function average)
+   @cl:doc(function average-value)
+   @cl:doc(function average-not-nil-value))
+ @end(section)
+
+ @begin(section) @title(Максимальное значение)
+  @cl:with-package[name="math/stat"](
+   @cl:doc(function max-value)
+   @cl:doc(function max-not-nil-value))
+ @end(section)
+
+ @begin(section) @title(Минимальное значение)
+  @cl:with-package[name="math/stat"](
+   @cl:doc(function min-not-nil-value)  
+   @cl:doc(function min-value))
+ @end(section)
+
+ @begin(section) @title(Характеристики статистики)
+  @cl:with-package[name="math/stat"](
+   @cl:doc(function dispersion)
+   @cl:doc(function standard-deviation)
+   @cl:doc(function variation-coefficient))
+ @end(section)
+
+ @begin(section) @title(Отклонение от среднего)
+  @cl:with-package[name="math/stat"](
+   @cl:doc(function delta-max-value)
+   @cl:doc(function delta-min-value))
+ @end(section)
+
+@begin(section)
+ @title(Исключения промахов)
+  @cl:with-package[name="math/stat"](
+
+   @cl:doc(function grubbs)
+   @cl:doc(function grubbs-min)
+   @cl:doc(function grubbs-max)
+
+   @cl:doc(function clean-flagrant-error)
+   @cl:doc(function clean-max-flagrant-error)
+   @cl:doc(function clean-min-flagrant-error))
+ @end(section)
+ 
+  
+@end(section)

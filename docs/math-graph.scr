@@ -1,0 +1,8 @@
+ @begin(section) @title(Графы math)
+  @begin(list)
+   @item(system-graph @image[src=./system-graph-math.gv.png]())
+   @item(call-graph   @image[src=./call-graph-math.gv.png]())
+   @item(symbol-graph @image[src=./symbol-graph-math.gv.png]())
+   @item(class-graph  @image[src=./class-graph-math.gv.png]())
+  @end(list)
+ @end(section)

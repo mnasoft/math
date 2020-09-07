@@ -1,7 +1,7 @@
 ;;;; statistics.lisp
 
-(defpackage #:math.stat
-  (:use #:cl)
+(defpackage #:math/stat
+  (:use #:cl #:math/core)
   (:export make-random-value-list
 	   grubbs-min
 	   average-not-nil-value
@@ -9,10 +9,8 @@
 	   grubbs-max
 	   delta-min-value average
 	   dispersion min-value
-	   square
 	   max-not-nil-value
 	   max-value
-	   exclude-nil-from-list
 	   variation-coefficient
 	   clean-max-flagrant-error
 	   grubbs delta-max-value
@@ -21,26 +19,10 @@
 	   clean-min-flagrant-error
 	   clean-flagrant-error))
 
-(in-package :math.stat)
-
-(export 'square )
-(defun square (x)
-"@b(Описание:) функция @b(square) возвращает квадрат значения.
-
- @b(Переменые:)
-@begin(list)
- @item(x - число.)
-@end(list)
-
- @b(Пример использования:)
-@begin[lang=lisp](code)
- (square 5) => 25 
- (square -4) => 16 
-@end(code)
-"
-  (* x x))
+(in-package :math/stat)
 
 (export 'average )
+
 (defun average (&rest x)
 "@b(Описание:) функция @b(average) возврвщает среднее значение для перечня величин.
 
@@ -53,6 +35,7 @@
   (/ (apply #'+ x) (length x)))
 
 (export 'average-value )
+
 (defun average-value (x)
 "@b(Описание:) функция @b(average-value) возвращает среднее значение для списка величин.
 
@@ -61,26 +44,14 @@
 (average-value '(1.1 1.0 0.9 1.2 0.8)) => 1.0
 @end(code)
 "
-  (assert (< 0 (length x)))
-  (/ (apply #'+ x) (length x)))
+  (apply #'average x))
 
-(export 'exclude-nil-from-list )
-(defun exclude-nil-from-list (lst)
-"@b(Описание:) функция @b(exclude-nil-from-list) возвращает список в котором нет nil-элементов (они исключаются).
-
- @b(Пример использования:)
-@begin[lang=lisp](code)
- (exclude-nil-from-list '(1.1 1.0 nil 0.9 nil 1.2 nil 0.8)) 
- => (1.1 1.0 0.9 1.2 0.8)
-@end(code)
-"
-  (let ((res nil))
-    (dolist (el lst (reverse res) )
-      (when el (push el res )))))
+;;;;  (assert (< 0 (length x))) (/ (apply #'+ x) (length x))
 
 (export 'average-not-nil-value )
+
 (defun average-not-nil-value (x)
-"@b(Описание:) функция @b(average-not-nil-value) возвращает среднее значение
+  "@b(Описание:) функция @b(average-not-nil-value) возвращает среднее значение
 для списка величин.
 
  @b(Переменые:)
@@ -93,9 +64,10 @@
  (average-not-nil-value '(1.1 1.0 nil 0.9 nil 1.2 nil 0.8)) => 1.0 
 @end(code)
 "
-  (average-value (exclude-nil-from-list x)))
+  (apply #'average (exclude-nil-from-list x)))
 
 (export 'min-value )
+
 (defun min-value (x)
 "@b(Описание:) функция @b(min-value) возвращает максимальное значение для списка величин
 
@@ -107,6 +79,7 @@
   (apply #'min x))
 
 (export 'delta-min-value )
+
 (defun delta-min-value (x)
 "@b(Описание:) функция @b(delta-min-value)
 возвращает отклонение минимальной величины от среднего значения
@@ -117,9 +90,10 @@
  (delta-min-value '(1.1 1.0 0.9 1.2 0.8)) -0.19999999 
 @end(code)
 "
- (- (min-value x) (average-value x)))
+  (- (min-value x) (apply #'average x)))
 
 (export 'min-not-nil-value )
+
 (defun min-not-nil-value (x)
 "@b(Описание:) функция min-not-nil-value возвращает минимальное значение для списка величин.
 
@@ -136,6 +110,7 @@
   (min-value (exclude-nil-from-list x)))
 
 (export 'max-value )
+
 (defun max-value (x)
   "@b(Описание:) функция max-value возвращает максимальное значение для списка величин
 
@@ -147,6 +122,7 @@
   (apply #'max x))
 
 (export 'delta-max-value )
+
 (defun delta-max-value (x)
 "Возвращает отклонение максимальной величины от среднего значения
 для списка величин.
@@ -156,9 +132,10 @@
  (delta-max-value '(1.1 1.0 0.9 1.2 0.8)) => 0.20000005
 @end(code)
 "  
-  (- (max-value x) (average-value x)))
+  (- (max-value x) (apply #'average x)))
 
 (export 'max-not-nil-value )
+
 (defun max-not-nil-value (x)
 "@b(Описание:) функция max-not-nil-value возвращает максимальное значение для списка величин.
 
@@ -175,6 +152,7 @@
   (max-value (exclude-nil-from-list x)))
 
 (export 'dispersion )
+
 (defun dispersion (x)
 "@b(Описание:) функция dispersion возвращает дисперсию для списка величин.
 
@@ -183,12 +161,13 @@
  (dispersion '(1.1 1.0 0.9 1.2 0.8)) => 0.025000006
 @end(code)
 "
-  (let* ((x-sr (average-value x))
+  (let* ((x-sr (apply #'average x))
 	 (n-1 (1- (length x)))
 	 (summ (apply #'+ (mapcar #'(lambda (el) (square (- el x-sr))) x))))
     (/ summ n-1)))
 
 (export 'standard-deviation )
+
 (defun standard-deviation (x)
 "@b(Описание:) функция standard-deviation возвращает среднеквадратичное 
 (стандартное) отклонение для списка величин.
@@ -203,9 +182,10 @@
  (standard-deviation '(1.1 1.0 0.9 1.2 0.8)) => 0.1581139
 @end(code)
 "
- (sqrt (dispersion x)))
+  (sqrt (dispersion x)))
 
 (export 'variation-coefficient )
+
 (defun variation-coefficient (x)
 "@b(Описание:) возвращает 
 @link[uri=\"https://ru.wikipedia.org/wiki/Коэффициент_вариации\"](коэффициент вариации)
@@ -217,7 +197,7 @@
 @end(code)
 "
   (/ (standard-deviation x)
-     (average-value X)))
+     (apply #'average X)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -278,6 +258,7 @@
   )
 
 (export 'grubbs )
+
 (defun grubbs (n &optional (q 0.05))
 "@b(Описание:) функция grubbs вычисляет значение критерия Граббса (см. п. 6.1 см. ГОСТ Р 8.736-2011).
 
@@ -299,6 +280,7 @@
     (funcall arg-num (assoc n *G-t*))))
 
 (export 'grubbs-max )
+
 (defun grubbs-max (x)
 "@b(Описание:) функция grubbs-max возврвщает значения критерия Граббса 
 для максимального значения списка величин.
@@ -314,10 +296,11 @@
    (grubbs-max lst)) => 2.4095862
 @end(code)
 "
-  (/ (- (max-value x) (average-value x))
+  (/ (- (max-value x) (apply #'average x))
      (standard-deviation x)))
 
 (export 'grubbs-min )
+
 (defun grubbs-min (x)
 "@b(Описание:) функция grubbs-min возврвщает значения критерия Граббса 
 для минимального значения списка величин.
@@ -333,10 +316,11 @@
    (grubbs-min lst)) => 1.2863455 
 @end(code)
 "
-  (/ (- (average-value x) (min-value x) )
+  (/ (- (apply #'average x) (min-value x) )
      (standard-deviation x)))
 
 (export 'clean-flagrant-error )
+
 (defun clean-flagrant-error (x)
 "@b(Описание:) функция @b(clean-flagrant-error) удаляет из статистики грубые промахи.
 
@@ -364,6 +348,7 @@
       (t (setf exiting t))))))
 
 (export 'make-random-value-list )
+
 (defun make-random-value-list ( mid-value  &key (std-deviation 1.0) (n 40) (top-level 1000000))
 "Создает список случайных величин:
 
@@ -382,12 +367,13 @@
 		  (/ (- (random top-level) (/ (- top-level 1) 2)) top-level )))
 	    x))
     (values x
-	    (average-value x)
-	    (standard-deviation x)))) 
+	    (apply #'average x)
+	    (standard-deviation x))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (export 'clean-min-flagrant-error )
+
 (defun clean-min-flagrant-error (x)
 "Удаляет из статистики грубые промахи"
   (do* ((lst (sort (copy-list x) #'<))
@@ -401,6 +387,7 @@
       (t (setf exiting t)))))
 
 (export 'clean-max-flagrant-error )
+
 (defun clean-max-flagrant-error (x)
 "Удаляет из статистики грубые промахи"
   (do* ((lst (sort (copy-list x) #'<))

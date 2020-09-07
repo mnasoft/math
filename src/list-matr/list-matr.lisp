@@ -27,6 +27,7 @@
 (in-package :math/list-matr)
 
 (export 'list-matr-transpose)
+
 (defun list-matr-transpose (2d-list)
   "@b(Описание:) функция @b(list-matr-transpose) выполняет транспонирование матрицы,
 представленной списком 2d-list.
@@ -41,6 +42,7 @@
   (apply #'mapcar #'list 2d-list))
 
 (export 'list-matr-union)
+
 (defun list-matr-union (lst)
   "@b(Описание:) функция @b(list-matr-union) объединяет строки матрицы
 (список списков) в вектор (список).
@@ -57,6 +59,7 @@
     rez))
 
 (export 'list-matr-make)
+
 (defun list-matr-make (rows cols lst)
   "@b(Описание:) функция @b(list-matr-make) генерирует матрицу 
 (список списков) из вектора (списока).
@@ -80,6 +83,7 @@
       (setf rw nil))))
 
 (export 'list-matr-rows)
+
 (defun list-matr-rows (2d-list)
     "Возвращает количество строк в матрице, заданной списком 2d-list
 
@@ -91,6 +95,7 @@
   (length 2d-list))
 
 (export 'list-matr-cols)
+
 (defun list-matr-cols (2d-list)
   "@b(Описание:) функция @b(list-matr-cols) возвращает 
 количество столбцов в матрице, представленной списком 2d-list.
@@ -106,6 +111,7 @@
   (min-value (mapcar #'length 2d-list)))
 
 (export 'list-matr-row)
+
 (defun list-matr-row (row 2d-list)
   "@b(Описание:) функция @b(list-matr-row) возвращает строку row матрицы,
 представленной списком 2d-list.
@@ -121,6 +127,7 @@
   (nth row 2d-list))
 
 (export 'list-matr-col)
+
 (defun list-matr-col (col 2d-list)
   "Возвращает столбец col матрицы, представленной списком 2d-list.
 
@@ -134,12 +141,14 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (export 'list-matr-average-value)
+
 (defun list-matr-average-value (lst)
   "@b(Описание:) функция @b(average-value) вычисляет среднее значение по
 элементам матрицы (списка списков)."
   (average-value (list-matr-union lst)))
 
 (export 'list-matr-average-not-nil-value)
+
 (defun list-matr-average-not-nil-value (lst)
   "@b(Описание:) функция @b(average-not-nil-value) вычисляет среднее значение
 по элементам матрицы (списка списков) с исключением nil-элементов."
@@ -148,17 +157,20 @@
 ;;;;
 
 (export 'list-matr-average-row-value)
+
 (defun list-matr-average-row-value (lst)
   "Вычисляет средние значения в строках матрицы (списка списков)"
   (mapcar #'average-value lst))
 
 (export 'list-matr-average-row-not-nil-value)
+
 (defun list-matr-average-row-not-nil-value (lst)
   "@b(Описание:) функция @b(list-matr-average-row-not-nil-value) вычисляет среднее значение
 по элементам матрицы (списка списков)."
   (mapcar #'average-not-nil-value lst))
 
 (export 'list-matr-max-row-not-nil-value)
+
 (defun list-matr-max-row-not-nil-value (lst)
   "@b(Описание:) функция @b(list-matr-max-row-not-nil-value) вычисляет максимальные 
 значения по строкам матрицы (списка списков)."
@@ -167,18 +179,21 @@
 ;;;;
 
 (export 'list-matr-average-col-value)
+
 (defun list-matr-average-col-value (lst)
   "@b(Описание:) функция @b(list-matr-average-col-value) вычисляет среднее значение
 по столбцам матрицы (списка списков)"
   (list-matr-average-row-value (list-matr-transpose lst)))
 
 (export 'list-matr-average-col-not-nil-value)
+
 (defun list-matr-average-col-not-nil-value (lst)
   "@b(Описание:) функция @b(list-matr-average-col-not-nil-value) вычисляет среднее 
 значение по элементам матрицы (списка списков)."
   (list-matr-average-row-not-nil-value (list-matr-transpose lst)))
 
 (export 'list-matr-max-col-not-nil-value)
+
 (defun list-matr-max-col-not-nil-value (lst)
   "@b(Описание:) функция @b(list-matr-max-col-not-nil-value) вычисляет среднее 
 значение по столбцам матрицы (списка списков)."
@@ -189,6 +204,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (export 'list-matr-print)
+
 (defun list-matr-print (lst &key (fmt "~6,1f"))
   "@b(Описание:) функция @b(list-matr-print) красивый вывод
 матрицы (списка списков)."
@@ -197,6 +213,7 @@
   nil)
 
 (export 'list-vector-print)
+
 (defun list-vector-print (lst &key (fmt "~6,1f"))
   "@b(Описание:) функция @b(list-vector-print) красивый вывод
  вектора (списка)."
@@ -207,6 +224,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (export 'list-matr-append-col)
+
 (defun list-matr-append-col (c-lst 2d-list)
   "@b(Описание:) функция @b(list-matr-append-col) добавляет к матрице,
 представленной списком 2d-list, столбец (список) c-lst.
@@ -230,6 +248,7 @@
       (push (append l (list r)) rez))))
 
 (export 'list-matr-append-row)
+
 (defun list-matr-append-row (c-lst 2d-list)
   "@b(Описание:) функция @b(list-matr-append-row) добавляет вектор
 (список) r-lst к матрице 2d-list.
@@ -271,6 +290,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (export 'list-matr-prepend-col)
+
 (defun list-matr-prepend-col (c-lst 2d-list)
   "@b(Описание:) функция @b(list-matr-prepend-col) добавляет вектор
 (список) c-lst к матрице 2d-list.
@@ -294,6 +314,7 @@
       (push (cons r l) rez))))
 
 (export 'list-matr-prepend-row)
+
 (defun list-matr-prepend-row (c-lst 2d-list)
   "@b(Описание:) функция @b(list-matr-prepend-row)
 
@@ -330,6 +351,7 @@
   (list-matr-transpose (list-matr-prepend-col c-lst (list-matr-transpose 2d-list))))
 
 (export 'list-matr-detach-last-col)
+
 (defun list-matr-detach-last-col (2d-list)
   "@b(Описание:) функция @b(list-matr-detach-last-col) возвращает матрицу, 
 представленную в виде списка, образованную удалением последнего столбца 
@@ -349,6 +371,7 @@
    2d-list))
 
 (export 'list-matr-get-last-col)
+
 (defun list-matr-get-last-col (2d-list)
   "@b(Описание:) функция @b(list-matr-get-last-col) возвращает последний столбец матрицы, 
 представленной в виде списка.
@@ -365,4 +388,3 @@
   (mapcar
    #'(lambda(el) (car (last el)))
    2d-list))
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

@@ -1,0 +1,69 @@
+@begin(section) @title(Math)
+
+Math is a mathematical library that implements some algorithms of
+linear algebra, statistics, finding approximating polynomials
+on Common Lisp
+
+@end(section)
+
+@begin(section) @title(Классы)
+ @begin(section) @title(<matrix>)
+  @cl:with-package[name="math"](
+  @cl:doc(class <matrix>))
+  
+  @begin(section) @title(Размерность)
+   @cl:with-package[name="math"](
+    @cl:doc(generic rows)
+    @cl:doc(generic cols))
+  @end(section)
+  
+ @end(section)
+@end(section)
+
+@begin(section) @title(Функции)
+
+@begin(section) @title(Экспортируемые)
+ @cl:with-package[name="math"](
+  @cl:doc(function depth-sphere-along-cone)
+  @cl:doc(function make-least-squares-matrix)
+  @cl:doc(function make-plot-data-file)
+  @cl:doc(function make-table)
+  @cl:doc(function matr-new*)
+  @cl:doc(function averaging-function-body)
+  @cl:doc(function averaging-function-defun)
+  @cl:doc(function matr-osr-lambda*)
+  @cl:doc(function solve-linear-system-rotation)
+  @cl:doc(function split-range)
+  @cl:doc(function split-range-by-func)
+  @cl:doc(function table-apply)
+ )
+@end(section)
+  
+@end(section)
+
+@begin(section) @title(Обобщенные)
+  @cl:with-package[name="math"](
+   @cl:doc(generic copy)
+   @cl:doc(generic dimensions)
+   @cl:doc(generic squarep)
+   @cl:doc(generic mref)
+   @cl:doc(setf-generic mref)
+
+   @cl:doc(generic equivalent)
+   @cl:doc(generic row)
+   @cl:doc(setf-generic row)
+   @cl:doc(generic col)
+   @cl:doc(setf-generic col)
+
+   @cl:doc(generic main-diagonal)
+   @cl:doc(setf-generic main-diagonal)   
+
+   @cl:doc(generic anti-diagonal)
+   @cl:doc(setf-generic anti-diagonal)
+
+   @cl:doc(generic add)
+   @cl:doc(generic multiply)
+
+   @cl:doc(generic solve-linear-system-gauss)
+   )
+@end(section) 

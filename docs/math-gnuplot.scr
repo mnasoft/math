@@ -1,0 +1,18 @@
+@begin(section) @title(Gnuplot)
+ @cl:with-package[name="math/gnuplot"](
+   @cl:doc(function make-plot-data-file )
+  @cl:doc(function gnuplot-data-plot )
+  @cl:doc(function gnuplot-data-splot )
+  @cl:doc(function make-table )
+  @cl:doc(function gnuplot-plot )
+  @cl:doc(function table-apply )
+  @cl:doc(function split-range-by-func )
+  @cl:doc(function gnuplot-splot )
+  @cl:doc(function split-range )
+
+  @cl:doc(variable *palette-defined*)
+  @cl:doc(variable *palette-defined-01*)
+  @cl:doc(variable *pm3d-map*)
+  @cl:doc(generic  gnuplot-data-to-file)
+  )
+@end(section)

@@ -3,6 +3,7 @@
 (in-package #:math/appr )
 
 (export 'appr-table)
+
 (defun appr-table (x table)
   "@b(Описание:) функция @b(appr-table) возвращает результат линейной 
 интерполяции (или экстраполяции) для значения @b(x) на таблице @b(table).
@@ -97,6 +98,7 @@
     rez))
 
 (export 'averaging-function-lambda)
+
 (defun averaging-function-lambda (args-fuc-names func-view args-results)
   "@b(Описание:) функция @b(averaging-function-lambda) возвращает исходный код
  аппроксимиующей lambda-функции, построенной на основании списка, 
@@ -127,6 +129,7 @@
   `(lambda ,@(averaging-function-body args-fuc-names func-view args-results)))
 
 (export 'averaging-function-defun)
+
 (defun averaging-function-defun (args-fuc-names func-view args-results func-name)
 "@b(Описание:) функция @b(averaging-function-defun) возвращает исходный код
  именований аппроксимиующей функции, построенной на основании списка, 
@@ -160,6 +163,7 @@
   `(defun ,func-name ,@(averaging-function-body args-fuc-names func-view args-results)))
 
 (export 'make-approximation-lambda)
+
 (defmacro make-approximation-lambda (args-fuc-names func-view args-results)
 "@b(Описание:) макрос @b(make-approximation-lambda) определяет
  аппроксимиующую lambda-функцию, построенную на основании списка,
@@ -180,6 +184,7 @@
   (averaging-function-lambda  args-fuc-names func-view args-results))
 
 (export 'make-approximation-defun)
+
 (defmacro make-approximation-defun (args-fuc-names func-view args-results func-name)
 "@b(Описание:) макрос @b(make-approximation-defun) определяет
 аппроксимиующую функцию с именем @b(func-name), построенной на
@@ -199,12 +204,12 @@
 "  
   (averaging-function-defun args-fuc-names func-view args-results func-name))
 
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;; Разработка линейной интерполяции функции одного переменного
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (export 'make-linear-interpolation)
+
 (defun make-linear-interpolation (points &key (ff *apr-func-1-2*))
 "@b(Описание:) функция @b(make-linear-interpolation) возвращает функциональной 
  зависимость, аппроксимируемую по функции одного переменного, заданной таблично.
@@ -276,8 +281,11 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (export '<appr-linear>)
+
 (export 'appr-linear-x1)
+
 (export 'appr-linear-a1d-func)
+
 (defclass <appr-linear> ()
   ((x1       :accessor appr-linear-x1       :documentation "Вектор аргументов.")
    (a1d-func :accessor appr-linear-a1d-func :documentation "Вектор функций."))
@@ -323,7 +331,7 @@
  | 5.0 |  19.0 |  23.0 |
  @end(code)
 "   
-))
+   ))
 
 (defmethod print-object ((a-l <appr-linear>) s)
   (format s "#<appr-linear> (~A ~A)"
@@ -335,6 +343,7 @@
 	(appr-linear-a1d-func a-l) (make-linear-approximation-array x1 a1d)))
 
 (export 'approximate)
+
 (defmethod approximate ((point number) (a-l <appr-linear>))
 "@b(Описание:) метод @b(approximate) возвращает значение функции одного переменного 
  в точке point для функции заданой таблично и аппроксимированной объектом @b(a-l).
@@ -342,7 +351,32 @@
   (approximation-linear point (appr-linear-x1 a-l) (appr-linear-a1d-func a-l)))
 
 (export 'make-appr-linear)
+
 (defun make-appr-linear (args-resuls)
+  "@b(Описание:) функция @b(make-appr-linear) возвращает функцию,
+являющуюся линейной интерполяцией функции одного переменного.
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+(let ((f1 (math/appr:make-appr-linear
+   (loop :for i :from 0 :to 10
+	 :collect (list (* 1.0d0 i) (* 0.1d0 i i))))))
+  (loop :for i :from 0 :to 10 :by 1/5
+	:collect
+	(list (* 1.0 i) (coerce (funcall f1 (* 1d0 i))'single-float ))))
+  => '((0.0 0.0) (0.2 0.02) (0.4 0.04) (0.6 0.06) (0.8 0.08)
+       (1.0 0.1) (1.2 0.16) (1.4 0.22) (1.6 0.28) (1.8 0.34)
+       (2.0 0.4) (2.2 0.50) (2.4 0.60) (2.6 0.70) (2.8 0.80)
+       (3.0 0.9) (3.2 1.04) (3.4 1.18) (3.6 1.32) (3.8 1.46)
+       (4.0 1.6) (4.2 1.78) (4.4 1.96) (4.6 2.14) (4.8 2.32)
+       (5.0 2.5) (5.2 2.72) (5.4 2.94) (5.6 3.16) (5.8 3.38)
+       (6.0 3.6) (6.2 3.86) (6.4 4.12) (6.6 4.38) (6.8 4.64)
+       (7.0 4.9) (7.2 5.20) (7.4 5.50) (7.6 5.80) (7.8 6.10)
+       (8.0 6.4) (8.2 6.74) (8.4 7.08) (8.6 7.42) (8.8 7.76)
+       (9.0 8.1) (9.2 8.48) (9.4 8.86) (9.6 9.24) (9.8 9.62)
+       (10.0 10.0))
+@end(code)
+"
   (let ((appr-1d (make-instance '<appr-linear>
 				:x1  (apply #'vector  (mapcar #'first args-resuls))
 				:a1d (apply #'vector (mapcar #'second args-resuls)))))
@@ -352,10 +386,10 @@
 ;;;; Линейная интерполяции функции двух переменных (билинейная интерполяция)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defun make-belinear-interpolation (points &key (ff *apr-func-2-4*))
+(defun make-bilinear-interpolation (points &key (ff *apr-func-2-4*))
   "Создает объект билинейной интерполяции
  Пример использования:
- (make-belinear-interpolation
+ (make-bilinear-interpolation
  '((0.0 0.0 10.0)
  (0.0 1.0 2.0)
  (1.0 0.0 5.0)
@@ -385,7 +419,7 @@
     (loop :for r :from 0 :below (array-dimension a2-rez 0) :do
 	 (loop :for c :from 0 :below (array-dimension a2-rez 1) :do
 	      (setf (aref a2-rez r c)
-		    (make-belinear-interpolation
+		    (make-bilinear-interpolation
 		     (list
 		      (list (svref x1 r)      (svref x2 c)      (aref a2d r          c))
 		      (list (svref x1 r)      (svref x2 (1+ c)) (aref a2d r      (1+ c)))
@@ -401,9 +435,13 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (export '<appr-bilinear>)
+
 (export 'appr-bilinear-x1)
+
 (export 'appr-bilinear-x2)
+
 (export 'appr-bilinear-a2d-func)
+
 (defclass <appr-bilinear> ()
   ((x1       :accessor appr-bilinear-x1 :documentation "Вектор реперных значений по первому направлению (измерению).")
    (x2       :accessor appr-bilinear-x2 :documentation "Вектор реперных значений по второму направлению (измерению).")
@@ -423,6 +461,7 @@
 	(appr-bilinear-a2d-func a-l) (make-bilinear-approximation-array  a2d x1 x2)))
 
 (export 'approximate)
+
 (defmethod approximate (point (a-l <appr-bilinear>))
 "@b(Описание:) метод @b(approximate)"
   (approximation-bilinear (aref point 0) (aref point 1) (appr-bilinear-x1 a-l) (appr-bilinear-x2 a-l) (appr-bilinear-a2d-func a-l)))
@@ -432,6 +471,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (export 'approx-by-points)
+
 (defmethod approx-by-points ((x number) (dx number) (points vector) (values vector)
 			     &key (w-func #'math/smooth:gauss-smoothing))
   "Пример использования:
@@ -455,6 +495,7 @@
     (/ w-z-summ w-summ)))
 
 (export 'approx-by-points)
+
 (defmethod approx-by-points ((x vector) (dx vector) (points array) (values vector) &key (w-func #'math/smooth:gauss-smoothing))
   "Пример использования:
  
@@ -496,6 +537,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (export 'refine-approximation-values)
+
 (defmethod refine-approximation-values ((points array) (values vector) (base-dists vector) &key (w-func #'math/smooth:gauss-smoothing) (delta 0.001) (iterations 10000))
   "Вычисляет такой массив, что при сглаживании его по формуле Гаусса
  с характерным размером base-dists, сумма расстояний до 2d точек заданных массивом points не превысит delta
@@ -550,6 +592,7 @@
 	(iterate v-rez v-iter)))))
 
 (export 'refine-approximation-values)
+
 (defmethod refine-approximation-values ((points vector) (values vector) (base-dist number) &key (w-func #'math/smooth:gauss-smoothing) (delta 0.001) (iterations 10000))
   (assert (member w-func (list #'math/smooth:gauss-smoothing
 			       #'math/smooth:exp-smoothing
@@ -577,6 +620,3 @@
 	(iterate v-rez v-iter)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-
-
