@@ -3,7 +3,9 @@
 (defpackage #:math/gnuplot
   (:use #:cl #:math/core)
   (:export gnuplot-splot
-           table-apply gnuplot-plot
+	   gnuplot-plot
+           table-apply
+	   
            make-table
 	   *palette-defined-01*
 
@@ -27,10 +29,10 @@
 
  @b(Пример использования:)
 @begin[lang=lisp](code)
-  (make-table (split-range 1.0 0.0 2) (split-range -3 0 3)) 
- (((1.0 -3.0) (1.0 -2.0) (1.0 -1.0) (1.0 0.0))
- ((0.5 -3.0) (0.5 -2.0) (0.5 -1.0) (0.5 0.0))
- ((0.0 -3.0) (0.0 -2.0) (0.0 -1.0) (0.0 0.0)))
+  (make-table (split-range 1.0 0.0 2) (split-range -3 0 3))
+  =>  (((1.0 -3.0) (1.0 -2.0) (1.0 -1.0) (1.0 0.0))
+       ((0.5 -3.0) (0.5 -2.0) (0.5 -1.0) (0.5 0.0))
+       ((0.0 -3.0) (0.0 -2.0) (0.0 -1.0) (0.0 0.0)))
 @end(code)
 "
   (assert (consp lst-1)) 

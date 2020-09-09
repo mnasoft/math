@@ -25,7 +25,7 @@
 	   math/core:dimensions
 	   initialize-instance
 	   math/core:squarep
-	   approx-by-points
+	   smooth-by-points
 	   math/core:anti-diagonal
 
 	   semi-equal
@@ -33,7 +33,7 @@
 	   matrix-data
 
 	   convert-to-triangular
-	   refine-approximation-values
+	   refine-smoothing-by-points
 	   math/core:equivalent
 	   matrix->2d-list
 

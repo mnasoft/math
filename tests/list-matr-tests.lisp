@@ -48,6 +48,9 @@
 		      (68   4  96)
 		      (nil 57   3)
 		      (20   2 nil))))
+    (declare (ignore m1-3x5 m1-3x5+row-5
+		     row-5+m1-3x5 m1-3x5+col-3 col-3+m1-3x5
+		     m1-5x3 row-5 col-3 m1-3x5-nil m1-5x3-nil))
     (&body)))
 
 (def-test list-matr-rows-cols-dimensions-test ()

@@ -548,17 +548,48 @@
 ;;;; Сглаживание методами gnuplot
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(export 'approx-by-points)
+(export 'smooth-by-points)
 
-(defmethod approx-by-points ((x number) (dx number) (points vector) (values vector)
+(defmethod smooth-by-points ((x number) (dx number) (points vector) (values vector)
 			     &key (w-func #'math/smooth:gauss-smoothing))
-  "Пример использования:
- (approx-by-points 1.0 0.6 (vector 0.0 1.0 2.0 3.0 4.0) (vector 0.0 1.0 2.0 3.0 4.0)) 1.0000265
- (approx-by-points 1.0 0.4 (vector 0.0 1.0 2.0 3.0 4.0) (vector 0.0 1.0 2.0 3.0 4.0)) 1.0
- (approx-by-points 1.0 0.8 (vector 0.0 1.0 2.0 3.0 4.0) (vector 0.0 1.0 2.0 3.0 4.0)) 1.0027183
- (approx-by-points 1.0 1.0 (vector 0.0 1.0 2.0 3.0 4.0) (vector 0.0 1.0 2.0 3.0 4.0)) 1.0210931
- (approx-by-points 1.0 1.5 (vector 0.0 1.0 2.0 3.0 4.0) (vector 0.0 1.0 2.0 3.0 4.0)) 1.1591185
- "
+  "@b(Описание:) метод @b(smooth-by-points) возвращает значение, являющееся результатом
+сглаживания зависимости заданной:
+@begin(list)
+ @item(аргументами @b(points);)
+ @item(значениями в этих точках @b(values);)
+ @item(функцией @b(w-func) учета веса значений от относительного 
+       расстояния до аргумента (при которых эти значения определены);) 
+ @item(базовой длины, по которой вычисляются относительные расстояния.)
+@end(list)
+
+  Этот вариант метода примерняется для сглаживания функции одного аргумента.
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (let ((args #(-2.0 -1.0 0.0 1.0 2.0))
+	(vals #( 4.0  1.0 0.0 1.0 4.0))
+	(dx-2_0 2.0)
+	(dx-1_0 1.0)
+	(dx-0_6 0.6))
+    (loop :for i :from 0 :to 2 :by 1/5
+	  :collect (list (* i 1.0)
+			 (* i i 1.0)
+			 (smooth-by-points i dx-0_6 args vals)
+			 (smooth-by-points i dx-1_0 args vals)
+			 (smooth-by-points i dx-2_0 args vals))))
+  => '((0.0 0.0 0.11070304 0.4977933 1.3665789)
+       (0.2 0.04 0.1735467 0.5375060 1.3774427)
+       (0.4 0.16 0.3702085 0.6551497 1.4096088)
+       (0.6 0.36 0.6500492 0.8464661 1.4618422)
+       (0.8 0.64 0.8946066 1.1046556 1.5322074)
+       (1.0 1.00 1.1105981 1.4196386 1.6182360)
+       (1.2 1.44 1.4516152 1.7761649 1.7171193)
+       (1.4 1.96 2.0848030 2.1525292 1.8259060)
+       (1.6 2.56 2.9039226 2.5225418 1.9416808)
+       (1.8 3.24 3.5229838 2.8611753 2.0617056)
+       (2.0 4.00 3.8243356 3.1507930 2.1835241))
+@end(code)
+"
   (assert (= (length points) (length values)))
   (let ((w-summ 0.0)
 	(w-z-summ 0.0)
@@ -566,37 +597,49 @@
 	(z 0.0))
     (loop :for i :from 0 :below  (array-dimension points 0) :do
 	 (progn
-	   (setf w (funcall w-func (distance-relative x (aref points i) dx))
+	   (setf w (funcall w-func (math/core:distance-relative x (aref points i) dx))
 		 w-summ (+ w-summ w)
 		 z (aref values i)
 		 w-z-summ (+ w-z-summ (* w z )))))
     (/ w-z-summ w-summ)))
 
-(export 'approx-by-points)
+(export 'smooth-by-points)
 
-(defmethod approx-by-points ((x vector) (dx vector) (points array) (values vector) &key (w-func #'math/smooth:gauss-smoothing))
-  "Пример использования:
+(defmethod smooth-by-points ((x vector) (dx vector) (points array) (values vector) &key (w-func #'math/smooth:gauss-smoothing))
+  "@b(Описание:) метод @b(smooth-by-points) возвращает значение, являющееся результатом
+сглаживания зависимости заданной:
+@begin(list)
+ @item(аргументами @b(points);)
+ @item(значениями в этих точках @b(values);)
+ @item(функцией @b(w-func) учета веса значений от относительного 
+       расстояния до аргумента (при которых эти значения определены);) 
+ @item(базовой длины, по которой вычисляются относительные расстояния.)
+@end(list)
+  Этот вариант метода примерняется для сглаживания функции двух аргументов.
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (smooth-by-points #(0.0 0.0) #(1.0 1.0) (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) #(0.0 1.0 1.0 2.0)) 0.53788286
+ (smooth-by-points #(0.0 0.0) #(0.6 0.6) (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) #(0.0 1.0 1.0 2.0)) 0.117073804
+ (smooth-by-points #(0.0 0.0) #(0.4 0.4) (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) #(0.0 1.0 1.0 2.0)) 0.0038534694
  
- (approx-by-points (vector 0.0 0.0) (vector 1.0 1.0) (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) (vector 0.0 1.0 1.0 2.0)) 0.53788286
- (approx-by-points (vector 0.0 0.0) (vector 0.6 0.6) (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) (vector 0.0 1.0 1.0 2.0)) 0.117073804
- (approx-by-points (vector 0.0 0.0) (vector 0.4 0.4) (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) (vector 0.0 1.0 1.0 2.0)) 0.0038534694
+ (smooth-by-points #(1.0 0.0) #(1.0 1.0) (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) #(0.0 1.0 1.0 2.0)) 1.0
+ (smooth-by-points #(1.0 0.0) #(0.6 0.6) (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) #(0.0 1.0 1.0 2.0)) 0.9999999
+ (smooth-by-points #(1.0 0.0) #(0.4 0.4) (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) #(0.0 1.0 1.0 2.0)) 1.0
  
- (approx-by-points (vector 1.0 0.0) (vector 1.0 1.0) (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) (vector 0.0 1.0 1.0 2.0)) 1.0
- (approx-by-points (vector 1.0 0.0) (vector 0.6 0.6) (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) (vector 0.0 1.0 1.0 2.0)) 0.9999999
- (approx-by-points (vector 1.0 0.0) (vector 0.4 0.4) (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) (vector 0.0 1.0 1.0 2.0)) 1.0
+ (smooth-by-points #(0.0 1.0) #(1.0 1.0) (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) #(0.0 1.0 1.0 2.0)) 1.0
+ (smooth-by-points #(0.0 1.0) #(0.6 0.6) (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) #(0.0 1.0 1.0 2.0)) 1.0
+ (smooth-by-points #(0.0 1.0) #(0.4 0.4) (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) #(0.0 1.0 1.0 2.0)) 1.0
  
- (approx-by-points (vector 0.0 1.0) (vector 1.0 1.0) (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) (vector 0.0 1.0 1.0 2.0)) 1.0
- (approx-by-points (vector 0.0 1.0) (vector 0.6 0.6) (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) (vector 0.0 1.0 1.0 2.0)) 1.0
- (approx-by-points (vector 0.0 1.0) (vector 0.4 0.4) (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) (vector 0.0 1.0 1.0 2.0)) 1.0
+ (smooth-by-points #(1.0 1.0) #(1.0 1.0) (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) #(0.0 1.0 1.0 2.0)) 1.4621171
+ (smooth-by-points #(1.0 1.0) #(0.6 0.6) (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) #(0.0 1.0 1.0 2.0)) 1.8829262
+ (smooth-by-points #(1.0 1.0) #(0.4 0.4) (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) #(0.0 1.0 1.0 2.0)) 1.9961466
  
- (approx-by-points (vector 1.0 1.0) (vector 1.0 1.0) (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) (vector 0.0 1.0 1.0 2.0)) 1.4621171
- (approx-by-points (vector 1.0 1.0) (vector 0.6 0.6) (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) (vector 0.0 1.0 1.0 2.0)) 1.8829262
- (approx-by-points (vector 1.0 1.0) (vector 0.4 0.4) (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) (vector 0.0 1.0 1.0 2.0)) 1.9961466
- 
- (approx-by-points (vector 0.5 0.5) (vector 1.0 1.0) (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) (vector 0.0 1.0 1.0 2.0)) 1.0
- (approx-by-points (vector 0.5 0.5) (vector 0.6 0.6) (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) (vector 0.0 1.0 1.0 2.0)) 1.0
- (approx-by-points (vector 0.5 0.5) (vector 0.4 0.4) (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) (vector 0.0 1.0 1.0 2.0)) 1.0
- "
+ (smooth-by-points #(0.5 0.5) #(1.0 1.0) (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) #(0.0 1.0 1.0 2.0)) 1.0
+ (smooth-by-points #(0.5 0.5) #(0.6 0.6) (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) #(0.0 1.0 1.0 2.0)) 1.0
+ (smooth-by-points #(0.5 0.5) #(0.4 0.4) (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) #(0.0 1.0 1.0 2.0)) 1.0
+@end(code)
+"
   (assert (= (array-rank points) 2))
   (assert (= (array-dimension points 0) (length values)))
   (assert (= (array-dimension points 1) (length x) (length dx)))
@@ -606,7 +649,7 @@
 	(z 0.0))
     (loop :for i :from 0 :below  (array-dimension points 0) :do
 	 (progn
-	   (setf w (funcall w-func (distance-relative x (row i points) dx))
+	   (setf w (funcall w-func (math/core:distance-relative x (math/2d-array:row i points) dx))
 		 w-summ (+ w-summ w)
 		 z (aref values i)
 		 w-z-summ (+ w-z-summ (* w z )))))
@@ -614,33 +657,33 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(export 'refine-approximation-values)
+(export 'refine-smoothing-by-points)
 
-(defmethod refine-approximation-values ((points array) (values vector) (base-dists vector) &key (w-func #'math/smooth:gauss-smoothing) (delta 0.001) (iterations 10000))
+(defmethod refine-smoothing-by-points ((points array) (values vector) (base-dists vector) &key (w-func #'math/smooth:gauss-smoothing) (delta 0.001) (iterations 10000))
   "Вычисляет такой массив, что при сглаживании его по формуле Гаусса
  с характерным размером base-dists, сумма расстояний до 2d точек заданных массивом points не превысит delta
  
  Пример использования:
  
- (refine-approximation-values (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) (vector 0.0 1.0 1.0 2.0) (vector 1.0 1.0))
- (refine-approximation-values (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) (vector 0.0 1.0 1.0 2.0) (vector 0.6 0.6))
- (refine-approximation-values (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) (vector 0.0 1.0 1.0 2.0) (vector 0.4 0.4))
+ (refine-smoothing-by-points (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) #(0.0 1.0 1.0 2.0) #(1.0 1.0))
+ (refine-smoothing-by-points (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) #(0.0 1.0 1.0 2.0) #(0.6 0.6))
+ (refine-smoothing-by-points (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) #(0.0 1.0 1.0 2.0) #(0.4 0.4))
  
- (refine-approximation-values (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) (vector 0.0 1.0 1.0 2.0) (vector 1.0 1.0)) 
- (refine-approximation-values (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) (vector 0.0 1.0 1.0 2.0) (vector 0.6 0.6)) 
- (refine-approximation-values (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) (vector 0.0 1.0 1.0 2.0) (vector 0.4 0.4)) 
+ (refine-smoothing-by-points (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) #(0.0 1.0 1.0 2.0) #(1.0 1.0)) 
+ (refine-smoothing-by-points (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) #(0.0 1.0 1.0 2.0) #(0.6 0.6)) 
+ (refine-smoothing-by-points (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) #(0.0 1.0 1.0 2.0) #(0.4 0.4)) 
  
- (refine-approximation-values (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) (vector 0.0 1.0 1.0 2.0) (vector 1.0 1.0)) 
- (refine-approximation-values (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) (vector 0.0 1.0 1.0 2.0) (vector 0.6 0.6)) 
- (refine-approximation-values (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) (vector 0.0 1.0 1.0 2.0) (vector 0.4 0.4)) 
+ (refine-smoothing-by-points (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) #(0.0 1.0 1.0 2.0) #(1.0 1.0)) 
+ (refine-smoothing-by-points (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) #(0.0 1.0 1.0 2.0) #(0.6 0.6)) 
+ (refine-smoothing-by-points (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) #(0.0 1.0 1.0 2.0) #(0.4 0.4)) 
  
- (refine-approximation-values (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) (vector 0.0 1.0 1.0 2.0) (vector 1.0 1.0)) 
- (refine-approximation-values (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) (vector 0.0 1.0 1.0 2.0) (vector 0.6 0.6)) 
- (refine-approximation-values (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) (vector 0.0 1.0 1.0 2.0) (vector 0.4 0.4)) 
+ (refine-smoothing-by-points (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) #(0.0 1.0 1.0 2.0) #(1.0 1.0)) 
+ (refine-smoothing-by-points (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) #(0.0 1.0 1.0 2.0) #(0.6 0.6)) 
+ (refine-smoothing-by-points (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) #(0.0 1.0 1.0 2.0) #(0.4 0.4)) 
  
- (refine-approximation-values (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) (vector 0.0 1.0 1.0 2.0) (vector 1.0 1.0)) 
- (refine-approximation-values (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) (vector 0.0 1.0 1.0 2.0) (vector 0.6 0.6)) 
- (refine-approximation-values (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) (vector 0.0 1.0 1.0 2.0) (vector 0.4 0.4)) 
+ (refine-smoothing-by-points (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) #(0.0 1.0 1.0 2.0) #(1.0 1.0)) 
+ (refine-smoothing-by-points (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) #(0.0 1.0 1.0 2.0) #(0.6 0.6)) 
+ (refine-smoothing-by-points (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) #(0.0 1.0 1.0 2.0) #(0.4 0.4)) 
  "
   (assert (member w-func (list #'math/smooth:gauss-smoothing
 			       #'math/smooth:exp-smoothing
@@ -654,8 +697,8 @@
     (labels ((start-V1 (v-rez v-iter)
 	       (loop :for i :from 0 :below (length values) :do
 		 (setf (svref v-rez i)
-		       (approx-by-points (row i points) base-dists points v-iter :w-func w-func)))
-	       (summ-distance v-rez values))
+		       (smooth-by-points (math/2d-array:row i points) base-dists points v-iter :w-func w-func)))
+	       (math/core:summ-distance v-rez values))
 	     (iterate (v-rez v-iter)
 	       (loop :for i :from 0 :below (length values) :do
 		 (setf (svref v-iter i)
@@ -669,9 +712,9 @@
 		      (values v-iter nil i dist v-rez values))))
 	(iterate v-rez v-iter)))))
 
-(export 'refine-approximation-values)
+(export 'refine-smoothing-by-points)
 
-(defmethod refine-approximation-values ((points vector) (values vector) (base-dist number) &key (w-func #'math/smooth:gauss-smoothing) (delta 0.001) (iterations 10000))
+(defmethod refine-smoothing-by-points ((points vector) (values vector) (base-dist number) &key (w-func #'math/smooth:gauss-smoothing) (delta 0.001) (iterations 10000))
   (assert (member w-func (list #'math/smooth:gauss-smoothing
 			       #'math/smooth:exp-smoothing
 			       #'math/smooth:cauchy-smoothing
@@ -682,8 +725,8 @@
     (labels ((start-V1 (v-rez v-iter)
 	       (loop :for i :from 0 :below (length values) :do
 		    (setf (svref v-rez i)
-			  (approx-by-points (svref points i) base-dist points v-iter :w-func w-func)))
-	       (summ-distance v-rez values))
+			  (smooth-by-points (svref points i) base-dist points v-iter :w-func w-func)))
+	       (math/core:summ-distance v-rez values))
 	     (iterate (v-rez v-iter)
 	       (loop :for i :from 0 :below (length values) :do
 		    (setf (svref v-iter i)
@@ -698,3 +741,20 @@
 	(iterate v-rez v-iter)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(refine-smoothing-by-points
+ (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0)))
+ #(0.0 1.0 1.0 2.0)
+ #(1.0 1.0))
+
+(refine-smoothing-by-points #(-2 -1 0 1 2) #(4 1 0 1 4) 1.0 )
+
+
+; V-REZ=#(3.9999044 1.0001905 -2.2706656e-4 1.0001904 3.9999044)
+;  => #(5.6701236 -0.3417822 0.04336298 -0.3417822 5.670124), T, 28, 7.9915195e-4, #(3.9999044 1.0001905 -2.2706656e-4 1.0001904 3.9999044), #(4 1 0 1 4)
+
+(smooth-by-points 1.5  1.0  #(-2 -1 0 1 2) #(5.6701236 -0.3417822 0.04336298 -0.3417822 5.670124))
+
+; V-ITER#(4.0800066 0.15551972 -0.316086 0.15551972 6.9072504);
+; V-REZ=#(4.000006 1.0001515 -2.3828201e-4 1.0001515 3.9997652)
+;  => #(4.0800066 0.15551972 -0.316086 0.15551972 6.9072504), T, 20, 7.823532e-4, #(4.000006 1.0001515 -2.3828201e-4 1.0001515 3.9997652), #(4 1 0 1 4)

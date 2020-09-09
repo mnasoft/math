@@ -22,7 +22,6 @@
    @cl:doc(generic copy)
    @cl:doc(generic add)
    @cl:doc(generic anti-diagonal)
-   @cl:doc(generic approx-by-points)
    @cl:doc(generic squarep)
    @cl:doc(generic initialize-instance)
    @cl:doc(generic dimensions)
@@ -33,6 +32,8 @@
    @cl:doc(generic swap-rows*)
    @cl:doc(generic swap-cols*)
    @cl:doc(generic matr-name-*)
-   @cl:doc(generic refine-approximation-values)
+   
+   @cl:doc(generic smooth-by-points)
+   @cl:doc(generic refine-smoothing-by-points)
    )
 @end(section)

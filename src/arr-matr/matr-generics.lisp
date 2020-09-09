@@ -11,17 +11,17 @@
 ;;;; (setf *print-case* :downcase)
 ;;;; (setf *print-case* :upcase)
 
-(export 'approx-by-points)
+(export 'smooth-by-points)
 
-(defgeneric approx-by-points (pnt d-pnt points values &key w-func)
+(defgeneric smooth-by-points (pnt d-pnt points values &key w-func)
   (:documentation
    "Вычисляет функцию, заданную точками points и значениями values
  в точке pnt, используя размер влияния, заданный параметром d-pnt.
  "))
 
-(export 'refine-approximation-values)
+(export 'refine-smoothing-by-points)
 
-(defgeneric refine-approximation-values (points values base-dist-s &key w-func delta iterations)
+(defgeneric refine-smoothing-by-points (points values base-dist-s &key w-func delta iterations)
   (:documentation
 "Выполняет поиск массива значений такого, что:
  - при сглаживании функцией w-func ;
