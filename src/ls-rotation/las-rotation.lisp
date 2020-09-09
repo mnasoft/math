@@ -2,8 +2,7 @@
 
 (defpackage #:math/ls-rotation
   (:use #:cl #:math/arr-matr)
-  (:export 
-	   ))
+  (:export solve-linear-system-rotation))
 
 (in-package :math/ls-rotation)
 

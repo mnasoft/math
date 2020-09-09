@@ -1,0 +1,54 @@
+* Ссылки
+1) Операции git  [[file:~/org/sbcl/Git-memo.org][Git-memo.org]]
+2) [[file:~/org/sbcl/codex.org][Генерирование документации при помощи Codex]]
+3) http://commondoc.github.io/codex/docs/tutorial.html
+4) [[/home/namatv/.slynkrc]]
+5) Тестирование при помощи FiveAm
+   - [[https://common-lisp.net/project/fiveam/][FiveAm]]
+   - [[http://turtleware.eu/posts/Tutorial-Working-with-FiveAM.html][Tutorial]]
+   - [[https://www.darkchestnut.com/2018/how-to-write-5am-test-fixtures/][Fixtures]]
+ 
+* Генерироване документации
+#+name: make-html
+#+BEGIN_SRC lisp
+  (codex:document :math)
+  (loop
+    :for i :in
+    '(:math
+      :math/core
+      :math/smooth
+      :math/list-matr
+      :math/arr-matr
+      :math/appr
+      :math/stat
+      :math/coord
+      :math/gnuplot
+      :math/x-o)
+    :do (mnas-package:make-codex-documentation i i))
+#+END_SRC
+
+#+RESULTS: make-html
+: NIL
+
+* Публикация
+#+name: publish
+#+BEGIN_SRC shell :var make-html=make-html
+    mkdir -p "$HOME/public_html/Common-Lisp-Programs/"
+    CDIR=`dirname $PWD | xargs basename`
+    rsync -Pazh --delete ../docs/build/$CDIR/html/ $HOME/public_html/Common-Lisp-Programs/$CDIR 
+    if [[ `hostname` == "mnasoft-00" ]]
+    then
+	echo "mnasoft-00"
+  #     sh ~/bin/pi-html
+    fi
+    if [[ `hostname` == "N118383" ]]
+    then
+	echo "N118383"
+	mkdir -p //n133619/home/_namatv/public_html/Site/Development/Common-Lisp-Programs/$CDIR
+	rsync -Pavzh ./docs/build/$CDIR/html/* //n133619/home/_namatv/public_html/Site/Development/Common-Lisp-Programs/$CDIR
+     fi
+#+END_SRC
+
+#+RESULTS: publish
+| sending    | incremental | file | list |
+| mnasoft-00 |             |      |      |

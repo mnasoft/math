@@ -1,23 +1,28 @@
-;;;; array.lisp
+;;;; /src/2d-array/2d-array.lisp
 
 (defpackage #:math/2d-array
   (:use #:cl)
-  )
+  (:export rows
+	   cols
+	   row
+	   col))
 
 (in-package :math/2d-array)
 
-
 (export 'rows)
+
 (defmethod rows ((a array))
   (assert (= (array-rank a) 2))
   (array-dimension a 0))
 
 (export 'cols)
+
 (defmethod cols ((a array))
   (assert (= (array-rank a) 2))
   (array-dimension a 1))
 
 (export 'row)
+
 (defmethod row ((row integer) (a array))
   "@b(Описание:) метод @b(row) возвращает строку @b(row) из масства @d(a).
 Строка возвращается в виде вектора vector.
@@ -42,6 +47,7 @@
 			(aref a row j))))
 
 (export 'col)
+
 (defmethod col ((col integer) (a array))
   "@b(Описание:) метод @b(col) возвращает столбец @b(col) из масства @b(a).
 Столбец возвращается в виде вектора (vector).
@@ -62,7 +68,7 @@
   (when (/= (array-rank a) 2) (error 'col-operation-not-appicable))
   (assert (< -1 col (array-dimension a 1)))
   (apply #'vector (loop :for i :from 0 :below (array-dimension a 0) :collect
-		       (aref a i col))))
+								    (aref a i col))))
 
 (defmethod (setf row) ((new-row cons) (a array) row)
   (assert (= (array-rank a) 2))
@@ -118,3 +124,5 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defparameter *a* (make-array '(2 3) :initial-contents '((1 2 3)(4 5 6))))
+
+(col 0 *a*)

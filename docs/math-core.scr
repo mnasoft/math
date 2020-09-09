@@ -1,4 +1,4 @@
-@begin(section) @title(Core)
+@begin(section) @title(Math/Core)
 
 @begin(section) @title(Обзор)
   Определяет некоторые функции повсеместно используемые в проекте.
@@ -12,33 +12,73 @@
    )
  @end(section)
 
- @begin(section) @title(Generic)
-   @cl:with-package[name="math/core"](
+ @begin(section) @title(Generics)
+  @cl:with-package[name="math/core"](
    @cl:doc(generic distance)
    @cl:doc(generic summ-distance)
-   @cl:doc(generic distance-relative))
- @end(section)
- 
- @begin(section) @title(Distance)
-  @cl:with-package[name="math/core"](
-   @cl:doc(method distance (x1 number) (x2 number))
-   @cl:doc(method distance (x1-lst cons) (x2-lst cons))
-   @cl:doc(method distance (x1 vector) (x2 vector))
+   @cl:doc(generic distance-relative)
+   @cl:doc(generic copy)
    )
- @end(section)
+
+  @begin(section) @title(Matrix)
+   @cl:with-package[name="math/core"](
+    @cl:doc(generic dimensions)
+    @cl:doc(generic rows)
+    @cl:doc(generic cols)
+	
+    @cl:doc(generic squarep)
+
+    @cl:doc(generic mref)
+    @cl:doc(setf-generic mref)
+
+    @cl:doc(generic row)
+    @cl:doc(setf-generic row)
+    @cl:doc(generic col)
+    @cl:doc(setf-generic col)
+    
+    @cl:doc(generic main-diagonal)
+    @cl:doc(setf-generic main-diagonal)   
  
- @begin(section) @title(Distance-relative)
-  @cl:with-package[name="math/core"](
-   @cl:doc(method distance-relative (x number) (xi number) (dx number))
-   @cl:doc(method distance-relative (x-lst cons) (xi-lst cons) (dx-lst cons))
-   @cl:doc(method distance-relative (x vector) (xi vector) (dx vector))
+    @cl:doc(generic anti-diagonal)
+    @cl:doc(setf-generic anti-diagonal)
+
+    @cl:doc(generic equivalent)
+ 
+    @cl:doc(generic add)
+    @cl:doc(generic multiply)
+ 
+    @cl:doc(generic transpose)
    )
+  @end(section)
+  
  @end(section)
+
+ @begin(section) @title(Methods)
  
- @begin(section) @title(Distance-relative)
-  @cl:with-package[name="math/core"](
-   @cl:doc(method summ-distance (x1 vector) (x2 vector))
-   @cl:doc(method summ-distance (x1 cons) (x2 cons)))
+  @begin(section) @title(Distance)
+   @cl:with-package[name="math/core"](
+    @cl:doc(method distance (x1 number) (x2 number))
+    @cl:doc(method distance (x1-lst cons) (x2-lst cons))
+    @cl:doc(method distance (x1 vector) (x2 vector))
+    )
+  @end(section)
+  
+  @begin(section) @title(Distance-relative)
+   @cl:with-package[name="math/core"](
+    @cl:doc(method distance-relative (x number) (xi number) (dx number))
+    @cl:doc(method distance-relative (x-lst cons) (xi-lst cons) (dx-lst cons))
+    @cl:doc(method distance-relative (x vector) (xi vector) (dx vector))
+    )
+  @end(section)
+  
+  @begin(section) @title(Summ-distance)
+   @cl:with-package[name="math/core"](
+    @cl:doc(method summ-distance (x1 vector) (x2 vector))
+    @cl:doc(method summ-distance (x1 cons) (x2 cons)))
+  @end(section)
+  
  @end(section)
+
+  
    
 @end(section)

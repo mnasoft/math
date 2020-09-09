@@ -186,7 +186,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(export ' row )
+(export 'row )
 
 (defmethod row ((mm <matrix>) row)
   (let ((data (matrix-data mm)))
@@ -201,7 +201,7 @@
 		 ll (cdr ll)))
     mm))
 
-(export ' col )
+(export 'col )
 
 (defmethod col ((mm <matrix>) col)
   (let ((data (matrix-data mm)))
@@ -238,7 +238,7 @@
   (loop :for i :from 0 :below (min (rows mm) (cols mm))
 	:collect (mref mm i i)))
 
-(export '(setf main-diagonal))
+(export 'main-diagonal)
 
 (defmethod (setf main-diagonal) (elements (mm <matrix>))
   "@b(Пример использования:)
@@ -351,82 +351,6 @@
      :for e :in elements :by #'cdr :do
        (setf (mref mm c r) e))
   mm)
-
-(export 'make-least-squares-matrix)
-
-(defun make-least-squares-matrix (vv ff ex_pts)
-  "@b(Описание:) функция @b(make-least-squares-matrix) возвращает матрицу
-для расчета коэффициентов полиномиальной зависимости вида @b(ff) со 
-списком имен факторов влияния и имени функции отклика @b(vv),
-которая приближается к экспериментальным точкам @b(ex_pts),
-методом наименьших квадратов.
-
- @b(Переменые:)
-@begin(list)
- @item(vv - список, состоящий из имен факторов влияния и имени функции отклика;)
- @item(ff - задает вид функциональной зависимости;)
- @item(ex_pts - задает значения факторов влияния и значение функции отклика;)
-@end(list)
-
- @b(Пример использования:)
-@begin[lang=lisp](code)
-;;;; Для аппроксимации экспериментальных точек полиномом второй степени функции одной переменной.
-;;;; Здесь коэффициенты a1, a2, a3 можно найти решив САУ, получаемую в результате. 
-;;;; (defun yy (xx) (+ (* a1 xx xx) (* a2 xx) a3))
-
- (make-least-squares-matrix 
-  '(xx yy) 
-  '((xx xx) (xx) (1.0) (yy)) 
-  '((-1.0 1.0) (0.0 0.0) (2.0 4.0) (3.0 9.0)))
-  => Matr 3х4
-     [ 98.0d0    34.0d0    14.0d0    98.0d0   ]
-     [ 34.0d0    14.0d0    4.0d0     34.0d0   ]
-     [ 14.0d0    4.0d0     4.0d0     14.0d0   ]
-;;;; Для аппроксимации экспериментальных точек полиномом второй степени функции двух переменных.
-;;;; Здесь коэффициенты a1, a2, a3 можно найти решив САУ, получаемую в результате. 
-     (defun yy (x1 x2) (+ (* 1.0 x1 x1) (* 2.0 x2 x2)  (* 3.0 x1 x2)  (* 4.0 x1) (* 5.0 x2) 6.0))
-    
- (make-least-squares-matrix 
-  '(x1 x2 yy) 
-  '((x1 x1) (x2 x2) (x1 x2) (x1) (x2) (1.0) (yy)) 
-  (let ((pts nil))
-    (loop :for i :from -2 :to 2 :do
-      (loop :for j :from -2 to 2 :do
-	(push (list i j (yy i j)) pts)))
-    pts))
-
-;  => Matr 6х7
-; [ 170.0d0   100.0d0   0.0d0     0.0d0     0.0d0     50.0d0    670.0d0  ]
-; [ 100.0d0   170.0d0   0.0d0     0.0d0     0.0d0     50.0d0    740.0d0  ]
-; [ 0.0d0     0.0d0     100.0d0   0.0d0     0.0d0     0.0d0     300.0d0  ]
-; [ 0.0d0     0.0d0     0.0d0     50.0d0    0.0d0     0.0d0     200.0d0  ]
-; [ 0.0d0     0.0d0     0.0d0     0.0d0     50.0d0    0.0d0     250.0d0  ]
-; [ 50.0d0    50.0d0    0.0d0     0.0d0     0.0d0     25.0d0    300.0d0  ]
-
-  (solve-linear-system-gauss *)
-;  => Matr 1х6
-; [ 1.0d0     2.0d0     3.0d0     4.0d0     5.0d0     6.0d0    ]
-@end(code)
-
- См. также solve-linear-system-gauss; solve-linear-system-rotation
-  "
-  (let* ((m          (length ff))
-	 (n          (1- m))
-	 (mtr        (make-instance '<matrix> :dimensions  (list n m) :initial-element 0.0d0 ))
-	 (mtr-lambda (make-instance '<matrix> :dimensions  (list n m) :initial-element nil )))
-    (dotimes (i n)
-      (dotimes (j m)
-	(setf (mref mtr-lambda i j)
-	      (eval (list 'lambda  vv (cons '* (append (nth i ff) (nth j ff))))))))
-    
-    (mapc
-     #'(lambda (el)
-	 (dotimes (i n)
-	   (dotimes (j m)
-	     (setf (mref mtr i j)
-		   (+ (apply (mref mtr-lambda i j) el) (mref mtr i j))))))
-     ex_pts)
-    mtr))
 
 (export 'add)
 

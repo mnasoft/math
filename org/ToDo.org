@@ -1,0 +1,314 @@
+* Файлы проекта
+#+BEGIN_SRC shell
+for i in `find . -name "*.lisp" -o -name "*.asd" -o -name "*.org"|sort` 
+do
+ echo [[./${i}]]
+ done
+#+END_SRC
+
+#+RESULTS:
+| [[file:././approximation-gnuplot.lisp]]        |
+| [[file:././Developers-memo.org]]               |
+| [[file:././docs/manifest.lisp]]                |
+| [[file:././math.asd]]                          |
+| [[file:././README.org]]                        |
+| [[file:././src/2d-array/2d-array.lisp]]        |
+| [[file:././src/2d-array/array-test.lisp]]      |
+| [[file:././src/appr/appr-func-temptate.lisp]]  |
+| [[file:././src/appr/approximation.lisp]]       |
+| [[file:././src/appr/package.lisp]]             |
+| [[file:././src/arr-matr/matr-class.lisp]]      |
+| [[file:././src/arr-matr/matr-generics.lisp]]   |
+| [[file:././src/arr-matr/package.lisp]]         |
+| [[file:././src/coord/coordinate-system.lisp]]  |
+| [[file:././src/core/generic.lisp]]             |
+| [[file:././src/core/generic-matr.lisp]]        |
+| [[file:././src/core/main.lisp]]                |
+| [[file:././src/core/method.lisp]]              |
+| [[file:././src/gnuplot/gnuplot.lisp]]          |
+| [[file:././src/list-matr/list-matr.lisp]]      |
+| [[file:././src/ls-gauss/ls-gauss.lisp]]        |
+| [[file:././src/ls-rotation/las-rotation.lisp]] |
+| [[file:././src/ls-solve/gsll-samples.lisp]]    |
+| [[file:././src/ls-solve/lu-solve.lisp]]        |
+| [[file:././src/ls-solve/package.lisp]]         |
+| [[file:././src/ls-solve/temp.lisp]]            |
+| [[file:././src/mult-matr-vect.lisp]]           |
+| [[file:././src/package.lisp]]                  |
+| [[file:././src/smooth/smoothing.lisp]]         |
+| [[file:././src/stat/statistics.lisp]]          |
+| [[file:././src/x-o/x-o.lisp]]                  |
+| [[file:././test.lisp]]                         |
+| [[file:././tests/approximation-test-bak.lisp]] |
+| [[file:././tests/approximation-tests.lisp]]    |
+| [[file:././tests/array.lisp]]                  |
+| [[file:././tests/linear-system-tests.lisp]]    |
+| [[file:././tests/main.lisp]]                   |
+| [[file:././tests/main-run.lisp]]               |
+| [[file:././tests/matrix.lisp]]                 |
+| [[file:././tests/package.lisp]]                |
+| [[file:././.#ToDo.org]]                        |
+| [[file:././ToDo.org]]                          |
+
+* Задачи
+1. [0/12] Тестирование 
+   - [ ] 2d-array  
+   - [ ] arr-matr
+   - [ ] core
+   - [24/24] list-matr [[file:~/quicklisp/local-projects/clisp/math/tests/list-matr-tests.lisp][list-matr-tests.lisp]]
+     - [X] rows -> list-matr-rows-cols-dimensions-test
+     - [X] cols -> list-matr-rows-cols-dimensions-test
+     - [X] dimensions -> list-matr-rows-cols-dimensions-test
+     - [X] row -> list-matr-row-test
+     - [X] col -> list-matr-col-test
+     - [X] average-value
+     - [X] average-not-nil-value
+     - [X] average-row-value
+     - [X] average-row-not-nil-value
+     - [X] average-col-value
+     - [X] average-col-not-nil-value
+     - [X] max-row-not-nil-value
+     - [X] max-col-not-nil-value
+     - [X] transpose
+     - [X] detach-last-col
+     - [X] get-last-col
+     - [X] prepend-row
+     - [X] prepend-col
+     - [X] append-row
+     - [X] append-col
+     - [X] lv-print
+     - [X] lm-print
+     - [X] unite-rows
+     - [X] make
+   - [ ] ls-rotation
+   - [ ] stat
+   - [ ] appr
+   - [ ] coord
+   - [ ] gnuplot
+   - [ ] ls-gauss
+   - [ ] ls-solve
+   - [ ] smooth         
+   - [ ] x-o
+2. [0/13] Документирование
+   - [ ] 2d-array  
+   - [ ] arr-matr
+   - [ ] core
+   - [/] list-matr [[file:~/quicklisp/local-projects/clisp/math/src/list-matr/list-matr.lisp][list-matr.lisp]]
+     - [ ] rows
+     - [ ] cols
+     - [ ] dimensions
+     - [ ] col
+     - [ ] row
+     - [ ] average-value
+     - [ ] average-not-nil-value
+     - [ ] average-row-value
+     - [ ] average-row-not-nil-value
+     - [ ] average-col-value
+     - [ ] average-col-not-nil-value
+     - [ ] max-row-not-nil-value
+     - [ ] max-col-not-nil-value
+     - [ ] transpose
+     - [ ] detach-last-col
+     - [ ] get-last-col
+     - [ ] prepend-row
+     - [ ] prepend-col
+     - [ ] append-row
+     - [ ] append-col
+     - [ ] lv-print
+     - [ ] lm-print
+     - [ ] unite-rows
+     - [ ] make
+   - [ ] ls-rotation
+   - [ ] stat
+   - [ ] appr  [[file:~/quicklisp/local-projects/clisp/math/src/appr/approximation.lisp][approximation.lisp]] 
+   - [ ] coord
+   - [ ] gnuplot
+   - [ ] ls-gauss
+   - [ ] ls-solve
+   - [ ] smooth         
+   - [ ] x-o
+3. [ ] Определить функции кубической интерполяции для функции одного переменного, заданной табличными значениями.
+4. [ ] Для документирования при помощи проекта mnas-package предусмотреть исключение дублирующих ребер в графах.
+5. [ ] При определении коэффициентов в функции =averaging-function-body= необходимо выполнить нормализацию диапазона аргументов и значений функций.
+6. [3/3] Заменить префикс с целью укорачивания имен math/list-matr:list-matr* -> math/list-matr:*
+   - [X] print             -> lm-print
+   - [X] list-vector-print -> lv-print
+   - [X] union             -> unite-rows 
+7. [2/2] Перенести и сделать доступным в math
+   - [X] math/gnuplot:split-range -> math/core:split-range
+   - [X] math/gnuplot:split-range-by-func -> math/core:split-range-by-func
+8. [3/4] Определить класс matrix при помощи массива (array 2d) [75%]
+   - [X] Файл -  [[./matr-class.lisp]]
+   - [X] Класс - matrix 
+   - [X] Файл -  [[./matr-class-temp.lisp]] - содержит заготовки функций, которые необходимо переделать под класс  matrix.
+   - [ ] По окончании пределки функций данный файл подлежит удалению из проекта.
+9. [5/5] Рефакторинг -  разделить проект на отдельные части:
+   - [X] Матрицы -- arr-matr
+   - [X] Аппроксимация -- appr
+   - [X] Матрицы в виде списков -- list-matr
+   - [X] Матрицы в виде массивов -- 2d-array
+   - [X] x-o.lisp        - файл, содержащий определение класса x-o крестики-нолики, выделить в отдельный подпроект.
+     - [X] matr-set-ij-* - заменить на, что-то что применяется в настоящий момент -- (setf (mref mm r c) v).
+     - [X] matr-rows-* - заменить на, что-то что применяется в настоящий момент -- rows.
+     - [X] matr-cols-* - заменить на, что-то что применяется в настоящий момент -- cols.
+     - [X] matr-set-row-* - заменить на, что-то что применяется в настоящий момент -- (setf (row mm r) v).
+     - [X] matr-get-row-* - заменить на, что-то что применяется в настоящий момент -- (row mm r).
+     - [X] matr-get-col-* - заменить на, что-то что применяется в настоящий момент -- (col mm r).
+10. [X] Определить функцию генерирующую замыкание для функции интерполяции одного переменного -- make-appr-linear.
+11. [3/3] Разобраться с функциями с целью исключеия какой-либо из них. [3/3]
+    - [X] matr-ij (matr i j) - исключена;
+    - [X] matr-set_ij (matr elem i j) - исключена;
+    - [X] matr-set-ij (matr value i j) - исключена;
+12. [X] Выполнить оптимизацию вычисления для функции matr-mnk за счет создания матрицы содержащей функции для аддитивного вычисления коэффициентов.  SCHEDULED: <2018-11-30 Пт>
+13. [10/10] Определить операции для класса matrix
+    - [X] вывода строки, определяющией тип матрицы    -- matr-name-*  ((mm matrix));
+    - [X] создания матрицы                            -- make-instance 'matrix
+    - [X] инициализации матрицы                       -- initialize-instance  ((mm matrix) &key dimensions initial-element initial-contents data (element-type t));
+    - [X] копирования матрицы                         -- copy  ((mm-ref matrix));
+    - [X] проверка на квадратность                    -- squarep  ((mm matrix));
+    - [X] определения:[100%] 
+      + [X] размерностей                              -- dimensions ((mm matrix));
+      + [X] количества строк                          -- rows ((mm matrix));
+      + [X] количества столбцов                       -- cols ((mm matrix));
+    - [X] печати                                      -- print-object ((mm matrix) s);
+    - [X] извлечения: [100%] 
+      + [X] элментов;                                 -- mref ((mm matrix) i j);
+      + [X] строк;                                    -- row  ((mm matrix) row);
+      + [X] столбцов;                                 -- col  ((mm matrix) col);
+      + [X] диагонали: [100%] 
+	- [X] главной                                 -- main-diagonal  ((mm matrix));
+	- [X] побочной                                -- anti-diagonal  ((mm matrix));
+    - [X] записи:
+      + [X] элементов                                 -- (setf mref) (matrix row col);
+      + [X] строки                                    -- (setf row)  (new-value-lst (mm matrix) row);
+      + [X] столбца                                   -- (setf col)  (new-value-lst (mm matrix) col);
+      + [X] [100%] диагонали
+	- [X] главной                                 -- (setf main-diagonal) (elements (mm matrix));
+	- [X] побочной                                -- (setf anti-diagonal) (elements (mm matrix));
+    - [X] Опреции: [100%]
+      - [X] проверки равентсва                        -- matr-equal* ((m1 matrix) (m2 matrix) &key (test #'equal));
+      - [X] Сложения                                  -- matr-sum*   ((a matrix ) (b matrix));
+      - [X] Умножения [100%]
+	- [X] на матрицу                              -- matr-mult*  ((a matrix ) (b matrix));
+	- [X] на число                                -- matr-mult*  ((a number ) (b matrix));
+      - [X] транспонирования: [100%]
+	- [X] транспонирования                        -- transpose   ((mm matrix));
+	- [X] транспонирования                        -- transpose   ((mm cons));
+      - [X] перестановки: [100%]
+	+ [X] строк;                                  -- swap-rows*  ((mm matrix) i j)
+	+ [X] строк;                                  -- swap-rows   ((mm matrix) i j)
+	+ [X] столбцов;                               -- swap-cols*  ((mm matrix) i j)
+	+ [X] столбцов;                               -- swap-cols   ((mm matrix) i j)
+      - [X] Преобразования [100%]
+	+ [X] в matrix->2d-list                       -- matrix->2d-list ((mm matrix))
+14. Определить функции тестирования для матриц
+* link FiveAm
+
+http://turtleware.eu/posts/Tutorial-Working-with-FiveAM.html
+
+https://common-lisp.net/project/fiveam/
+
+https://www.darkchestnut.com/2018/how-to-write-5am-test-fixtures/
+
+* Замечания
+
+** Аппроксимация
+*** Литература
+ [[\\solver\dfni$\%D0%93%D1%80%D0%B0%D1%84%D0%B8%D0%BA%D0%B0\Gnuplot\Janert%20P.%20K.%20-%20Gnuplot%20in%20Action,%20Second%20Edition%20-%202016.pdf][Janert P. K. - Gnuplot in Action, Second Edition - 2016]]
+ С18-С20
+
+ Gnuplot in Action
+ SECOND EDITION
+ PHILIPP K. JANERT
+
+
+ \[ z = \frac {\sum_i w(d_i) \cdot z_i} {\sum_i w(d_i) } \]
+
+ \[ d_i = \sqrt { \left( \frac{x-x_i}{dx} \right)^2 + \left(\frac{y-y_i}{dy} \right)^2 } \]
+
+  gauss    w(d) = exp(-d^2)                                   
+                         
+  cauchy   w(d) = 1/(1+d^2)                                                            
+
+  exp      w(d) = exp(-d)                                                              
+
+  box      w(d) = 1 if d < 1; w(d) = 0 otherwise                                       
+
+  hann     w(d) = (1-cos(2πd)) if |d| < 1; w(d) = 0 otherwise 
+** Установка gsll
+*** 64
+
+ #+BEGIN_SRC bash
+   pacman -S mingw64/mingw-w64-x86_64-gsl
+   cd /mingw64/bin
+   ln -s libgsl-23.dll libgsl-0.dll
+ #+END_SRC
+
+*** 32
+ #+BEGIN_SRC bash
+   pacman -S mingw32/mingw-w64-i686-gsl
+   cd /mingw32/bin
+   ln -s libgsl-23.dll libgsl-0.dll
+ #+END_SRC
+
+ #+RESULTS:
+
+
+
+ #+BEGIN_SRC lisp
+   (defparameter *a*
+    (let ((rez 1))
+      (dotimes (i 30000 rez)
+	(setf rez (* rez (random 1000000000000000000000000))))))
+
+   (defparameter *b*
+    (let ((rez 1))
+      (dotimes (i 30000 rez)
+	(setf rez (* rez (random 1000000000000000000000000))))))
+
+   (let ((rez (* *a* *b*)))
+     'done)
+
+
+ #+END_SRC
+** Gnuplot
+
+*** Примеры правильного формата пути для OS Windows
+
+ splot 'D:\\PRG\\msys32\\home\\namatv\\splot.data' u 1:2:3
+ splot "D:\\PRG\\msys32\\home\\namatv\\splot.data" u 1:2:3
+ splot "D:/PRG/msys32/home/namatv/splot.data" u 1:2:3
+ splot 'D:/PRG/msys32/home/namatv/splot.data' u 1:2:3
+
+** git 
+*** Перечень удаленных репозиториев
+  #+BEGIN_SRC bash 
+  git remote
+  #+END_SRC
+
+  #+RESULTS:
+  | github.com |
+  | pi         |
+
+*** Коммит
+  #+BEGIN_SRC bash :results none
+  DATE=`date`
+  git commit -a -m "$DATE"
+  #+END_SRC
+
+*** Публикация изменений на удаленных серверах
+
+  #+BEGIN_SRC bash :results none
+  for i in github.com 
+  do
+  git push ${i} master
+  done
+  #+END_SRC
+
+*** Получение изменений с удаленных серверов
+  #+BEGIN_SRC bash :results none
+  for i in github.com 
+  do
+  git pull ${i} master
+  done
+  #+END_SRC

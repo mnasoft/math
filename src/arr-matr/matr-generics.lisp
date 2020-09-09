@@ -2,37 +2,6 @@
 
 (in-package :math/arr-matr)
 
-
-(export 'convert-to-triangular)
-
-(defgeneric convert-to-triangular (matrix)
-  (:documentation
-   "@b(Описание:) обобщенная_функция @b(convert-to-triangular) 
-выполняет приведение  матрицы @b(matrix) к треугольному виду,
-для решения системы ЛУ методом Гаусса."))
-
-(export 'solve-linear-system-gauss)
-
-(defgeneric solve-linear-system-gauss (matrix)
-  (:documentation
-   "@b(Описание:) обобщенная_функция @b(solve-linear-system-gauss)
-возвращает матрицу, содержащую корни решения системы линейных уравений.
-
- Решение системы линейных уравнений выполняется методом Гаусса.
-"))
-
-(export 'add)
-
-(defgeneric add (a b)
-  (:documentation "@b(Описание:) обобщенная_функция @b(multiply)
-выполняет сложение аргументов @b(a) и @b(b)."))
-
-(export 'multiply)
-
-(defgeneric multiply (a b)
-    (:documentation "@b(Описание:) обобщенная_функция @b(multiply) 
-выполняет выполняет перемножение аргументов @b(a) и @b(b)."))
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defgeneric matr-eval-* (matrix) (:documentation "Matr"))

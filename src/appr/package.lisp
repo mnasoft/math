@@ -29,5 +29,7 @@
            *apr-func-1-3*
            averaging-function-lambda
 	   <appr-bilinear>
-           *apr-func-1-4*)) 
+           *apr-func-1-4*
+	   	   make-least-squares-matrix
+	   )) 
 

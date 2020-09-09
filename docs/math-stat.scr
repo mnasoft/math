@@ -1,17 +1,20 @@
-@begin(section) @title(Stat)
+@begin(section) @title(Math/Stat)
  @begin(section) @title(Обзор)
- Среднее значение
+ Содержит статистические функции для:
+ @begin(list)
+ @item(нахождения среднего максимального и минимального значения;)
+ @item(определения характеристик статистики (дисперсия,
+ квадратичое отклонение, коэффициент вариации;) )
+ @item(нахождения максимального и минимального отклонения от среднего значения;)
+ @item(исключения промахов.)
+
+@end(list)
+
  @end(section)
 
  @begin(section) @title(Создание статистики)
   @cl:with-package[name="math/stat"](
    @cl:doc(function make-random-value-list))
-  @end(section)
-
- @begin(section) @title(Вспомогательные)
-  @cl:with-package[name="math/stat"](
-   @cl:doc(function square)
-   @cl:doc(function exclude-nil-from-list))
   @end(section)
 
  @begin(section) @title(Среднее значение)

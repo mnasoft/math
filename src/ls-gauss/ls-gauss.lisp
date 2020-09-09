@@ -11,6 +11,24 @@
 
 (export 'convert-to-triangular)
 
+(defgeneric convert-to-triangular (matrix)
+  (:documentation
+   "@b(Описание:) обобщенная_функция @b(convert-to-triangular) 
+выполняет приведение  матрицы @b(matrix) к треугольному виду,
+для решения системы ЛУ методом Гаусса."))
+
+(export 'solve-linear-system-gauss)
+
+(defgeneric solve-linear-system-gauss (matrix)
+  (:documentation
+   "@b(Описание:) обобщенная_функция @b(solve-linear-system-gauss)
+возвращает матрицу, содержащую корни решения системы линейных уравений.
+
+ Решение системы линейных уравнений выполняется методом Гаусса.
+"))
+
+(export 'convert-to-triangular)
+
 (defmethod convert-to-triangular ((matr <matrix> ))
 "@b(Пример использования:)
 @begin[lang=lisp](code)

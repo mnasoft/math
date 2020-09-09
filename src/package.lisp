@@ -2,15 +2,13 @@
 
 (defpackage #:math 
   (:use #:cl #:math/core #:math/arr-matr)
-;;;;  (:export  )
-  )
+  (:export mult-matr-vect )
+  (:export split-range
+	   split-range-by-func)
+  (:export row  col
+	   rows cols))
 
-(in-package :math )
+(in-package :math)
 
-(col cl-user::*m* 1)
-
-(setf (mref cl-user::*m* 1 2) 10.5)
-
-;;;; distance distance-relative mult-matr-vect depth-sphere-along-cone summ-distance
-
-;;;; (declaim (optimize (compilation-speed 0) (debug 3) (safety 0) (space 0) (speed 0)))
+;;;; (use-package (find-package :math/arr-matr) (find-package :math))
+;;;; (use-package (find-package :math/core) (find-package :math))

@@ -1,4 +1,4 @@
-@begin(section) @title(Coord)
+@begin(section) @title(Math/Coord)
 
  @begin(section) @title(Обзор) 
  Содержит функции преобразования углов из одной угловой меры в другую

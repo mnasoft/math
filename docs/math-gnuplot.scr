@@ -1,4 +1,4 @@
-@begin(section) @title(Gnuplot)
+@begin(section) @title(Math/Gnuplot)
  @cl:with-package[name="math/gnuplot"](
    @cl:doc(function make-plot-data-file )
   @cl:doc(function gnuplot-data-plot )

@@ -1,4 +1,4 @@
-@begin(section) @title(Сглаживания)
+@begin(section) @title(Math/Smooth)
  @cl:with-package[name="math/smooth"](
     @cl:doc(function cauchy-smoothing)
     @cl:doc(function exp-smoothing)

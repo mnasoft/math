@@ -17,6 +17,7 @@
 	       "math/arr-matr"
 	       "math/gnuplot"
 	       "math/ls-rotation"
+	       "math/x-o"
 	       ) ;;;; "math/ls-solve" "math/tests"
   :components ((:module "src"
 		:serial t
@@ -32,10 +33,10 @@
 ;;;;  :depends-on ()
   :components ((:module "src/core"
 		:serial nil
-                :components ((:file "math")
-			     (:file "generic"      :depends-on ("math"))
-			     (:file "generic-matr" :depends-on ("math"))
-			     (:file "method"       :depends-on ("math" "generic"))))))
+                :components ((:file "main")
+			     (:file "generic"      :depends-on ("main"))
+			     (:file "generic-matr" :depends-on ("main"))
+			     (:file "method"       :depends-on ("main" "generic"))))))
 
 (defsystem #:math/ls-rotation
   :description "Describe math here"
@@ -65,7 +66,7 @@
   :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"  
   :serial t
   :in-order-to ((test-op (test-op "math/arr-matr/tests")))
-  :depends-on ("cl-utilities")
+  :depends-on ("cl-utilities" "math/stat")
   :components ((:module "src/list-matr"
 		:serial t
                 :components ((:file "list-matr")))))
@@ -174,6 +175,19 @@
 			:components ((:file "package")
 				     (:file "main")
 				     (:file "matrix")
-				     (:file "linear-system-tests")
-				     (:file "approximation-tests")				     
+				     (:file "linear-system-tests") 
+				     (:file "approximation-tests") 
+				     (:file "list-matr-tests") 
 				     (:file "main-run")))))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defsystem #:math/x-o
+  :description "Describe math here"
+  :author "Nick Matvyeyev <mnasoft@gmail.com>"
+  :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"  
+  :serial t
+  :in-order-to ((test-op (test-op "math/x-o/tests")))
+  :depends-on ( "math/core" "math/arr-matr") 
+  :components ((:module "src/x-o"
+		:serial t
+                :components ((:file "x-o")))))

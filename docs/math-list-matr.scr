@@ -1,4 +1,4 @@
-@begin(section) @title(List-Matr)
+@begin(section) @title(Math/List-Matr)
  @cl:with-package[name="math/list-matr"](
   @cl:doc(function list-matr-append-col)
   @cl:doc(function list-matr-append-row)

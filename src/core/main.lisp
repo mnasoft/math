@@ -7,7 +7,32 @@
 	   exclude-nil-from-list  
 	   depth-sphere-along-cone
 	   distance-relative
-	   square))
+	   square)
+  (:export split-range
+	   split-range-by-func )
+  (:export mref
+	   col
+	   row
+	   
+	   cols	   
+	   rows
+	   dimensions
+
+	   add
+	   multiply
+	   
+	   squarep
+	   
+	   matr-name-*
+	     
+	   main-diagonal
+	   anti-diagonal
+
+	   equivalent
+	   copy
+
+	   transpose
+	   ))
 
 (in-package :math/core)
 
@@ -64,6 +89,37 @@
     (dotimes (i n rez)
       (setf nf  (/ nf (1+ i))
 	    rez (+ rez nf)))))
+
+(export 'split-range )
+
+(defun split-range (from to steps)
+"@b(Описание:) split-range
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (split-range 10 20 5)  => (10.0 12.0 14.0 16.0 18.0 20.0)
+@end(code)
+ "
+  (loop :for i :from 0 :to steps
+	:collect (coerce (+ from (* (/ i steps ) (- to from))) 'float)))
+
+(export 'split-range-by-func )
+
+(defun split-range-by-func (from to steps &key
+					    (func #'(lambda (x) (log x 10)))
+					    (anti-func #'(lambda (x) (expt 10 x))))
+"@b(Описание:) split-range-by-func
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (split-range-by-func 1 10 5) => (1.0 1.5848932 2.5118864 3.981072 6.3095737 10.0)
+ (split-range-by-func 1 10 10) =>
+ (1.0 1.2589254 1.5848932 1.9952624 2.5118864 3.1622777 3.981072 5.0118723  6.3095737 7.943282 10.0)
+@end(code)
+"
+  (mapcar
+   #'(lambda (el)(funcall anti-func el))
+   (split-range (funcall func from) (funcall func to) steps)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

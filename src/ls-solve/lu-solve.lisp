@@ -32,11 +32,11 @@
   (let ((matrix (grid:make-foreign-array
 		 'double-float
 		 :initial-contents
-		 (math:list-matr-detach-last-col matrix-vector)))
+		 (math/list-matr:detach-last-col matrix-vector)))
 	(vector (grid:make-foreign-array
 		 'double-float
 		 :initial-contents
-		 (math:list-matr-get-last-col    matrix-vector))))
+		 (math/list-matr:get-last-col    matrix-vector))))
     (grid:copy
      (lu-solve matrix vector) 
      :grid-type  grid-type

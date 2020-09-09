@@ -1,47 +1,27 @@
 ;;;; gnuplot.lisp
 
 (defpackage #:math/gnuplot
-  (:use #:cl)
-;;;;  (:export )
-  )
+  (:use #:cl #:math/core)
+  (:export gnuplot-splot
+           table-apply gnuplot-plot
+           make-table
+	   *palette-defined-01*
+
+	   *pm3d-map*
+           *palette-defined*
+           gnuplot-data-splot
+           gnuplot-data-plot
+           gnuplot-data-to-file
+           make-plot-data-file))
 
 (in-package :math/gnuplot)
 
 (defun make-2d-list-by-func (func &key (x-from 0) (x-to 1) (step 100))
-    (loop :for i :from x-from :to x-to :by (/ (- x-to x-from) step) :collect
-	 (list (coerce i 'float) (coerce (funcall func i) 'float))))
-
-(export 'split-range )
-(defun split-range (from to steps)
-"@b(Описание:) split-range
-
- @b(Пример использования:)
-@begin[lang=lisp](code)
- (split-range 10 20 5)  => (10.0 12.0 14.0 16.0 18.0 20.0)
-@end(code)
- "
-      (loop :for i :from 0 :to steps :collect
-	   (coerce (+ from (* (/ i steps ) (- to from))) 'float)))
-
-
-(export 'split-range-by-func )
-(defun split-range-by-func (from to steps &key
-					    (func #'(lambda (x) (log x 10)))
-					    (anti-func #'(lambda (x) (expt 10 x))))
-"@b(Описание:) split-range-by-func
-
- @b(Пример использования:)
-@begin[lang=lisp](code)
- (split-range-by-func 1 10 5) => (1.0 1.5848932 2.5118864 3.981072 6.3095737 10.0)
- (split-range-by-func 1 10 10) =>
- (1.0 1.2589254 1.5848932 1.9952624 2.5118864 3.1622777 3.981072 5.0118723  6.3095737 7.943282 10.0)
-@end(code)
-"
-  (mapcar
-   #'(lambda (el)(funcall anti-func el))
-   (split-range (funcall func from) (funcall func to) steps)))
+  (loop :for i :from x-from :to x-to :by (/ (- x-to x-from) step)
+	:collect (list (coerce i 'float) (coerce (funcall func i) 'float))))
 
 (export 'make-table )
+
 (defun make-table (lst-1 lst-2)
 "@b(Описание:) make-table выполняет формирование списка точек, разделенного на группы.
 
@@ -66,6 +46,7 @@
      lst-1)))
 
 (export 'table-apply )
+
 (defun table-apply (table func &rest second-and-others)
 "@b(Описание:) функция @b(table-apply)
 
@@ -139,6 +120,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (export 'gnuplot-data-to-file )
+
 (defgeneric gnuplot-data-to-file (f-name data)
   (:documentation "COOL"))
 
@@ -166,19 +148,23 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (export '*palette-defined*)
+
 (defparameter *palette-defined* "set palette defined (0.05 'blue', 0.2 'cyan', 0.4 'green', 0.6 'yellow', 0.8 'orange', 1.0 'red')"
   "STUB")
 
 (export '*palette-defined-01*)
+
 (defparameter *palette-defined-01*
   "set palette defined (0 'blue', 0.1 'white', 0.2 'cyan', 0.3 'white', 0.4 'green', 0.5 'white', 0.6 'yellow', 0.7 'white', 0.8 'orange', 0.9 'white', 1 'red')"
   "STUB")
 
 (export '*pm3d-map*)
+
 (defparameter *pm3d-map* "set pm3d map"
   "STUB")
 
 (export 'gnuplot-splot )
+
 (defun gnuplot-splot (f-name
 		      &key
 			(terminal "set terminal pdfcairo enhanced font 'Arial,14' size 13.5 cm, 5.0 cm ")
@@ -204,6 +190,7 @@
   (uiop:run-program (concatenate 'string "sh" " " f-name "." "sh") :ignore-error-status t))
 
 (export 'gnuplot-data-splot )
+
 (defun gnuplot-data-splot (
 			   f-name data &key
 			   (terminal "set terminal pdfcairo enhanced font 'Arial,14' size 13.5 cm, 5.0 cm ")
@@ -231,7 +218,6 @@
     (format sh "gnuplot ~A.gp~%" f-name))
   (uiop:run-program (concatenate 'string "sh" " " f-name "." "sh") :ignore-error-status t))
 
-
 ;;;; set terminal pngcairo size 1000,600 enhanced font 'Verdana,10'
 ;;;; set output 'introduction.png'
 ;;;; set palette defined (0 'blue', 0.1 'white', 0.2 'cyan', 0.3 'white', 0.4 'green', 0.5 'white', 0.6 'yellow', 0.7 'white', 0.8 'orange', 0.9 'white', 1 'red')
@@ -247,6 +233,7 @@
 
 
 (export 'gnuplot-data-plot )
+
 (defun gnuplot-data-plot (f-name data &key
 			  (terminal "set terminal pngcairo size 1400,500 enhanced font 'Verdana,10'")
 			  (preamble "set xrange [0:2.5]")
@@ -283,6 +270,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (export 'gnuplot-plot )
+
 (defun gnuplot-plot (f-name &key
 		     (terminal "set terminal enhanced font 'Arial,14' pdfcairo size 42 cm, 29.7 cm")
 		     (preamble "set xrange [0:2.5]")
@@ -300,6 +288,7 @@
   (uiop:run-program (concatenate 'string "sh" " " f-name "." "sh") :ignore-error-status t))
 
 (export 'make-plot-data-file )
+
 (defun make-plot-data-file (f-name data)
 "@b(Описание:) функция @b(make-plot-data-file)
 
@@ -354,4 +343,3 @@
 ;(defparameter *gp-v* (make-instance 'gnuplot-vector ))
 
 ;(move  *gp-v* #(-10. -10. -10.))
-

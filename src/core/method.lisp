@@ -6,6 +6,7 @@
 ;;;; distance
 
 (export 'distance)
+
 (defmethod distance ((x1 number) (x2 number) )
   "@b(Описание:) 
 
@@ -60,6 +61,7 @@
 ;;;; distance-relative
 
 (export 'distance-relative)
+
 (defmethod distance-relative ((x number) (xi number) (dx number))
     "Пример использования:
  (distance-relative 1 0 1) 1.0
@@ -70,12 +72,14 @@
     (sqrt (square rez))))
 
 (export 'distance-relative)
+
 (defmethod distance-relative ((x-lst cons) (xi-lst cons) (dx-lst cons))
    "Пример использования:
  (distance-relative '(1 1 1) '(0 0 0) '(1 1 1)) 1.7320508
  (distance-relative '(2 2 2) '(0 0 0) '(1 1 1)) 3.4641016
  (distance-relative '(2 2 2) '(0 0 0) '(1 2 2)) 2.4494898
-" 
+"
+  (assert (apply #'= (mapcar #'length `(,x-lst ,xi-lst ,dx-lst))))
   (sqrt (apply #'+ (mapcar
 		    #'(lambda (x xi dx)
 			(let ((rez (/ (- x xi) dx)))
@@ -83,12 +87,20 @@
 		    x-lst xi-lst dx-lst))))
 
 (export 'distance-relative)
+
 (defmethod distance-relative ((x vector) (xi vector) (dx vector))
-  "Пример использования:
- (distance-relative (vector 1 1 1) (vector 0 0 0) (vector 1 1 1)) 1.7320508 
- (distance-relative (vector 2 2 2) (vector 0 0 0) (vector 1 1 1)) 3.4641016
- (distance-relative (vector 2 2 2) (vector 0 0 0) (vector 1 2 2)) 2.4494898
+  "@b(Описание:) метод @b(distance-relative) возвращает относительное 
+расстояние от точки @b(x) до точки @b(xi) по отношению к базовым длинам,
+находящимся в @b(dx).
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (distance-relative #(1 1 1) #(0 0 0) #(1 1 1)) => 1.7320508 
+ (distance-relative #(1 1 1) #(0 0 0) #(2 2 2)) => 0.8660254 
+ (distance-relative #(1 2 3) #(0 0 0) #(3 2 1)) => 3.1797974 = (sqrt (+ (* 1/3 1/3) (* 2/2 2/2) (* 3/1 3/1)))
+@end(code)
 "
+  (assert (apply #'= (mapcar #'length `(,x ,xi ,dx))))
   (sqrt (apply #'+ (loop :for i :from 0 :below (array-dimension x 0)
 			 :collect
 			 (let ((rez (/ (- (svref x i) (svref xi i)) (svref dx i))))
@@ -98,20 +110,30 @@
 ;;;; summ-distance
 
 (export 'summ-distance)
+
 (defmethod summ-distance ((x1 vector) (x2 vector))
-   "
-Тестирование:
- (summ-distance (vector 1 2 3) (vector 2 3 4)) 3
+  "@b(Описание:) функция @b(summ-distance) возвращает сумму 
+расстояний по каждому направлению.
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (summ-distance #(1 2 3) #(3 2 1)) => 4 = (+ 2 0 2)
+@end(code)
 "
   (assert (= (length x1) (length x2)))
-  (apply #'+ (loop :for i :from 0 :below (length x1) :collect
-		  (abs (- (svref x1 i) (svref x2 i))))))
+  (apply #'+ (loop :for i :from 0 :below (length x1)
+		   :collect (abs (- (svref x1 i) (svref x2 i))))))
 
 (export 'summ-distance)
+
 (defmethod summ-distance ((x1 cons) (x2 cons))
-  "
-Тестирование:
- (summ-distance '(1 2 3) '(2 3 4)) 3
+  "@b(Описание:) функция @b(summ-distance) возвращает сумму 
+расстояний по каждому направлению.
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (summ-distance '(1 2 3) '(3 2 1)) => 4 = (+ 2 0 2)
+@end(code)
 "
   (assert (= (length x1) (length x2)))
   (apply #'+

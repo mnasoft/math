@@ -127,3 +127,21 @@
   (:documentation
    "@b(Описание:) обобщенная_функция @b(copy) возвращает ссылку на новый объект,
 созданный на основе @b(obj)."))
+
+(export 'add)
+
+(defgeneric add (a b)
+  (:documentation "@b(Описание:) обобщенная_функция @b(multiply)
+выполняет сложение аргументов @b(a) и @b(b)."))
+
+(export 'multiply)
+
+(defgeneric multiply (a b)
+    (:documentation "@b(Описание:) обобщенная_функция @b(multiply) 
+выполняет перемножение аргументов @b(a) и @b(b)."))
+
+(export 'transpose)
+
+(defgeneric transpose (matrix)
+  (:documentation "@b(Описание:) обобщенная_функция @b(transpose) 
+возвращает транспонированную матрицу."))

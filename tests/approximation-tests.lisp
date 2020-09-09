@@ -34,12 +34,12 @@
 		  rez)))
     (is-true (math/arr-matr:equivalent
 	      m1
-	      (math/arr-matr:make-least-squares-matrix '(xx yy) 
+	      (math/appr:make-least-squares-matrix '(xx yy) 
 					      '((xx xx) (xx) (1.0) (yy)) 
 					      pts-1 )))
     (is-true (math/arr-matr:equivalent
 	      m2
-	      (math/arr-matr:make-least-squares-matrix '(x1 x2 yy) 
+	      (math/appr:make-least-squares-matrix '(x1 x2 yy) 
 					      '((x1 x2)  (x1) (x2) (1.0) (yy)) 
 					      pts-2)))))
 

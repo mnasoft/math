@@ -1,8 +1,12 @@
 ;;;; x-o.lisp
 
-(in-package #:math)
+(defpackage #:math/x-o
+  (:use #:cl #:math/core #:math/arr-matr)
+  (:export play))
 
-(defclass x-o (matrix) ())
+(in-package #:math/x-o)
+
+(defclass x-o (<matrix>) ())
 
 (defmethod matr-name-* ((mm x-o)) "X-O")
 
@@ -24,10 +28,10 @@
   (loop :for i :from 0 :below (array-dimension (matrix-data mm) 0)
      :do
      (loop :for j :from 0 :below (array-dimension (matrix-data mm) 1)
-	:do (setf (aref (matrix-data mm) i j) 0))))
+	   :do (setf (aref (matrix-data mm) i j) 0))))
 
 (defparameter *xo* (make-instance 'x-o ))
-  
+
 ;;;;;
 
 (defun mate-value (value lst)
@@ -43,16 +47,15 @@
   (let ((v-y (count-if     #'(lambda (el) (= value el)) lst))
 	(v-n (- (count-if-not #'(lambda (el) (= value el)) lst)
 		(count-if     #'(lambda (el) (= 0     el)) lst))))
-     (and (<= v-n 0) (= v-y 1))))
-
+    (and (<= v-n 0) (= v-y 1))))
 
 (defmethod x-o-lines ((mm x-o))
   (append
-   (loop :for r :from 0 :below (matr-rows-*  mm)
-      :collect (matr-get-row-* mm r))
-   (loop :for c :from 0 :below (matr-cols-*  mm)
-      :collect (matr-get-col-* mm c))
-   (list (major-diagonal mm) (minor-diagonal mm))))
+   (loop :for r :from 0 :below (rows  mm)
+      :collect (row mm r))
+   (loop :for c :from 0 :below (cols  mm)
+      :collect (col mm c))
+   (list (main-diagonal mm) (anti-diagonal mm))))
 
 (defmethod x-o-winp ((mm x-o) player)
   "Определяет для расстановки x-o выиграл-ли игрок player"
@@ -60,7 +63,6 @@
 		     (mate-value player el) )
 		 (x-o-lines mm))))
     (some #'(lambda (el) el) lst)))
-
 
 (defmethod x-o-check-num ((mm x-o) player)
   "Определяет количество шахов"
@@ -76,8 +78,6 @@
 		     (x-o-lines mm))))
     (count t lst)))
 
-
-
 (defmethod free-fields ((mm x-o))
   "Возвращает свободные поля"
   (let ((rez nil))
@@ -86,7 +86,6 @@
 	      :do (when (= 0 (aref (matrix-data mm) i j))
 		    (push (list i j) rez))))
     rez))
-
 
 (defmethod game-over-p ((mm x-o))
   "Возвращает статус игры"
@@ -103,13 +102,13 @@
 (defun get-random-element (lst) (when lst (nth (random (length lst)) lst)))
 
 (defmethod step-check-rule-back (rule (mm x-o) player r c)
-  (let ((rez (funcall rule (matr-set-ij-* mm player r c) player)))
-    (matr-set-ij-* mm 0 r c)
+  (let ((rez (funcall rule (setf (mref mm r c) player) player)))
+    (setf (mref mm r c) 0)
     (list rez r c)))
 
 (defmethod check-rule (rule chek-for-payer (mm x-o) move-player r c)
-  (let ((rez (funcall rule (matr-set-ij-* mm move-player r c) chek-for-payer)))
-    (matr-set-ij-* mm 0 r c)
+  (let ((rez (funcall rule (setf (mref mm r c) move-player) chek-for-payer)))
+    (setf (mref mm r c) 0)
     (list rez r c)))
 
 (defmethod map-check-rule (rule check-for-payer (mm x-o) move-player)
@@ -128,7 +127,7 @@
   (let* ((rez (map-step-check-rule-back #'x-o-winp mm player ))
 	   (win-coords nil ))
       (mapcar #'(lambda (el) (when (first el) (push (cdr el) win-coords))) rez)
-      win-coords))
+    win-coords))
 
 (defun other-player (player) (case player (1 2) (2 1)))
 
@@ -142,7 +141,7 @@
     (let ((key (first (first triple-lst))))
       (loop :for i :in triple-lst
 	 :when (= key (first i ))
-	 :collect i))))
+	   :collect i))))
 
 (defun rank-union (triple-lst-1 triple-lst-2)
   (union triple-lst-1 triple-lst-2 :key #'cdr :test #'equal))
@@ -170,7 +169,7 @@
 		   ((get-random-element min-check)))))
 	   (row (first  mv))
 	   (col (second mv)))
-      (matr-set-ij-* mm player row col))))
+      (setf (mref mm row col)player))))
 
 (defun xo-dialog (mm)
   (do ((rr nil) (done nil))
@@ -201,15 +200,19 @@ col    - [0..2] столбец, в который помещается ход и
 	    ((string=  rr "pl")    (move mm *player*) (next-player))
 	    ((string=  rr "pl1")   (move mm 1)    (setf *player* 2))
 	    ((string=  rr "pl2")   (move mm 2)    (setf *player* 1))
-	    (t (apply
-		'matr-set-ij-*
-		(cons mm
-		      (eval
-		       (read-from-string (concatenate 'string "(list " rr ")")))))
-	       (next-player)))))))
+	    (t
+	     (multiple-value-bind (rr cc) (values-list (eval (read-from-string (concatenate 'string "(list " rr ")"))))
+	       (setf (mref mm  rr cc) *player*))
+	     (next-player)))))))
 
 (export 'play)
+
 (defun play ()
+  "@b(Описание:) функция @b(play) запускает на выполнение 
+консольную игру крестики-нолики.
+"
   (x-o-reset *xo*)
   (setf *player* 1)
   (xo-dialog *xo*))
+
+;;;; (play)
