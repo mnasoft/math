@@ -25,15 +25,12 @@
 	   math/core:dimensions
 	   initialize-instance
 	   math/core:squarep
-	   smooth-by-points
 	   math/core:anti-diagonal
-
 	   semi-equal
 	   math/core:copy
 	   matrix-data
 
 	   convert-to-triangular
-	   refine-smoothing-by-points
 	   math/core:equivalent
 	   matrix->2d-list
 

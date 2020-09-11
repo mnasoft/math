@@ -1,7 +1,14 @@
 ;;;; math.asd
 
 (defsystem "math"
-  :description "Describe math here"
+  :description "Math - это математическая библиотека, 
+реализующая некоторые алгоритмы:
+- линейной алгебры;
+- операций работы с матрицами;
+- статистические функции;
+- линейной и билинейной интерполяции;
+- нахождения приближающих многочленов,
+реализованная на Common Lisp"
   :author "Nick Matvyeyev <mnasoft@gmail.com>"
   :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"  
   :serial t
@@ -19,13 +26,14 @@
 	       "math/ls-rotation"
 	       "math/x-o"
 	       ) ;;;; "math/ls-solve" "math/tests"
-  :components ((:module "src"
+  :components ((:file "math")
+	       (:module "src"
 		:serial t
-                :components ((:file "package")
-			     (:file "mult-matr-vect"))))) ;;;; (:file "matr-test")
+                :components ((:file "mult-matr-vect"))))) ;;;; (:file "matr-temp")
 
 (defsystem "math/core"
-  :description "Describe math here"
+  :description "Содержит некоторые функции и обобщенные функции,
+используемые в проекте повсеместно"
   :author "Nick Matvyeyev <mnasoft@gmail.com>"
   :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"  
   :serial t
@@ -39,7 +47,7 @@
 			     (:file "method"       :depends-on ("main" "generic"))))))
 
 (defsystem #:math/ls-rotation
-  :description "Describe math here"
+  :description "Реализация решение системы линейных уравнений методом вращения"
   :author "Nick Matvyeyev <mnasoft@gmail.com>"
   :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"  
   :serial t
@@ -50,18 +58,19 @@
                 :components ((:file "las-rotation")))))
 
 (defsystem #:math/gnuplot
-  :description "Describe math here"
+  :description "Интерфейс к программе построения графиков gnuplot"
   :author "Nick Matvyeyev <mnasoft@gmail.com>"
   :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"  
   :serial t
-  :in-order-to ((test-op (test-op "math/arr-matr/tests")))
+  :in-order-to ((test-op (test-op "math/gnuplot/tests")))
 ;;;;  :depends-on ()
   :components ((:module "src/gnuplot"
 		:serial t
                 :components ((:file "gnuplot")))))
 
 (defsystem #:math/list-matr
-  :description "Describe math here"
+  :description "Реализация некоторых операций над матрицами,
+представленными прямоугольными 2d-списками"
   :author "Nick Matvyeyev <mnasoft@gmail.com>"
   :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"  
   :serial t
@@ -72,7 +81,7 @@
                 :components ((:file "list-matr")))))
 
 (defsystem #:math/ls-gauss
-  :description "Describe math here"
+  :description "Решение систем линейных уравнений методом Гаусса"
   :author "Nick Matvyeyev <mnasoft@gmail.com>"
   :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"  
   :serial t
@@ -83,7 +92,8 @@
                 :components ((:file "ls-gauss")))))
 
 (defsystem #:math/2d-array
-  :description "Describe math here"
+  :description "Реализация некоторых операций над 
+матрицами, представленными  2d-массивами"
   :author "Nick Matvyeyev <mnasoft@gmail.com>"
   :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"  
   :serial t
@@ -118,7 +128,7 @@
                 :components ((:file "statistics")))))
 
 (defsystem #:math/smooth
-  :description "Describe math here"
+  :description "Весовые функции для методов сглаживания"
   :author "Nick Matvyeyev <mnasoft@gmail.com>"
   :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"  
   :serial t
@@ -129,18 +139,22 @@
                 :components ((:file "smoothing")))))
 
 (defsystem #:math/coord
-  :description "Describe math here"
+  :description "Содержит функции преобразования
+- угловой меры;
+- координат точки между декартовой, полярной, сферической системами координат.
+"
   :author "Nick Matvyeyev <mnasoft@gmail.com>"
   :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"  
   :serial t
-  :in-order-to ((test-op (test-op "math/smooth/tests")))
+  :in-order-to ((test-op (test-op "math/coord/tests")))
 ;;;  :depends-on (:math)
   :components ((:module "src/coord"
 		:serial t
                 :components ((:file "coordinate-system")))))
 
 (defsystem #:math/arr-matr
-  :description "Describe math here"
+  :description "Реализация некоторых операций над 
+матрицами, представленными классом <matrix>"
   :author "Nick Matvyeyev <mnasoft@gmail.com>"
   :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"  
   :serial t
@@ -153,7 +167,7 @@
 			     (:file "matr-class")))))
 
 (defsystem #:math/ls-solve
-  :description "Describe math here"
+  :description "Решение систем линейных уравнений при помощи библиотеки gsll"
   :author "Nick Matvyeyev <mnasoft@gmail.com>"
   :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"  
   :serial t
@@ -167,6 +181,9 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defsystem #:math/tests
+  :description "Тестирование систем, входящих  в проект Math"
+  :author "Nick Matvyeyev <mnasoft@gmail.com>"
+  :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"  
   :depends-on (:math :fiveam)
   :perform (test-op (o s)
 		    (uiop:symbol-call :math-tests :test-math))
@@ -179,10 +196,16 @@
 				     (:file "approximation-tests") 
 				     (:file "list-matr-tests") 
 				     (:file "main-run")))))
+
+(defsystem #:math/docs
+  :description "Зависимости для сборки документации"
+  :author "Nick Matvyeyev <mnasoft@gmail.com>"
+  :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"  
+  :depends-on ("math" "mnas-package"))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defsystem #:math/x-o
-  :description "Describe math here"
+  :description "Консольная игра крестики-нолики"
   :author "Nick Matvyeyev <mnasoft@gmail.com>"
   :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"  
   :serial t

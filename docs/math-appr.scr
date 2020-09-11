@@ -1,20 +1,21 @@
 @begin(section) @title(Math/Appr)
+
  @begin(section) @title(Обзор)
- Здесь под аппроксимацией понимается замена функции, заданной таблично,
- функцией или семейтсвом функций, заданных аналитически на некоторых интервалах.
+  Здесь под аппроксимацией понимается замена функции, заданной таблично,
+  функцией или семейтсвом функций, заданных аналитически на некоторых интервалах.
 
  Типы аппроксимации:
  @begin(list)
- @item(полиномиальная - нескольких переменных;)
- @item(линейная - одного переменного;)
- @item(билинейная - двух переменных;)
- @item(сглаженная - одного переменного (доделать и задокументировать);)
- @item(сглаженная - двух переменных (задокументировать);)
-@end(list)
+  @item(полиномиальная - нескольких переменных;)
+  @item(линейная - одного переменного;)
+  @item(билинейная - двух переменных;)
+  @item(сглаженная - одного переменного (доделать и задокументировать);)
+  @item(сглаженная - двух переменных (задокументировать);)
+ @end(list)
 
  @end(section)
 
-@begin(section) @title(Полиномиальная)
+ @begin(section) @title(Полиномиальная)
   Функции  @b(averaging-function-lambda), @b(averaging-function-defun) позволяют
   найти полиномиальную аппроксимирующую функцию одного или нескольких переменных.
 
@@ -25,13 +26,11 @@
   определить аппроксимирующую функцию одного или нескольких переменных,
   представленную в виде полинома.
 
- @cl:with-package[name="math/appr"](
-  @cl:doc(function averaging-function-lambda)
-  @cl:doc(function averaging-function-defun)
-  @cl:doc(macro make-approximation-lambda)
-  @cl:doc(macro make-approximation-defun)
-  )
-
+  @cl:with-package[name="math/appr"](
+   @cl:doc(function averaging-function-lambda)
+   @cl:doc(function averaging-function-defun)
+   @cl:doc(macro make-approximation-lambda)
+   @cl:doc(macro make-approximation-defun))
  @end(section)
 
  @begin(section) @title(Линейная)
@@ -40,25 +39,20 @@
    @item(функцию @b(appr-table);)
    @item(объект класса @b(<appr-linear>) и метод @b(approximate);)
    @item(функцию @b(make-appr-linear).)
-   
   @end(list)
-
   @cl:with-package[name="math/appr"](
    @cl:doc(function appr-table)
    @cl:doc(class <appr-linear>)
    @cl:doc(method approximate (point number) (a-l <appr-linear>))
-   @cl:doc(function make-appr-linear)
-  )
+   @cl:doc(function make-appr-linear))
+   
+  @cl:with-package[name="math/appr"](
+   @cl:doc(function approximation-linear)  
+   @cl:doc(function make-linear-interpolation)
+   @cl:doc(function make-linear-approximation-array)
   
- @cl:with-package[name="math/appr"](
-
-  @cl:doc(function approximation-linear)  
-  @cl:doc(function make-linear-interpolation)
-  @cl:doc(function make-linear-approximation-array)
-  
-  @cl:doc(function index-by-value)
-  @cl:doc(generic approx-by-points)  
- )
+   @cl:doc(function index-by-value)
+   @cl:doc(generic approx-by-points))
  @end(section)
  
  @begin(section) @title(БиЛинейная)
@@ -68,11 +62,10 @@
   @end(list)
   @cl:with-package[name="math/appr"](
    @cl:doc(class <appr-bilinear>)
-   @cl:doc(method approximate point (a-l <appr-bilinear>)
+   @cl:doc(method approximate point (a-l <appr-bilinear>))
    @cl:doc(function approximation-bilinear)
    @cl:doc(function make-bilinear-interpolation)
-   @cl:doc(function make-bilinear-approximation-array)))
-  
+   @cl:doc(function make-bilinear-approximation-array))
  @end(section)
 
  @begin(section) @title(Шаблоны аргументов)
@@ -100,4 +93,35 @@
   @end(section)
  @end(section)
  
+ @begin(section) @title(Сглаженная)
+  Для нахождения значений сглаженной зависимости можно
+  использовать метод @b(smooth-by-points) или метод
+  @b(make-smooting), возвращающий замыкание.
+
+  Сглаженная зависимость не проходит через, точки определяющие ее.
+
+  Для нахождения зависимости, примерно проходящие через точки
+  (определяющие ее), можно использовать метод @b(refine-smoothing-by-points)
+  или метод @b(make-refine-smooting), возвращающий замыкание.
+  
+  @begin(section) @title(Обобщенные функции)
+   @cl:with-package[name="math/appr"](
+    @cl:doc(generic smooth-by-points)
+    @cl:doc(generic refine-smoothing-by-points))
+  @end(section)
+  
+  @begin(section) @title(Методы)
+   @cl:with-package[name="math/appr"](
+    @cl:doc(method smooth-by-points (x number) (dx number) (points vector) (values vector) &key (weight-func #'math/smooth:gauss-smoothing))
+    @cl:doc(method smooth-by-points (x vector) (dx vector) (points array) (values vector) &key (weight-func #'math/smooth:gauss-smoothing))
+    
+    @cl:doc(method refine-smoothing-by-points (nod-points vector) (nod-values vector) (base-dist-s number) &key (weight-func #'math/smooth:gauss-smoothing) (delta 0.001) (iterations 10000))
+    @cl:doc(method refine-smoothing-by-points (nod-points array) (nod-values vector) (base-dist-s vector) &key (weight-func #'math/smooth:gauss-smoothing) (delta 0.001) (iterations 10000))
+    
+    @cl:doc(method make-refine-smooting (nod-points array) (nod-values vector) (base-dist-s vector) &key (weight-func #'math/smooth:gauss-smoothing) (delta 0.001) (iterations 10000))
+    @cl:doc(method make-refine-smooting (nod-points vector) (nod-values vector) (base-dist-s number) &key (weight-func #'math/smooth:gauss-smoothing) (delta 0.001) (iterations 10000))
+    )
+  @end(section)
+ @end(section)
 @end(section)
+

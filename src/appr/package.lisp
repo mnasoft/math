@@ -4,6 +4,7 @@
   (:use #:cl #:math/arr-matr)
   (:export
    refine-smoothing-by-points
+   refine-smoothing-q-q-q-q-q
    smooth-by-points
    appr-bilinear-x2
    *apr-func-2-5*

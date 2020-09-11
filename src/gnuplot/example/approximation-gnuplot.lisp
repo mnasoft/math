@@ -51,3 +51,20 @@ gnuplot
 plot "test.data" with lines, "test1.data" with lines, "test2.data" with lines, "test3.data" with lines, "test4.data" with lines;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+(math/gnuplot:gnuplot-data-plot
+ "y-x2" 
+ (let* ((nod-pts #(-2.0 -1.0 -0.5 0.0 0.5  1.0 2.0))
+	(nod-rez #( 4.0  1.0 0.25 0.0 0.25 1.0 4.0))
+	(base-dists-1_5 1.5 )
+	(base-dists-1_0 1.0 )
+	(base-dists-0_6 0.6 )
+	(base-dists-0_4 0.4 )
+	(func (make-refine-smooting nod-pts nod-rez base-dists-1_5)))
+   (loop :for i :from -2 :to 2 :by 1/10
+	 :collect (list (* 1.0 i)
+			(* 1.0 i i)
+			(funcall func (* 1.0 i))
+			(* 100 (1- (/ (* 1.0 i i)
+				      (funcall func (* 1.0 i)))))))))

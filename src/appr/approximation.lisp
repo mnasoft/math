@@ -1,6 +1,6 @@
 ;;;; approximation.lisp
 
-(in-package #:math/appr )
+(in-package #:math/appr)
 
 (export 'appr-table)
 
@@ -550,14 +550,47 @@
 
 (export 'smooth-by-points)
 
+(defgeneric smooth-by-points (point-s base-dist-s nod-points nod-values &key weight-func)
+  (:documentation
+   "@b(Описание:) обобщенная функция @b(smooth-by-points) возвращает 
+значение в точке @b(point-s), являющееся результатом сглаживания 
+зависимости заданной:
+@begin(list)
+ @item(таблицей узловых точек @b(nod-points);)
+ @item(таблицей значений @b(nod-values);)
+ @item(функцией @b(weight-func) учета веса значений от относительного 
+       расстояния до аргумента (при которых эти значения определены);) 
+ @item(базовой длины (базовых длинн) @b(base-dist-s), по которой (которым)
+ вычисляются относительные расстояния.)
+@end(list)"))
+
+(export 'refine-smoothing-by-points)
+
+(defgeneric refine-smoothing-by-points (nod-points nod-values base-dist-s &key weight-func delta iterations)
+  (:documentation
+"@b(Описание:) обобщенная функция @b(refine-smoothing-by-points) 
+возвращает массив значений @b(rez-values@sub(i)) такой, что
+для точек @b(nod-points@sub(i)) сумма отклонений между @b(nod-values@sub(i)) и 
+@b((smooth-by-points point-s@sub(i) base-dist-s nod-points rez-values@sub(i) :weight-func weight-func))
+не превысит @b(delta).
+
+ Вторым значением возвращается:
+@begin(list)
+ @item(T - если такой массив удалось найти за указанной в параметре @b(iterations) количестве итераций;)
+ @item(nil - если за указанной количество итераций @b(iterations) такой массив удалось найти не удалось.)
+@end(list)
+"))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 (defmethod smooth-by-points ((x number) (dx number) (points vector) (values vector)
-			     &key (w-func #'math/smooth:gauss-smoothing))
+			     &key (weight-func #'math/smooth:gauss-smoothing))
   "@b(Описание:) метод @b(smooth-by-points) возвращает значение, являющееся результатом
 сглаживания зависимости заданной:
 @begin(list)
  @item(аргументами @b(points);)
  @item(значениями в этих точках @b(values);)
- @item(функцией @b(w-func) учета веса значений от относительного 
+ @item(функцией @b(weight-func) учета веса значений от относительного 
        расстояния до аргумента (при которых эти значения определены);) 
  @item(базовой длины, по которой вычисляются относительные расстояния.)
 @end(list)
@@ -590,6 +623,7 @@
        (2.0 4.00 3.8243356 3.1507930 2.1835241))
 @end(code)
 "
+  (assert (math/smooth:weight-func-p weight-func))
   (assert (= (length points) (length values)))
   (let ((w-summ 0.0)
 	(w-z-summ 0.0)
@@ -597,7 +631,7 @@
 	(z 0.0))
     (loop :for i :from 0 :below  (array-dimension points 0) :do
 	 (progn
-	   (setf w (funcall w-func (math/core:distance-relative x (aref points i) dx))
+	   (setf w (funcall weight-func (math/core:distance-relative x (aref points i) dx))
 		 w-summ (+ w-summ w)
 		 z (aref values i)
 		 w-z-summ (+ w-z-summ (* w z )))))
@@ -605,13 +639,14 @@
 
 (export 'smooth-by-points)
 
-(defmethod smooth-by-points ((x vector) (dx vector) (points array) (values vector) &key (w-func #'math/smooth:gauss-smoothing))
+(defmethod smooth-by-points ((x vector) (dx vector) (points array) (values vector)
+                             &key (weight-func #'math/smooth:gauss-smoothing))
   "@b(Описание:) метод @b(smooth-by-points) возвращает значение, являющееся результатом
 сглаживания зависимости заданной:
 @begin(list)
  @item(аргументами @b(points);)
  @item(значениями в этих точках @b(values);)
- @item(функцией @b(w-func) учета веса значений от относительного 
+ @item(функцией @b(weight-func) учета веса значений от относительного 
        расстояния до аргумента (при которых эти значения определены);) 
  @item(базовой длины, по которой вычисляются относительные расстояния.)
 @end(list)
@@ -640,6 +675,7 @@
  (smooth-by-points #(0.5 0.5) #(0.4 0.4) (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) #(0.0 1.0 1.0 2.0)) 1.0
 @end(code)
 "
+  (assert (math/smooth:weight-func-p weight-func))
   (assert (= (array-rank points) 2))
   (assert (= (array-dimension points 0) (length values)))
   (assert (= (array-dimension points 1) (length x) (length dx)))
@@ -649,112 +685,181 @@
 	(z 0.0))
     (loop :for i :from 0 :below  (array-dimension points 0) :do
 	 (progn
-	   (setf w (funcall w-func (math/core:distance-relative x (math/2d-array:row i points) dx))
+	   (setf w (funcall weight-func (math/core:distance-relative x (math/2d-array:row i points) dx))
 		 w-summ (+ w-summ w)
 		 z (aref values i)
 		 w-z-summ (+ w-z-summ (* w z )))))
     (/ w-z-summ w-summ)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;; refine-smoothing-by-points
 
-(export 'refine-smoothing-by-points)
-
-(defmethod refine-smoothing-by-points ((points array) (values vector) (base-dists vector) &key (w-func #'math/smooth:gauss-smoothing) (delta 0.001) (iterations 10000))
-  "Вычисляет такой массив, что при сглаживании его по формуле Гаусса
- с характерным размером base-dists, сумма расстояний до 2d точек заданных массивом points не превысит delta
- 
- Пример использования:
- 
- (refine-smoothing-by-points (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) #(0.0 1.0 1.0 2.0) #(1.0 1.0))
- (refine-smoothing-by-points (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) #(0.0 1.0 1.0 2.0) #(0.6 0.6))
- (refine-smoothing-by-points (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) #(0.0 1.0 1.0 2.0) #(0.4 0.4))
- 
- (refine-smoothing-by-points (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) #(0.0 1.0 1.0 2.0) #(1.0 1.0)) 
- (refine-smoothing-by-points (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) #(0.0 1.0 1.0 2.0) #(0.6 0.6)) 
- (refine-smoothing-by-points (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) #(0.0 1.0 1.0 2.0) #(0.4 0.4)) 
- 
- (refine-smoothing-by-points (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) #(0.0 1.0 1.0 2.0) #(1.0 1.0)) 
- (refine-smoothing-by-points (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) #(0.0 1.0 1.0 2.0) #(0.6 0.6)) 
- (refine-smoothing-by-points (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) #(0.0 1.0 1.0 2.0) #(0.4 0.4)) 
- 
- (refine-smoothing-by-points (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) #(0.0 1.0 1.0 2.0) #(1.0 1.0)) 
- (refine-smoothing-by-points (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) #(0.0 1.0 1.0 2.0) #(0.6 0.6)) 
- (refine-smoothing-by-points (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) #(0.0 1.0 1.0 2.0) #(0.4 0.4)) 
- 
- (refine-smoothing-by-points (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) #(0.0 1.0 1.0 2.0) #(1.0 1.0)) 
- (refine-smoothing-by-points (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) #(0.0 1.0 1.0 2.0) #(0.6 0.6)) 
- (refine-smoothing-by-points (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0))) #(0.0 1.0 1.0 2.0) #(0.4 0.4)) 
- "
-  (assert (member w-func (list #'math/smooth:gauss-smoothing
-			       #'math/smooth:exp-smoothing
-			       #'math/smooth:cauchy-smoothing
-			       #'math/smooth:hann-smoothing)))
-  (assert (= (array-rank points) 2))
-  (assert (= (array-dimension points 0) (length values)))
-  (assert (= (array-dimension points 1) (length base-dists)))
-  (let ((v-iter (cl-utilities:copy-array values))
-	(v-rez  (cl-utilities:copy-array values)))
+(defmethod refine-smoothing-by-points ((nod-points vector) (nod-values vector) (base-dist-s number)
+				       &key (weight-func #'math/smooth:gauss-smoothing) (delta 0.001) (iterations 10000))
+  "@b(Описание:) метод @b(refine-smoothing-by-points) в случе 
+нахождения сглаживания для функции одного переменного."
+  (assert (math/smooth:weight-func-p weight-func))
+  (assert (= (length nod-points) (length nod-values)))
+  (let ((v-iter (cl-utilities:copy-array nod-values))
+	(v-rez  (cl-utilities:copy-array nod-values)))
     (labels ((start-V1 (v-rez v-iter)
-	       (loop :for i :from 0 :below (length values) :do
+	       (loop :for i :from 0 :below (length nod-values) :do
 		 (setf (svref v-rez i)
-		       (smooth-by-points (math/2d-array:row i points) base-dists points v-iter :w-func w-func)))
-	       (math/core:summ-distance v-rez values))
+		       (smooth-by-points (svref nod-points i) base-dist-s nod-points v-iter :weight-func weight-func)))
+	       (math/core:summ-distance v-rez nod-values))
 	     (iterate (v-rez v-iter)
-	       (loop :for i :from 0 :below (length values) :do
+	       (loop :for i :from 0 :below (length nod-values) :do
 		 (setf (svref v-iter i)
-		       (+ (svref v-iter i) (* 1 (- (svref values i) (svref v-rez i))))))))
+		       (+ (svref v-iter i) (* 1 (- (svref nod-values i) (svref v-rez i))))))))
       (do ((i    0 (1+ i))
 	   (dist (start-V1 v-rez v-iter ) (start-V1 v-rez v-iter)))
 	  ((or (> i iterations) (< dist delta))
-	   (progn (format t "I=~D ; DIST=~F;~%V-ITER~S;~%V-REZ=~S~%" i dist v-iter v-rez )
-		  (if (< i iterations)
-		      (values v-iter t   i dist v-rez values)
-		      (values v-iter nil i dist v-rez values))))
+	   (progn
+;;;;(format t "I=~D; DIST=~F;~%V-ITER~S;~%V-REZ=~S~%" i dist v-iter v-rez )
+	     (if (< i iterations)
+		 (values v-iter t   i dist v-rez nod-values)
+		 (values v-iter nil i dist v-rez nod-values))))
 	(iterate v-rez v-iter)))))
 
-(export 'refine-smoothing-by-points)
+(defmethod refine-smoothing-by-points ((nod-points array) (nod-values vector) (base-dist-s vector)
+				       &key (weight-func #'math/smooth:gauss-smoothing) (delta 0.001) (iterations 10000))
+  "@b(Описание:) метод @b(refine-smoothing-by-points) в случе 
+нахождения сглаживания для функции двух переменных.
 
-(defmethod refine-smoothing-by-points ((points vector) (values vector) (base-dist number) &key (w-func #'math/smooth:gauss-smoothing) (delta 0.001) (iterations 10000))
-  (assert (member w-func (list #'math/smooth:gauss-smoothing
-			       #'math/smooth:exp-smoothing
-			       #'math/smooth:cauchy-smoothing
-			       #'math/smooth:hann-smoothing)))
-  (assert (= (length points) (length values)))
-  (let ((v-iter (cl-utilities:copy-array values))
-	(v-rez  (cl-utilities:copy-array values)))
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (let* ((nod-lst '((-1.0 0.0) (1.0 0.0) (-1.0 1.0) (1.0 1.0)))
+	(nod-rez  #(-10.0       0.0       0.0       10.0))
+	(nod-pts (make-array '(4 2) :initial-contents nod-lst))
+	(base-dists-1_5 #(1.5 1.5))
+	(base-dists-1_0 #(1.0 1.0))
+        (base-dists-0_6 #(0.6 0.6))
+	(base-dists-0_4 #(0.4 0.4)))
+   (refine-smoothing-by-points nod-pts nod-rez base-dists-0_4) 
+   (refine-smoothing-by-points nod-pts nod-rez base-dists-0_6)
+   (refine-smoothing-by-points nod-pts nod-rez base-dists-1_0)
+   (refine-smoothing-by-points nod-pts nod-rez base-dists-1_5)
+ )
+ => #(-10.019267 -0.019267347 0.019267347 10.019267), T,  1, 2.9726332e-4, #(-9.999926 7.424513e-5  -7.424499e-5  9.999926), #(-10.0 0.0 0.0 10.0), #(0.4 0.4)
+ => #(-10.663013 -0.66271365  0.6627135 10.663013),   T,  4, 4.3922185e-4, #(-9.99989  1.0987265e-4 -1.1000411e-4 9.99989),  #(-10.0 0.0 0.0 10.0), #(0.6 0.6)
+ => #(-16.005812 -5.632663    5.6326632 16.00581),    T, 15, 9.807203e-4,  #(-9.999755 2.451054e-4  -2.4542634e-4 9.999755), #(-10.0 0.0 0.0 10.0), #(1.0 1.0)
+ => #(-29.902119 -15.834344  15.834344 29.902119),    T, 40, 8.0980576e-4, #(-9.999799 2.0380187e-4 -2.0355334e-4 9.999799), #(-10.0 0.0 0.0 10.0), #(1.5 1.5)
+@end(code)"
+  (assert (math/smooth:weight-func-p weight-func))
+  (assert (= (array-rank nod-points) 2))
+  (assert (= (array-dimension nod-points 0) (length nod-values)))
+  (assert (= (array-dimension nod-points 1) (length base-dist-s)))
+  (let ((v-iter (cl-utilities:copy-array nod-values))
+	(v-rez  (cl-utilities:copy-array nod-values)))
     (labels ((start-V1 (v-rez v-iter)
-	       (loop :for i :from 0 :below (length values) :do
-		    (setf (svref v-rez i)
-			  (smooth-by-points (svref points i) base-dist points v-iter :w-func w-func)))
-	       (math/core:summ-distance v-rez values))
+	       (loop :for i :from 0 :below (length nod-values) :do
+		 (setf (svref v-rez i)
+		       (smooth-by-points (math/2d-array:row i nod-points) base-dist-s nod-points v-iter :weight-func weight-func)))
+	       (math/core:summ-distance v-rez nod-values))
 	     (iterate (v-rez v-iter)
-	       (loop :for i :from 0 :below (length values) :do
-		    (setf (svref v-iter i)
-			  (+ (svref v-iter i) (* 1 (- (svref values i) (svref v-rez i))))))))
+	       (loop :for i :from 0 :below (length nod-values) :do
+		 (setf (svref v-iter i)
+		       (+ (svref v-iter i) (* 1 (- (svref nod-values i) (svref v-rez i))))))))
       (do ((i    0 (1+ i))
 	   (dist (start-V1 v-rez v-iter ) (start-V1 v-rez v-iter)))
 	  ((or (> i iterations) (< dist delta))
-	   (progn (format t "I=~D; DIST=~F;~%V-ITER~S;~%V-REZ=~S~%" i dist v-iter v-rez )
-		  (if (< i iterations)
-		      (values v-iter t   i dist v-rez values)
-		      (values v-iter nil i dist v-rez values))))
+	   (progn
+	     ;;;; (format t "I=~D ; DIST=~F;~%V-ITER~S;~%V-REZ=~S~%" i dist v-iter v-rez )
+	     (if (< i iterations)
+		 (values v-iter t   i dist v-rez nod-values base-dist-s)
+		 (values v-iter nil i dist v-rez nod-values base-dist-s))))
 	(iterate v-rez v-iter)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;; make-refine-smooting
 
-(refine-smoothing-by-points
- (make-array '(4 2) :initial-contents '((0.0 0.0) (1.0 0.0) (0.0 1.0) (1.0 1.0)))
- #(0.0 1.0 1.0 2.0)
- #(1.0 1.0))
+(export 'refine-smoothing-by-points)
 
-(refine-smoothing-by-points #(-2 -1 0 1 2) #(4 1 0 1 4) 1.0 )
+(defmethod make-refine-smooting ((nod-points vector) (nod-values vector) (base-dist-s number)
+				 &key (weight-func #'math/smooth:gauss-smoothing) (delta 0.001) (iterations 10000))
+  "@b(Описание:) метод @b(make-refine-smooting) в случе 
+нахождения сглаживания для функции одного переменного.
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (let* ((nod-pts #(-2.0 -1.0 -0.5 0.0 0.5  1.0 2.0))
+	(nod-rez #( 4.0  1.0 0.25 0.0 0.25 1.0 4.0))
+	(base-dists-1_5 1.5 )
+	(base-dists-1_0 1.0 )
+	(base-dists-0_6 0.6 )
+	(base-dists-0_4 0.4 )
+	(func (make-refine-smooting nod-pts nod-rez base-dists-1_5)))
+   (loop :for i :from -2 :to 2 :by 1/10
+	 :collect (list (* 1.0 i)
+			(* 1.0 i i)
+			(funcall func (* 1.0 i))
+			(* 100 (1- (/ (* 1.0 i i)
+				      (funcall func (* 1.0 i))))))))
+  => '(( 0.0 0.00 0.00350)
+       ( 0.1 0.01 0.01315)
+       ( 0.2 0.04 0.04218)
+       ( 0.3 0.09 0.09071)
+       ( 0.4 0.16 0.15898)
+       ( 0.5 0.25 0.24730)
+       ( 0.6 0.36 0.35599)
+       ( 0.7 0.49 0.48542)
+       ( 0.8 0.64 0.63591)
+       ( 0.9 0.81 0.80774)
+       ( 1.0 1.00 1.00107)
+       ( 1.1 1.21 1.21590)
+       ( 1.2 1.44 1.45205)
+       ( 1.3 1.69 1.70909)
+       ( 1.4 1.96 1.98635)
+       ( 1.5 2.25 2.28284)
+       ( 1.6 2.56 2.59730)
+       ( 1.7 2.89 2.92817)
+       ( 1.8 3.24 3.27363)
+       ( 1.9 3.61 3.63161)
+       ( 2.0 4.00 3.99986))
+@end(code)
+"
+  (let ((new-nod-values
+	  (refine-smoothing-by-points
+	   nod-points nod-values base-dist-s
+	   :weight-func weight-func :delta delta :iterations iterations))
+	(new-nod-points  (cl-utilities:copy-array nod-points))
+        (new-base-dist-s base-dist-s))
+    (lambda (x)
+      (smooth-by-points x
+			new-base-dist-s new-nod-points new-nod-values
+			:weight-func weight-func))))
+
+(export 'make-refine-smooting)
+
+(defmethod make-refine-smooting ((nod-points array) (nod-values vector) (base-dist-s vector)
+				 &key (weight-func #'math/smooth:gauss-smoothing) (delta 0.001) (iterations 10000))
+  "@b(Описание:) метод @b(make-refine-smooting) в случе 
+нахождения сглаживания для функции двух переменных.
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (let* ((nod-lst '((-1.0 -1.0) (1.0 -1.0) (-1.0 1.0) (1.0 1.0)))
+	(nod-rez  #(-10.0       0.0       0.0       10.0))
+	(nod-pts (make-array '(4 2) :initial-contents nod-lst))
+	(base-dists-1_5 #(1.5 1.5))
+	(base-dists-1_0 #(1.0 1.0))
+        (base-dists-0_6 #(0.6 0.6))
+	(base-dists-0_4 #(0.4 0.4))
+	(func (make-refine-smooting nod-pts nod-rez base-dists-1_5)))
+   (funcall func 0.0 0.5))
+@end(code)
+"
+  (let ((new-nod-values
+	  (refine-smoothing-by-points
+	   nod-points nod-values base-dist-s
+	   :weight-func weight-func :delta delta :iterations iterations))
+	(new-nod-points  (cl-utilities:copy-array nod-points))
+        (new-base-dist-s (cl-utilities:copy-array base-dist-s)))
+    (lambda (x1 x2)
+       (smooth-by-points (vector x1 x2) new-base-dist-s new-nod-points new-nod-values :weight-func weight-func))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
-; V-REZ=#(3.9999044 1.0001905 -2.2706656e-4 1.0001904 3.9999044)
-;  => #(5.6701236 -0.3417822 0.04336298 -0.3417822 5.670124), T, 28, 7.9915195e-4, #(3.9999044 1.0001905 -2.2706656e-4 1.0001904 3.9999044), #(4 1 0 1 4)
 
-(smooth-by-points 1.5  1.0  #(-2 -1 0 1 2) #(5.6701236 -0.3417822 0.04336298 -0.3417822 5.670124))
 
-; V-ITER#(4.0800066 0.15551972 -0.316086 0.15551972 6.9072504);
-; V-REZ=#(4.000006 1.0001515 -2.3828201e-4 1.0001515 3.9997652)
-;  => #(4.0800066 0.15551972 -0.316086 0.15551972 6.9072504), T, 20, 7.823532e-4, #(4.000006 1.0001515 -2.3828201e-4 1.0001515 3.9997652), #(4 1 0 1 4)

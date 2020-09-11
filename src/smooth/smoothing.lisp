@@ -5,8 +5,9 @@
   (:export gauss-smoothing
 	   exp-smoothing
 	   cauchy-smoothing
-	   hann-smoothing)  
-  )
+	   hann-smoothing)
+  (:export weight-func-list
+	   weight-func-p))
 
 (in-package :math/smooth)
 
@@ -66,3 +67,16 @@
 @end(code)
 "
   (if (< d 1) (* 1/2 ( + 1 ( cos (* pi d)))) 0))
+
+(export 'weight-func-list)
+
+(defun weight-func-list ()
+  (list #'gauss-smoothing
+	#'exp-smoothing
+	#'cauchy-smoothing
+	#'hann-smoothing))
+
+(export 'weight-func-p)
+
+(defun weight-func-p (func)
+  (if (member func (weight-func-list)) t nil))

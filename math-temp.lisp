@@ -2,8 +2,8 @@
 
 (in-package :math)
 
-(math/gnuplot:split-range)
-(math/gnuplot:split-range-by-func)
+(math/core:split-range)
+(math/core:split-range-by-func)
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

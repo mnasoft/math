@@ -48,7 +48,3 @@
 	rsync -Pavzh ./docs/build/$CDIR/html/* //n133619/home/_namatv/public_html/Site/Development/Common-Lisp-Programs/$CDIR
      fi
 #+END_SRC
-
-#+RESULTS: publish
-| sending    | incremental | file | list |
-| mnasoft-00 |             |      |      |

@@ -6,29 +6,29 @@
 (defpackage #:math/list-matr
   (:use #:cl)
   (:export rows
-	   cols
-	   dimensions
-	   col
-	   row
-   	   average-value
+           cols
+           dimensions
+           col
+           row
+           average-value
            average-not-nil-value
-	   average-row-value
-	   average-row-not-nil-value
-	   average-col-value
-	   average-col-not-nil-value
-	   max-row-not-nil-value
-	   max-col-not-nil-value
-	   transpose
-	   detach-last-col
-	   get-last-col
-	   prepend-row
-	   prepend-col
-	   append-row
-	   append-col
-      	   lv-print
-	   lm-print
-	   unite-rows
-	   make))
+           average-row-value
+           average-row-not-nil-value
+           average-col-value
+           average-col-not-nil-value
+           max-row-not-nil-value
+           max-col-not-nil-value
+           transpose
+           detach-last-col
+           get-last-col
+           prepend-row
+           prepend-col
+           append-row
+           append-col
+           lv-print
+           lm-print
+           unite-rows
+           make))
 
 (in-package :math/list-matr)
 
@@ -41,8 +41,10 @@
  @b(Пример использования:)
 @begin[lang=lisp](code)
  (transpose '((1 2 3)
-			(4 5 6)))
- =>((1 4) (2 5) (3 6))
+              (4 5 6)))
+ =>((1 4) 
+    (2 5) 
+    (3 6))
 @end(code)
 "
   (apply #'mapcar #'list 2d-list))
@@ -56,7 +58,7 @@
  @b(Пример использования:)
 @begin[lang=lisp](code)
  (unite-rows '((1 2 3)
-                    (4 5 6)))
+               (4 5 6)))
  =>(1 2 3 4 5 6)
 @end(code)
 "
@@ -81,10 +83,10 @@
 @end(code)
 "
   (let ((rez nil)
-	(rw nil))
+        (rw nil))
     (dotimes (r rows (reverse rez))
       (dotimes (c cols)
-	(push (nth (+ (* r cols) c) lst) rw))
+        (push (nth (+ (* r cols) c) lst) rw))
       (push (reverse rw) rez)
       (setf rw nil))))
 
@@ -110,9 +112,9 @@
  @b(Пример использования:)
 @begin[lang=lisp](code)
  (cols '((0 1 2)
-                   (3 4 5)))  =>3
+         (3 4 5)))  =>3
  (cols '((0 1 2 10) 
-                   (3 4 5)))  =>3
+         (3 4 5)))  =>3
 @end(code)
 "
   (math/stat:min-value (mapcar #'length 2d-list)))
@@ -143,7 +145,8 @@
 
  @b(Пример использования:)
 @begin[lang=lisp](code)
- (row 1 '((0 1 2) (3 4 5)))
+ (row 1 '((0 1 2) 
+          (3 4 5)))
  =>(3 4 5)
 @end(code)
 "
@@ -152,14 +155,15 @@
 (export 'col)
 
 (defun col (col 2d-list)
-  "@b(Описание:) функция|метод|обобщенная_функция| @b(col)
-возвращает столбец col матрицы, представленной списком 2d-list.
+  "@b(Описание:) функция @b(col) возвращает столбец
+@b(col) матрицы, представленной списком @b(2d-list).
 
  @b(Примечание:) Нумерация столбцов начинается с 0
 
  @b(Пример использования:)
 @begin[lang=lisp](code)
- (col 1 '((0 1 2) (3 4 5)))
+ (col 1 '((0 1 2) 
+          (3 4 5)))
  =>(1 4)
 @end(code)"
   (mapcar #'(lambda (el) (nth col el)) 2d-list))
@@ -199,7 +203,7 @@
  @b(Пример использования:)
 @begin[lang=lisp](code)
  (average-row-value '((1.0 1.5 2.0)
-				(2.0 2.5 3.0))) => (1.5 2.5)
+                      (2.0 2.5 3.0))) => (1.5 2.5)
 @end(code)
 "
   (mapcar #'math/stat:average-value lst))
@@ -220,7 +224,7 @@
  @b(Пример использования:)
 @begin[lang=lisp](code)
  (max-row-not-nil-value '((1.0 2.1 1.5 2.0)
-				    (2.0 2.5 3.2 3.0))) => (2.1 3.2)
+                          (2.0 2.5 3.2 3.0))) => (2.1 3.2)
 @end(code)
 "
   (mapcar #'(lambda (el) (apply #'max (math/core:exclude-nil-from-list el))) lst))
@@ -236,7 +240,7 @@
  @b(Пример использования:)
 @begin[lang=lisp](code)
  (average-col-value '((3.0 2.1 4.5)
-				(2.0 2.5 3.2))) => (2.5 2.3 3.85)
+                     (2.0 2.5 3.2))) => (2.5 2.3 3.85)
 @end(code)"
   (average-row-value (transpose lst)))
 
@@ -249,7 +253,7 @@
  @b(Пример использования:)
 @begin[lang=lisp](code)
  (average-col-not-nil-value '((nil 2.1 4.5)
-					(2.0 nil 3.2))) => (2.0 2.1 3.85)
+                             (2.0 nil 3.2))) => (2.0 2.1 3.85)
   
 @end(code)
 "
@@ -264,7 +268,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;; lm-print
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 
 (export 'lm-print)
 
@@ -280,13 +284,10 @@
  вектора (списка)."
   (format stream (concatenate 'string  "~{" fmt "~^ ~}~%") lst) )
 
-(lv-print '(1 2 3) :stream nil)
-					;  => "   1.0    2.0    3.0
-; "
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;; append
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 
 (export 'append-col)
 
@@ -296,20 +297,19 @@
 
  @b(Пример использования:)
 @begin[lang=lisp](code)
-(math:append-col '(10 11 12)
-			   '((1 2 3)
-			     (4 5 6)
-			     (7 8 9)))
- => ((1 2 3 10) 
-     (4 5 6 11)
-     (7 8 9 12))
+ (math:append-col '(10 11 12)
+                  '((1 2 3)
+                    (4 5 6)
+                    (7 8 9))) => ((1 2 3 10) 
+                                  (4 5 6 11)
+                                  (7 8 9 12))
 @end(code)
 "
   (let ((rez nil)
-	(r nil))
+        (r nil))
     (dolist (l 2d-list (reverse rez))
       (setf r (car c-lst)
-	    c-lst (cdr c-lst))
+            c-lst (cdr c-lst))
       (push (append l (list r)) rez))))
 
 (export 'append-row)
@@ -321,38 +321,36 @@
  @b(Пример использования:)
 @begin[lang=lisp](code)
  (math:append-row '(10 11 12)
-			    '((1 2 3)
-			      (4 5 6)
-			      (7 8 9)))
- =>((1 2 3)
-    (4 5 6)
-    (7 8 9)
-    (10 11 12))
+                  '((1 2 3)
+                    (4 5 6)
+                    (7 8 9)))  =>((1 2 3)
+                                  (4 5 6)
+                                  (7 8 9)
+                                  (10 11 12))
 
  (math:append-row '(10 11 )
-			    '((1 2 3)
-			      (4 5 6)
-			      (7 8 9)))
+                  '((1 2 3)
+                    (4 5 6)
+                    (7 8 9)))
  =>((1 2 3)
     (4 5 6)
     (7 8 9)
     (10 11 NIL))
 
  (math:append-row '(10 11 12 13)
-			    '((1 2 3)
-			      (4 5 6)
-			      (7 8 9)))
- =>((1 2 3)
-    (4 5 6)
-    (7 8 9)
-    (10 11 12))
+                  '((1 2 3)
+                    (4 5 6)
+                    (7 8 9))) =>(( 1  2  3)
+                                 ( 4  5  6)
+                                 ( 7  8  9)
+                                 (10 11 12))
 @end(code)
 "
   (transpose (append-col c-lst (transpose 2d-list))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;; prepend
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 
 (export 'prepend-col)
 
@@ -363,19 +361,19 @@
  @b(Пример использования:)
 @begin[lang=lisp](code)
  (prepend-col '(10 11 12)
-			'((1  2  3)
-			  (4  5  6)
-			  (7  8  9)))
- =>((10 1 2 3)
-    (11 4 5 6)
-    (12 7 8 9))
+              '((1  2  3)
+                (4  5  6)
+                (7  8  9))) => ((10 1 2 3)
+                                (11 4 5 6)
+                                (12 7 8 9))
+
 @end(code)
 "
   (let ((rez nil)
-	(r nil))
+        (r nil))
     (dolist (l 2d-list (reverse rez))
       (setf r (car c-lst)
-	    c-lst (cdr c-lst))
+            c-lst (cdr c-lst))
       (push (cons r l) rez))))
 
 (export 'prepend-row)
@@ -386,32 +384,26 @@
  @b(Пример использования:)
 @begin[lang=lisp](code)
  (prepend-row '(10 11 12) 
-                             '((1 2 3)
-                               (4 5 6)
-                               (7 8 9)))
-
- =>((10 11 12) 
-    ( 1  2  3) 
-    ( 4  5  6)
-    ( 7  8  9))
+              '((1 2 3)
+                (4 5 6)
+                (7 8 9))) =>((10 11 12) 
+                             ( 1  2  3) 
+                             ( 4  5  6)
+                             ( 7  8  9))
  (math:prepend-row '(10 11 )
-			     '((1 2 3)
-			       (4 5 6)
-			       (7 8 9)))
- =>((10 11 NIL) 
-    (1 2 3) 
-    (4 5 6) 
-    (7 8 9))
-
+                   '((1 2 3)
+                     (4 5 6) 
+                     (7 8 9))) =>((10 11 NIL) 
+                                  (1 2 3) 
+                                  (4 5 6) 
+                                  (7 8 9))
  (math:prepend-row '(10 11 12 13)
-			     '((1 2 3)
-			       (4 5 6)
-			       (7 8 9)))
- =>((10 11 12) 
-    ( 1  2  3) 
-    ( 4  5  6)
-    ( 7  8  9))
-@begin[lang=lisp](code)
+                   '((1 2 3)
+                     (4 5 6)
+                     (7 8 9)))  =>((10 11 12)
+                                   ( 1  2  3) 
+                                   ( 4  5  6) 
+                                   ( 7  8  9))
 @end(code)
 "
   (transpose (prepend-col c-lst (transpose 2d-list))))
@@ -429,8 +421,8 @@
   '((1 2 3  6)
     (2 3 4  9) 
     (3 4 5 12))) => ((1 2 3)
-		     (2 3 4)
-		     (3 4 5))
+                     (2 3 4)
+                     (3 4 5))
 @end(code)
 "
   (mapcar
@@ -448,8 +440,7 @@
  (get-last-col
  '((1  2  3  6)
    (2  3  4  9) 
-   (3  4  5 12)))
- =>(6 9 12) 
+   (3  4  5 12))) =>(6 9 12) 
 @end(code)
 "
   (mapcar

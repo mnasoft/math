@@ -1,62 +1,127 @@
 * Файлы проекта
 #+BEGIN_SRC shell
-for i in `find . -name "*.lisp" -o -name "*.asd" -o -name "*.org"|sort` 
+for i in `find ../ -name "*.lisp" -o -name "*.asd" -o -name "*.scr" -o -name "*.org"|sort` 
 do
  echo [[./${i}]]
  done
 #+END_SRC
 
 #+RESULTS:
-| [[file:././approximation-gnuplot.lisp]]        |
-| [[file:././Developers-memo.org]]               |
-| [[file:././docs/manifest.lisp]]                |
-| [[file:././math.asd]]                          |
-| [[file:././README.org]]                        |
-| [[file:././src/2d-array/2d-array.lisp]]        |
-| [[file:././src/2d-array/array-test.lisp]]      |
-| [[file:././src/appr/appr-func-temptate.lisp]]  |
-| [[file:././src/appr/approximation.lisp]]       |
-| [[file:././src/appr/package.lisp]]             |
-| [[file:././src/arr-matr/matr-class.lisp]]      |
-| [[file:././src/arr-matr/matr-generics.lisp]]   |
-| [[file:././src/arr-matr/package.lisp]]         |
-| [[file:././src/coord/coordinate-system.lisp]]  |
-| [[file:././src/core/generic.lisp]]             |
-| [[file:././src/core/generic-matr.lisp]]        |
-| [[file:././src/core/main.lisp]]                |
-| [[file:././src/core/method.lisp]]              |
-| [[file:././src/gnuplot/gnuplot.lisp]]          |
-| [[file:././src/list-matr/list-matr.lisp]]      |
-| [[file:././src/ls-gauss/ls-gauss.lisp]]        |
-| [[file:././src/ls-rotation/las-rotation.lisp]] |
-| [[file:././src/ls-solve/gsll-samples.lisp]]    |
-| [[file:././src/ls-solve/lu-solve.lisp]]        |
-| [[file:././src/ls-solve/package.lisp]]         |
-| [[file:././src/ls-solve/temp.lisp]]            |
-| [[file:././src/mult-matr-vect.lisp]]           |
-| [[file:././src/package.lisp]]                  |
-| [[file:././src/smooth/smoothing.lisp]]         |
-| [[file:././src/stat/statistics.lisp]]          |
-| [[file:././src/x-o/x-o.lisp]]                  |
-| [[file:././test.lisp]]                         |
-| [[file:././tests/approximation-test-bak.lisp]] |
-| [[file:././tests/approximation-tests.lisp]]    |
-| [[file:././tests/array.lisp]]                  |
-| [[file:././tests/linear-system-tests.lisp]]    |
-| [[file:././tests/main.lisp]]                   |
-| [[file:././tests/main-run.lisp]]               |
-| [[file:././tests/matrix.lisp]]                 |
-| [[file:././tests/package.lisp]]                |
-| [[file:././.#ToDo.org]]                        |
-| [[file:././ToDo.org]]                          |
+| [[file:./../docs/gp-sample.scr]]                             |
+| [[file:./../docs/manifest.lisp]]                             |
+| [[file:./../docs/math-appr-graph.scr]]                       |
+| [[file:./../docs/math-arr-matr-graph.scr]]                   |
+| [[file:./../docs/math-arr-matr.scr]]                         |
+| [[file:./../docs/math-coord-graph.scr]]                      |
+| [[file:./../docs/math-coord.scr]]                            |
+| [[file:./../docs/math-core-graph.scr]]                       |
+| [[file:./../docs/math-core.scr]]                             |
+| [[file:./../docs/math-gnuplot-graph.scr]]                    |
+| [[file:./../docs/math-gnuplot.scr]]                          |
+| [[file:./../docs/math-graph.scr]]                            |
+| [[file:./../docs/math-list-matr-graph.scr]]                  |
+| [[file:./../docs/math-list-matr.scr]]                        |
+| [[file:./../docs/math.scr]]                                  |
+| [[file:./../docs/math-smooth-graph.scr]]                     |
+| [[file:./../docs/math-smooth.scr]]                           |
+| [[file:./../docs/math-stat-graph.scr]]                       |
+| [[file:./../docs/math-stat.scr]]                             |
+| [[file:./../docs/math-x-o-graph.scr]]                        |
+| [[file:./../docs/math-x-o.scr]]                              |
+| [[file:./../math.asd]]                                       |
+| [[file:./../math.lisp]]                                      |
+| [[file:./../math-temp.lisp]]                                 |
+| [[file:./../org/.#Developers-memo.org]]                      |
+| [[file:./../org/Developers-memo.org]]                        |
+| [[file:./../org/.#ToDo.org]]                                 |
+| [[file:./../org/ToDo.org]]                                   |
+| [[file:./../README.org]]                                     |
+| [[file:./../src/2d-array/2d-array.lisp]]                     |
+| [[file:./../src/2d-array/array-test.lisp]]                   |
+| [[file:./../src/appr/appr-func-temptate.lisp]]               |
+| [[file:./../src/appr/approximation.lisp]]                    |
+| [[file:./../src/appr/package.lisp]]                          |
+| [[file:./../src/arr-matr/matr-class.lisp]]                   |
+| [[file:./../src/arr-matr/matr-generics.lisp]]                |
+| [[file:./../src/arr-matr/package.lisp]]                      |
+| [[file:./../src/coord/coordinate-system.lisp]]               |
+| [[file:./../src/core/generic.lisp]]                          |
+| [[file:./../src/core/generic-matr.lisp]]                     |
+| [[file:./../src/core/main.lisp]]                             |
+| [[file:./../src/core/method.lisp]]                           |
+| [[file:./../src/gnuplot/example/approximation-gnuplot.lisp]] |
+| [[file:./../src/gnuplot/gnuplot.lisp]]                       |
+| [[file:./../src/list-matr/list-matr.lisp]]                   |
+| [[file:./../src/ls-gauss/ls-gauss.lisp]]                     |
+| [[file:./../src/ls-rotation/las-rotation.lisp]]              |
+| [[file:./../src/ls-solve/gsll-samples.lisp]]                 |
+| [[file:./../src/ls-solve/lu-solve.lisp]]                     |
+| [[file:./../src/ls-solve/package.lisp]]                      |
+| [[file:./../src/ls-solve/temp.lisp]]                         |
+| [[file:./../src/mult-matr-vect.lisp]]                        |
+| [[file:./../src/smooth/smoothing.lisp]]                      |
+| [[file:./../src/stat/statistics.lisp]]                       |
+| [[file:./../src/x-o/x-o.lisp]]                               |
+| [[file:./../tests/approximation-test-bak.lisp]]              |
+| [[file:./../tests/approximation-tests.lisp]]                 |
+| [[file:./../tests/array.lisp]]                               |
+| [[file:./../tests/linear-system-tests.lisp]]                 |
+| [[file:./../tests/list-matr-tests.lisp]]                     |
+| [[file:./../tests/main.lisp]]                                |
+| [[file:./../tests/main-run.lisp]]                            |
+| [[file:./../tests/matrix.lisp]]                              |
+| [[file:./../tests/package.lisp]]                             |
 
 * Задачи
-1. [ ] Переименование approx-by-points -> smooth-by-points
-2. [0/12] Тестирование 
+1. [0/12] Документирование
+   - [ ] appr
+     - Файлы
+       + [[file:~/quicklisp/local-projects/ultralisp/math/src/appr/package.lisp][package.lisp]]                          
+       + [[file:~/quicklisp/local-projects/ultralisp/math/src/appr/approximation.lisp][approximation.lisp]]                    
+       + [[file:~/quicklisp/local-projects/ultralisp/math/src/appr/appr-func-temptate.lisp][appr-func-temptate.lisp]] 
+     - Сценарий сборки [[file:~/quicklisp/local-projects/ultralisp/math/docs/math-appr.scr][math-appr.scr]]                             
    - [ ] 2d-array  
    - [ ] arr-matr
    - [ ] core
-   - [24/24] list-matr [[file:~/quicklisp/local-projects/clisp/math/tests/list-matr-tests.lisp][list-matr-tests.lisp]]
+   - [0/24] list-matr [[file:~/quicklisp/local-projects/ultralisp/math/src/list-matr/list-matr.lisp][list-matr.lisp]]
+     - [ ] rows
+     - [ ] cols
+     - [ ] dimensions
+     - [ ] col
+     - [ ] row
+     - [ ] average-value
+     - [ ] average-not-nil-value
+     - [ ] average-row-value
+     - [ ] average-row-not-nil-value
+     - [ ] average-col-value
+     - [ ] average-col-not-nil-value
+     - [ ] max-row-not-nil-value
+     - [ ] max-col-not-nil-value
+     - [ ] transpose
+     - [ ] detach-last-col
+     - [ ] get-last-col
+     - [ ] prepend-row
+     - [ ] prepend-col
+     - [ ] append-row
+     - [ ] append-col
+     - [ ] lv-print
+     - [ ] lm-print
+     - [ ] unite-rows
+     - [ ] make
+   - [ ] ls-rotation
+   - [ ] stat
+   - [ ] coord
+   - [ ] gnuplot
+   - [ ] ls-gauss
+   - [ ] ls-solve
+   - [ ] smooth         
+   - [ ] x-o
+2. [ ] Переименование approx-by-points -> smooth-by-points
+3. [0/12] Тестирование 
+   - [ ] 2d-array  
+   - [ ] arr-matr
+   - [ ] core
+   - [24/24] list-matr [[file:~/quicklisp/local-projects/ultralisp/math/tests/list-matr-tests.lisp][list-matr-tests.lisp]]
      - [X] rows -> list-matr-rows-cols-dimensions-test
      - [X] cols -> list-matr-rows-cols-dimensions-test
      - [X] dimensions -> list-matr-rows-cols-dimensions-test
@@ -84,44 +149,6 @@ do
    - [ ] ls-rotation
    - [ ] stat
    - [ ] appr
-   - [ ] coord
-   - [ ] gnuplot
-   - [ ] ls-gauss
-   - [ ] ls-solve
-   - [ ] smooth         
-   - [ ] x-o
-3. [0/13] Документирование
-   - [ ] 2d-array  
-   - [ ] arr-matr
-   - [ ] core
-   - [/] list-matr [[file:~/quicklisp/local-projects/clisp/math/src/list-matr/list-matr.lisp][list-matr.lisp]]
-     - [ ] rows
-     - [ ] cols
-     - [ ] dimensions
-     - [ ] col
-     - [ ] row
-     - [ ] average-value
-     - [ ] average-not-nil-value
-     - [ ] average-row-value
-     - [ ] average-row-not-nil-value
-     - [ ] average-col-value
-     - [ ] average-col-not-nil-value
-     - [ ] max-row-not-nil-value
-     - [ ] max-col-not-nil-value
-     - [ ] transpose
-     - [ ] detach-last-col
-     - [ ] get-last-col
-     - [ ] prepend-row
-     - [ ] prepend-col
-     - [ ] append-row
-     - [ ] append-col
-     - [ ] lv-print
-     - [ ] lm-print
-     - [ ] unite-rows
-     - [ ] make
-   - [ ] ls-rotation
-   - [ ] stat
-   - [ ] appr  [[file:~/quicklisp/local-projects/clisp/math/src/appr/approximation.lisp][approximation.lisp]] 
    - [ ] coord
    - [ ] gnuplot
    - [ ] ls-gauss
