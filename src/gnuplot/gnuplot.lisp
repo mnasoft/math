@@ -1,26 +1,10 @@
 ;;;; gnuplot.lisp
 
-(defpackage #:math/gnuplot
-  (:use #:cl #:math/core)
-  (:export gnuplot-splot
-	   gnuplot-plot
-           table-apply
-	   
-           make-table
-	   *palette-defined-01*
-
-	   *pm3d-map*
-           *palette-defined*
-           gnuplot-data-splot
-           gnuplot-data-plot
-           gnuplot-data-to-file
-           make-plot-data-file))
-
 (in-package :math/gnuplot)
 
-(defun make-2d-list-by-func (func &key (x-from 0) (x-to 1) (step 100))
-  (loop :for i :from x-from :to x-to :by (/ (- x-to x-from) step)
-	:collect (list (coerce i 'float) (coerce (funcall func i) 'float))))
+(defun make-2d-list-by-func (func &key (x-from 0) (x-to 1) (steps 100))
+  (mapcar #'(lambda (el) (list el (funcall func el)))
+          (split-range x-from x-to steps)))
 
 (export 'make-table )
 
@@ -124,28 +108,54 @@
 (export 'gnuplot-data-to-file )
 
 (defgeneric gnuplot-data-to-file (f-name data)
-  (:documentation "COOL"))
+  (:documentation
+   "@b(Описание:) обобщенная функция @b(gnuplot-data-to-file) выводит данные
+@b(data) в файл с именем @b(f-name), расположенный в каталоге поумолчанию
+(см. переменную *default-gnuplot-direcroty*)."))
 
 (defmethod gnuplot-data-to-file (f-name (data cons))
+  "@b(Описание:) метод @b(gnuplot-data-to-file) выводит данные
+@b(data) в файл с именем @b(f-name), расположенный в каталоге поумолчанию
+(см. переменную *default-gnuplot-direcroty*). 
+
+ Данные должны быть представлены 2d-list.
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (gnuplot-data-to-file \"data\" 
+  (loop :for i :from 0 :to 4 :by 1/10 :collect (list i (* i i))))
+@end(code)
 "
-Тестирование:
- (gnuplot-data-to-file \"~/data.data\" '((0 0)(1 1)(2 4)(3 9)(4 16)))
-"
-  (with-open-file (os f-name :direction :output :if-exists :supersede :external-format :utf8)
+  (with-open-file (os (file-name f-name "data") :direction :output :if-exists :supersede :external-format :utf8)
     (mapc #'(lambda (el) (format os "~{~F ~}~%" el)) data)
-    (format t "gnuplot -e \"plot '~A'\"  " f-name)))
+    (format t "'~A'" (file-name f-name "data"))))
+
+;;;; (gnuplot-data-to-file "data-2d-list" (loop :for i :from 0 :to 4 :by 1/10 :collect (list i (* i i))))
 
 (defmethod gnuplot-data-to-file (f-name (data array))
-"Тестирование:
- (gnuplot-data-to-file \"~/data.data\" (make-array '(5 2) :initial-contents '((0 0)(1 1)(2 4)(3 9)(4 16))))
+  "@b(Описание:) метод @b(gnuplot-data-to-file) выводит данные
+@b(data) в файл с именем @b(f-name), расположенный в каталоге поумолчанию
+(см. переменную *default-gnuplot-direcroty*). 
+
+ Данные должны быть представлены 2d-array.
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (gnuplot-data-to-file \"data\" 
+  (loop :for i :from 0 :to 4 :by 1/10 :collect (list i (* i i))))
+@end(code)
+
+ (gnuplot-data-to-file \"data\" (make-array '(5 2) :initial-contents '((0 0)(1 1)(2 4)(3 9)(4 16))))
 "
   (assert (= (array-rank data) 2))
-  (with-open-file (os f-name :direction :output :if-exists :supersede :external-format :utf8)
+  (with-open-file (os (file-name f-name "data") :direction :output :if-exists :supersede :external-format :utf8)
     (loop :for i :from 0 :below (array-dimension data 0) :do
-	 (loop :for j :from 0 :below (array-dimension data 1) :do
-	      (format os "~F " (aref data i j)))
-	 (format os "~%" ))
-    (format t "gnuplot -e \"plot '~A'\"  " f-name)))
+      (loop :for j :from 0 :below (array-dimension data 1) :do
+	(format os "~F " (aref data i j)))
+      (format os "~%" ))
+    (format t "'~A'" (file-name f-name "data"))))
+
+;;;; (gnuplot-data-to-file "data-array" (make-array '(5 2) :initial-contents '((0 0)(1 1)(2 4)(3 9)(4 16))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -174,19 +184,19 @@
 			(preamble  nil)
 			(palette  *palette-defined*) 
 			(pm3d     *pm3d-map*)
-			(splot    (concatenate 'string "splot '" f-name ".data' u 2:1:3")))
+			(splot    (concatenate 'string "splot '" (file-name f-name "data") "' u 2:1:3")))
   "Осуществляет подготовку данных, содержащихся в файле f-name с расширением data.
 Данные в файле должны иметь формат gp-list
 "
-  (assert (probe-file (concatenate 'string f-name ".data")))
-  (with-open-file (gp (concatenate 'string f-name "." "gp") :direction :output :if-exists :supersede :external-format :utf8)
+  (assert (probe-file (file-name f-name "data")))
+  (with-open-file (gp (file-name f-name "gp") :direction :output :if-exists :supersede :external-format :utf8)
     (when terminal (format gp "~A~%" terminal))
     (when preamble (format gp "~A~%" preamble))
     (when output   (format gp "~A~%" output)) 
     (when palette  (format gp "~A~%" palette))
     (when pm3d     (format gp "~A~%" pm3d))
     (when splot    (format gp "~A~%" splot)))
-  (with-open-file (sh (concatenate 'string f-name "." "sh") :direction :output :if-exists :supersede :external-format :utf8)
+  (with-open-file (sh (file-name f-name "sh") :direction :output :if-exists :supersede :external-format :utf8)
     (format sh "#!/bin/bash~%" )
     (format sh "gnuplot ~A.gp~%" f-name))
   (uiop:run-program (concatenate 'string "sh" " " f-name "." "sh") :ignore-error-status t))
@@ -196,29 +206,29 @@
 (defun gnuplot-data-splot (
 			   f-name data &key
 			   (terminal "set terminal pdfcairo enhanced font 'Arial,14' size 13.5 cm, 5.0 cm ")
-			   (output   (concatenate 'string "set output '" f-name ".pdf'"))
+			   (output   (concatenate 'string "set output '" (file-name f-name "pdf'")))
 			   (preamble  nil)
 			   (palette  *palette-defined*) 
 			   (pm3d     *pm3d-map*)
-					 (splot    (concatenate 'string "splot '" f-name ".data' u 2:1:3")))
+			   (splot    (concatenate 'string "splot '" (file-name f-name "data")"' u 2:1:3")))
   "STUB"
   (assert (consp data))
   (assert (consp (first data)))
   (assert (consp (first (first data))))
-  (with-open-file (os (concatenate 'string f-name "." "data") :direction :output :if-exists :supersede :external-format :utf8)
+  (with-open-file (os (file-name f-name "data") :direction :output :if-exists :supersede :external-format :utf8)
     (format os "#   ~8A ~8A ~8A~%" "X" "Y" "Z" )
     (format os "~{~{~{~8F ~}~%~}~%~}"     data ))
-  (with-open-file (gp (concatenate 'string f-name "." "gp") :direction :output :if-exists :supersede :external-format :utf8)
+  (with-open-file (gp (file-name  f-name "gp") :direction :output :if-exists :supersede :external-format :utf8)
     (when terminal (format gp "~A~%" terminal))
     (when preamble (format gp "~A~%" preamble))
     (when output   (format gp "~A~%" output)) 
     (when palette  (format gp "~A~%" palette))
     (when pm3d     (format gp "~A~%" pm3d))
     (when splot    (format gp "~A~%" splot)))
-  (with-open-file (sh (concatenate 'string f-name "." "sh") :direction :output :if-exists :supersede :external-format :utf8)
+  (with-open-file (sh (file-name f-name "sh") :direction :output :if-exists :supersede :external-format :utf8)
     (format sh "#!/bin/bash~%" )
-    (format sh "gnuplot ~A.gp~%" f-name))
-  (uiop:run-program (concatenate 'string "sh" " " f-name "." "sh") :ignore-error-status t))
+    (format sh "gnuplot ~A~%" (file-name f-name "gp")))
+  (uiop:run-program (concatenate 'string "sh" " " (file-name f-name "sh")) :ignore-error-status t))
 
 ;;;; set terminal pngcairo size 1000,600 enhanced font 'Verdana,10'
 ;;;; set output 'introduction.png'
@@ -236,12 +246,13 @@
 
 (export 'gnuplot-data-plot )
 
-(defun gnuplot-data-plot (f-name data &key
-			  (terminal "set terminal pngcairo size 1400,500 enhanced font 'Verdana,10'")
-			  (preamble "set xrange [0:2.5]")
-			  (output   (concatenate 'string "set output '" f-name ".png'"))
-			  (plot    (concatenate 'string "plot '" f-name ".data' u 2:1")))
-"@b(Описание:) функция @b(gnuplot-data-plot)
+(defun gnuplot-data-plot (f-name data
+                          &key
+			    (terminal (format nil "~a" *term-pdfcairo*))
+                            (output   (concatenate 'string "set output '" (file-name f-name "pdf") "'"))
+			    (preamble "set xrange [0:4]")
+			    (plot    (concatenate 'string "plot '" (file-name f-name "data")"' u 1:2 with lines")))
+  "@b(Описание:) функция @b(gnuplot-data-plot)
 
  @b(Пример использования:)
 @begin[lang=lisp](code)
@@ -253,46 +264,64 @@
  :plot \"plot 'plot2.data' u 1:2 with lines lt 1, 'plot2.data' u 1:3 with lines lt 2 \")
 @end(code)
 "
-;;;; :plot "plot 'plot2.data' u 1:2 with lines lt 1, 'plot2.data' u 1:3 with lines lt 2 ") 
   (assert (consp data))
   (assert (consp (first data)))
-  (with-open-file (os (concatenate 'string f-name "." "data") :direction :output :if-exists :supersede :external-format :utf8)
+  (with-open-file (os (file-name f-name "data") :direction :output :if-exists :supersede :external-format :utf8)
     (format os "#   ~8A ~8A~%" "X" "Y" )
     (format os "~{~{~8F ~}~%~}"     data ))
-  (with-open-file (gp (concatenate 'string f-name "." "gp") :direction :output :if-exists :supersede :external-format :utf8)
+  (with-open-file (gp (file-name f-name "gp") :direction :output :if-exists :supersede :external-format :utf8)
     (when terminal (format gp "~A~%" terminal))
     (when preamble (format gp "~A~%" preamble)) 
     (when output   (format gp "~A~%" output)) 
-    (when plot    (format gp "~A~%" plot)))
-  (with-open-file (sh (concatenate 'string f-name "." "sh") :direction :output :if-exists :supersede :external-format :utf8)
+    (when plot     (format gp "~A~%" plot)))
+  (with-open-file (sh (file-name  f-name "sh") :direction :output :if-exists :supersede :external-format :utf8)
     (format sh "#!/bin/bash~%" )
-    (format sh "gnuplot ~A.gp~%" f-name))
-  (uiop:run-program (concatenate 'string "sh" " " f-name "." "sh") :ignore-error-status t))
+    (format sh "gnuplot ~A~%" (file-name  f-name "gp")))
+  (uiop:run-program (concatenate 'string "sh" " " (file-name f-name "sh")) :ignore-error-status t))
+
+;;;; (gnuplot-data-plot "123" (make-2d-list-by-func #'(lambda (el) (* el el)) :x-from 0 :x-to 4 :steps 100))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(export 'gnuplot-plot )
+(export 'gnuplot-plot)
 
 (defun gnuplot-plot (f-name &key
-		     (terminal "set terminal enhanced font 'Arial,14' pdfcairo size 42 cm, 29.7 cm")
-		     (preamble "set xrange [0:2.5]")
-		     (output   (concatenate 'string "set output '" f-name ".pdf'"))
-			      (plot    (concatenate 'string "plot '" f-name ".data' u 2:1")))
-"STUB"
-  (with-open-file (gp (concatenate 'string f-name "." "gp") :direction :output :if-exists :supersede :external-format :utf8)
+		              (terminal (format nil "~a" *term-pdfcairo*))
+		              (preamble "set xrange [0:2.5]")
+		              (output   (concatenate 'string "set output '" (file-name f-name ".pdf") "'"))
+			      (plot    (concatenate 'string "plot '" (file-name f-name ".data") "' u 2:1")))
+  "STUB"
+  (with-open-file (gp (file-name f-name ".gp")  :direction :output :if-exists :supersede :external-format :utf8)
     (when terminal (format gp "~A~%" terminal))
     (when preamble (format gp "~A~%" preamble)) 
     (when output   (format gp "~A~%" output)) 
     (when plot    (format gp "~A~%" plot)))
-  (with-open-file (sh (concatenate 'string f-name "." "sh") :direction :output :if-exists :supersede :external-format :utf8)
+  (with-open-file (sh (file-name f-name "sh") :direction :output :if-exists :supersede :external-format :utf8)
     (format sh "#!/bin/bash~%" )
-    (format sh "gnuplot ~A.gp~%" f-name))
-  (uiop:run-program (concatenate 'string "sh" " " f-name "." "sh") :ignore-error-status t))
+    (format sh "gnuplot ~A~%" (file-name f-name "gp")))
+  (uiop:run-program (concatenate 'string "sh" " " (file-name f-name "sh")) :ignore-error-status t))
+
+(defmethod plot ((f-name string) (term <term>) (data cons)
+                 &key (preamble "set xrange [0:2.5]")
+		   (plot (concatenate 'string "plot '" (file-name f-name ".data") "' u 2:1")))
+  (with-open-file (gp (file-name f-name ".gp")  :direction :output :if-exists :supersede :external-format :utf8)
+    (format gp "~a~%" term)
+    (format gp "~a~%" (output term))
+    
+    (when preamble (format gp "~A~%" preamble)) 
+    (when output   (format gp "~A~%" output)) 
+    (when plot     (format gp "~A~%" plot)))
+  (with-open-file (sh (file-name f-name "sh") :direction :output :if-exists :supersede :external-format :utf8)
+    (format sh "#!/bin/bash~%" )
+    (format sh "gnuplot ~A~%" (file-name f-name "gp")))
+  (uiop:run-program (concatenate 'string "sh" " " (file-name f-name "sh")) :ignore-error-status t))
+
 
 (export 'make-plot-data-file )
 
 (defun make-plot-data-file (f-name data)
-"@b(Описание:) функция @b(make-plot-data-file)
+"@b(Описание:) функция @b(make-plot-data-file) выполняет вывод
+данных @b(data) в файл с именем f-name и расширением data.
 
  @b(Пример использования:)
 @begin[lang=lisp](code)
@@ -331,12 +360,7 @@
 	 (setf (svref orign i)  (+ (svref orign i)  (svref displacement i))))
     obj))
 
-(defmethod rotate ((obj gnuplot-vector) (angle number) (o vector))
-  (with-slots (orign) obj
-    (assert (= (length displacement) (length orign )))
-    (loop :for i :from 0 :below (length (gnuplot-vector-origin obj)) :do
-	 (setf (svref orign i)  (+ (svref orign i)  (svref displacement i))))
-    obj))
+;;;; (defmethod rotate ((obj gnuplot-vector) (angle number) (o vector)))
 
 ;(make-instance 'matrix :dimensions '(3 3))
 
@@ -345,3 +369,7 @@
 ;(defparameter *gp-v* (make-instance 'gnuplot-vector ))
 
 ;(move  *gp-v* #(-10. -10. -10.))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+

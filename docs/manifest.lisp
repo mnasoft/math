@@ -27,6 +27,7 @@
 			"math-coord.scr"
 			
 			"math-gnuplot.scr"
+                        "math-gnuplot-graph.scr"
 
 			"math-x-o.scr"
 			"math-x-o-graph.scr"

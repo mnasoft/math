@@ -1,3 +1,5 @@
+;;;; /src/arr-matr/package.lisp
+
 (defpackage #:math/arr-matr
   (:use #:cl #:math/core)
   (:export matr-new

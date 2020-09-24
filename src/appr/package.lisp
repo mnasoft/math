@@ -32,5 +32,6 @@
    <appr-bilinear>
    *apr-func-1-4*
    make-least-squares-matrix
+   make-refine-smooting
    )) 
 

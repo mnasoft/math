@@ -63,10 +63,12 @@
   :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"  
   :serial t
   :in-order-to ((test-op (test-op "math/gnuplot/tests")))
-;;;;  :depends-on ()
+  :depends-on ("math/core" "font-discovery" "vgplot")
   :components ((:module "src/gnuplot"
 		:serial t
-                :components ((:file "gnuplot")))))
+                :components ((:file "package")
+                             (:file "defclass")
+                             (:file "gnuplot")))))
 
 (defsystem #:math/list-matr
   :description "Реализация некоторых операций над матрицами,

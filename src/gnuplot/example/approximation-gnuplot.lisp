@@ -8,7 +8,7 @@
 
 (defun g-1-0 (x) (spline-1d x 1.0 *a-rez*))
 
-(gnuplot-data-to-file (make-2d-list-by-func 'g-1-0 :x-from -25/10 :x-to 25/10 :step 100) "~/apr.data")
+(gnuplot-data-to-file (make-2d-list-by-func 'g-1-0 :x-from -25/10 :x-to 25/10 :steps 100) "~/apr.data")
 
 (defmethod gnuplot-data-to-file ((ar array) f-name)
   (with-open-file (os f-name :direction :output :if-exists :supersede )
@@ -19,10 +19,10 @@
 
 (gnuplot-data-to-file *arr-2xn* "~/pts.data")
 	 
-(make-2d-list-by-func 'g-1-0 :x-from -25/10 :x-to 25/10 :step 100)
+(make-2d-list-by-func 'g-1-0 :x-from -25/10 :x-to 25/10 :steps 100)
 
 (defun g-1-0 (x) (spline-1d x 1.0 *arr-2xN*))
-(gnuplot-list-to-file (make-2d-list-by-func 'g-1-0 :x-from -25/10 :x-to 25/10 :step 100)  "~/gauss-1.0.data")
+(gnuplot-list-to-file (make-2d-list-by-func 'g-1-0 :x-from -25/10 :x-to 25/10 :steps 100)  "~/gauss-1.0.data")
 
 
 (let ((dx 1.5))
