@@ -8,7 +8,7 @@
    - [[http://turtleware.eu/posts/Tutorial-Working-with-FiveAM.html][Tutorial]]
    - [[https://www.darkchestnut.com/2018/how-to-write-5am-test-fixtures/][Fixtures]]
  
-* Генерироване документации
+* Генерироване документациин
 #+name: codex
 #+BEGIN_SRC lisp
   (codex:document :math)
