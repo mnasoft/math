@@ -22,6 +22,7 @@
            detach-last-col
            get-last-col
            prepend-row
+	   prepend-rows
            prepend-col
            append-row
            append-col
@@ -407,6 +408,23 @@
 @end(code)
 "
   (transpose (prepend-col c-lst (transpose 2d-list))))
+
+(export 'prepend-rows)
+(defun prepend-rows (rs-lst 2d-list)
+  "
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (prepend-rows
+ '((10 20 30)
+   (11 22 33))
+ '((11 12 13)
+   (12 13 14)
+   (13 14 15)))
+@end(code)
+"
+  (reduce #'(lambda (x y) (prepend-row y x)) (reverse rs-lst) :initial-value 2d-list))
+
+
 
 (export 'detach-last-col)
 
