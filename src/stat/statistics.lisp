@@ -372,6 +372,12 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(defun remove-first (lst)
+  (cdr lst))
+
+(defun remove-last (lst)
+  (reverse (cdr (reverse lst))))
+
 (export 'clean-min-flagrant-error )
 
 (defun clean-min-flagrant-error (x)
