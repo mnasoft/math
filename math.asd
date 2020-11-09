@@ -1,14 +1,14 @@
 ;;;; math.asd
 
 (defsystem "math"
-  :description "Math - это математическая библиотека, 
-реализующая некоторые алгоритмы:
-- линейной алгебры;
-- операций работы с матрицами;
-- статистические функции;
-- линейной и билинейной интерполяции;
-- нахождения приближающих многочленов,
-реализованная на Common Lisp"
+  :description
+  "Math is a math library, implementing some algorithms:
+- linear algebra;
+- operations with matrices;
+- statistical functions;
+- linear and bilinear interpolation;
+- finding approximating polynomials,
+implemented in Common Lisp"
   :author "Nick Matvyeyev <mnasoft@gmail.com>"
   :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"  
   :serial t
