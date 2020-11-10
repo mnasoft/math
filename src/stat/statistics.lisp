@@ -17,7 +17,9 @@
 	   min-not-nil-value
 	   standard-deviation
 	   clean-min-flagrant-error
-	   clean-flagrant-error))
+	   clean-flagrant-error)
+  (:export aver-max-min
+	   aver-dmax-dmin))
 
 (in-package :math/stat)
 
@@ -405,3 +407,48 @@
       ((> gr-1 (grubbs n))
        (setf lst  (remove-last lst)))
       (t (setf exiting t)))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(export '(aver-max-min))
+
+(defun aver-max-min (seq)
+  "@b(Описание:) функция @b(aver-max-min) возвращает список,  состоящий из:
+@begin(list)
+ @item(среднего значения величины;)
+ @item(максимального значения величины;)
+ @item( минимального значения величины.)
+@end(list)
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (aver-max-min '(7.3869333 9.938901 8.541331 10.828626 9.348187 11.323172))
+ => (9.561192 11.323172 7.3869333)
+@end(code)
+
+"
+  (let ((mid-v (math/stat:average-value seq))
+	(max-v (math/stat:max-value seq))
+	(min-v (math/stat:min-value seq)))
+    (list mid-v max-v min-v)))
+
+(export '(aver-dmax-dmin))
+
+(defun aver-dmax-dmin (seq)
+    "@b(Описание:) функция @b(aver-max-min) возвращает список, состоящий из:
+@begin(list)
+ @item(из среднего значения величины;)
+ @item(отклонения максимального занчения в выборке от среднего;)
+ @item(отклонения минимального занчения в выборке от среднего.)
+@end(list)
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (aver-dmax-dmin '(7.3869333 9.938901 8.541331 10.828626 9.348187 11.323172))
+ => (9.561192 1.76198 -2.1742582)
+@end(code)
+"
+  (let ((mid-v (math/stat:average-value seq))
+	(max-v (math/stat:max-value seq))
+	(min-v (math/stat:min-value seq)))
+    (list mid-v (- max-v mid-v) (- min-v mid-v))))
