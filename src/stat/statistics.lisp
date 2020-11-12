@@ -434,21 +434,28 @@
 
 (export '(aver-dmax-dmin))
 
-(defun aver-dmax-dmin (seq)
-    "@b(Описание:) функция @b(aver-max-min) возвращает список, состоящий из:
+(defun aver-dmax-dmin (seq &optional (significant-digits math::+significant-digits+))
+  "@b(Описание:) функция @b(aver-max-min) возвращает список, состоящий из:
 @begin(list)
  @item(из среднего значения величины;)
  @item(отклонения максимального занчения в выборке от среднего;)
  @item(отклонения минимального занчения в выборке от среднего.)
 @end(list)
 
+ Входящие в список величины округляются до количества значащих цифр равных 
+@b(significant-digits).
+
  @b(Пример использования:)
 @begin[lang=lisp](code)
- (aver-dmax-dmin '(7.3869333 9.938901 8.541331 10.828626 9.348187 11.323172))
- => (9.561192 1.76198 -2.1742582)
+ (aver-dmax-dmin '(17.3869333 19.938901 12.41331 11.828626 10.348187 12.323172)) 
+ => (14.04 5.9 -3.69)
 @end(code)
 "
-  (let ((mid-v (math/stat:average-value seq))
-	(max-v (math/stat:max-value seq))
-	(min-v (math/stat:min-value seq)))
-    (list mid-v (- max-v mid-v) (- min-v mid-v))))
+  (let* ((mid-v (math/stat:average-value seq))
+	 (max-v (math/stat:max-value seq))
+	 (min-v (math/stat:min-value seq))) 
+    (list (math:round-to-significant-digits mid-v significant-digits)
+	  (math:round-to-significant-digits (- max-v mid-v) significant-digits mid-v)
+	  (math:round-to-significant-digits (- min-v mid-v) significant-digits mid-v))))
+	  
+
