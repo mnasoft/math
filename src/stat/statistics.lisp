@@ -434,7 +434,7 @@
 
 (export '(aver-dmax-dmin))
 
-(defun aver-dmax-dmin (seq &optional (significant-digits math::+significant-digits+))
+(defun aver-dmax-dmin (seq &optional (significant-digits +significant-digits+))
   "@b(Описание:) функция @b(aver-max-min) возвращает список, состоящий из:
 @begin(list)
  @item(из среднего значения величины;)
@@ -454,8 +454,8 @@
   (let* ((mid-v (math/stat:average-value seq))
 	 (max-v (math/stat:max-value seq))
 	 (min-v (math/stat:min-value seq))) 
-    (list (math:round-to-significant-digits mid-v significant-digits)
-	  (math:round-to-significant-digits (- max-v mid-v) significant-digits mid-v)
-	  (math:round-to-significant-digits (- min-v mid-v) significant-digits mid-v))))
+    (list (round-to-significant-digits mid-v significant-digits)
+	  (round-to-significant-digits (- max-v mid-v) significant-digits mid-v)
+	  (round-to-significant-digits (- min-v mid-v) significant-digits mid-v))))
 	  
 

@@ -131,3 +131,53 @@
   (let ((betta (- pi (/ alpha 2))))
     (- r (* r (tan (/ betta  2))))))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(export '(+significant-digits+))
+
+(defparameter +significant-digits+ 4
+  "Определяет количество значащих цифр при округлении по умолчанию.")
+
+(export '(round-to-significant-digits))
+
+(defun round-to-significant-digits (val &optional (significant-digits +significant-digits+) (base-val val))
+  "@b(Описание:) функция @b(round-to-significant-digits) округляет значение
+val до количества значащих цифр, задаваемых аргументом significant-digits.
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (round-to-significant-digits 456.32738915923           ) => 456.3
+ (round-to-significant-digits 456.32738915923 6         ) => 456.327
+ (round-to-significant-digits 456.32738915923 6 53562.23) => 456.3
+@end(code)
+"
+  (labels ((find-divisor (val)
+	     "@b(Описание:) функция @b(find-divisor)
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (find-divisor 10.964739714723287d0)
+@end(code)
+"
+	     (do ((divisor 1))
+		 ((<= 1 (abs (* val divisor)) 10) divisor)
+	       (cond
+		 ((< (abs (* val divisor)) 1) (setf divisor (* divisor 10)))
+		 ((< 1 (abs (* val divisor))) (setf divisor (/ divisor 10))))))
+
+	   (my-round (val &optional (sb-kernel::divisor 1))
+	     "
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (my-round 10.964739714723287d0 1/100) => 10.96
+@end(code)
+"
+	     (coerce (* (round val sb-kernel::divisor)
+			sb-kernel::divisor)
+		     'single-float)))
+    (my-round val
+              (/ (expt 10 (* -1 (- significant-digits 1)))
+		 (find-divisor base-val)))))
+
