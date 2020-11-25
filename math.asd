@@ -149,7 +149,7 @@ implemented in Common Lisp"
   :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"  
   :serial t
   :in-order-to ((test-op (test-op "math/coord/tests")))
-;;;  :depends-on (:math)
+  :depends-on ("math/core") 
   :components ((:module "src/coord"
 		:serial t
                 :components ((:file "coordinate-system")))))
