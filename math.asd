@@ -111,7 +111,7 @@ implemented in Common Lisp"
   :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"  
   :serial t
   :in-order-to ((test-op (test-op "math/appr/tests")))
-  :depends-on ( "math/ls-gauss" "math/arr-matr" "math/smooth" ) ;;;; "math"
+  :depends-on ("math/core" "math/2d-array" "math/ls-gauss" "math/arr-matr" "math/smooth" ) ;;;; "math"
   :components ((:module "src/appr"
 		:serial t
                 :components ((:file "package")
@@ -161,7 +161,7 @@ implemented in Common Lisp"
   :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"  
   :serial t
   :in-order-to ((test-op (test-op "math/arr-matr/tests")))
-  :depends-on ("cl-utilities")
+  :depends-on ("math/core" "cl-utilities")
   :components ((:module "src/arr-matr"
 		:serial t
                 :components ((:file "package")

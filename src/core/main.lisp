@@ -32,7 +32,9 @@
 	   copy
 
 	   transpose
-	   ))
+	   )
+  (:export round-to-significant-digits
+           +significant-digits+))
 
 (in-package :math/core)
 
