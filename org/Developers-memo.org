@@ -11,23 +11,15 @@
 * Генерироване документациин
 #+name: codex
 #+BEGIN_SRC lisp
-  (codex:document :math)
+  (codex:document :mnas-icem)
 #+END_SRC
 
 #+name: graphs
 #+BEGIN_SRC lisp :var codex=codex
   (loop
     :for i :in
-    '(:math
-      :math/core
-      :math/smooth
-      :math/list-matr
-      :math/arr-matr
-      :math/appr
-      :math/stat
-      :math/coord
-      :math/gnuplot
-      :math/x-o)
+    '(:mnas-icem
+      )
     :do (mnas-package:make-codex-documentation i i))
 #+END_SRC
 
