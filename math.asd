@@ -52,7 +52,7 @@ implemented in Common Lisp"
   :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"  
   :serial t
   :in-order-to ((test-op (test-op "math/ls-rotation/tests")))
-  :depends-on ("math/arr-matr")
+;;;;  :depends-on ("math/arr-matr")
   :components ((:module "src/ls-rotation"
 		:serial t
                 :components ((:file "las-rotation")))))

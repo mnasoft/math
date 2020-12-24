@@ -1,7 +1,7 @@
 ;;;; ls-rotation/las-rotation.lisp
 
 (defpackage #:math/ls-rotation
-  (:use #:cl #:math/arr-matr)
+  (:use #:cl );; #:math/arr-matr
   (:export solve-linear-system-rotation))
 
 (in-package :math/ls-rotation)
