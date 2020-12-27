@@ -1,30 +1,27 @@
-* Ссылки
-1) Операции git  [[file:~/org/sbcl/Git-memo.org][Git-memo.org]]
-2) [[file:~/org/sbcl/codex.org][Генерирование документации при помощи Codex]]
-3) http://commondoc.github.io/codex/docs/tutorial.html
-4) [[/home/namatv/.slynkrc]]
-5) Тестирование при помощи FiveAm
-   - [[https://common-lisp.net/project/fiveam/][FiveAm]]
-   - [[http://turtleware.eu/posts/Tutorial-Working-with-FiveAM.html][Tutorial]]
-   - [[https://www.darkchestnut.com/2018/how-to-write-5am-test-fixtures/][Fixtures]]
+* Ссылки [[~/org/sbcl/sbcl-referencies.org][Ссылки]]
  
-* Генерироване документациин
+* Генерирование документации
 #+name: codex
 #+BEGIN_SRC lisp
-  (codex:document :mnas-icem)
+  (codex:document :math)
 #+END_SRC
 
 #+name: graphs
 #+BEGIN_SRC lisp :var codex=codex
   (loop
     :for i :in
-    '(:mnas-icem
-      )
-    :do (mnas-package:make-codex-documentation i i))
+    '(:math
+      :math/core
+      :math/smooth
+      :math/list-matr
+      :math/arr-matr
+      :math/appr
+      :math/stat
+      :math/coord
+      :math/gnuplot
+      :math/x-o)
+    :do (mnas-package:make-codex-graphs i i))
 #+END_SRC
-
-#+RESULTS: make-html
-: NIL
 
 * Публикация
 #+name: publish
@@ -45,3 +42,215 @@
 	rsync -Pazh --delete ../docs/build/$CDIR/html/ $CPL/$CDIR
      fi
 #+END_SRC
+
+#+RESULTS: publish
+| sending                               | incremental | file | list       |         |   |         |      |            |         |           |                 |
+| ./                                    |             |      |            |         |   |         |      |            |         |           |                 |
+| call-graph-math-appr.gv               |             |      |            |         |   |         |      |            |         |           |                 |
+|                                       | 2.06K       | 100% | 0.00kB/s   | 0:00:00 |   | 2.06K   | 100% | 0.00kB/s   | 0:00:00 | (xfr#1,   | to-chk=103/105) |
+| call-graph-math-appr.gv.png           |             |      |            |         |   |         |      |            |         |           |                 |
+|                                       | 32.77K      |   6% | 31.25MB/s  | 0:00:00 |   | 485.15K | 100% | 77.11MB/s  | 0:00:00 | (xfr#2,   | to-chk=102/105) |
+| call-graph-math-arr-matr.gv           |             |      |            |         |   |         |      |            |         |           |                 |
+|                                       | 5.01K       | 100% | 815.92kB/s | 0:00:00 |   | 5.01K   | 100% | 815.92kB/s | 0:00:00 | (xfr#3,   | to-chk=101/105) |
+| call-graph-math-arr-matr.gv.png       |             |      |            |         |   |         |      |            |         |           |                 |
+|                                       | 32.77K      |   1% | 4.46MB/s   | 0:00:00 |   | 3.15M   | 100% | 62.61MB/s  | 0:00:00 | (xfr#4,   | to-chk=100/105) |
+| call-graph-math-coord.gv              |             |      |            |         |   |         |      |            |         |           |                 |
+|                                       | 141         | 100% | 2.87kB/s   | 0:00:00 |   | 141     | 100% | 2.87kB/s   | 0:00:00 | (xfr#5,   | to-chk=99/105)  |
+| call-graph-math-coord.gv.png          |             |      |            |         |   |         |      |            |         |           |                 |
+|                                       | 32.77K      |  62% | 666.67kB/s | 0:00:00 |   | 52.83K  | 100% | 1.03MB/s   | 0:00:00 | (xfr#6,   | to-chk=98/105)  |
+| call-graph-math-core.gv               |             |      |            |         |   |         |      |            |         |           |                 |
+|                                       | 3.14K       | 100% | 62.54kB/s  | 0:00:00 |   | 3.14K   | 100% | 62.54kB/s  | 0:00:00 | (xfr#7,   | to-chk=97/105)  |
+| call-graph-math-core.gv.png           |             |      |            |         |   |         |      |            |         |           |                 |
+|                                       | 32.77K      |   1% | 653.06kB/s | 0:00:02 |   | 1.97M   | 100% | 26.47MB/s  | 0:00:00 | (xfr#8,   | to-chk=96/105)  |
+| call-graph-math-gnuplot.gv            |             |      |            |         |   |         |      |            |         |           |                 |
+|                                       | 726         | 100% | 9.99kB/s   | 0:00:00 |   | 726     | 100% | 9.99kB/s   | 0:00:00 | (xfr#9,   | to-chk=95/105)  |
+| call-graph-math-gnuplot.gv.png        |             |      |            |         |   |         |      |            |         |           |                 |
+|                                       | 32.77K      |  12% | 450.70kB/s | 0:00:00 |   | 265.87K | 100% | 3.34MB/s   | 0:00:00 | (xfr#10,  | to-chk=94/105)  |
+| call-graph-math-list-matr.gv          |             |      |            |         |   |         |      |            |         |           |                 |
+|                                       | 961         | 100% | 12.35kB/s  | 0:00:00 |   | 961     | 100% | 12.35kB/s  | 0:00:00 | (xfr#11,  | to-chk=93/105)  |
+| call-graph-math-list-matr.gv.png      |             |      |            |         |   |         |      |            |         |           |                 |
+|                                       | 32.77K      |  11% | 421.05kB/s | 0:00:00 |   | 281.37K | 100% | 3.40MB/s   | 0:00:00 | (xfr#12,  | to-chk=92/105)  |
+| call-graph-math-smooth.gv             |             |      |            |         |   |         |      |            |         |           |                 |
+|                                       | 637         | 100% | 7.87kB/s   | 0:00:00 |   | 637     | 100% | 7.87kB/s   | 0:00:00 | (xfr#13,  | to-chk=91/105)  |
+| call-graph-math-smooth.gv.png         |             |      |            |         |   |         |      |            |         |           |                 |
+|                                       | 32.77K      |  19% | 400.00kB/s | 0:00:00 |   | 170.57K | 100% | 1.98MB/s   | 0:00:00 | (xfr#14,  | to-chk=90/105)  |
+| call-graph-math-stat.gv               |             |      |            |         |   |         |      |            |         |           |                 |
+|                                       | 1.95K       | 100% | 23.21kB/s  | 0:00:00 |   | 1.95K   | 100% | 23.21kB/s  | 0:00:00 | (xfr#15,  | to-chk=89/105)  |
+| call-graph-math-stat.gv.png           |             |      |            |         |   |         |      |            |         |           |                 |
+|                                       | 32.77K      |   4% | 390.24kB/s | 0:00:01 |   | 708.72K | 100% | 7.51MB/s   | 0:00:00 | (xfr#16,  | to-chk=88/105)  |
+| call-graph-math-x-o.gv                |             |      |            |         |   |         |      |            |         |           |                 |
+|                                       | 1.31K       | 100% | 14.19kB/s  | 0:00:00 |   | 1.31K   | 100% | 14.04kB/s  | 0:00:00 | (xfr#17,  | to-chk=87/105)  |
+| call-graph-math-x-o.gv.png            |             |      |            |         |   |         |      |            |         |           |                 |
+|                                       | 32.77K      |   8% | 351.65kB/s | 0:00:01 |   | 399.51K | 100% | 4.01MB/s   | 0:00:00 | (xfr#18,  | to-chk=86/105)  |
+| call-graph-math.gv                    |             |      |            |         |   |         |      |            |         |           |                 |
+|                                       | 3.81K       | 100% | 39.19kB/s  | 0:00:00 |   | 3.81K   | 100% | 39.19kB/s  | 0:00:00 | (xfr#19,  | to-chk=85/105)  |
+| call-graph-math.gv.png                |             |      |            |         |   |         |      |            |         |           |                 |
+|                                       | 32.77K      |   1% | 333.33kB/s | 0:00:07 |   | 2.47M   | 100% | 19.30MB/s  | 0:00:00 | (xfr#20,  | to-chk=84/105)  |
+| class-graph-math-appr.gv              |             |      |            |         |   |         |      |            |         |           |                 |
+|                                       | 79          | 100% | 0.63kB/s   | 0:00:00 |   | 79      | 100% | 0.63kB/s   | 0:00:00 | (xfr#21,  | to-chk=83/105)  |
+| class-graph-math-appr.gv.png          |             |      |            |         |   |         |      |            |         |           |                 |
+|                                       | 19.03K      | 100% | 152.33kB/s | 0:00:00 |   | 19.03K  | 100% | 152.33kB/s | 0:00:00 | (xfr#22,  | to-chk=82/105)  |
+| class-graph-math-arr-matr.gv          |             |      |            |         |   |         |      |            |         |           |                 |
+|                                       | 93          | 100% | 0.74kB/s   | 0:00:00 |   | 93      | 100% | 0.74kB/s   | 0:00:00 | (xfr#23,  | to-chk=81/105)  |
+| class-graph-math-arr-matr.gv.png      |             |      |            |         |   |         |      |            |         |           |                 |
+|                                       | 11.61K      | 100% | 92.93kB/s  | 0:00:00 |   | 11.61K  | 100% | 92.93kB/s  | 0:00:00 | (xfr#24,  | to-chk=80/105)  |
+| class-graph-math-coord.gv             |             |      |            |         |   |         |      |            |         |           |                 |
+|                                       | 45          | 100% | 0.36kB/s   | 0:00:00 |   | 45      | 100% | 0.36kB/s   | 0:00:00 | (xfr#25,  | to-chk=79/105)  |
+| class-graph-math-coord.gv.png         |             |      |            |         |   |         |      |            |         |           |                 |
+|                                       | 116         | 100% | 0.93kB/s   | 0:00:00 |   | 116     | 100% | 0.93kB/s   | 0:00:00 | (xfr#26,  | to-chk=78/105)  |
+| class-graph-math-core.gv              |             |      |            |         |   |         |      |            |         |           |                 |
+|                                       | 45          | 100% | 0.36kB/s   | 0:00:00 |   | 45      | 100% | 0.36kB/s   | 0:00:00 | (xfr#27,  | to-chk=77/105)  |
+| class-graph-math-core.gv.png          |             |      |            |         |   |         |      |            |         |           |                 |
+|                                       | 116         | 100% | 0.93kB/s   | 0:00:00 |   | 116     | 100% | 0.93kB/s   | 0:00:00 | (xfr#28,  | to-chk=76/105)  |
+| class-graph-math-gnuplot.gv           |             |      |            |         |   |         |      |            |         |           |                 |
+|                                       | 209         | 100% | 1.67kB/s   | 0:00:00 |   | 209     | 100% | 1.67kB/s   | 0:00:00 | (xfr#29,  | to-chk=75/105)  |
+| class-graph-math-gnuplot.gv.png       |             |      |            |         |   |         |      |            |         |           |                 |
+|                                       | 32.77K      |  69% | 262.30kB/s | 0:00:00 |   | 47.09K  | 100% | 373.91kB/s | 0:00:00 | (xfr#30,  | to-chk=74/105)  |
+| class-graph-math-list-matr.gv         |             |      |            |         |   |         |      |            |         |           |                 |
+|                                       | 45          | 100% | 0.36kB/s   | 0:00:00 |   | 45      | 100% | 0.36kB/s   | 0:00:00 | (xfr#31,  | to-chk=73/105)  |
+| class-graph-math-list-matr.gv.png     |             |      |            |         |   |         |      |            |         |           |                 |
+|                                       | 116         | 100% | 0.92kB/s   | 0:00:00 |   | 116     | 100% | 0.92kB/s   | 0:00:00 | (xfr#32,  | to-chk=72/105)  |
+| class-graph-math-smooth.gv            |             |      |            |         |   |         |      |            |         |           |                 |
+|                                       | 45          | 100% | 0.36kB/s   | 0:00:00 |   | 45      | 100% | 0.36kB/s   | 0:00:00 | (xfr#33,  | to-chk=71/105)  |
+| class-graph-math-smooth.gv.png        |             |      |            |         |   |         |      |            |         |           |                 |
+|                                       | 116         | 100% | 0.92kB/s   | 0:00:00 |   | 116     | 100% | 0.92kB/s   | 0:00:00 | (xfr#34,  | to-chk=70/105)  |
+| class-graph-math-stat.gv              |             |      |            |         |   |         |      |            |         |           |                 |
+|                                       | 45          | 100% | 0.36kB/s   | 0:00:00 |   | 45      | 100% | 0.36kB/s   | 0:00:00 | (xfr#35,  | to-chk=69/105)  |
+| class-graph-math-stat.gv.png          |             |      |            |         |   |         |      |            |         |           |                 |
+|                                       | 116         | 100% | 0.92kB/s   | 0:00:00 |   | 116     | 100% | 0.92kB/s   | 0:00:00 | (xfr#36,  | to-chk=68/105)  |
+| class-graph-math-x-o.gv               |             |      |            |         |   |         |      |            |         |           |                 |
+|                                       | 51          | 100% | 0.40kB/s   | 0:00:00 |   | 51      | 100% | 0.40kB/s   | 0:00:00 | (xfr#37,  | to-chk=67/105)  |
+| class-graph-math-x-o.gv.png           |             |      |            |         |   |         |      |            |         |           |                 |
+|                                       | 3.32K       | 100% | 26.38kB/s  | 0:00:00 |   | 3.32K   | 100% | 26.38kB/s  | 0:00:00 | (xfr#38,  | to-chk=66/105)  |
+| class-graph-math.gv                   |             |      |            |         |   |         |      |            |         |           |                 |
+|                                       | 45          | 100% | 0.36kB/s   | 0:00:00 |   | 45      | 100% | 0.36kB/s   | 0:00:00 | (xfr#39,  | to-chk=65/105)  |
+| class-graph-math.gv.png               |             |      |            |         |   |         |      |            |         |           |                 |
+|                                       | 116         | 100% | 0.92kB/s   | 0:00:00 |   | 116     | 100% | 0.92kB/s   | 0:00:00 | (xfr#40,  | to-chk=64/105)  |
+| comparison-of-smoothing-functions.png |             |      |            |         |   |         |      |            |         |           |                 |
+|                                       | 32.77K      |  85% | 260.16kB/s | 0:00:00 |   | 38.21K  | 100% | 303.37kB/s | 0:00:00 | (xfr#41,  | to-chk=63/105)  |
+| math-appr.html                        |             |      |            |         |   |         |      |            |         |           |                 |
+|                                       | 14.41K      | 100% | 114.44kB/s | 0:00:00 |   | 14.41K  | 100% | 114.44kB/s | 0:00:00 | (xfr#42,  | to-chk=62/105)  |
+| math-arr-matr.html                    |             |      |            |         |   |         |      |            |         |           |                 |
+|                                       | 9.74K       | 100% | 77.37kB/s  | 0:00:00 |   | 9.74K   | 100% | 77.37kB/s  | 0:00:00 | (xfr#43,  | to-chk=61/105)  |
+| math-coord.html                       |             |      |            |         |   |         |      |            |         |           |                 |
+|                                       | 8.38K       | 100% | 66.51kB/s  | 0:00:00 |   | 8.38K   | 100% | 66.51kB/s  | 0:00:00 | (xfr#44,  | to-chk=60/105)  |
+| math-core.html                        |             |      |            |         |   |         |      |            |         |           |                 |
+|                                       | 10.27K      | 100% | 81.56kB/s  | 0:00:00 |   | 10.27K  | 100% | 81.56kB/s  | 0:00:00 | (xfr#45,  | to-chk=59/105)  |
+| math-gnuplot.html                     |             |      |            |         |   |         |      |            |         |           |                 |
+|                                       | 8.18K       | 100% | 64.91kB/s  | 0:00:00 |   | 8.18K   | 100% | 64.91kB/s  | 0:00:00 | (xfr#46,  | to-chk=58/105)  |
+| math-list-matr.html                   |             |      |            |         |   |         |      |            |         |           |                 |
+|                                       | 8.91K       | 100% | 70.76kB/s  | 0:00:00 |   | 8.91K   | 100% | 70.76kB/s  | 0:00:00 | (xfr#47,  | to-chk=57/105)  |
+| math-smooth.html                      |             |      |            |         |   |         |      |            |         |           |                 |
+|                                       | 7.22K       | 100% | 57.29kB/s  | 0:00:00 |   | 7.22K   | 100% | 57.29kB/s  | 0:00:00 | (xfr#48,  | to-chk=56/105)  |
+| math-stat.html                        |             |      |            |         |   |         |      |            |         |           |                 |
+|                                       | 9.99K       | 100% | 79.32kB/s  | 0:00:00 |   | 9.99K   | 100% | 79.32kB/s  | 0:00:00 | (xfr#49,  | to-chk=55/105)  |
+| math-x-o.html                         |             |      |            |         |   |         |      |            |         |           |                 |
+|                                       | 7.18K       | 100% | 56.99kB/s  | 0:00:00 |   | 7.18K   | 100% | 56.99kB/s  | 0:00:00 | (xfr#50,  | to-chk=54/105)  |
+| math.html                             |             |      |            |         |   |         |      |            |         |           |                 |
+|                                       | 6.57K       | 100% | 52.15kB/s  | 0:00:00 |   | 6.57K   | 100% | 52.15kB/s  | 0:00:00 | (xfr#51,  | to-chk=53/105)  |
+| symbol-graph-math-appr.gv             |             |      |            |         |   |         |      |            |         |           |                 |
+|                                       | 675         | 100% | 5.36kB/s   | 0:00:00 |   | 675     | 100% | 5.36kB/s   | 0:00:00 | (xfr#52,  | to-chk=52/105)  |
+| symbol-graph-math-appr.gv.png         |             |      |            |         |   |         |      |            |         |           |                 |
+|                                       | 32.77K      |  17% | 258.06kB/s | 0:00:00 |   | 188.81K | 100% | 1.20MB/s   | 0:00:00 | (xfr#53,  | to-chk=51/105)  |
+| symbol-graph-math-arr-matr.gv         |             |      |            |         |   |         |      |            |         |           |                 |
+|                                       | 176         | 100% | 1.15kB/s   | 0:00:00 |   | 176     | 100% | 1.15kB/s   | 0:00:00 | (xfr#54,  | to-chk=50/105)  |
+| symbol-graph-math-arr-matr.gv.png     |             |      |            |         |   |         |      |            |         |           |                 |
+|                                       | 32.05K      | 100% | 208.65kB/s | 0:00:00 |   | 32.05K  | 100% | 207.26kB/s | 0:00:00 | (xfr#55,  | to-chk=49/105)  |
+| symbol-graph-math-coord.gv            |             |      |            |         |   |         |      |            |         |           |                 |
+|                                       | 45          | 100% | 0.29kB/s   | 0:00:00 |   | 45      | 100% | 0.29kB/s   | 0:00:00 | (xfr#56,  | to-chk=48/105)  |
+| symbol-graph-math-coord.gv.png        |             |      |            |         |   |         |      |            |         |           |                 |
+|                                       | 116         | 100% | 0.75kB/s   | 0:00:00 |   | 116     | 100% | 0.75kB/s   | 0:00:00 | (xfr#57,  | to-chk=47/105)  |
+| symbol-graph-math-core.gv             |             |      |            |         |   |         |      |            |         |           |                 |
+|                                       | 214         | 100% | 1.38kB/s   | 0:00:00 |   | 214     | 100% | 1.38kB/s   | 0:00:00 | (xfr#58,  | to-chk=46/105)  |
+| symbol-graph-math-core.gv.png         |             |      |            |         |   |         |      |            |         |           |                 |
+|                                       | 32.77K      |  87% | 211.92kB/s | 0:00:00 |   | 37.35K  | 100% | 241.57kB/s | 0:00:00 | (xfr#59,  | to-chk=45/105)  |
+| symbol-graph-math-gnuplot.gv          |             |      |            |         |   |         |      |            |         |           |                 |
+|                                       | 525         | 100% | 3.40kB/s   | 0:00:00 |   | 525     | 100% | 3.40kB/s   | 0:00:00 | (xfr#60,  | to-chk=44/105)  |
+| symbol-graph-math-gnuplot.gv.png      |             |      |            |         |   |         |      |            |         |           |                 |
+|                                       | 32.77K      |  25% | 211.92kB/s | 0:00:00 |   | 128.00K | 100% | 822.38kB/s | 0:00:00 | (xfr#61,  | to-chk=43/105)  |
+| symbol-graph-math-list-matr.gv        |             |      |            |         |   |         |      |            |         |           |                 |
+|                                       | 45          | 100% | 0.29kB/s   | 0:00:00 |   | 45      | 100% | 0.29kB/s   | 0:00:00 | (xfr#62,  | to-chk=42/105)  |
+| symbol-graph-math-list-matr.gv.png    |             |      |            |         |   |         |      |            |         |           |                 |
+|                                       | 116         | 100% | 0.75kB/s   | 0:00:00 |   | 116     | 100% | 0.75kB/s   | 0:00:00 | (xfr#63,  | to-chk=41/105)  |
+| symbol-graph-math-smooth.gv           |             |      |            |         |   |         |      |            |         |           |                 |
+|                                       | 45          | 100% | 0.29kB/s   | 0:00:00 |   | 45      | 100% | 0.29kB/s   | 0:00:00 | (xfr#64,  | to-chk=40/105)  |
+| symbol-graph-math-smooth.gv.png       |             |      |            |         |   |         |      |            |         |           |                 |
+|                                       | 116         | 100% | 0.75kB/s   | 0:00:00 |   | 116     | 100% | 0.75kB/s   | 0:00:00 | (xfr#65,  | to-chk=39/105)  |
+| symbol-graph-math-stat.gv             |             |      |            |         |   |         |      |            |         |           |                 |
+|                                       | 82          | 100% | 0.53kB/s   | 0:00:00 |   | 82      | 100% | 0.53kB/s   | 0:00:00 | (xfr#66,  | to-chk=38/105)  |
+| symbol-graph-math-stat.gv.png         |             |      |            |         |   |         |      |            |         |           |                 |
+|                                       | 9.11K       | 100% | 58.56kB/s  | 0:00:00 |   | 9.11K   | 100% | 58.56kB/s  | 0:00:00 | (xfr#67,  | to-chk=37/105)  |
+| symbol-graph-math-x-o.gv              |             |      |            |         |   |         |      |            |         |           |                 |
+|                                       | 189         | 100% | 1.21kB/s   | 0:00:00 |   | 189     | 100% | 1.21kB/s   | 0:00:00 | (xfr#68,  | to-chk=36/105)  |
+| symbol-graph-math-x-o.gv.png          |             |      |            |         |   |         |      |            |         |           |                 |
+|                                       | 32.77K      |  86% | 210.53kB/s | 0:00:00 |   | 37.95K  | 100% | 242.26kB/s | 0:00:00 | (xfr#69,  | to-chk=35/105)  |
+| symbol-graph-math.gv                  |             |      |            |         |   |         |      |            |         |           |                 |
+|                                       | 45          | 100% | 0.29kB/s   | 0:00:00 |   | 45      | 100% | 0.29kB/s   | 0:00:00 | (xfr#70,  | to-chk=34/105)  |
+| symbol-graph-math.gv.png              |             |      |            |         |   |         |      |            |         |           |                 |
+|                                       | 116         | 100% | 0.74kB/s   | 0:00:00 |   | 116     | 100% | 0.74kB/s   | 0:00:00 | (xfr#71,  | to-chk=33/105)  |
+| system-graph-math-appr.gv             |             |      |            |         |   |         |      |            |         |           |                 |
+|                                       | 395         | 100% | 2.52kB/s   | 0:00:00 |   | 395     | 100% | 2.52kB/s   | 0:00:00 | (xfr#72,  | to-chk=32/105)  |
+| system-graph-math-appr.gv.png         |             |      |            |         |   |         |      |            |         |           |                 |
+|                                       | 32.77K      |  32% | 209.15kB/s | 0:00:00 |   | 101.95K | 100% | 646.48kB/s | 0:00:00 | (xfr#73,  | to-chk=31/105)  |
+| system-graph-math-arr-matr.gv         |             |      |            |         |   |         |      |            |         |           |                 |
+|                                       | 153         | 100% | 0.97kB/s   | 0:00:00 |   | 153     | 100% | 0.97kB/s   | 0:00:00 | (xfr#74,  | to-chk=30/105)  |
+| system-graph-math-arr-matr.gv.png     |             |      |            |         |   |         |      |            |         |           |                 |
+|                                       | 23.82K      | 100% | 151.06kB/s | 0:00:00 |   | 23.82K  | 100% | 151.06kB/s | 0:00:00 | (xfr#75,  | to-chk=29/105)  |
+| system-graph-math-coord.gv            |             |      |            |         |   |         |      |            |         |           |                 |
+|                                       | 98          | 100% | 0.62kB/s   | 0:00:00 |   | 98      | 100% | 0.62kB/s   | 0:00:00 | (xfr#76,  | to-chk=28/105)  |
+| system-graph-math-coord.gv.png        |             |      |            |         |   |         |      |            |         |           |                 |
+|                                       | 12.43K      | 100% | 78.79kB/s  | 0:00:00 |   | 12.43K  | 100% | 78.79kB/s  | 0:00:00 | (xfr#77,  | to-chk=27/105)  |
+| system-graph-math-core.gv             |             |      |            |         |   |         |      |            |         |           |                 |
+|                                       | 45          | 100% | 0.29kB/s   | 0:00:00 |   | 45      | 100% | 0.28kB/s   | 0:00:00 | (xfr#78,  | to-chk=26/105)  |
+| system-graph-math-core.gv.png         |             |      |            |         |   |         |      |            |         |           |                 |
+|                                       | 116         | 100% | 0.73kB/s   | 0:00:00 |   | 116     | 100% | 0.73kB/s   | 0:00:00 | (xfr#79,  | to-chk=25/105)  |
+| system-graph-math-gnuplot.gv          |             |      |            |         |   |         |      |            |         |           |                 |
+|                                       | 951         | 100% | 5.99kB/s   | 0:00:00 |   | 951     | 100% | 5.99kB/s   | 0:00:00 | (xfr#80,  | to-chk=24/105)  |
+| system-graph-math-gnuplot.gv.png      |             |      |            |         |   |         |      |            |         |           |                 |
+|                                       | 32.77K      |  10% | 206.45kB/s | 0:00:01 |   | 313.01K | 100% | 1.84MB/s   | 0:00:00 | (xfr#81,  | to-chk=23/105)  |
+| system-graph-math-list-matr.gv        |             |      |            |         |   |         |      |            |         |           |                 |
+|                                       | 195         | 100% | 1.18kB/s   | 0:00:00 |   | 195     | 100% | 1.18kB/s   | 0:00:00 | (xfr#82,  | to-chk=22/105)  |
+| system-graph-math-list-matr.gv.png    |             |      |            |         |   |         |      |            |         |           |                 |
+|                                       | 32.77K      |  97% | 197.53kB/s | 0:00:00 |   | 33.50K  | 100% | 200.71kB/s | 0:00:00 | (xfr#83,  | to-chk=21/105)  |
+| system-graph-math-smooth.gv           |             |      |            |         |   |         |      |            |         |           |                 |
+|                                       | 45          | 100% | 0.27kB/s   | 0:00:00 |   | 45      | 100% | 0.27kB/s   | 0:00:00 | (xfr#84,  | to-chk=20/105)  |
+| system-graph-math-smooth.gv.png       |             |      |            |         |   |         |      |            |         |           |                 |
+|                                       | 116         | 100% | 0.69kB/s   | 0:00:00 |   | 116     | 100% | 0.69kB/s   | 0:00:00 | (xfr#85,  | to-chk=19/105)  |
+| system-graph-math-stat.gv             |             |      |            |         |   |         |      |            |         |           |                 |
+|                                       | 96          | 100% | 0.58kB/s   | 0:00:00 |   | 96      | 100% | 0.58kB/s   | 0:00:00 | (xfr#86,  | to-chk=18/105)  |
+| system-graph-math-stat.gv.png         |             |      |            |         |   |         |      |            |         |           |                 |
+|                                       | 11.87K      | 100% | 71.11kB/s  | 0:00:00 |   | 11.87K  | 100% | 71.11kB/s  | 0:00:00 | (xfr#87,  | to-chk=17/105)  |
+| system-graph-math-x-o.gv              |             |      |            |         |   |         |      |            |         |           |                 |
+|                                       | 220         | 100% | 1.32kB/s   | 0:00:00 |   | 220     | 100% | 1.32kB/s   | 0:00:00 | (xfr#88,  | to-chk=16/105)  |
+| system-graph-math-x-o.gv.png          |             |      |            |         |   |         |      |            |         |           |                 |
+|                                       | 32.77K      |  79% | 196.32kB/s | 0:00:00 |   | 41.02K  | 100% | 244.28kB/s | 0:00:00 | (xfr#89,  | to-chk=15/105)  |
+| system-graph-math.gv                  |             |      |            |         |   |         |      |            |         |           |                 |
+|                                       | 1.84K       | 100% | 10.94kB/s  | 0:00:00 |   | 1.84K   | 100% | 10.94kB/s  | 0:00:00 | (xfr#90,  | to-chk=14/105)  |
+| system-graph-math.gv.png              |             |      |            |         |   |         |      |            |         |           |                 |
+|                                       | 32.77K      |   3% | 195.12kB/s | 0:00:04 |   | 956.30K | 100% | 5.15MB/s   | 0:00:00 | (xfr#91,  | to-chk=13/105)  |
+| графы-math-appr.html                  |             |      |            |         |   |         |      |            |         |           |                 |
+|                                       | 7.21K       | 100% | 39.53kB/s  | 0:00:00 |   | 7.21K   | 100% | 39.53kB/s  | 0:00:00 | (xfr#92,  | to-chk=12/105)  |
+| графы-math-arr-matr.html              |             |      |            |         |   |         |      |            |         |           |                 |
+|                                       | 7.14K       | 100% | 39.15kB/s  | 0:00:00 |   | 7.14K   | 100% | 39.15kB/s  | 0:00:00 | (xfr#93,  | to-chk=11/105)  |
+| графы-math-core.html                  |             |      |            |         |   |         |      |            |         |           |                 |
+|                                       | 7.02K       | 100% | 38.49kB/s  | 0:00:00 |   | 7.02K   | 100% | 38.49kB/s  | 0:00:00 | (xfr#94,  | to-chk=10/105)  |
+| графы-math-gnuplot.html               |             |      |            |         |   |         |      |            |         |           |                 |
+|                                       | 7.28K       | 100% | 39.94kB/s  | 0:00:00 |   | 7.28K   | 100% | 39.94kB/s  | 0:00:00 | (xfr#95,  | to-chk=9/105)   |
+| графы-math-list-matr.html             |             |      |            |         |   |         |      |            |         |           |                 |
+|                                       | 7.15K       | 100% | 39.21kB/s  | 0:00:00 |   | 7.15K   | 100% | 39.21kB/s  | 0:00:00 | (xfr#96,  | to-chk=8/105)   |
+| графы-math-stat.html                  |             |      |            |         |   |         |      |            |         |           |                 |
+|                                       | 7.10K       | 100% | 38.93kB/s  | 0:00:00 |   | 7.10K   | 100% | 38.93kB/s  | 0:00:00 | (xfr#97,  | to-chk=7/105)   |
+| графы-math-x-o.html                   |             |      |            |         |   |         |      |            |         |           |                 |
+|                                       | 7.26K       | 100% | 39.82kB/s  | 0:00:00 |   | 7.26K   | 100% | 39.82kB/s  | 0:00:00 | (xfr#98,  | to-chk=6/105)   |
+| графы-math.html                       |             |      |            |         |   |         |      |            |         |           |                 |
+|                                       | 6.89K       | 100% | 37.78kB/s  | 0:00:00 |   | 6.89K   | 100% | 37.78kB/s  | 0:00:00 | (xfr#99,  | to-chk=5/105)   |
+| обзор.html                            |             |      |            |         |   |         |      |            |         |           |                 |
+|                                       | 6.75K       | 100% | 37.02kB/s  | 0:00:00 |   | 6.75K   | 100% | 37.02kB/s  | 0:00:00 | (xfr#100, | to-chk=4/105)   |
+| static/                               |             |      |            |         |   |         |      |            |         |           |                 |
+| static/highlight.css                  |             |      |            |         |   |         |      |            |         |           |                 |
+|                                       | 1.57K       | 100% | 8.62kB/s   | 0:00:00 |   | 1.57K   | 100% | 8.62kB/s   | 0:00:00 | (xfr#101, | to-chk=2/105)   |
+| static/highlight.js                   |             |      |            |         |   |         |      |            |         |           |                 |
+|                                       | 22.99K      | 100% | 126.12kB/s | 0:00:00 |   | 22.99K  | 100% | 126.12kB/s | 0:00:00 | (xfr#102, | to-chk=1/105)   |
+| static/style.css                      |             |      |            |         |   |         |      |            |         |           |                 |
+|                                       | 4.32K       | 100% | 23.69kB/s  | 0:00:00 |   | 4.32K   | 100% | 23.69kB/s  | 0:00:00 | (xfr#103, | to-chk=0/105)   |
+| mnasoft-00                            |             |      |            |         |   |         |      |            |         |           |                 |

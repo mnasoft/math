@@ -5,7 +5,7 @@
  @end(section)
 
  @begin(section) @title(API)
-  @cl:with-package[name="math/core"](
+  @cl:with-package[name="math"](
    @cl:doc(function square)
    @cl:doc(function exclude-nil-from-list )
    @cl:doc(function depth-sphere-along-cone )
