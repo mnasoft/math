@@ -1,4 +1,4 @@
-;;;; tests/matrix.lisp
+;;;; 
 
 (in-package #:math-tests)
 
@@ -298,3 +298,5 @@
   (is-true (equal (math/arr-matr:matrix->2d-list (math/arr-matr:matr-new 3 2 '(1 2 3 4 5 6))) '((1 2) (3 4) (5 6)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(test-math)
