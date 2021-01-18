@@ -1,13 +1,11 @@
-@begin(section) @title(Math/X-O)
+@begin(section) @title(Обзор)
 
- @begin(section) @title(Обзор)
-  Демонстрационная игра крестики-нолики.
- @end(section)
- 
- @begin(section) @title(X-O)
-  @cl:with-package[name="math/x-o"](
-   @cl:doc(function play)
-  )
- @end(section)
- 
+Консольная игра крестики-нолики@end(section)
+@begin(section) @title(MATH/X-O)
+
+@begin(section)
+ @title(Функции)
+ @cl:with-package[name="MATH/X-O"](
+  @cl:doc(function play))
+@end(section)
 @end(section)

@@ -1,66 +1,29 @@
-@begin(section) @title(Math/Stat)
- @begin(section) @title(Обзор)
- Содержит статистические функции для:
- @begin(list)
- @item(нахождения среднего максимального и минимального значения;)
- @item(определения характеристик статистики (дисперсия,
- квадратичое отклонение, коэффициент вариации;) )
- @item(нахождения максимального и минимального отклонения от среднего значения;)
- @item(исключения промахов.)
+@begin(section) @title(Обзор)
 
-@end(list)
-
- @end(section)
-
- @begin(section) @title(Создание статистики)
-  @cl:with-package[name="math/stat"](
-   @cl:doc(function make-random-value-list))
-  @end(section)
-
- @begin(section) @title(Среднее значение)
-  @cl:with-package[name="math/stat"](
-   @cl:doc(function average)
-   @cl:doc(function average-value)
-   @cl:doc(function average-not-nil-value))
- @end(section)
-
- @begin(section) @title(Максимальное значение)
-  @cl:with-package[name="math/stat"](
-   @cl:doc(function max-value)
-   @cl:doc(function max-not-nil-value))
- @end(section)
-
- @begin(section) @title(Минимальное значение)
-  @cl:with-package[name="math/stat"](
-   @cl:doc(function min-not-nil-value)  
-   @cl:doc(function min-value))
- @end(section)
-
- @begin(section) @title(Характеристики статистики)
-  @cl:with-package[name="math/stat"](
-   @cl:doc(function dispersion)
-   @cl:doc(function standard-deviation)
-   @cl:doc(function variation-coefficient))
- @end(section)
-
- @begin(section) @title(Отклонение от среднего)
-  @cl:with-package[name="math/stat"](
-   @cl:doc(function delta-max-value)
-   @cl:doc(function delta-min-value))
- @end(section)
+Describe math here@end(section)
+@begin(section) @title(MATH/STAT)
 
 @begin(section)
- @title(Исключения промахов)
-  @cl:with-package[name="math/stat"](
-
-   @cl:doc(function grubbs)
-   @cl:doc(function grubbs-min)
-   @cl:doc(function grubbs-max)
-
-   @cl:doc(function clean-flagrant-error)
-   @cl:doc(function clean-max-flagrant-error)
-   @cl:doc(function clean-min-flagrant-error))
- @end(section)
- 
-  
+ @title(Функции)
+ @cl:with-package[name="MATH/STAT"](
+  @cl:doc(function aver-max-min)
+  @cl:doc(function min-not-nil-value)
+  @cl:doc(function max-not-nil-value)
+  @cl:doc(function grubbs-max)
+  @cl:doc(function delta-max-value)
+  @cl:doc(function dispersion)
+  @cl:doc(function min-value)
+  @cl:doc(function grubbs-min)
+  @cl:doc(function variation-coefficient)
+  @cl:doc(function standard-deviation)
+  @cl:doc(function average-value)
+  @cl:doc(function average-not-nil-value)
+  @cl:doc(function max-value)
+  @cl:doc(function grubbs)
+  @cl:doc(function average)
+  @cl:doc(function clean-flagrant-error)
+  @cl:doc(function delta-min-value)
+  @cl:doc(function make-random-value-list)
+  @cl:doc(function aver-dmax-dmin))
+@end(section)
 @end(section)

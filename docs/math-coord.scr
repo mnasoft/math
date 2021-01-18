@@ -1,41 +1,19 @@
-@begin(section) @title(Math/Coord)
+@begin(section) @title(Обзор)
 
- @begin(section) @title(Обзор) 
- Содержит функции преобразования углов из одной угловой меры в другую
- и перобразования координат точки из одной сиситемы координат в другую.
+Содержит функции преобразования
+- угловой меры;
+- координат точки между декартовой, полярной, сферической системами координат.
+@end(section)
+@begin(section) @title(MATH/COORD)
 
- Преобразование углов определено для:
- @begin(list)
-  @item(градусов;)
-  @item(радиан.)
- @end(list)
-
- Преобразование коордиат определено для систем координат:
- @begin(list)
-  @item(декартовой; )
-  @item(полярной;)
-  @item(сферической.)
- @end(list)
-
-
- @end(section)
-  
- @begin(section) @title(Углов) 
-  @cl:with-package[name="math/coord"](
-   @cl:doc(function dtr)
-   @cl:doc(function rtd))
- @end(section)
-
- @begin(section) @title(На плоскости) 
-  @cl:with-package[name="math/coord"](
-   @cl:doc(function cartesian->polar)    
-   @cl:doc(function polar->cartesian))
- @end(section)
-
- @begin(section) @title(В пространстве) 
- @cl:with-package[name="math/coord"](
-  @cl:doc(function cartesian->spherical)  
-  @cl:doc(function spherical->cartesian))
- @end(section)
-
+@begin(section)
+ @title(Функции)
+ @cl:with-package[name="MATH/COORD"](
+  @cl:doc(function spherical->cartesian)
+  @cl:doc(function rtd)
+  @cl:doc(function polar->cartesian)
+  @cl:doc(function dtr)
+  @cl:doc(function cartesian->spherical)
+  @cl:doc(function cartesian->polar))
+@end(section)
 @end(section)
