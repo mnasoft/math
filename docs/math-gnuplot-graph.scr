@@ -1,4 +1,4 @@
- @begin(section) @title(Графы math-gnuplot)
+  @begin(section) @title(Графы math-gnuplot)
   @begin(list)
    @item(system-graph @image[src=./system-graph-math-gnuplot.gv.png]())
    @item(call-graph   @image[src=./call-graph-math-gnuplot.gv.png]())

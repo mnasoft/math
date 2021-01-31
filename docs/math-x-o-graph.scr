@@ -1,4 +1,4 @@
- @begin(section) @title(Графы math-x-o)
+  @begin(section) @title(Графы math-x-o)
   @begin(list)
    @item(system-graph @image[src=./system-graph-math-x-o.gv.png]())
    @item(call-graph   @image[src=./call-graph-math-x-o.gv.png]())

@@ -1,4 +1,4 @@
- @begin(section) @title(Графы math-appr)
+  @begin(section) @title(Графы math-appr)
   @begin(list)
    @item(system-graph @image[src=./system-graph-math-appr.gv.png]())
    @item(call-graph   @image[src=./call-graph-math-appr.gv.png]())

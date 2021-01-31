@@ -1,17 +1,14 @@
-@begin(section) @title(Обзор)
-
-Интерфейс к программе построения графиков gnuplot@end(section)
 @begin(section) @title(MATH/GNUPLOT)
 
 @begin(section)
  @title(Функции)
  @cl:with-package[name="MATH/GNUPLOT"](
-  @cl:doc(function gnuplot-data-plot)
-  @cl:doc(function make-plot-data-file)
-  @cl:doc(function make-table)
   @cl:doc(function gnuplot-splot)
+  @cl:doc(function make-table)
+  @cl:doc(function make-plot-data-file)
   @cl:doc(function rgb)
-  @cl:doc(function table-apply))
+  @cl:doc(function table-apply)
+  @cl:doc(function gnuplot-data-plot))
 @end(section)
 @begin(section)
  @title(Обобщенные функции)

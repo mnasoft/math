@@ -14,6 +14,7 @@
 			"math-stat-graph.scr"
 			
 			"math-smooth.scr"
+                        "math-smooth-graph.scr"
 
 			"math-list-matr.scr"
 			"math-list-matr-graph.scr"
@@ -25,6 +26,7 @@
 			"math-appr-graph.scr"
 			
 			"math-coord.scr"
+                        "math-coord-graph.scr"
 			
 			"math-gnuplot.scr"
                         "math-gnuplot-graph.scr"
