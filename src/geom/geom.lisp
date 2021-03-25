@@ -1,10 +1,15 @@
 (defpackage #:math/geom
   (:use #:cl)
   (:export triangle-area-by-sides
-           regular-triangle-area-by-side)
+           regular-triangle-area-by-side
+           regular-triangle-side-by-area)
   (:export regular-tetrahedron-volume-by-side
-           regular-tetrahedron-side-by-volume
-	   ))
+           regular-tetrahedron-side-by-volume)
+  (:export diameter-by-radius
+           radius-by-diameter)
+  (:export circle-area-by-radius
+           circle-area-by-diameter)
+  )
 
 (in-package :math/geom)
 
@@ -32,6 +37,16 @@
 @end(code)"
   (triangle-area-by-sides a a a))
 
+(defun regular-triangle-side-by-area (s)
+  "@b(Описание:) функция @b(regular-triangle-side-by-area) длину стороны
+   правильного треугольника с площадью @b(s).
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (regular-triangle-side-by-area 0.4330127) => 1.0 
+ (regular-triangle-side-by-area 1.7320508) => 2.0
+@end(code)"
+  (sqrt (/ s (/ (sqrt 3) 4))))
+
 (defun regular-tetrahedron-volume-by-side (a)
   "@b(Описание:) функция @b(regular-tetrahedron-volume-by-side)
    возвращает объем правильного тетраэдра с ребром @b(a).
@@ -54,3 +69,16 @@
 @end(code)"
   (expt (/ (* 12 v) (sqrt 2)) 1/3))
 
+(defun diameter-by-radius (radius)
+  (* radius 2))
+
+(defun radius-by-diameter (diameter)
+  (/ diameter 2))
+
+(defun circle-area-by-radius (radius)
+  "@b(Описание:) функция @b(circle-area-by-radius) "
+  (* pi radius radius))
+
+(defun circle-area-by-diameter (diameter)
+  (circle-area-by-radius
+   (radius-by-diameter diameter)))
