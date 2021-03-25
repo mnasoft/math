@@ -1,19 +1,17 @@
-;;;; coordinate-system.lisp
-
-
+;;;; ./src/coord/coordinate-system.lisp
+ 
 (defpackage #:math/coord
   (:use #:cl #:math/core)
   (:export dtr
-	   rtd
-	   polar->cartesian
-	   cartesian->polar
-	   spherical->cartesian
-	   cartesian->spherical
+           rtd
+           polar->cartesian
+           cartesian->polar
+           spherical->cartesian
+           cartesian->spherical
 	   ))
 
 (in-package :math/coord)
 
-(export 'dtr )
 (defun dtr (degree)
 "@b(Описание:) функция @b(dtr) переводит значение, заданное в градусах, в радианы.
 
@@ -25,7 +23,6 @@
 "
   (* pi 1/180 degree ))
 
-(export 'rtd )
 (defun rtd (radian)
 "@b(Описание:) функция @b(rtd) переводит значение, 
 заданное в радианах, в градусы.
@@ -37,7 +34,6 @@
 "
   (/ radian pi 1/180))
 
-(export 'polar->cartesian )
 (defun polar->cartesian (radius-angle)
 "@b(Описание:) функция @b(polar->cartesian) переводит полярные координаты в декартовы.
 
@@ -56,7 +52,6 @@
 	(angle  (second radius-angle)))
     (list (* radius (cos angle)) (* radius (sin angle)))))
 
-(export 'cartesian->polar )
 (defun cartesian->polar (x-y)
 "@b(Описание:) функция @b(cartesian->polar) переводит декартовы координаты в полярные.
 
@@ -75,7 +70,6 @@
 	(angle  (atan (second x-y) (first x-y))))
     (list radius angle)))
 
-(export 'spherical->cartesian )
 (defun spherical->cartesian (r φ θ)
 "@b(Описание:) функция @b(spherical->cartesian) выполняет преобразование координат 
 из сферических в декартовы.
@@ -98,7 +92,6 @@
 	(z (* r (cos θ))))
     (list x y z)))
 
-(export 'cartesian->spherical )
 (defun cartesian->spherical (x-y-z)
 "@b(Описание:) функция @b(cartesian->spherical) выполняет преобразование координат 
 из декартовых в сферические.

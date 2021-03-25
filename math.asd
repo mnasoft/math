@@ -24,6 +24,7 @@ implemented in Common Lisp"
 	       "math/arr-matr"
 	       "math/gnuplot"
 	       "math/ls-rotation"
+               "math/geom"
 	       "math/x-o"
 	       ) ;;;; "math/ls-solve" "math/tests"
   :components ((:file "math")
@@ -198,6 +199,19 @@ implemented in Common Lisp"
 				     (:file "approximation-tests") 
 				     (:file "list-matr-tests") 
 				     (:file "main-run")))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defsystem #:math/geom
+  :description "Функции вычисления площадей и объемов геометрических фигур и тел."
+  :author "Nick Matvyeyev <mnasoft@gmail.com>"
+  :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"  
+  :serial t
+  :in-order-to ((test-op (test-op "math/ls-rotation/tests")))
+;;;;  :depends-on ("math/arr-matr")
+  :components ((:module "src/geom"
+		:serial t
+                :components ((:file "geom")))))
 
 (defsystem #:math/docs
   :description "Зависимости для сборки документации"
