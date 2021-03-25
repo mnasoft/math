@@ -9,6 +9,7 @@
            radius-by-diameter)
   (:export circle-area-by-radius
            circle-area-by-diameter)
+  (:export equivalent-diameter)
   )
 
 (in-package :math/geom)
@@ -82,3 +83,7 @@
 (defun circle-area-by-diameter (diameter)
   (circle-area-by-radius
    (radius-by-diameter diameter)))
+
+(defun equivalent-diameter (area perimeter)
+  (* 4 (/ area perimeter)))
+  
