@@ -51,9 +51,9 @@
 	echo "mnasoft-00"
   #     sh ~/bin/pi-html
     fi
-    if [[ `hostname` == "N118383" ]]
+    if [[ `hostname` == "N000308" ]]
     then
-	echo "N118383"
+	echo "N000308"
         CPL="//n133619/home/_namatv/public_html/Site/Development/Common-Lisp-Programs"
 	mkdir -p $CPL/$CDIR
 	rsync -Pazh --delete ../docs/build/$CDIR/html/ $CPL/$CDIR
