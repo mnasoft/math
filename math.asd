@@ -219,8 +219,10 @@ implemented in Common Lisp"
   :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"  
   :depends-on ("math"
                "mnas-package"
-               "codex"
-               ))
+               "codex")
+  :components ((:module "src/docs"
+		:serial nil
+                :components ((:file "docs")))))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defsystem #:math/x-o

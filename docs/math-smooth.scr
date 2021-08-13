@@ -3,8 +3,8 @@
 @begin(section)
  @title(Функции)
  @cl:with-package[name="MATH/SMOOTH"](
-  @cl:doc(function exp-smoothing)
   @cl:doc(function cauchy-smoothing)
+  @cl:doc(function exp-smoothing)
   @cl:doc(function gauss-smoothing)
   @cl:doc(function hann-smoothing))
 @end(section)
