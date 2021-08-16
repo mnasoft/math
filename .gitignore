@@ -7,6 +7,9 @@
 build/
 \#*\#
 
+docs/*.scr
+docs/*.lisp
+
 README.pdf
 README.tex
 README.html
