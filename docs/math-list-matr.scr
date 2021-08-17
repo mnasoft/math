@@ -1,3 +1,7 @@
+@begin(section) @title(Обзор)
+
+Реализация некоторых операций над матрицами,
+представленными прямоугольными 2d-списками@end(section)
 @begin(section) @title(MATH/LIST-MATR)
 
 @begin(section)

@@ -38,8 +38,6 @@
 
 (in-package :math/core)
 
-(export 'square)
- 
 (defun square (x)
 "@b(Описание:) функция @b(square) возвращает квадрат значения.
 
@@ -56,7 +54,11 @@
 "
   (* x x))
 
-(export 'exclude-nil-from-list )
+(setf (documentation #'square 'function)
+      "COOOOOOOOOOOOOOOOOOOOOOOOOL square COOOOOOOOOOOOOOOOOOOOOOOOOL
+      square COOOOOOOOOOOOOOOOOOOOOOOOOL square
+      COOOOOOOOOOOOOOOOOOOOOOOOOL square COOOOOOOOOOOOOOOOOOOOOOOOOL
+      square COOOOOOOOOOOOOOOOOOOOOOOOOL square" )
 
 (defun exclude-nil-from-list (lst)
 "@b(Описание:) функция @b(exclude-nil-from-list) возвращает список в котором нет nil-элементов (они исключаются).

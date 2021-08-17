@@ -9,22 +9,18 @@
 
 (in-package :math/2d-array)
 
-(export 'rows)
-
 (defmethod rows ((a array))
+  "@b(Описание:) метод @b(rows) возвращает количество строк в массиве @b(a)."
   (assert (= (array-rank a) 2))
   (array-dimension a 0))
 
-(export 'cols)
-
 (defmethod cols ((a array))
+    "@b(Описание:) метод @b(rows) возвращает количество столбцов в массиве @b(a)."
   (assert (= (array-rank a) 2))
   (array-dimension a 1))
 
-(export 'row)
-
 (defmethod row ((row integer) (a array))
-  "@b(Описание:) метод @b(row) возвращает строку @b(row) из масства @d(a).
+  "@b(Описание:) метод @b(row) возвращает строку @b(row) из масства @b(a).
 Строка возвращается в виде вектора vector.
 
  @b(Пример использования:)
@@ -45,8 +41,6 @@
   (apply #'vector (loop :for j :from 0 :below (array-dimension a 1)
 			:collect
 			(aref a row j))))
-
-(export 'col)
 
 (defmethod col ((col integer) (a array))
   "@b(Описание:) метод @b(col) возвращает столбец @b(col) из масства @b(a).

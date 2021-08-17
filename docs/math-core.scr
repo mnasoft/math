@@ -1,3 +1,7 @@
+@begin(section) @title(Обзор)
+
+Содержит некоторые функции и обобщенные функции,
+используемые в проекте повсеместно@end(section)
 @begin(section) @title(MATH/CORE)
 
 @begin(section)

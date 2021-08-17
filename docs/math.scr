@@ -1,13 +1,15 @@
 @begin(section) @title(Обзор)
 
-Math - это математическая библиотека, 
-реализующая некоторые алгоритмы:
-- линейной алгебры;
-- операций работы с матрицами;
-- статистические функции;
-- линейной и билинейной интерполяции;
-- нахождения приближающих многочленов,
-реализованная на Common Lisp@end(section)
+Math is a math library, implementing some algorithms:
+@begin(list)
+ @item(linear algebra;)
+ @item(operations with matrices;)
+ @item(statistical functions;)
+ @item(linear and bilinear interpolation;)
+ @item(finding approximating polynomials, implemented in Common
+       Lisp.)
+@end(list)
+@end(section)
 @begin(section) @title(MATH)
 
 @begin(section)

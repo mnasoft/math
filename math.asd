@@ -3,12 +3,15 @@
 (defsystem "math"
   :description
   "Math is a math library, implementing some algorithms:
-- linear algebra;
-- operations with matrices;
-- statistical functions;
-- linear and bilinear interpolation;
-- finding approximating polynomials,
-implemented in Common Lisp"
+@begin(list)
+ @item(linear algebra;)
+ @item(operations with matrices;)
+ @item(statistical functions;)
+ @item(linear and bilinear interpolation;)
+ @item(finding approximating polynomials, implemented in Common
+       Lisp.)
+@end(list)
+"
   :author "Nick Matvyeyev <mnasoft@gmail.com>"
   :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"  
   :serial t
@@ -165,9 +168,11 @@ implemented in Common Lisp"
   :depends-on ("math/core" "cl-utilities")
   :components ((:module "src/arr-matr"
 		:serial t
-                :components ((:file "package")
-			     (:file "matr-generics") 
-			     (:file "matr-class")))))
+                :components ((:file "arr-matr")
+                             ;; (:file "package")
+			     ;; (:file "matr-generics") 
+			     ;; (:file "matr-class")
+                             ))))
 
 (defsystem #:math/ls-solve
   :description "Решение систем линейных уравнений при помощи библиотеки gsll"
@@ -220,9 +225,12 @@ implemented in Common Lisp"
   :depends-on ("math"
                "mnas-package"
                "codex")
-  :components ((:module "src/docs"
-		:serial nil
-                :components ((:file "docs")))))
+  :components
+  ((:module "src/docs" :serial nil
+    :components ((:file "docs")))))
+
+
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defsystem #:math/x-o

@@ -1,9 +1,0 @@
-@begin(section) @title(Обзор)
- Math is a mathematical library that implements some algorithms of
- linear algebra, statistics, finding approximating polynomials
- on Common Lisp
-@end(section)
-
-@begin(section) @title(Math)
-  
-@end(section)
