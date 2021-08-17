@@ -30,10 +30,10 @@
                "math/geom"
 	       "math/x-o"
 	       ) ;;;; "math/ls-solve" "math/tests"
-  :components ((:file "math")
-	       (:module "src"
+  :components ((:module "src/math"
 		:serial t
-                :components ((:file "mult-matr-vect"))))) ;;;; (:file "matr-temp")
+                :components ((:file "math")
+                             (:file "mult-matr-vect"))))) ;;;; (:file "matr-temp")
 
 (defsystem "math/core"
   :description "Содержит некоторые функции и обобщенные функции,
