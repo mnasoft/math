@@ -1,6 +1,0 @@
-  @begin(section) @title(Графы math-core)
-  @begin(list)
-   @item(call-graph   @image[src=./call-graph-math-core.gv.png]())
-   @item(symbol-graph @image[src=./symbol-graph-math-core.gv.png]())
-  @end(list)
- @end(section)

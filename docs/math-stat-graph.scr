@@ -1,7 +1,0 @@
-  @begin(section) @title(Графы math-stat)
-  @begin(list)
-   @item(system-graph @image[src=./system-graph-math-stat.gv.png]())
-   @item(call-graph   @image[src=./call-graph-math-stat.gv.png]())
-   @item(symbol-graph @image[src=./symbol-graph-math-stat.gv.png]())
-  @end(list)
- @end(section)
