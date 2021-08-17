@@ -1,10 +1,10 @@
 ;;;; tests/approximation-tests.lisp
 
-(in-package #:math-tests)
+(in-package #:math/tests)
 
 (def-suite approximation-tests
   :description "Мастер-набор тестов по решению СЛАУ (систем линейных плгебраических уравнений."
-  :in all-tests)
+  :in all)
 
 (in-suite  approximation-tests)
 

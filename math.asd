@@ -195,15 +195,15 @@
   :depends-on (:math :fiveam)
   :perform (test-op (o s)
 		    (uiop:symbol-call :math-tests :test-math))
-  :components ((:module "tests"
+  :components ((:module "src/tests"
 			:serial t
 			:components ((:file "package")
-				     (:file "main")
+				     (:file "all")
 				     (:file "matrix")
 				     (:file "linear-system-tests") 
 				     (:file "approximation-tests") 
 				     (:file "list-matr-tests") 
-				     (:file "main-run")))))
+				     (:file "run")))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

@@ -1,6 +1,6 @@
 ;;;; 
 
-(in-package #:math-tests)
+(in-package #:math/tests)
 
 (defun make-<matrix>-int (rows cols)
   "@b(Описание:) функция @b(make-<matrix>-int) возвращает матрицу 
@@ -26,7 +26,7 @@
 
 (def-suite matrix-tests
   :description "Мастер-набор всех тестов проекта math."
-  :in all-tests)
+  :in all)
 
 (in-suite matrix-tests)
 
@@ -298,5 +298,3 @@
   (is-true (equal (math/arr-matr:matrix->2d-list (math/arr-matr:matr-new 3 2 '(1 2 3 4 5 6))) '((1 2) (3 4) (5 6)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(test-math)

@@ -1,10 +1,10 @@
 ;;;; tests/array.lisp
 
-(in-package #:math-tests)
+(in-package #:math/tests)
 
 (def-suite array-tests
   :description "Мастер-набор всех тестов проекта math."
-  :in all-tests)
+  :in all)
 
 (in-suite matrix-tests)
 

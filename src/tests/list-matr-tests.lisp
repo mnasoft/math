@@ -1,6 +1,6 @@
 ;;;; tests/matrix.lisp
 
-(in-package #:math-tests)
+(in-package #:math/tests)
 
 (defun make-random-2dlist (rows cols &optional (scale 5))
   (loop :for i :from 1 :to rows
@@ -11,7 +11,7 @@
 
 (def-suite list-matr-tests
   :description "Мастер-набор всех тестов проекта math."
-  :in all-tests)
+  :in all)
 
 (in-suite list-matr-tests)
 
