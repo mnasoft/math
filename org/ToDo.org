@@ -1,5 +1,6 @@
 
-* [2/6] ToDo 
+* [2/6] ToDo
+1. [ ] Рефакторинг
 1. [0/12] Документирование
    - [ ] appr
      - Файлы
@@ -9,6 +10,7 @@
      - Сценарий сборки [[file:~/quicklisp/local-projects/ultralisp/math/docs/math-appr.scr][math-appr.scr]]                             
    - [ ] 2d-array  
    - [ ] arr-matr
+     - [ ] 
    - [ ] core
    - [0/24] list-matr [[file:~/quicklisp/local-projects/ultralisp/math/src/list-matr/list-matr.lisp][list-matr.lisp]]
      - [ ] rows
@@ -85,19 +87,21 @@
 4. [ ] Определить функции кубической интерполяции для функции одного переменного, заданной табличными значениями.
 5. [ ] Для документирования при помощи проекта mnas-package предусмотреть исключение дублирующих ребер в графах.
 6. [ ] При определении коэффициентов в функции =averaging-function-body= необходимо выполнить нормализацию диапазона аргументов и значений функций.
-7. [3/3] Заменить префикс с целью укорачивания имен math/list-matr:list-matr* -> math/list-matr:*
-   - [X] print             -> lm-print
-   - [X] list-vector-print -> lv-print
-   - [X] union             -> unite-rows 
-8. [2/2] Перенести и сделать доступным в math
-   - [X] math/gnuplot:split-range -> math/core:split-range
-   - [X] math/gnuplot:split-range-by-func -> math/core:split-range-by-func
-9. [3/4] Определить класс matrix при помощи массива (array 2d) [75%]
+7. [3/4] Определить класс matrix при помощи массива (array 2d) [75%]
    - [X] Файл -  [[./matr-class.lisp]]
    - [X] Класс - matrix 
    - [X] Файл -  [[./matr-class-temp.lisp]] - содержит заготовки функций, которые необходимо переделать под класс  matrix.
    - [ ] По окончании пределки функций данный файл подлежит удалению из проекта.
-10. [5/5] Рефакторинг -  разделить проект на отдельные части:
+8. [2/2] Перенести и сделать доступным в math
+   - [X] math/gnuplot:split-range -> math/core:split-range
+   - [X] math/gnuplot:split-range-by-func -> math/core:split-range-by-func
+9. [X] Определить функцию генерирующую замыкание для функции интерполяции одного переменного -- make-appr-linear.
+10. [X] Выполнить оптимизацию вычисления для функции matr-mnk за счет создания матрицы содержащей функции для аддитивного вычисления коэффициентов.  SCHEDULED: <2018-11-30 Пт>
+11. [3/3] Заменить префикс с целью укорачивания имен math/list-matr:list-matr* -> math/list-matr:*
+    - [X] print             -> lm-print
+    - [X] list-vector-print -> lv-print
+    - [X] union             -> unite-rows 
+12. [5/5] Рефакторинг -  разделить проект на отдельные части:
     - [X] Матрицы -- arr-matr
     - [X] Аппроксимация -- appr
     - [X] Матрицы в виде списков -- list-matr
@@ -109,13 +113,12 @@
       - [X] matr-set-row-* - заменить на, что-то что применяется в настоящий момент -- (setf (row mm r) v).
       - [X] matr-get-row-* - заменить на, что-то что применяется в настоящий момент -- (row mm r).
       - [X] matr-get-col-* - заменить на, что-то что применяется в настоящий момент -- (col mm r).
-11. [X] Определить функцию генерирующую замыкание для функции интерполяции одного переменного -- make-appr-linear.
-12. [3/3] Разобраться с функциями с целью исключеия какой-либо из них. 
+13. Определить функции тестирования для матриц
+14. [3/3] Разобраться с функциями с целью исключеия какой-либо из них. 
     - [X] matr-ij (matr i j) - исключена;
     - [X] matr-set_ij (matr elem i j) - исключена;
     - [X] matr-set-ij (matr value i j) - исключена;
-13. [X] Выполнить оптимизацию вычисления для функции matr-mnk за счет создания матрицы содержащей функции для аддитивного вычисления коэффициентов.  SCHEDULED: <2018-11-30 Пт>
-14. [10/10] Определить операции для класса matrix
+15. [10/10] Определить операции для класса matrix
     - [X] вывода строки, определяющией тип матрицы    -- matr-name-*  ((mm matrix));
     - [X] создания матрицы                            -- make-instance 'matrix
     - [X] инициализации матрицы                       -- initialize-instance  ((mm matrix) &key dimensions initial-element initial-contents data (element-type t));
@@ -156,4 +159,3 @@
 	+ [X] столбцов;                               -- swap-cols   ((mm matrix) i j)
       - [X] Преобразования [100%]
 	+ [X] в matrix->2d-list                       -- matrix->2d-list ((mm matrix))
-15. Определить функции тестирования для матриц

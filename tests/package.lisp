@@ -1,7 +1,11 @@
 ;;;; tests/package.lisp
 
-(defpackage #:math-tests
+(defpackage #:math/tests
   (:use #:cl #:fiveam)
-  (:export #:run!
-	   #:all-tests
-	   #:test-math))
+  (:export #:run-tests))
+
+(in-package :math/tests)
+
+(defun run-tests () (run! 'all))
+
+;;;;(run-tests)

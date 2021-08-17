@@ -1,14 +1,13 @@
 ;;;; tests/main.lisp
 
-(in-package #:math-tests)
+(in-package #:math/tests)
 
-(def-suite all-tests
+(def-suite all
   :description "Мастер-набор всех тестов проекта math.")
 
-(in-suite all-tests)
+(in-suite all)
 
-(defun test-math ()
-  (run! 'all-tests))
+#+nil (defun test-math () (run! 'all-tests))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -18,7 +17,5 @@
 (declaim (optimize sb-cover:store-coverage-data))
 (asdf:oos 'asdf:load-op :math/tests :force t)
 (sb-cover:report "coverage/")
-
-
 
 |#
