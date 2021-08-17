@@ -6,41 +6,49 @@
 	   <matrix>
 
 	   math/core:mref
-   
-	   math/core:col
+   	   math/core:col
            math/core:row
-  	   
 	   math/core:cols
-   	   math/core:rows
-
-	   swap-cols
-	   swap-cols*
-	   swap-rows
-	   swap-rows*
-
-	   math/core:add
-	   math/core:multiply
+   	   math/core:rows)
+  (:export swap-cols
+           swap-cols*
+           swap-rows
+           swap-rows*)
+  (:export math/core:add
+           math/core:multiply
 	   
-	   math/core:main-diagonal
-	   
-	   *semi-equal-zero*
-	   math/core:dimensions
-	   initialize-instance
-	   math/core:squarep
-	   math/core:anti-diagonal
-	   semi-equal
-	   math/core:copy
-	   matrix-data
+           math/core:main-diagonal
 
-	   convert-to-triangular
-	   math/core:equivalent
-	   matrix->2d-list
+           math/core:dimensions
+           initialize-instance
+           math/core:squarep
+           math/core:anti-diagonal
 
-	   *semi-equal-relativ*
-	   transpose 
+           math/core:copy
+           matrix-data
 
-	   matr-eval-*
-	   ))
+           convert-to-triangular
+           math/core:equivalent
+           matrix->2d-list
+           transpose 
+           matr-eval-*
+           )
+  (:export *semi-equal-relativ*
+           *semi-equal-zero*
+           semi-equal
+           equivalent)
+  (:export mref
+           copy
+           dimensions
+           rows
+           cols
+           row
+           col
+           main-diagonal
+           squarep
+           anti-diagonal
+           add
+           multiply))
 
 (in-package #:math/arr-matr)
 
@@ -92,8 +100,6 @@
 	    :do (format s " ~8A " (aref (matrix-data mm) i j)))
 	 (format s "]"))))
 
-(export 'initialize-instance)
-
 (defmethod initialize-instance ((mm <matrix>) &key dimensions initial-element initial-contents data (element-type t))
   (when (and (consp dimensions) (/= (length dimensions) 2))
     (error "(/= (length dimensions) 2):"))
@@ -114,8 +120,6 @@
     (t (error "(defmethod initialize-instance ((mm <matrix>) &key dimensions initial-element initial-contents (element-type t))
 Что-то пошло не так!"))))
 
-(export 'matr-new)
-
 (defun matr-new (rows cols &optional (lst nil))
   "Примечание:
  (matr-new 3 4 '(1 2 3 4 5 6 7 8 9 10)) "
@@ -128,32 +132,20 @@
 			ll (cdr ll)))))
     mm))
 
-(export 'mref)
-
 (defmethod mref ((mm <matrix>) i j) (aref (matrix-data mm) i j))
 
 (defmethod (setf mref) (value (mm <matrix>) i j) (setf (aref (matrix-data mm) i j) value) mm)
 
-(export 'copy)
-
 (defmethod copy ((mm-ref <matrix>))
   (make-instance '<matrix> :data (cl-utilities:copy-array (matrix-data mm-ref))))
 
-(export 'dimensions)
-
 (defmethod dimensions ((mm <matrix>)) (array-dimensions (matrix-data mm)))
 
-(export 'rows)
-
 (defmethod rows ((mm <matrix>)) (array-dimension (matrix-data mm) 0))
-
-(export 'cols)
 
 (defmethod cols ((mm <matrix>)) (array-dimension (matrix-data mm) 1))
 
 ;;;;;;;;;; equivalent ;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(export '*semi-equal-relativ*)
 
 (defparameter *semi-equal-relativ* 1e-6
   "@b(Описание:) переменная @b(*semi-equal-relativ*) определяет
@@ -161,15 +153,11 @@
 считающиеся равными при срвнении из с помощью функции @b(semi-equal).
 ")
 
-(export '*semi-equal-zero*)
-
 (defparameter *semi-equal-zero*    1e-6
     "@b(Описание:) переменная @b(*semi-equal-zero*) определяет
 абсолютную величину, на которую могут отличаться значения 
 считающиеся равными при срвнении из с помощью функции @b(semi-equal).
 ")
-
-(export 'semi-equal)
 
 (defun semi-equal (x y
 		   &key (tolerance
@@ -190,8 +178,6 @@
   (labels ((distance (x y) (abs (- x y))))
     (< (distance x y) tolerance)))
 
-(export 'equivalent)
-
 (defmethod equivalent ((m1 <matrix>) (m2 <matrix>) &key (test #'semi-equal))
   (let ((rez t))
     (if (and (= (rows m1) (rows m2))
@@ -201,8 +187,6 @@
 		(setf rez (and rez (funcall test (mref m1 r c ) (mref m2 r c) )))))
 	(setf rez nil))
     rez))
-
-(export 'equivalent )
 
 (defmethod equivalent ((a1 array) (a2 array) &key (test #'semi-equal))
    (declare (type (array * (* *)) a1 a2))
@@ -218,21 +202,15 @@
 			      (funcall test (aref a1 i j) (aref a2 i j)))))
 	   :initial-value t))
 
-(export ' equivalent)
-
 (defmethod equivalent ((m1 <matrix>) (a2 array) &key (test #'semi-equal))
   (declare (type (array * (* *)) a2))  
   (equivalent m1 (make-instance '<matrix> :data a2) :test test))
-
-(export ' equivalent )
 
 (defmethod equivalent ((a1 array) (m2 <matrix>) &key (test #'semi-equal))
   (declare (type (array * (* *)) a1))
   (equivalent (make-instance '<matrix> :data a1) m2 :test test))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(export 'row )
 
 (defmethod row ((mm <matrix>) row)
   (let ((data (matrix-data mm)))
@@ -247,8 +225,6 @@
 		 ll (cdr ll)))
     mm))
 
-(export 'col )
-
 (defmethod col ((mm <matrix>) col)
   (let ((data (matrix-data mm)))
     (loop :for r :from 0 :below (rows mm)
@@ -261,8 +237,6 @@
        :do (setf (aref data r col) (car ll)
 		 ll (cdr ll)))
     mm))
-
-(export 'main-diagonal)
 
 (defmethod main-diagonal ((mm <matrix>))
   " @b(Пример использования:)
@@ -283,8 +257,6 @@
 @end(code)"
   (loop :for i :from 0 :below (min (rows mm) (cols mm))
 	:collect (mref mm i i)))
-
-(export 'main-diagonal)
 
 (defmethod (setf main-diagonal) (elements (mm <matrix>))
   "@b(Пример использования:)
@@ -312,8 +284,6 @@
 	:for el :in elements :by #'cdr  :do
 	  (setf (mref  mm i i) el))
   mm)
-
-(export 'main-diagonal)
 
 (defmethod (setf main-diagonal) ((element number) (mm <matrix>) )
 "@b(Пример использования:)
@@ -347,8 +317,6 @@
 	:do (setf (mref  mm i i) element))
   mm)
 
-(export 'squarep)
-
 (defmethod  squarep ((mm <matrix>))
 "@b(Пример использования:)
 @begin[lang=lisp](code)
@@ -362,8 +330,6 @@
 @end(code)
 "
   (= (cols mm) (rows mm) ))
-
-(export 'anti-diagonal)
 
 (defmethod anti-diagonal ((mm <matrix>))
 "@b(Пример использования:)
@@ -387,8 +353,6 @@
      :for r :downfrom (- (rows mm) 1) :to 0
      :collect (mref mm c r)))
 
-(export 'anti-diagonal)
-
 (defmethod (setf anti-diagonal) (elements (mm <matrix>) )
   (assert (squarep mm) (mm) "Матрица не является квадратной~%~S" mm)
   (loop
@@ -397,8 +361,6 @@
      :for e :in elements :by #'cdr :do
        (setf (mref mm c r) e))
   mm)
-
-(export 'add)
 
 (defmethod add ((a <matrix> ) (b <matrix>))
   "Выполняет сложение матриц a и b.
@@ -415,8 +377,6 @@
 	      (setf (mref a+b r c)
 		    (+ (mref a r c ) (mref b r c)))))
     a+b))
-
-(export 'multiply)
 
 (defmethod multiply ((a <matrix> ) (b <matrix>))
   "@b(Описание:) метод @b(multiply (a <matrix> ) (b <matrix>))
@@ -463,8 +423,6 @@
 	      (apply #'+ (mapcar #'* a-row b-col)))))
     c))
 
-(export 'multiply)
-
 (defmethod multiply ((a number ) (b <matrix>))
   (let ((rez (make-instance '<matrix> :dimensions (dimensions b))))
     (loop :for i :from 0 :below (rows b) :do
@@ -472,13 +430,9 @@
 	      (setf (mref rez i j) (* a (mref b i j)))))
     rez))
 
-(export 'matrix->2d-list)
-
 (defmethod matrix->2d-list ((mm <matrix>))
   (loop :for i :from 0 :below (rows mm) :collect
 					(row mm i)))
-
-(export 'transpose)
 
 (defmethod transpose ((mm <matrix>))
   (let ((rez (make-instance '<matrix> :dimensions (nreverse(dimensions mm)))))
@@ -487,13 +441,9 @@
 	      (setf (mref rez j i) (mref mm i j))))
     rez))
 
-(export 'transpose)
-
 (defmethod transpose ((mm cons))
   "Выполняет транспонирование"
   (apply #'mapcar #'list mm))
-
-(export 'swap-rows*)
 
 (defmethod swap-rows*  ((mm <matrix>) i j)
   (assert (and (< -1 i (rows mm)) (< -1 j (rows mm))))
@@ -504,8 +454,6 @@
 	    (row mm j) row-i)))
   mm)
 
-(export 'swap-cols*)
-
 (defmethod swap-cols*  ((mm <matrix>) i j)
   (assert (and (< -1 i (cols mm)) (< -1 j (cols mm))))
   (when (/= i j)
@@ -515,17 +463,11 @@
 	    (col mm j) col-i)))
   mm)
 
-(export 'swap-rows)
-
 (defmethod swap-rows  ((mm <matrix>) i j)
   (swap-rows* (copy mm) i j))
 
-(export 'swap-cols)
-
 (defmethod swap-cols  ((mm <matrix>) i j)
   (swap-cols* (copy mm) i j))
-
-(export 'matr-eval-*)
 
 (defmethod matr-eval-* ((mm <matrix>))
   "Мутная функция и непонятно как ее использовать и где?"
