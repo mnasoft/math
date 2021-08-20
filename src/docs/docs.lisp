@@ -22,12 +22,15 @@
       (:math/ls-gauss    :math/ls-gauss)
       (:math/smooth      :math/smooth)
       ;; 2
+      #+nil
       (:math/x-o         :math/x-o)
       (:math/coord       :math/coord)
       (:math/list-matr   :math/list-matr)      
       ;; 3       
       (:math/stat        :math/stat)
       ;; 4
+      (:math/arr-matr    :math/arr-matr)
+      ;; 5
       (:math/core        :math/core)
       ;; 2
       (:math/gnuplot     :math/gnuplot)
@@ -41,10 +44,11 @@
       :math/ls-rotation
       :math/geom
       :math/appr
+      :math/arr-matr
       :math/2d-array
       :math/ls-gauss
       :math/smooth
-      :math/x-o
+      #+nil :math/x-o
       :math/coord
       :math/list-matr
       :math/stat

@@ -1,14 +1,14 @@
 ;;;; package.lisp
 
 (defpackage #:math 
-  (:use #:cl #:math/core #:math/arr-matr)
+  (:use #:cl) ;;#:math/core #:math/arr-matr
   (:export mult-matr-vect )
   (:export split-range
 	   split-range-by-func)
   (:export row  col
 	   rows cols))
 
-(in-package :math)
+(in-package #:math)
 
 (defun mult-matr-vect (matr vect)
   "Умножение матрицы Matr на вектор Vect

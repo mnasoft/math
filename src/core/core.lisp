@@ -94,8 +94,6 @@
       (setf nf  (/ nf (1+ i))
 	    rez (+ rez nf)))))
 
-(export 'split-range )
-
 (defun split-range (from to steps)
 "@b(Описание:) split-range
 
@@ -106,8 +104,6 @@
  "
   (loop :for i :from 0 :to steps
 	:collect (coerce (+ from (* (/ i steps ) (- to from))) 'float)))
-
-(export 'split-range-by-func )
 
 (defun split-range-by-func (from to steps &key
 					    (func #'(lambda (x) (log x 10)))
@@ -127,7 +123,6 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(export 'depth-sphere-along-cone)
 (defun depth-sphere-along-cone (r alpha)
   "@b(Описание:) функция @b(depth-sphere-along-cone) возвращает 
 заглубление сферы с радиусом R в конуc с углом при вершине 
@@ -138,8 +133,6 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(export '(+significant-digits+))
 
 (defparameter +significant-digits+ 4
   "Определяет количество значащих цифр при округлении по умолчанию.")

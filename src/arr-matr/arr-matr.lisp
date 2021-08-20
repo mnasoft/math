@@ -1,34 +1,17 @@
 ;;;; /src/arr-matr/package.lisp
 
 (defpackage #:math/arr-matr
-  (:use #:cl #:math/core)
+  (:use #:cl) ;;#:math/core
   (:export matr-new
 	   <matrix>
-
-	   math/core:mref
-   	   math/core:col
-           math/core:row
-	   math/core:cols
-   	   math/core:rows)
+           )
   (:export swap-cols
            swap-cols*
            swap-rows
            swap-rows*)
-  (:export math/core:add
-           math/core:multiply
-	   
-           math/core:main-diagonal
-
-           math/core:dimensions
-           initialize-instance
-           math/core:squarep
-           math/core:anti-diagonal
-
-           math/core:copy
+  (:export initialize-instance
            matrix-data
-
            convert-to-triangular
-           math/core:equivalent
            matrix->2d-list
            transpose 
            matr-eval-*
@@ -48,7 +31,23 @@
            squarep
            anti-diagonal
            add
-           multiply))
+           multiply)
+  #+nil
+  (:export math/core:mref
+   	   math/core:col
+           math/core:row
+	   math/core:cols
+   	   math/core:rows
+           math/core:equivalent
+           math/core:add
+           math/core:multiply
+           math/core:main-diagonal
+           math/core:dimensions
+           math/core:squarep
+           math/core:anti-diagonal
+           math/core:copy
+           )
+  )
 
 (in-package #:math/arr-matr)
 
@@ -317,16 +316,17 @@
 	:do (setf (mref  mm i i) element))
   mm)
 
-(defmethod  squarep ((mm <matrix>))
-"@b(Пример использования:)
+(defmethod squarep ((mm <matrix>))
+  "@b(Описание:) метод @b(squarep) возвращает T, если матрица является
+  квадратной. В противном случае возвращает nil.
+
+ @b(Пример использования:)
 @begin[lang=lisp](code)
   (defparameter *mm* (make-instance '<matrix>   :dimensions '(2 3)))
-  *mm* => Matr 2х3
-          [ 0         0         0        ]
-          [ 0         0         0        ]
   (squarep *mm*) => nil
+
   (defparameter *mm* (make-instance '<matrix>   :dimensions '(3 3)))
-  (squarep *mm*)
+  (squarep *mm*) => T
 @end(code)
 "
   (= (cols mm) (rows mm) ))
@@ -363,10 +363,23 @@
   mm)
 
 (defmethod add ((a <matrix> ) (b <matrix>))
-  "Выполняет сложение матриц a и b.
-Пример использования:
- (add (matr-new 2 2 '(1 2 3 4)) (matr-new 2 2 '(1 2 3 4)))
+  "@b(Описание:) метод @b(add) возвращает матрицу типа <matrix>,
+являющуюся результатом сложения матриц a и b.
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (add (matr-new 2 2 '(1 2 
+                      3 4)) 
+      (matr-new 2 2 '(1 2 
+                      3 4)))
+  => Matr 2х2
+     [ 2         4        ]
+     [ 6         8        ]
  (add (matr-new 2 2 '(1 2 3 4)) (matr-new 2 2 '(4 3 2 1)))
+  => Matr 2х2
+     [ 5         5        ]
+     [ 5         5        ]
+@end(code)
 "
   (assert (and (= (rows a) (rows b)) (= (cols a) (cols b))) (a b)
 	  "Матрицы A[~A,~A] и B[~A,~A] имеют отличаюшиеся размеры"
@@ -379,8 +392,8 @@
     a+b))
 
 (defmethod multiply ((a <matrix> ) (b <matrix>))
-  "@b(Описание:) метод @b(multiply (a <matrix> ) (b <matrix>))
-вполняет операцию умножения матриц a и b.
+  "@b(Описание:) метод @b(multiply) возвращает матрицу типа <matrix>,
+являющуюся результатом умножения матриц @b(a) и @b(b).
 
  @b(Пример использования:)
 @begin[lang=lisp](code)
@@ -424,6 +437,19 @@
     c))
 
 (defmethod multiply ((a number ) (b <matrix>))
+    "@b(Описание:) метод @b(multiply) возвращает матрицу типа (<matrix>),
+     являющуюся результатом умножения числа @b(a) и матрицы @b(b).
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (multiply 10 
+           (matr-new 2 3 '(1.0 2.0 3.0
+			   4.0 5.0 6.0)))
+ => Matr 2х3
+    [ 10.0      20.0      30.0     ]
+    [ 40.0      50.0      60.0     ]
+@end(code)
+"
   (let ((rez (make-instance '<matrix> :dimensions (dimensions b))))
     (loop :for i :from 0 :below (rows b) :do
 	 (loop :for j :from 0 :below (cols b) :do
@@ -435,7 +461,19 @@
 					(row mm i)))
 
 (defmethod transpose ((mm <matrix>))
-  (let ((rez (make-instance '<matrix> :dimensions (nreverse(dimensions mm)))))
+  "@b(Описание:) метод @b(transpose) возвращает матрицу типа <matrix>,
+   являющуютя результатом транспонирования матрицы @b(mm).
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (transpose (matr-new 2 3 '(1 2 3
+                            4 5 6)))
+  => Matr 3х2
+     [ 1         4        ]
+     [ 2         5        ]
+     [ 3         6        ]
+@end(code)"
+  (let ((rez (make-instance '<matrix> :dimensions (nreverse (dimensions mm)))))
     (loop :for i :from 0 :below (rows mm) :do
 	 (loop :for j :from 0 :below (cols mm) :do
 	      (setf (mref rez j i) (mref mm i j))))

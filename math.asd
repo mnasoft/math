@@ -28,12 +28,11 @@
 	       "math/gnuplot"
 	       "math/ls-rotation"
                "math/geom"
-	       "math/x-o"
+	       ;; "math/x-o"
 	       ) ;;;; "math/ls-solve" "math/tests"
   :components ((:module "src/math"
 		:serial t
-                :components ((:file "math")
-                             (:file "mult-matr-vect"))))) ;;;; (:file "matr-temp")
+                :components ((:file "math"))))) ;;;; (:file "matr-temp")
 
 (defsystem "math/core"
   :description "Содержит некоторые функции и обобщенные функции,
@@ -42,13 +41,13 @@
   :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"  
   :serial t
   :in-order-to ((test-op (test-op "math/core/tests")))
-;;;;  :depends-on ()
+  ;; :depends-on ()
   :components ((:module "src/core"
 		:serial nil
-                :components ((:file "main")
-			     (:file "generic"      :depends-on ("main"))
-			     (:file "generic-matr" :depends-on ("main"))
-			     (:file "method"       :depends-on ("main" "generic"))))))
+                :components ((:file "core")
+			     (:file "generic"      :depends-on ("core"))
+			     (:file "generic-matr" :depends-on ("core"))
+			     (:file "method"       :depends-on ("core" "generic"))))))
 
 (defsystem #:math/ls-rotation
   :description "Реализация решение системы линейных уравнений методом вращения"
@@ -56,7 +55,7 @@
   :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"  
   :serial t
   :in-order-to ((test-op (test-op "math/ls-rotation/tests")))
-;;;;  :depends-on ("math/arr-matr")
+  ;; :depends-on ("math/arr-matr")
   :components ((:module "src/ls-rotation"
 		:serial t
                 :components ((:file "las-rotation")))))
