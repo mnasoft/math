@@ -184,7 +184,7 @@
       (setf (math/arr-matr:row matrix 3) `(,dx ,dy ,dz 1.0))
       matrix))
 
-;;#+nil
+#+nil
 (progn
   (defparameter *m* (make-instance 'math/arr-matr:<matrix> :dimensions '(4 4)))
 
@@ -196,9 +196,10 @@
   
   (math/arr-matr:multiply *p* (move 10 20 30))
 
-  (rotate-by-x (dtr 22.5) *m*))
+  (rotate-by-x (dtr 22.5) *m*)
+  (math/arr-matr:multiply *p* (rotate-by-v (dtr -90.0) (normalize `(0 1 0))))
+  (math/arr-matr:multiply *p* (rotate-by-y (dtr -90.0)))
+  )
 
-(math/arr-matr:multiply *p* (rotate-by-v (dtr -90.0) (normalize `(0 1 0))))
 
-(math/arr-matr:multiply *p* (rotate-by-y (dtr -90.0)))
 
