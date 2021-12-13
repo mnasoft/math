@@ -38,7 +38,7 @@
 ;;;; (use-package (find-package :math/core) (find-package :math))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
+#+nil
 (setf (asdf:system-description (asdf:find-system :math))
       (uiop:read-file-form 
        (make-pathname
