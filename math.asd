@@ -29,6 +29,7 @@
 	       "math/ls-rotation"
                "math/geom"
                "math/transform"
+               "math/equation"
 	       ;; "math/x-o"
 	       ) ;;;; "math/ls-solve" "math/tests"
   :components ((:module "src/math"
@@ -240,6 +241,20 @@
   :components ((:module "src/transform"
 		:serial t
                 :components ((:file "transform")))))
+
+(defsystem "math/equation"
+  :description "@b(Описание:) система @b(math/equation) содержит
+  функции для нахождения корней линейных, квадратных, кубических и
+  уравнений 4-ой степени (последнее не реализовано)."
+  :author "Nick Matvyeyev <mnasoft@gmail.com>"
+  :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"  
+  :serial t
+  :in-order-to ((test-op (test-op "math/ls-rotation/tests")))
+;;;;  :depends-on ("math/arr-matr")
+  :components ((:module "src/equation"
+		:serial t
+                :components ((:file "equation")))))
+
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
