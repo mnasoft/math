@@ -73,7 +73,7 @@
   (mnas-package:make-mainfest-lisp
    '(:math :math/docs)
    "Math"
-   '("Nick Matvyeyev")
+   '("Mykola Matvyeyev")
    (mnas-package:find-sources "math")
    :output-format of)
   (codex:document :math)

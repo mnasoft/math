@@ -12,7 +12,7 @@
        Lisp.)
 @end(list)
 "
-  :author "Nick Matvyeyev <mnasoft@gmail.com>"
+  :author "Mykola Matvyeyev <mnasoft@gmail.com>"
   :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"  
   :serial t
   :in-order-to ((test-op (test-op "math/tests")))
@@ -39,7 +39,7 @@
 (defsystem "math/core"
   :description "Содержит некоторые функции и обобщенные функции,
 используемые в проекте повсеместно"
-  :author "Nick Matvyeyev <mnasoft@gmail.com>"
+  :author "Mykola Matvyeyev <mnasoft@gmail.com>"
   :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"  
   :serial t
   :in-order-to ((test-op (test-op "math/core/tests")))
@@ -53,7 +53,7 @@
 
 (defsystem #:math/ls-rotation
   :description "Реализация решение системы линейных уравнений методом вращения"
-  :author "Nick Matvyeyev <mnasoft@gmail.com>"
+  :author "Mykola Matvyeyev <mnasoft@gmail.com>"
   :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"  
   :serial t
   :in-order-to ((test-op (test-op "math/ls-rotation/tests")))
@@ -64,7 +64,7 @@
 
 (defsystem #:math/gnuplot
   :description "Интерфейс к программе построения графиков gnuplot"
-  :author "Nick Matvyeyev <mnasoft@gmail.com>"
+  :author "Mykola Matvyeyev <mnasoft@gmail.com>"
   :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"  
   :serial t
   :in-order-to ((test-op (test-op "math/gnuplot/tests")))
@@ -78,7 +78,7 @@
 (defsystem #:math/list-matr
   :description "Реализация некоторых операций над матрицами,
 представленными прямоугольными 2d-списками"
-  :author "Nick Matvyeyev <mnasoft@gmail.com>"
+  :author "Mykola Matvyeyev <mnasoft@gmail.com>"
   :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"  
   :serial t
   :in-order-to ((test-op (test-op "math/arr-matr/tests")))
@@ -89,7 +89,7 @@
 
 (defsystem #:math/ls-gauss
   :description "Решение систем линейных уравнений методом Гаусса"
-  :author "Nick Matvyeyev <mnasoft@gmail.com>"
+  :author "Mykola Matvyeyev <mnasoft@gmail.com>"
   :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"  
   :serial t
   :in-order-to ((test-op (test-op "math/ls-gauss/tests")))
@@ -101,7 +101,7 @@
 (defsystem #:math/2d-array
   :description "Реализация некоторых операций над 
 матрицами, представленными  2d-массивами"
-  :author "Nick Matvyeyev <mnasoft@gmail.com>"
+  :author "Mykola Matvyeyev <mnasoft@gmail.com>"
   :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"  
   :serial t
   :in-order-to ((test-op (test-op "math/2d-array/tests")))
@@ -112,7 +112,7 @@
 
 (defsystem #:math/appr
   :description "Describe math here"
-  :author "Nick Matvyeyev <mnasoft@gmail.com>"
+  :author "Mykola Matvyeyev <mnasoft@gmail.com>"
   :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"  
   :serial t
   :in-order-to ((test-op (test-op "math/appr/tests")))
@@ -125,7 +125,7 @@
 
 (defsystem #:math/stat
   :description "Describe math here"
-  :author "Nick Matvyeyev <mnasoft@gmail.com>"
+  :author "Mykola Matvyeyev <mnasoft@gmail.com>"
   :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"  
   :serial t
   :in-order-to ((test-op (test-op "math/stat/tests")))
@@ -136,7 +136,7 @@
 
 (defsystem #:math/smooth
   :description "Весовые функции для методов сглаживания"
-  :author "Nick Matvyeyev <mnasoft@gmail.com>"
+  :author "Mykola Matvyeyev <mnasoft@gmail.com>"
   :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"  
   :serial t
   :in-order-to ((test-op (test-op "math/smooth/tests")))
@@ -150,7 +150,7 @@
 - угловой меры;
 - координат точки между декартовой, полярной, сферической системами координат.
 "
-  :author "Nick Matvyeyev <mnasoft@gmail.com>"
+  :author "Mykola Matvyeyev <mnasoft@gmail.com>"
   :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"  
   :serial t
   :in-order-to ((test-op (test-op "math/coord/tests")))
@@ -162,7 +162,7 @@
 (defsystem #:math/arr-matr
   :description "Реализация некоторых операций над 
 матрицами, представленными классом <matrix>"
-  :author "Nick Matvyeyev <mnasoft@gmail.com>"
+  :author "Mykola Matvyeyev <mnasoft@gmail.com>"
   :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"  
   :serial t
   :in-order-to ((test-op (test-op "math/arr-matr/tests")))
@@ -177,7 +177,7 @@
 
 (defsystem #:math/ls-solve
   :description "Решение систем линейных уравнений при помощи библиотеки gsll"
-  :author "Nick Matvyeyev <mnasoft@gmail.com>"
+  :author "Mykola Matvyeyev <mnasoft@gmail.com>"
   :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"  
   :serial t
   :in-order-to ((test-op (test-op "math/tests")))
@@ -191,7 +191,7 @@
 
 (defsystem #:math/tests
   :description "Тестирование систем, входящих  в проект Math"
-  :author "Nick Matvyeyev <mnasoft@gmail.com>"
+  :author "Mykola Matvyeyev <mnasoft@gmail.com>"
   :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"  
   :depends-on (:math :fiveam)
   :perform (test-op (o s)
@@ -210,7 +210,7 @@
 
 (defsystem #:math/geom
   :description "Функции вычисления площадей и объемов геометрических фигур и тел."
-  :author "Nick Matvyeyev <mnasoft@gmail.com>"
+  :author "Mykola Matvyeyev <mnasoft@gmail.com>"
   :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"  
   :serial t
   :in-order-to ((test-op (test-op "math/ls-rotation/tests")))
@@ -221,7 +221,7 @@
 
 (defsystem #:math/docs
   :description "Зависимости для сборки документации"
-  :author "Nick Matvyeyev <mnasoft@gmail.com>"
+  :author "Mykola Matvyeyev <mnasoft@gmail.com>"
   :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"  
   :depends-on ("math"
                "mnas-package"
@@ -233,7 +233,7 @@
 (defsystem "math/transform"
   :description "@b(Описание:) система @b(math/transform) содержит
   функции преобразования в трехмерном пространстве."
-  :author "Nick Matvyeyev <mnasoft@gmail.com>"
+  :author "Mykola Matvyeyev <mnasoft@gmail.com>"
   :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"  
   :serial t
   :in-order-to ((test-op (test-op "math/ls-rotation/tests")))
@@ -246,7 +246,7 @@
   :description "@b(Описание:) система @b(math/equation) содержит
   функции для нахождения корней линейных, квадратных, кубических и
   уравнений 4-ой степени (последнее не реализовано)."
-  :author "Nick Matvyeyev <mnasoft@gmail.com>"
+  :author "Mykola Matvyeyev <mnasoft@gmail.com>"
   :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"  
   :serial t
   :in-order-to ((test-op (test-op "math/ls-rotation/tests")))
@@ -261,7 +261,7 @@
 
 (defsystem #:math/x-o
   :description "Консольная игра крестики-нолики"
-  :author "Nick Matvyeyev <mnasoft@gmail.com>"
+  :author "Mykola Matvyeyev <mnasoft@gmail.com>"
   :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"  
   :serial t
   :in-order-to ((test-op (test-op "math/x-o/tests")))
