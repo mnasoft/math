@@ -117,10 +117,7 @@
   :depends-on ("math/core" "math/2d-array" "math/ls-gauss" "math/arr-matr" "math/smooth" ) ;;;; "math"
   :components ((:module "src/appr"
 		:serial t
-                :components ((:file "appr")
-                             #+nil (:file "package")
-			     #+nil (:file "appr-func-temptate") 
-			     #+nil (:file "approximation")))))
+                :components ((:file "appr")))))
 
 (defsystem #:math/stat
   :description "Describe math here"
