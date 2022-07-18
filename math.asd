@@ -96,7 +96,7 @@
 		:serial t
                 :components ((:file "ls-gauss")))))
 
-(defsystem #:math/2d-array
+(defsystem "math/2d-array"
   :description "Реализация некоторых операций над 
 матрицами, представленными  2d-массивами"
   :author "Mykola Matvyeyev <mnasoft@gmail.com>"
@@ -119,7 +119,7 @@
 		:serial t
                 :components ((:file "appr")))))
 
-(defsystem #:math/stat
+(defsystem "math/stat"
   :description "Describe math here"
   :author "Mykola Matvyeyev <mnasoft@gmail.com>"
   :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"  
@@ -153,7 +153,7 @@
   :depends-on ("math/core") 
   :components ((:module "src/coord"
 		:serial t
-                :components ((:file "coordinate-system")))))
+                :components ((:file "coord")))))
 
 (defsystem "math/arr-matr"
   :description "Реализация некоторых операций над 
