@@ -51,7 +51,7 @@
 			     (:file "generic-matr" :depends-on ("core"))
 			     (:file "method"       :depends-on ("core" "generic"))))))
 
-(defsystem #:math/ls-rotation
+(defsystem "math/ls-rotation"
   :description "Реализация решение системы линейных уравнений методом вращения"
   :author "Mykola Matvyeyev <mnasoft@gmail.com>"
   :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"  
@@ -62,7 +62,7 @@
 		:serial t
                 :components ((:file "las-rotation")))))
 
-(defsystem #:math/gnuplot
+(defsystem "math/gnuplot"
   :description "Интерфейс к программе построения графиков gnuplot"
   :author "Mykola Matvyeyev <mnasoft@gmail.com>"
   :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"  
@@ -75,7 +75,7 @@
                              (:file "defclass")
                              (:file "gnuplot")))))
 
-(defsystem #:math/list-matr
+(defsystem "math/list-matr"
   :description "Реализация некоторых операций над матрицами,
 представленными прямоугольными 2d-списками"
   :author "Mykola Matvyeyev <mnasoft@gmail.com>"
@@ -87,7 +87,7 @@
 		:serial t
                 :components ((:file "list-matr")))))
 
-(defsystem #:math/ls-gauss
+(defsystem "math/ls-gauss"
   :description "Решение систем линейных уравнений методом Гаусса"
   :author "Mykola Matvyeyev <mnasoft@gmail.com>"
   :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"  
@@ -110,7 +110,7 @@
 		:serial t
                 :components ((:file "2d-array")))))
 
-(defsystem #:math/appr
+(defsystem "math/appr"
   :description "Describe math here"
   :author "Mykola Matvyeyev <mnasoft@gmail.com>"
   :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"  
@@ -134,7 +134,7 @@
 		:serial t
                 :components ((:file "statistics")))))
 
-(defsystem #:math/smooth
+(defsystem "math/smooth"
   :description "Весовые функции для методов сглаживания"
   :author "Mykola Matvyeyev <mnasoft@gmail.com>"
   :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"  
@@ -145,7 +145,7 @@
 		:serial t
                 :components ((:file "smoothing")))))
 
-(defsystem #:math/coord
+(defsystem "math/coord"
   :description "Содержит функции преобразования
 - угловой меры;
 - координат точки между декартовой, полярной, сферической системами координат.
@@ -159,7 +159,7 @@
 		:serial t
                 :components ((:file "coordinate-system")))))
 
-(defsystem #:math/arr-matr
+(defsystem "math/arr-matr"
   :description "Реализация некоторых операций над 
 матрицами, представленными классом <matrix>"
   :author "Mykola Matvyeyev <mnasoft@gmail.com>"
@@ -175,7 +175,7 @@
 			     ;; (:file "matr-class")
                              ))))
 
-(defsystem #:math/ls-solve
+(defsystem "math/ls-solve"
   :description "Решение систем линейных уравнений при помощи библиотеки gsll"
   :author "Mykola Matvyeyev <mnasoft@gmail.com>"
   :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"  
@@ -189,7 +189,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defsystem #:math/tests
+(defsystem "math/tests"
   :description "Тестирование систем, входящих  в проект Math"
   :author "Mykola Matvyeyev <mnasoft@gmail.com>"
   :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"  
@@ -208,7 +208,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defsystem #:math/geom
+(defsystem "math/geom"
   :description "Функции вычисления площадей и объемов геометрических фигур и тел."
   :author "Mykola Matvyeyev <mnasoft@gmail.com>"
   :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"  
@@ -219,7 +219,7 @@
 		:serial t
                 :components ((:file "geom")))))
 
-(defsystem #:math/docs
+(defsystem "math/docs"
   :description "Зависимости для сборки документации"
   :author "Mykola Matvyeyev <mnasoft@gmail.com>"
   :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"  
@@ -255,11 +255,9 @@
 		:serial t
                 :components ((:file "equation")))))
 
-
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defsystem #:math/x-o
+(defsystem "math/x-o"
   :description "Консольная игра крестики-нолики"
   :author "Mykola Matvyeyev <mnasoft@gmail.com>"
   :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"  
