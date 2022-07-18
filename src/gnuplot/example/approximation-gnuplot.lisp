@@ -4,7 +4,7 @@
 
 (defparameter *arr-2xN* (make-array '(5 2) :initial-contents '((-2.0 0.91553) (-1.0 1.15765) (0.0 1.68105) (1.0 1.15759) (2.0 0.9213))))
 
-(defparameter *a-rez* (gauss-1-approximation-array *arr-2xN* :dx0 1.0 :delta 0.000001 :iterations 100))
+(defparameter *a-rez* (math:gauss-1-approximation-array *arr-2xN* :dx0 1.0 :delta 0.000001 :iterations 100))
 
 (defun g-1-0 (x) (spline-1d x 1.0 *a-rez*))
 
