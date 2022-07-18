@@ -24,8 +24,6 @@
 
 (in-package :math/gnuplot)
 
-(export '*default-gnuplot-direcroty*)
-
 (defparameter *default-gnuplot-direcroty*
   (ensure-directories-exist #P"~/gnuplot/")
   "Каталог для вывода по умолчанию.")
@@ -55,8 +53,6 @@
 "
  (org.shirakumo.font-discovery:family
   (org.shirakumo.font-discovery:find-font :family family)))
-
-(export 'rgb)
 
 (defun rgb (aa rr gg bb)
   "@b(Описание:) функция @b(rgb) возвращает строковое представление цвета.
@@ -122,11 +118,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(export '*term-pdfcairo*)
-
 (defparameter *term-pdfcairo* (make-instance 'term-pdfcairo))
-
-(export '*term-pngcairo*)
 
 (defparameter *term-pngcairo* (make-instance 'term-pngcairo))
 
@@ -269,8 +261,6 @@
   (mapcar #'(lambda (el) (list el (funcall func el)))
           (split-range x-from x-to steps)))
 
-(export 'make-table )
-
 (defun make-table (lst-1 lst-2)
 "@b(Описание:) make-table выполняет формирование списка точек, разделенного на группы.
 
@@ -293,8 +283,6 @@
     (mapcar
      #'(lambda (el-1) (v-lst el-1 lst-2))
      lst-1)))
-
-(export 'table-apply )
 
 (defun table-apply (table func &rest second-and-others)
 "@b(Описание:) функция @b(table-apply)
@@ -368,8 +356,6 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(export 'gnuplot-data-to-file )
-
 (defgeneric gnuplot-data-to-file (f-name data)
   (:documentation
    "@b(Описание:) обобщенная функция @b(gnuplot-data-to-file) выводит данные
@@ -422,23 +408,15 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(export '*palette-defined*)
-
 (defparameter *palette-defined* "set palette defined (0.05 'blue', 0.2 'cyan', 0.4 'green', 0.6 'yellow', 0.8 'orange', 1.0 'red')"
   "STUB")
-
-(export '*palette-defined-01*)
 
 (defparameter *palette-defined-01*
   "set palette defined (0 'blue', 0.1 'white', 0.2 'cyan', 0.3 'white', 0.4 'green', 0.5 'white', 0.6 'yellow', 0.7 'white', 0.8 'orange', 0.9 'white', 1 'red')"
   "STUB")
 
-(export '*pm3d-map*)
-
 (defparameter *pm3d-map* "set pm3d map"
   "STUB")
-
-(export 'gnuplot-splot )
 
 (defun gnuplot-splot (f-name
 		      &key
@@ -463,8 +441,6 @@
     (format sh "#!/bin/bash~%" )
     (format sh "gnuplot ~A.gp~%" f-name))
   (uiop:run-program (concatenate 'string "sh" " " f-name "." "sh") :ignore-error-status t))
-
-(export 'gnuplot-data-splot )
 
 (defun gnuplot-data-splot (
 			   f-name data &key
@@ -506,9 +482,6 @@
 ;;;; pos( k, origin, spacing ) = origin + k*spacing
 ;;;; splot "packedmatrix" matrix u (pos($1,0,1)):(pos($2,-1,1)):3 w l
 
-
-(export 'gnuplot-data-plot )
-
 (defun gnuplot-data-plot (f-name data
                           &key
 			    (terminal (format nil "~a" *term-pdfcairo*))
@@ -546,8 +519,6 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(export 'gnuplot-plot)
-
 (defun gnuplot-plot (f-name &key
 		              (terminal (format nil "~a" *term-pdfcairo*))
 		              (preamble "set xrange [0:2.5]")
@@ -578,9 +549,6 @@
     (format sh "#!/bin/bash~%" )
     (format sh "gnuplot ~A~%" (file-name f-name "gp")))
   (uiop:run-program (concatenate 'string "sh" " " (file-name f-name "sh")) :ignore-error-status t))
-
-
-(export 'make-plot-data-file )
 
 (defun make-plot-data-file (f-name data)
 "@b(Описание:) функция @b(make-plot-data-file) выполняет вывод
