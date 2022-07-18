@@ -71,9 +71,7 @@
   :depends-on ("math/core" "font-discovery" "vgplot")
   :components ((:module "src/gnuplot"
 		:serial t
-                :components ((:file "package")
-                             (:file "defclass")
-                             (:file "gnuplot")))))
+                :components ((:file "gnuplot")))))
 
 (defsystem "math/list-matr"
   :description "Реализация некоторых операций над матрицами,
