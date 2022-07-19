@@ -172,3 +172,67 @@
 (defgeneric multiply (a b))
 
 (defgeneric transpose (matrix))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;; /src/core/method.lisp
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;; distance
+
+(defmethod distance ((x1 number) (x2 number) )
+  (let ((rez (- x1 x2)))
+    (abs rez)))
+
+(defmethod distance ((x1-lst cons) (x2-lst cons))
+  (assert (= (length x1-lst) (length x1-lst)))
+  (sqrt (apply #'+ (mapcar
+		    #'(lambda (x1 x2)
+			(let ((rez (- x1 x2)))
+			  (square rez)))
+		    x1-lst x2-lst))))
+
+(defmethod distance ((x1 vector) (x2 vector))
+  (assert (= (length x1) (length x2)))
+  (sqrt (apply #'+
+	       (loop :for i :from 0 :below (array-dimension x1 0)
+		     :collect
+		     (let ((rez (- (svref x1 i) (svref x2 i)))) (* rez rez))))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;; distance-relative
+
+(defmethod distance-relative ((x number) (xi number) (dx number))
+  (let ((rez (/ (- x xi) dx)))
+    (sqrt (square rez))))
+
+(defmethod distance-relative ((x-lst cons) (xi-lst cons) (dx-lst cons))
+  (assert (apply #'= (mapcar #'length `(,x-lst ,xi-lst ,dx-lst))))
+  (sqrt (apply #'+ (mapcar
+		    #'(lambda (x xi dx)
+			(let ((rez (/ (- x xi) dx)))
+			  (square rez)))
+		    x-lst xi-lst dx-lst))))
+
+(defmethod distance-relative ((x vector) (xi vector) (dx vector))
+  (assert (apply #'= (mapcar #'length `(,x ,xi ,dx))))
+  (sqrt (apply #'+ (loop :for i :from 0 :below (array-dimension x 0)
+			 :collect
+			 (let ((rez (/ (- (svref x i) (svref xi i)) (svref dx i))))
+			   (square rez))))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;; summ-distance
+
+(defmethod summ-distance ((x1 vector) (x2 vector))
+  (assert (= (length x1) (length x2)))
+  (apply #'+ (loop :for i :from 0 :below (length x1)
+		   :collect (abs (- (svref x1 i) (svref x2 i))))))
+
+(defmethod summ-distance ((x1 cons) (x2 cons))
+  (assert (= (length x1) (length x2)))
+  (apply #'+
+	 (mapcar
+	  #'(lambda (el1 el2)
+	      (abs (- el1 el2)))
+	  x1 x2)))
