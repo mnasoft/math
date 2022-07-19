@@ -39,118 +39,39 @@
 (in-package :math/core)
 
 (defun square (x)
-"@b(Описание:) функция @b(square) возвращает квадрат значения.
-
- @b(Переменые:)
-@begin(list)
- @item(x - число.)
-@end(list)
-
- @b(Пример использования:)
-@begin[lang=lisp](code)
- (square 5) => 25 
- (square -4) => 16 
-@end(code)
-"
   (* x x))
 
-(setf (documentation #'square 'function)
-      "COOOOOOOOOOOOOOOOOOOOOOOOOL square COOOOOOOOOOOOOOOOOOOOOOOOOL
-      square COOOOOOOOOOOOOOOOOOOOOOOOOL square
-      COOOOOOOOOOOOOOOOOOOOOOOOOL square COOOOOOOOOOOOOOOOOOOOOOOOOL
-      square COOOOOOOOOOOOOOOOOOOOOOOOOL square" )
-
 (defun exclude-nil-from-list (lst)
-"@b(Описание:) функция @b(exclude-nil-from-list) возвращает список в котором нет nil-элементов (они исключаются).
-
- @b(Пример использования:)
-@begin[lang=lisp](code)
- (exclude-nil-from-list '(1.1 1.0 nil 0.9 nil 1.2 nil 0.8)) 
- => (1.1 1.0 0.9 1.2 0.8)
-@end(code)
-"
   (let ((res nil))
     (dolist (el lst (reverse res) )
       (when el (push el res )))))
 
 (defun e-value (n)
-  "Возвращает приближенное значение числа e
-Пример использования:
-  (coerce (e-value      1) 'double-float) 2.0d0
-  (coerce (e-value      2) 'double-float) 2.5d0
-  (coerce (e-value      4) 'double-float) 2.7083333333333335d0
-  (coerce (e-value      6) 'double-float) 2.7180555555555554d0
-  (coerce (e-value      8) 'double-float) 2.71827876984127d0
-  (coerce (e-value     10) 'double-float) 2.7182818011463845d0
-  (coerce (e-value     15) 'double-float) 2.7182818284589945d0
-  (coerce (e-value     16) 'double-float) 2.7182818284590424d0
-  (coerce (e-value     17) 'double-float) 2.718281828459045d0
-  (coerce (e-value  10000) 'double-float) 2.718281828459045d0
-  (exp 1.0d0)                             2.718281828459045d0
-"   
-  (let ((rez 1)
+   (let ((rez 1)
 	(nf 1))
     (dotimes (i n rez)
       (setf nf  (/ nf (1+ i))
 	    rez (+ rez nf)))))
 
 (defun split-range (from to steps)
-"@b(Описание:) split-range
-
- @b(Пример использования:)
-@begin[lang=lisp](code)
- (split-range 10 20 5)  => (10.0 12.0 14.0 16.0 18.0 20.0)
-@end(code)
- "
-  (loop :for i :from 0 :to steps
+ (loop :for i :from 0 :to steps
 	:collect (coerce (+ from (* (/ i steps ) (- to from))) 'float)))
 
 (defun split-range-by-func (from to steps &key
 					    (func #'(lambda (x) (log x 10)))
 					    (anti-func #'(lambda (x) (expt 10 x))))
-"@b(Описание:) split-range-by-func
-
- @b(Пример использования:)
-@begin[lang=lisp](code)
- (split-range-by-func 1 10 5) => (1.0 1.5848932 2.5118864 3.981072 6.3095737 10.0)
- (split-range-by-func 1 10 10) =>
- (1.0 1.2589254 1.5848932 1.9952624 2.5118864 3.1622777 3.981072 5.0118723  6.3095737 7.943282 10.0)
-@end(code)
-"
-  (mapcar
+ (mapcar
    #'(lambda (el)(funcall anti-func el))
    (split-range (funcall func from) (funcall func to) steps)))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 (defun depth-sphere-along-cone (r alpha)
-  "@b(Описание:) функция @b(depth-sphere-along-cone) возвращает 
-заглубление сферы с радиусом R в конуc с углом при вершине 
-равным alpha от линии пересечения конуса с цилиндром."
-  (let ((betta (- pi (/ alpha 2))))
+   (let ((betta (- pi (/ alpha 2))))
     (- r (* r (tan (/ betta  2))))))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(defparameter +significant-digits+ 4
-  "Определяет количество значащих цифр при округлении по умолчанию.")
-
-(export '(round-to-significant-digits))
+(defparameter +significant-digits+ 4)
 
 (defun round-to-significant-digits (val &optional (significant-digits +significant-digits+) (base-val val))
-  "@b(Описание:) функция @b(round-to-significant-digits) округляет значение
-val до количества значащих цифр, задаваемых аргументом significant-digits.
-
- @b(Пример использования:)
-@begin[lang=lisp](code)
- (round-to-significant-digits 456.32738915923           ) => 456.3
- (round-to-significant-digits 456.32738915923 6         ) => 456.327
- (round-to-significant-digits 456.32738915923 6 53562.23) => 456.3
-@end(code)
-"
-  (labels ((find-divisor (val)
+   (labels ((find-divisor (val)
 	     "@b(Описание:) функция @b(find-divisor)
 
  @b(Пример использования:)
@@ -178,3 +99,76 @@ val до количества значащих цифр, задаваемых а
               (/ (expt 10 (* -1 (- significant-digits 1)))
 		 (find-divisor base-val)))))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;; /src/core/generic.lisp
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defgeneric distance (x1 x2))
+
+(defgeneric distance-relative (x xi dx))
+
+(defgeneric summ-distance (x1 x2))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;; /src/core/generic-matr.lisp
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defgeneric matr-name-* (matrix))
+
+(defgeneric dimensions (matrix))
+
+(defgeneric rows (matrix))
+
+(defgeneric cols (matrix))
+
+(defgeneric equivalent (matrix-1 matrix-2 &key test))
+
+(defgeneric row (matrix row))
+
+(defgeneric (setf row) (values matrix row)
+    (:documentation "@b(Описание:) обобщенная_функция @b((setf row))
+заменяет строку @b(row) матрицы @b(matrix) элементами, находящимися в списке @b(values)."))
+
+(defgeneric col (matrix col))
+
+(defgeneric (setf col) (values matrix col)
+    (:documentation "@b(Описание:) обобщенная_функция @b((setf col))
+заменяет столбец @b(col) матрицы @b(matrix) элементами, находящимися в списке @b(values)."))
+
+(defgeneric main-diagonal (matrix))
+
+(export 'main-diagonal)
+
+(defgeneric (setf main-diagonal) (elements matrix)
+  (:documentation
+"@b(Описание:) обобщенная_функция @b((setf main-diagonal)) устанавливет 
+новые значения элементам матрицы @b(matrix), находящимся на главной диагонали.
+
+ Элементы @b(elements) устанавливаются в порядке возрастания строк."))
+
+(defgeneric anti-diagonal (matrix))
+
+(defgeneric (setf anti-diagonal) (elements matrix)
+  (:documentation
+"@b(Описание:) обобщенная_функция @b((setf anti-diagonal)) устанавливет 
+новые значения элементам матрицы @b(matrix), на побочной диагонали матрицы.
+
+ Элементы @b(elements) устанавливаются в порядке возрастания строк."))
+
+(defgeneric squarep (matrix))
+
+(defgeneric mref (matrix row col))
+
+(defgeneric (setf mref) (value matrix row col)
+  (:documentation
+   "@b(Описание:) обобщенная_функция @b(mref) устанавливает
+значение @b(value) элементу матрицы, находящемуся в 
+строке @b(row) и столбце @b(col) ."))
+
+(defgeneric copy (obj))
+
+(defgeneric add (a b))
+
+(defgeneric multiply (a b))
+
+(defgeneric transpose (matrix))
