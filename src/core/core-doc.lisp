@@ -1,26 +1,5 @@
 (in-package :math/core)
 
-(defmacro make-doc (obj-name obj-type doc-string)
-  "obj-type -> function"
-  `(setf (documentation ,obj-name ,obj-type)
-         ,doc-string))
-
-(defun make-doc-methods (package)
-  "(make-doc-methods :math/core)"
-  (loop :for i :in (mnas-package/pkg:package-methods package)
-        :do
-           (format t "~%
-(make-doc
-  (find-method #'~S ~S '~S)
-  t
-  ~S)"
-                   (sb-mop:generic-function-name (sb-mop:method-generic-function i))
-                   (method-qualifiers i)
-                   (mapcar #' class-name(sb-mop:method-specializers i))
-                   (documentation i t))))
-
-
-
 (make-doc
  #'square
  'function 

@@ -47,10 +47,7 @@
   :components ((:module "src/core"
 		:serial nil
                 :components ((:file "core")
-                             (:file "core-doc"     :depends-on ("core" "method"))
-			     (:file "generic"      :depends-on ("core"))
-			     (:file "generic-matr" :depends-on ("core"))
-			     (:file "method"       :depends-on ("core" "generic"))))))
+                             (:file "core-doc" :depends-on ("core"))))))
 
 (defsystem "math/ls-rotation"
   :description "Реализация решение системы линейных уравнений методом вращения"
