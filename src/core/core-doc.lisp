@@ -181,6 +181,41 @@ val до количества значащих цифр, задаваемых а
 сумм квадратов расстояний по каждому направлению.")
 
 (make-doc
+  #'(setf MATH/CORE:ANTI-DIAGONAL)
+  'function
+  "@b(Описание:) обобщенная_функция @b((setf anti-diagonal)) устанавливет 
+новые значения элементам матрицы @b(matrix), на побочной диагонали матрицы.
+
+ Элементы @b(elements) устанавливаются в порядке возрастания строк.")
+
+(make-doc
+  #'(setf MATH/CORE:ROW)
+  'function
+  "@b(Описание:) обобщенная_функция @b((setf row))
+заменяет строку @b(row) матрицы @b(matrix) элементами, находящимися в списке @b(values).")
+
+(make-doc
+  #'(setf MATH/CORE:MREF)
+  'function
+  "@b(Описание:) обобщенная_функция @b(mref) устанавливает
+значение @b(value) элементу матрицы, находящемуся в 
+строке @b(row) и столбце @b(col) .")
+
+(make-doc
+  #'(setf MATH/CORE:MAIN-DIAGONAL)
+  'function
+  "@b(Описание:) обобщенная_функция @b((setf main-diagonal)) устанавливет 
+новые значения элементам матрицы @b(matrix), находящимся на главной диагонали.
+
+ Элементы @b(elements) устанавливаются в порядке возрастания строк.")
+
+(make-doc
+  #'(setf MATH/CORE:COL)
+  'function
+  "@b(Описание:) обобщенная_функция @b((setf col))
+заменяет столбец @b(col) матрицы @b(matrix) элементами, находящимися в списке @b(values).")
+
+(make-doc
   (find-method #'MATH/CORE:DISTANCE NIL '(NUMBER NUMBER))
   t
   "@b(Описание:) 
