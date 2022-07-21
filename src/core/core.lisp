@@ -125,45 +125,25 @@
 
 (defgeneric row (matrix row))
 
-(defgeneric (setf row) (values matrix row)
-    (:documentation "@b(Описание:) обобщенная_функция @b((setf row))
-заменяет строку @b(row) матрицы @b(matrix) элементами, находящимися в списке @b(values)."))
+(defgeneric (setf row) (values matrix row))
 
 (defgeneric col (matrix col))
 
-(defgeneric (setf col) (values matrix col)
-    (:documentation "@b(Описание:) обобщенная_функция @b((setf col))
-заменяет столбец @b(col) матрицы @b(matrix) элементами, находящимися в списке @b(values)."))
+(defgeneric (setf col) (values matrix col))
 
 (defgeneric main-diagonal (matrix))
 
-(export 'main-diagonal)
-
-(defgeneric (setf main-diagonal) (elements matrix)
-  (:documentation
-"@b(Описание:) обобщенная_функция @b((setf main-diagonal)) устанавливет 
-новые значения элементам матрицы @b(matrix), находящимся на главной диагонали.
-
- Элементы @b(elements) устанавливаются в порядке возрастания строк."))
+(defgeneric (setf main-diagonal) (elements matrix))
 
 (defgeneric anti-diagonal (matrix))
 
-(defgeneric (setf anti-diagonal) (elements matrix)
-  (:documentation
-"@b(Описание:) обобщенная_функция @b((setf anti-diagonal)) устанавливет 
-новые значения элементам матрицы @b(matrix), на побочной диагонали матрицы.
-
- Элементы @b(elements) устанавливаются в порядке возрастания строк."))
+(defgeneric (setf anti-diagonal) (elements matrix))
 
 (defgeneric squarep (matrix))
 
 (defgeneric mref (matrix row col))
 
-(defgeneric (setf mref) (value matrix row col)
-  (:documentation
-   "@b(Описание:) обобщенная_функция @b(mref) устанавливает
-значение @b(value) элементу матрицы, находящемуся в 
-строке @b(row) и столбце @b(col) ."))
+(defgeneric (setf mref) (value matrix row col))
 
 (defgeneric copy (obj))
 
