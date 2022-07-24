@@ -1,3 +1,5 @@
+;;;; ./src/core/core-doc.lisp
+
 (in-package :math/core)
 
 (defmacro make-doc (obj-name obj-type doc-string)
@@ -191,8 +193,9 @@ val до количества значащих цифр, задаваемых а
 (make-doc
   #'(setf MATH/CORE:ROW)
   'function
-  "@b(Описание:) обобщенная_функция @b((setf row))
-заменяет строку @b(row) матрицы @b(matrix) элементами, находящимися в списке @b(values).")
+  "@b(Описание:) обобщенная_функция @b((setf row)) заменяет строку
+ @b(row) матрицы @b(matrix) элементами, находящимися в списке
+ @b(values).")
 
 (make-doc
   #'(setf MATH/CORE:MREF)

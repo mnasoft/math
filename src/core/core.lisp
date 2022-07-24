@@ -1,4 +1,4 @@
-;;;; math.lisp
+;;;; ./src/core/core.lisp
 
 (defpackage #:math/core
   (:use #:cl)

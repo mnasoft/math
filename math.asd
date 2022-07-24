@@ -58,7 +58,8 @@
   ;; :depends-on ("math/arr-matr")
   :components ((:module "src/ls-rotation"
 		:serial t
-                :components ((:file "las-rotation")))))
+                :components ((:file "las-rotation")
+                             (:file "las-rotation-doc")))))
 
 (defsystem "math/gnuplot"
   :description "Интерфейс к программе построения графиков gnuplot"
@@ -81,7 +82,8 @@
   :depends-on ("cl-utilities" "math/stat")
   :components ((:module "src/list-matr"
 		:serial t
-                :components ((:file "list-matr")))))
+                :components ((:file "list-matr")
+                             (:file "list-matr-doc")))))
 
 (defsystem "math/ls-gauss"
   :description "Решение систем линейных уравнений методом Гаусса"
@@ -92,7 +94,8 @@
   :depends-on ("math/arr-matr")
   :components ((:module "src/ls-gauss"
 		:serial t
-                :components ((:file "ls-gauss")))))
+                :components ((:file "ls-gauss")
+                             (:file "ls-gauss-doc")))))
 
 (defsystem "math/2d-array"
   :description "Реализация некоторых операций над 
@@ -151,7 +154,8 @@
   :depends-on ("math/core") 
   :components ((:module "src/coord"
 		:serial t
-                :components ((:file "coord")))))
+                :components ((:file "coord")
+                             (:file "coord-doc")))))
 
 (defsystem "math/arr-matr"
   :description "Реализация некоторых операций над 
@@ -211,7 +215,8 @@
 ;;;;  :depends-on ("math/arr-matr")
   :components ((:module "src/geom"
 		:serial t
-                :components ((:file "geom")))))
+                :components ((:file "geom")
+                             (:file "geom-doc")))))
 
 (defsystem "math/docs"
   :description "Зависимости для сборки документации"
