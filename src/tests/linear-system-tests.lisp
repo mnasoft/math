@@ -18,7 +18,7 @@
 			      '(( 1.0 0.0 1.0 4.0 )
 				( 0.0 1.0 0.0 2.0 )
 				( 0.0 0.0 1.0 3.0 )))))
-    (is-true (math/arr-matr:equivalent m1-tr (math/arr-matr:convert-to-triangular m1)))))
+    (is-true (math/arr-matr:equivalent m1-tr (math/ls-gauss:convert-to-triangular m1)))))
 
 
 (def-test solve-linear-system-gauss-backward-run-test ()
@@ -30,7 +30,7 @@
 	(m1-obrhod (make-instance 'math/arr-matr:<matrix>
 				  :initial-contents '(( 1.0 2.0 3.0 )))))
     (is-true (math/arr-matr:equivalent m1-obrhod
-			      (math/ls-gauss::solve-linear-system-gauss-backward-run m1)))))
+			      (math/ls-gauss:solve-linear-system-gauss-backward-run m1)))))
 
 (def-test solve-linear-system-gauss-test ()
   "Пример использования: (test-solve-linear-system-gauss)"

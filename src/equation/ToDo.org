@@ -1,0 +1,16 @@
+* ToDo
+1. [ ] Добавить тесты для пакета equation
+2. [ ] Добавить функцию печати для классов
+   - [ ]  <linear>;
+   - [ ]  <quadric>;
+   - [ ]  <cubic>;
+   - [ ]  <quartic>.
+
+* DoNe
+1. [X] Выполнить переименование классов:
+   - [X] linear -> <linear>;
+   - [X] quadric -> <quadric>;
+   - [X] cubic -> <cubic>;
+   - [X] quartic -> <quartic>.
+
+* ReJecTed

@@ -3,11 +3,12 @@
 (defpackage #:math/equation
   (:use #:cl )
   (:export tab
+           func
            roots)
-  (:export linear
-           quadric
-           cubic
-           quartic)
+  (:export <linear>
+           <quadric>
+           <cubic>
+           <quartic>)
   (:export coeff-a
            coeff-b
            coeff-c
@@ -16,63 +17,110 @@
 
 (in-package :math/equation)
 
-(defclass linear ()
-  ((a :accessor coeff-a :initform 1.0 :initarg :a :documentation "Коэффициент при степени 1.")
-   (b :accessor coeff-b :initform -1.0 :initarg :b :documentation "Коэффициент при степени 0."))
-  (:documentation "Линейное уравнение."))
+(defclass <linear> ()
+  ((a :accessor coeff-a :initform  1.0 :initarg :a)
+   (b :accessor coeff-b :initform -1.0 :initarg :b)))
   
-(defclass quadric ()
-  ((a :accessor coeff-a :initform 1.0 :initarg :a :documentation "Коэффициент при степени 2.")
-   (b :accessor coeff-b :initform 0.0 :initarg :b :documentation "Коэффициент при степени 1.")
-   (c :accessor coeff-c :initform -1.0 :initarg :c :documentation "Коэффициент при степени 0."))
-  (:documentation "Квадратное уравнение."))
+(defclass <quadric> ()
+  ((a :accessor coeff-a :initform  1.0 :initarg :a)
+   (b :accessor coeff-b :initform  0.0 :initarg :b)
+   (c :accessor coeff-c :initform -1.0 :initarg :c)))
 
-(defclass cubic ()
-  ((a :accessor coeff-a :initform  1.0 :initarg :a :documentation "Коэффициент при степени 3.")
-   (b :accessor coeff-b :initform  0.0 :initarg :b :documentation "Коэффициент при степени 2.")
-   (c :accessor coeff-c :initform  0.0 :initarg :c :documentation "Коэффициент при степени 1.")
-   (d :accessor coeff-d :initform -1.0 :initarg :d :documentation "Коэффициент при степени 0."))
-  (:documentation "Кубическое уравнение."))
+(defclass <cubic> ()
+  ((a :accessor coeff-a :initform  1.0 :initarg :a)
+   (b :accessor coeff-b :initform  0.0 :initarg :b)
+   (c :accessor coeff-c :initform  0.0 :initarg :c)
+   (d :accessor coeff-d :initform -1.0 :initarg :d)))
 
-(defclass quartic ()
-  ((a :accessor coeff-a :initform  1.0 :initarg :a :documentation "Коэффициент при степени 4.")
-   (b :accessor coeff-b :initform  0.0 :initarg :b :documentation "Коэффициент при степени 3.")
-   (c :accessor coeff-c :initform  0.0 :initarg :c :documentation "Коэффициент при степени 2.")
-   (d :accessor coeff-d :initform  0.0 :initarg :c :documentation "Коэффициент при степени 1.")
-   (e :accessor coeff-e :initform -1.0 :initarg :c :documentation "Коэффициент при степени 0."))
-  (:documentation "Уравнение четвертой степени."))
+(defclass <quartic> ()
+  ((a :accessor coeff-a :initform  1.0 :initarg :a)
+   (b :accessor coeff-b :initform  0.0 :initarg :b)
+   (c :accessor coeff-c :initform  0.0 :initarg :c)
+   (d :accessor coeff-d :initform  0.0 :initarg :c)
+   (e :accessor coeff-e :initform -1.0 :initarg :c)))
+
+(defmethod print-object ((eq <linear>) s)
+  (format s "f(x)=(~S)*x+(~S)"
+          (coeff-a eq) (coeff-b eq)))
+
+(defmethod print-object ((eq <quartic>) s)
+  (format s "f(x)=(~S)*x^2+(~S)*x+(~S)"
+          (coeff-a eq) (coeff-b eq) (coeff-c eq)))
+
+(defmethod print-object ((eq <cubic>) s)
+  (format s "f(x)=(~S)*x^3+(~S)*x^2+(~S)*x+(~S)"
+          (coeff-a eq) (coeff-b eq) (coeff-c eq) (coeff-d eq)))
+
+(defmethod print-object ((eq <quartic>) s)
+  (format s "f(x)=(~S)*x^4+(~S)*x^3+(~S)*x^2+(~S)*x+(~S)"
+          (coeff-a eq) (coeff-b eq) (coeff-c eq) (coeff-d eq) (coeff-e eq)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defgeneric tab (eq x)
-  (:documentation 
-   "@b(Описание:) обобщенная_функция @b(tab) возвращает значение фукции @b(eq) в точке @b(x)."))
+(defgeneric tab (eq x))
 
-(defgeneric roots (eq)
-  (:documentation 
-   "@b(Описание:) обобщенная_функция @b(roots) возвращает корни уравнения @b(eq)."))
+(defgeneric roots (eq))
+
+(defgeneric func (eq))
+
+(defmethod func ((eq <linear>))
+  "(funcall (func (make-instance '<linear>)) 1)"
+  (values
+   #'(lambda (x) (+ (* x (coeff-a eq)) (coeff-b eq)))
+   (format nil "~S" eq)))
+
+(defmethod func ((eq <quadric>))
+  "(funcall (func (make-instance '<quadric>)) 2)"
+  (values
+   #'(lambda (x)
+       (+ (* x x (coeff-a eq))
+          (* x (coeff-b eq))
+          (coeff-c eq)))
+   (format nil "~S" eq)))
+
+(defmethod func ((eq <cubic>))
+  "(funcall (func (make-instance '<cubic>)) 5)"
+  (values
+   #'(lambda (x)
+       (+ (* x x x (coeff-a eq))
+          (* x x (coeff-b eq))
+          (* x (coeff-c eq))
+          (coeff-d eq)))
+   (format nil "~S" eq)))
+
+(defmethod func ((eq <quartic>))
+  "(funcall (func (make-instance '<quartic>)) 0)"
+  (values
+   #'(lambda (x)
+       (+
+        (* x x x x (coeff-a eq))
+        (* x x x (coeff-b eq))
+        (* x x (coeff-c eq))
+        (* x (coeff-d eq))
+        (coeff-e eq)))
+   (format nil "~S" eq)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defmethod tab ((eq linear) x)
+(defmethod tab ((eq <linear>) x)
   (let ((a (coeff-a eq)) 
         (b (coeff-b eq)))
     (+ (* a x ) b)))
 
-(defmethod tab ((eq quadric) x)
+(defmethod tab ((eq <quadric>) x)
   (let ((a (coeff-a eq)) 
         (b (coeff-b eq))
         (c (coeff-c eq)))
     (+ (* a x x) (* b x) c)))
 
-(defmethod tab ((eq cubic) x)
+(defmethod tab ((eq <cubic>) x)
   (let ((a (coeff-a eq))
         (b (coeff-b eq))
         (c (coeff-c eq))
         (d (coeff-d eq)))
     (+ (* a x x x) (* b x x) (* c x) d)))
 
-(defmethod tab ((eq quartic) x)
+(defmethod tab ((eq <quartic>) x)
   (let ((a (coeff-a eq))
         (b (coeff-b eq))
         (c (coeff-c eq))
@@ -82,26 +130,12 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defmethod roots ((eq linear))
-  "@b(Описание:) метод @b(roots) возвращает список корней линейного уравнения @b(eq).
-
- @b(Пример использования:)
-@begin[lang=lisp](code)
-(roots (make-instance 'linear :a 1 :b -2)) 
-
-@end(code)"
+(defmethod roots ((eq <linear>))
   (let ((a (coeff-a eq))
         (b (coeff-b eq)))
     (- (/ b a))))
 
-(defmethod roots ((eq quadric))
-  "@b(Описание:) метод @b(roots) возвращает список корней квадратного уравнения @b(eq).
-
- @b(Пример использования:)
-@begin[lang=lisp](code)
-(roots (make-instance 'quadric :a 1 :b -2 :c 1)) => (1.0 1.0)
-(roots (make-instance 'quadric :a 1 :b -4 :c 4)) => (2.0 2.0)
-@end(code)"
+(defmethod roots ((eq <quadric>))
   (let ((a (coeff-a eq))
         (b (coeff-b eq))
         (c (coeff-c eq)))
@@ -109,18 +143,7 @@
       (list (/ (+ (- b) Δ) 2 a)
             (/ (+ (- b) (- Δ)) 2 a)))))
 
-(defmethod roots ((eq cubic))
-  "@b(Описание:) метод @b(roots) возвращает список корней кубического уравнения @b(eq).
-
- @b(Пример использования:)
-@begin[lang=lisp](code)
-(roots (make-instance 'cubic :a 2 :b -3 :c -3 :d 2)) 
-=> (#C(-1.0d0 -0.0d0) #C(0.5000000000000004d0 2.9605947323337506d-16) #C(1.9999999999999996d0 -2.9605947323337506d-16))
-(roots (make-instance 'cubic :a 1 :b  2 :c 10 :d -20))
-=> (#C(-1.6844040539106864d0 -3.4313313501976914d0) #C(1.3688081078213714d0 1.9558293600573398d-16) #C(-1.684404053910686d0 3.4313313501976905d0))
-(roots (make-instance 'cubic :a 1 :b -6 :c 12  :d -8))
-=> (2.0d0 2.0d0 2.0d0)
-@end(code)"
+(defmethod roots ((eq <cubic>))
   (let ((a (coeff-a eq))
         (b (coeff-b eq))
         (c (coeff-c eq))
@@ -137,12 +160,5 @@
           (loop :for k :from 0 :to 2
                 :collect (* (/ -1.0d0 (* 3.0d0 a)) (+ b (* (expt ξ k) c) (/ Δ0 (* (expt ξ k) c)))))))))
 
-(defmethod roots ((eq quartic))
-  "@b(Описание:) метод @b(roots) возвращает список корней кубического уравнения @b(eq)."
+(defmethod roots ((eq <quartic>))
   (error "Not yet defined."))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(defparameter *eq* (make-instance 'linear))
-
-(roots *eq*)

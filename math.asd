@@ -252,7 +252,8 @@
 ;;;;  :depends-on ("math/arr-matr")
   :components ((:module "src/equation"
 		:serial t
-                :components ((:file "equation")))))
+                :components ((:file "equation")
+                             (:file "equation-doc")))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
