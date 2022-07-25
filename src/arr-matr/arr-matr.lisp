@@ -16,10 +16,7 @@
            transpose 
            matr-eval-*
            )
-  (:export *semi-equal-relativ*
-           *semi-equal-zero*
-           semi-equal
-           equivalent)
+  (:export equivalent)
   (:export mref
            copy
            dimensions
@@ -146,38 +143,9 @@
 
 ;;;;;;;;;; equivalent ;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defparameter *semi-equal-relativ* 1e-6
-  "@b(Описание:) переменная @b(*semi-equal-relativ*) определяет
-относительную величину, на которую могут отличаться значения 
-считающиеся равными при срвнении из с помощью функции @b(semi-equal).
-")
 
-(defparameter *semi-equal-zero*    1e-6
-    "@b(Описание:) переменная @b(*semi-equal-zero*) определяет
-абсолютную величину, на которую могут отличаться значения 
-считающиеся равными при срвнении из с помощью функции @b(semi-equal).
-")
 
-(defun semi-equal (x y
-		   &key (tolerance
-			 (+
-			  (*
-			   *semi-equal-relativ*
-			   (sqrt (+ (* y y) (* x x))))
-			  *semi-equal-zero*))) 
-  "@b(Описание:) функция @b(semi-equal) возвращает T, если 
-расстояние между значениями меньше tolerance. При этом 
-имеется в виду, что значения примерно равны.
-
- @b(Пример использования:)
-@begin[lang=lisp](code)
- (semi-equal 1.0 1.000001)
-@end(code)
-"
-  (labels ((distance (x y) (abs (- x y))))
-    (< (distance x y) tolerance)))
-
-(defmethod equivalent ((m1 <matrix>) (m2 <matrix>) &key (test #'semi-equal))
+(defmethod equivalent ((m1 <matrix>) (m2 <matrix>) &key (test #'math/core:semi-equal))
   (let ((rez t))
     (if (and (= (rows m1) (rows m2))
 	     (= (cols m1) (cols m2)))
@@ -187,7 +155,7 @@
 	(setf rez nil))
     rez))
 
-(defmethod equivalent ((a1 array) (a2 array) &key (test #'semi-equal))
+(defmethod equivalent ((a1 array) (a2 array) &key (test #'math/core:semi-equal))
    (declare (type (array * (* *)) a1 a2))
    (when (not (equal (array-dimensions a1)
 		     (array-dimensions a2)))
@@ -201,11 +169,11 @@
 			      (funcall test (aref a1 i j) (aref a2 i j)))))
 	   :initial-value t))
 
-(defmethod equivalent ((m1 <matrix>) (a2 array) &key (test #'semi-equal))
+(defmethod equivalent ((m1 <matrix>) (a2 array) &key (test #'math/core:semi-equal))
   (declare (type (array * (* *)) a2))  
   (equivalent m1 (make-instance '<matrix> :data a2) :test test))
 
-(defmethod equivalent ((a1 array) (m2 <matrix>) &key (test #'semi-equal))
+(defmethod equivalent ((a1 array) (m2 <matrix>) &key (test #'math/core:semi-equal))
   (declare (type (array * (* *)) a1))
   (equivalent (make-instance '<matrix> :data a1) m2 :test test))
 

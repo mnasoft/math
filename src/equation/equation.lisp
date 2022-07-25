@@ -1,7 +1,7 @@
 ;;;; ./src/equation/equation.lisp
 
 (defpackage #:math/equation
-  (:use #:cl )
+  (:use #:cl)
   (:export tab
            func
            roots)
@@ -36,14 +36,14 @@
   ((a :accessor coeff-a :initform  1.0 :initarg :a)
    (b :accessor coeff-b :initform  0.0 :initarg :b)
    (c :accessor coeff-c :initform  0.0 :initarg :c)
-   (d :accessor coeff-d :initform  0.0 :initarg :c)
-   (e :accessor coeff-e :initform -1.0 :initarg :c)))
+   (d :accessor coeff-d :initform  0.0 :initarg :d)
+   (e :accessor coeff-e :initform -1.0 :initarg :e)))
 
 (defmethod print-object ((eq <linear>) s)
   (format s "f(x)=(~S)*x+(~S)"
           (coeff-a eq) (coeff-b eq)))
 
-(defmethod print-object ((eq <quartic>) s)
+(defmethod print-object ((eq <quadric>) s)
   (format s "f(x)=(~S)*x^2+(~S)*x+(~S)"
           (coeff-a eq) (coeff-b eq) (coeff-c eq)))
 

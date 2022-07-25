@@ -223,13 +223,23 @@ val до количества значащих цифр, задаваемых а
 (make-doc
   (find-method #'MATH/CORE:DISTANCE NIL '(NUMBER NUMBER))
   t
-  "@b(Описание:) 
+  " @b(Пример использования:)
+@begin[lang=lisp](code)
+ (distance (complex 1 2) 0) => 2.236068
+ (distance 0 (complex 1 2)) => 2.236068
+ (distance (complex 0 2) (complex 1 2)) => 1.0
+@end(code)")
 
-@b(Пример использования:)
+(make-doc
+  (find-method #'MATH/CORE:DISTANCE NIL '(REAL REAL))
+  t
+  " @b(Пример использования:)
+@begin[lang=lisp](code)
  (distance 1 0 ) => 1
  (distance 2 0 ) => 2
  (distance 2 1 ) => 1
-")
+@end(code)"
+)
 
 (make-doc
   (find-method #'MATH/CORE:DISTANCE NIL '(CONS CONS))

@@ -1,16 +1,49 @@
 * ToDo
-1. [ ] Добавить тесты для пакета equation
-2. [ ] Добавить функцию печати для классов
-   - [ ]  <linear>;
-   - [ ]  <quadric>;
-   - [ ]  <cubic>;
-   - [ ]  <quartic>.
-
+1. [ ] Определить метод (defmethod roots ((eq <quartic>)) ... )
+2. [-] Добавить тесты для пакета equation
+   - [-] по доступу к слотам;
+     - [X] созданию
+       - [X]  <linear>;
+       - [X]  <quadric>;
+       - [X]  <cubic>;
+       - [X]  <quartic>;
+     - [X] извлечению
+       - [X]  <linear>;
+       - [X]  <quadric>;
+       - [X]  <cubic>;
+       - [X]  <quartic>;
+     - [ ] переопределению
+       - [ ]  <linear>;
+       - [ ]  <quadric>;
+       - [ ]  <cubic>;
+       - [ ]  <quartic>;
+   - [X] по методам tab
+     - [X]  <linear>;
+     - [X]  <quadric>;
+     - [X]  <cubic>;
+     - [X]  <quartic>.
+   - [ ] по методам func
+     - [ ]  <linear>;
+     - [ ]  <quadric>;
+     - [ ]  <cubic>;
+     - [ ]  <quartic>.
+   - [ ] по методам roots
+     - [ ]  <linear>;
+     - [ ]  <quadric>;
+     - [ ]  <cubic>;
+     - [ ]  <quartic>.
+   
 * DoNe
 1. [X] Выполнить переименование классов:
    - [X] linear -> <linear>;
    - [X] quadric -> <quadric>;
    - [X] cubic -> <cubic>;
    - [X] quartic -> <quartic>.
+2. [X] Добавить функцию печати для классов
+   - [X]  <linear>;
+   - [X]  <quadric>;
+   - [X]  <cubic>;
+   - [X]  <quartic>.
+     
 
 * ReJecTed

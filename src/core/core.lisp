@@ -2,6 +2,10 @@
 
 (defpackage #:math/core
   (:use #:cl)
+  (:export *semi-equal-relativ*
+           *semi-equal-zero*
+           semi-equal
+           )
   (:export summ-distance 
 	   distance               
 	   exclude-nil-from-list  
@@ -154,15 +158,53 @@
 (defgeneric transpose (matrix))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defparameter *semi-equal-relativ* 1e-6
+  "@b(Описание:) переменная @b(*semi-equal-relativ*) определяет
+относительную величину, на которую могут отличаться значения 
+считающиеся равными при срвнении из с помощью функции @b(semi-equal).
+")
+
+(defparameter *semi-equal-zero*    1e-6
+    "@b(Описание:) переменная @b(*semi-equal-zero*) определяет
+абсолютную величину, на которую могут отличаться значения 
+считающиеся равными при срвнении из с помощью функции @b(semi-equal).
+")
+
+(defgeneric semi-equal (x y &key tolerance) )
+
+(defmethod semi-equal (x y
+		   &key (tolerance
+			 (+
+			  (*
+			   *semi-equal-relativ*
+			   (sqrt (+ (* y y) (* x x))))
+			  *semi-equal-zero*))) 
+  "@b(Описание:) функция @b(semi-equal) возвращает T, если 
+расстояние между значениями меньше tolerance. При этом 
+имеется в виду, что значения примерно равны.
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (semi-equal 1.0 1.000001)
+@end(code)
+"
+  (< (distance x y) tolerance))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;; /src/core/method.lisp
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;; distance
 
-(defmethod distance ((x1 number) (x2 number) )
+(defmethod distance ((x1 real) (x2 real) )
   (let ((rez (- x1 x2)))
     (abs rez)))
+
+(defmethod distance ((x1 number) (x2 number))
+  (let ((dx-r (- (realpart x1) (realpart x2)))
+        (dx-i (- (imagpart x1) (imagpart x2))))
+    (sqrt (+ (* dx-r dx-r) (* dx-i dx-i)))))
 
 (defmethod distance ((x1-lst cons) (x2-lst cons))
   (assert (= (length x1-lst) (length x1-lst)))

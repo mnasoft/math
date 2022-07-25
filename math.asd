@@ -201,7 +201,8 @@
 				     (:file "matrix")
 				     (:file "linear-system-tests") 
 				     (:file "approximation-tests") 
-				     (:file "list-matr-tests") 
+				     (:file "list-matr-tests")
+                                     (:file "equation") 
 				     (:file "run")))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

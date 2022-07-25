@@ -1,0 +1,9 @@
+* ToDo
+1. [-] Вывести строки документации в отдельные файлы:
+   - [ ] arr-math;
+   - [X] coord;
+   - [X] core;
+   
+
+* Done
+1. [X] Перенести math/arr-matr:semi-equal -> math/core:semi-equal
