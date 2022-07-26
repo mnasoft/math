@@ -2,7 +2,8 @@
 
 (defpackage #:math/core
   (:use #:cl)
-  (:export *semi-equal-relativ*
+  (:export norma
+           *semi-equal-relativ*
            *semi-equal-zero*
            semi-equal
            )
@@ -109,7 +110,7 @@
 
 (defgeneric distance (x1 x2))
 
-(defgeneric distance-relative (x xi dx))
+(defgeneric distance-relative (x0 x1 dx))
 
 (defgeneric summ-distance (x1 x2))
 
@@ -171,25 +172,49 @@
 считающиеся равными при срвнении из с помощью функции @b(semi-equal).
 ")
 
+(defgeneric norma (x))
+
+(defmethod norma ((x real))
+  (abs x))
+
+(defmethod norma ((x number))
+  (sqrt (+ (* (realpart x) (realpart x))
+           (* (imagpart x) (imagpart x)))))
+
+(defmethod norma ((x cons))
+  (let ((n (loop :for i :in x
+                 :collect (* (norma i)))))
+    (/ (apply #'+ n) (length n))))
+
 (defgeneric semi-equal (x y &key tolerance) )
 
-(defmethod semi-equal (x y
-		   &key (tolerance
-			 (+
-			  (*
-			   *semi-equal-relativ*
-			   (sqrt (+ (* y y) (* x x))))
-			  *semi-equal-zero*))) 
+(defmethod semi-equal ((x number) (y number)
+		       &key
+                         (tolerance (+ *semi-equal-zero*
+                                       (* *semi-equal-relativ*
+                                          (norma (list (norma x) (norma y)))))))
   "@b(Описание:) функция @b(semi-equal) возвращает T, если 
 расстояние между значениями меньше tolerance. При этом 
 имеется в виду, что значения примерно равны.
 
  @b(Пример использования:)
 @begin[lang=lisp](code)
- (semi-equal 1.0 1.000001)
+ (semi-equal 1.0 1.000001) T
+ (semi-equal 1.0 1.00001)  nil
 @end(code)
 "
   (< (distance x y) tolerance))
+
+(defmethod semi-equal ((x cons) (y cons)
+                       &key
+                         (tolerance (+ *semi-equal-zero*
+                                       (* *semi-equal-relativ*
+                                          (norma (list (norma x)
+                                                       (norma y)))))))
+  (when (and (= (length x) (length y))
+             (< (distance x y) tolerance))
+    t))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;; /src/core/method.lisp
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -202,16 +227,14 @@
     (abs rez)))
 
 (defmethod distance ((x1 number) (x2 number))
-  (let ((dx-r (- (realpart x1) (realpart x2)))
-        (dx-i (- (imagpart x1) (imagpart x2))))
-    (sqrt (+ (* dx-r dx-r) (* dx-i dx-i)))))
+  (sqrt (+ (square (- (realpart x1) (realpart x2)))
+           (square (- (imagpart x1) (imagpart x2))))))
 
 (defmethod distance ((x1-lst cons) (x2-lst cons))
   (assert (= (length x1-lst) (length x1-lst)))
   (sqrt (apply #'+ (mapcar
 		    #'(lambda (x1 x2)
-			(let ((rez (- x1 x2)))
-			  (square rez)))
+			  (square (distance x1 x2)))
 		    x1-lst x2-lst))))
 
 (defmethod distance ((x1 vector) (x2 vector))
@@ -219,7 +242,13 @@
   (sqrt (apply #'+
 	       (loop :for i :from 0 :below (array-dimension x1 0)
 		     :collect
-		     (let ((rez (- (svref x1 i) (svref x2 i)))) (* rez rez))))))
+		     (square (distance (svref x1 i) (svref x2 i)))))))
+
+(defmethod distance ((x1 vector) (x2 vector))
+  (assert (= (length x1) (length x2)))
+  (sqrt (loop :for i :from 0 :below (array-dimension x1 0)
+	      :summing
+              (square (distance (svref x1 i) (svref x2 i))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;; distance-relative

@@ -3,7 +3,7 @@
 (in-package #:math/tests)
 
 (def-suite equation
-  :description "Мастер-набор всех тестов math-equation."
+  :description "Мастер-набор всех тестов math/equation."
   :in all)
 
 (in-suite equation)
@@ -55,15 +55,16 @@
     (is-true (math/core:semi-equal  (math/equation:tab cubic 1d0) 0d0))
     (is-true (math/core:semi-equal  (math/equation:tab cubic 2d0) 0d0))
     (is-true (math/core:semi-equal  (math/equation:tab cubic 3d0) 0d0))
-;;;; roots
+
     (is-false (math/core:semi-equal (math/equation:tab cubic 0.5d0) 0d0))
     (is-false (math/core:semi-equal (math/equation:tab cubic 1.5d0) 0d0))
     (is-false (math/core:semi-equal (math/equation:tab cubic 2.5d0) 0d0))
     (is-false (math/core:semi-equal (math/equation:tab cubic 3.5d0) 0d0))
     (is-false (math/core:semi-equal (math/equation:tab cubic 4.5d0) 0d0))
-
-    (is-true (math/core:semi-equal (sort (math/equation:roots cubic) #'<) '(1 2 3)))
-    ))
+;;;; roots
+    (is-true (math/core:semi-equal
+              (sort (math/equation:roots cubic) #'< :key #'math/core:norma)
+              '(1 2 3)))))
 
 (def-test equation-quartic-coeffs ()
   "def-test equation-quartic-coeffs ()"
@@ -84,20 +85,11 @@
     (is-false (math/core:semi-equal (math/equation:tab quartic 4.5d0) 0d0))
     (is-false (math/core:semi-equal (math/equation:tab quartic 5.5d0) 0d0))
 ;;;; roots
-    (is-true (math/core:semi-equal (sort (math/equation:roots quartic) #'<) '(1 2 3 4)))    
-    ))
+    #+nil
+    (is-true (math/core:semi-equal
+              (sort (math/equation:roots quartic) #'< :key #'math/core:norma)
+              '(1 2 3 4)))))
 
-#+nil
-(let ((quartic (make-instance 'math/equation:<quartic> :a 1 :b -10 :c 35 :d -50 :e 24)))
-  (math/equation:tab quartic 4d0))
-             
-#+nil(
-(:export tab
-           func
-           roots)
 
-(:export coeff-a
-           coeff-b
-           coeff-c
-           coeff-d
-           coeff-e))
+
+

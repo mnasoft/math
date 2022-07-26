@@ -198,11 +198,13 @@
 			:serial t
 			:components ((:file "package")
 				     (:file "all")
+                                     (:file "core")
+                                     (:file "equation")
 				     (:file "matrix")
 				     (:file "linear-system-tests") 
 				     (:file "approximation-tests") 
 				     (:file "list-matr-tests")
-                                     (:file "equation") 
+                                      
 				     (:file "run")))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
