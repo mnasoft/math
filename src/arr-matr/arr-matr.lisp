@@ -1,7 +1,7 @@
 ;;;; /src/arr-matr/package.lisp
 
 (defpackage #:math/arr-matr
-  (:use #:cl) ;;#:math/core
+  (:use #:cl) 
   (:export matr-new
 	   <matrix>
            )
@@ -28,62 +28,22 @@
            squarep
            anti-diagonal
            add
-           multiply)
-  #+nil
-  (:export math/core:mref
-   	   math/core:col
-           math/core:row
-	   math/core:cols
-   	   math/core:rows
-           math/core:equivalent
-           math/core:add
-           math/core:multiply
-           math/core:main-diagonal
-           math/core:dimensions
-           math/core:squarep
-           math/core:anti-diagonal
-           math/core:copy
-           )
-  )
+           multiply))
 
-(in-package #:math/arr-matr)
+(in-package :math/arr-matr)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defgeneric matr-eval-* (matrix) (:documentation "Matr"))
+(defgeneric matr-eval-* (matrix) )
 
-(defgeneric matr-equal* (matrix1 matrix2 &key test) (:documentation "Проверка матриц на равенство"))
+(defgeneric matr-equal* (matrix1 matrix2 &key test) )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defclass <matrix> ()
-  ((data :accessor matrix-data :initform nil :initarg :data
-	 :documentation "Сдержимое матрицы."))
-  (:documentation "Представляет матрицу, определенную через массив.
+  ((data :accessor matrix-data :initform nil :initarg :data)))
 
- Создание:
-@begin(list)
- @item(при помощи функции matr-new)
- @item( )
-@end(list)
-
- @b(Пример использования:)
-@begin[lang=lisp](code)
- (matr-new 2 3)
- => Matr 2х3
-    [ 0.0d0     0.0d0     0.0d0    ]
-    [ 0.0d0     0.0d0     0.0d0    ]
- (matr-new 3 2 '(1 2 3 4 5))
- => Matr 3х2
-    [ 1         2        ]
-    [ 3         4        ]
-    [ 5         NIL      ]
-@end(code)
-"))
-
-(defmethod matr-name-* ((mm <matrix>))
-  "@b(Описание:) функция|метод|обобщенная_функция| @b(...) "
-  "Matr")
+(defmethod matr-name-* ((mm <matrix>)))
 
 (defmethod print-object ((mm <matrix>) s)
   (format s "~A " (matr-name-* mm))
@@ -117,8 +77,6 @@
 Что-то пошло не так!"))))
 
 (defun matr-new (rows cols &optional (lst nil))
-  "Примечание:
- (matr-new 3 4 '(1 2 3 4 5 6 7 8 9 10)) "
   (let ((mm (make-instance '<matrix> :dimensions (list rows cols) :initial-element 0.0d0))
 	(ll lst))
     (when (consp lst)
@@ -142,8 +100,6 @@
 (defmethod cols ((mm <matrix>)) (array-dimension (matrix-data mm) 1))
 
 ;;;;;;;;;; equivalent ;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-
 
 (defmethod equivalent ((m1 <matrix>) (m2 <matrix>) &key (test #'math/core:semi-equal))
   (let ((rez t))
@@ -206,115 +162,24 @@
     mm))
 
 (defmethod main-diagonal ((mm <matrix>))
-  " @b(Пример использования:)
-@begin[lang=lisp](code)
- (defparameter *mm* 
-   (make-instance '<matrix> :initial-contents 
-    '(( 1d0  2d0  3d0) 
-      ( 4d0  5d0  6d0) 
-      ( 7d0  8d0  9d0) 
-      (10d0 11d0 12d0))))
- *mm*  =>  Matr 4х3
-           [ 1.0d0     2.0d0     3.0d0    ]
-           [ 4.0d0     5.0d0     6.0d0    ]
-           [ 7.0d0     8.0d0     9.0d0    ]
-           [ 10.0d0    11.0d0    12.0d0   ]
-
-(main-diagonal *mm*) =>  (1.0d0 5.0d0 9.0d0)
-@end(code)"
   (loop :for i :from 0 :below (min (rows mm) (cols mm))
 	:collect (mref mm i i)))
 
 (defmethod (setf main-diagonal) (elements (mm <matrix>))
-  "@b(Пример использования:)
-@begin[lang=lisp](code)
- (defparameter *mm* 
-   (make-instance '<matrix> 
-      :initial-contents '(( 1d0  2d0  3d0) 
-                          ( 4d0  5d0  6d0) 
-                          ( 7d0  8d0  9d0) 
-                          (10d0 11d0 12d0))))
- *mm* =>  Matr 4х3
-          [ 1.0d0     2.0d0     3.0d0    ]
-          [ 4.0d0     5.0d0     6.0d0    ]
-          [ 7.0d0     8.0d0     9.0d0    ]
-          [ 10.0d0    11.0d0    12.0d0   ]
-
- (setf (main-diagonal *mm*) '(11d0 22d0 33d0)) 
- *mm* => Matr 4х3
-        [ 11.0d0    2.0d0     3.0d0    ]
-        [ 4.0d0     22.0d0    6.0d0    ]
-        [ 7.0d0     8.0d0     33.0d0   ]
-        [ 10.0d0    11.0d0    12.0d0   ]
-@end(code)"        
   (loop :for i :from 0 :below (min (rows mm) (cols mm))
 	:for el :in elements :by #'cdr  :do
 	  (setf (mref  mm i i) el))
   mm)
 
 (defmethod (setf main-diagonal) ((element number) (mm <matrix>) )
-"@b(Пример использования:)
-@begin[lang=lisp](code)
- (defparameter *mm* 
-   (make-instance '<matrix> 
-      :initial-contents '(( 1d0  2d0  3d0) 
-                          ( 4d0  5d0  6d0) 
-                          ( 7d0  8d0  9d0) 
-                          (10d0 11d0 12d0))))
- *mm* =>  Matr 4х3
-          [ 1.0d0     2.0d0     3.0d0    ]
-          [ 4.0d0     5.0d0     6.0d0    ]
-          [ 7.0d0     8.0d0     9.0d0    ]
-          [ 10.0d0    11.0d0    12.0d0   ]
-
- (setf (main-diagonal *mm*) 11d0) 
-  Matr 4х3
-  [ 11.0d0     2.0d0    3.0d0   ]
-  [ 4.0d0     11.0d0    6.0d0   ]
-  [ 7.0d0      8.0d0   11.0d0   ]
-  [ 10.0d0    11.0d0   12.0d0   ]
-
- *mm* => Matr 4х3
-  [ 11.0d0    2.0d0     3.0d0    ]
-  [ 4.0d0     11.0d0    6.0d0    ]
-  [ 7.0d0     8.0d0     11.0d0   ]
-  [ 10.0d0    11.0d0    12.0d0   ]
-@end(code)"    
   (loop :for i :from 0 :below (min (rows mm) (cols mm))
 	:do (setf (mref  mm i i) element))
   mm)
 
 (defmethod squarep ((mm <matrix>))
-  "@b(Описание:) метод @b(squarep) возвращает T, если матрица является
-  квадратной. В противном случае возвращает nil.
-
- @b(Пример использования:)
-@begin[lang=lisp](code)
-  (defparameter *mm* (make-instance '<matrix>   :dimensions '(2 3)))
-  (squarep *mm*) => nil
-
-  (defparameter *mm* (make-instance '<matrix>   :dimensions '(3 3)))
-  (squarep *mm*) => T
-@end(code)
-"
   (= (cols mm) (rows mm) ))
 
 (defmethod anti-diagonal ((mm <matrix>))
-"@b(Пример использования:)
-@begin[lang=lisp](code)
- (defparameter *mm* 
-  (make-instance '<matrix> 
-   :initial-contents '((1d0 2d0 3d0) 
-                       (4d0 5d0 6d0) 
-                       (7d0 8d0 9d0))))
- =>
- Matr 3х3
- [ 1.0d0     2.0d0     3.0d0    ]
- [ 4.0d0     5.0d0     6.0d0    ]
- [ 7.0d0     8.0d0     9.0d0    ]
-
-  (anti-diagonal  *mm*) => (3.0d0 5.0d0 7.0d0)
-  @end(code)"  
   (assert (squarep mm) (mm) "Матрица не является квадратной~%~S" mm)
   (loop
      :for c :from 0 :below (cols mm)
@@ -331,24 +196,6 @@
   mm)
 
 (defmethod add ((a <matrix> ) (b <matrix>))
-  "@b(Описание:) метод @b(add) возвращает матрицу типа <matrix>,
-являющуюся результатом сложения матриц a и b.
-
- @b(Пример использования:)
-@begin[lang=lisp](code)
- (add (matr-new 2 2 '(1 2 
-                      3 4)) 
-      (matr-new 2 2 '(1 2 
-                      3 4)))
-  => Matr 2х2
-     [ 2         4        ]
-     [ 6         8        ]
- (add (matr-new 2 2 '(1 2 3 4)) (matr-new 2 2 '(4 3 2 1)))
-  => Matr 2х2
-     [ 5         5        ]
-     [ 5         5        ]
-@end(code)
-"
   (assert (and (= (rows a) (rows b)) (= (cols a) (cols b))) (a b)
 	  "Матрицы A[~A,~A] и B[~A,~A] имеют отличаюшиеся размеры"
 	  (rows a) (cols a) (rows b) (cols b))
@@ -360,30 +207,6 @@
     a+b))
 
 (defmethod multiply ((a <matrix> ) (b <matrix>))
-  "@b(Описание:) метод @b(multiply) возвращает матрицу типа <matrix>,
-являющуюся результатом умножения матриц @b(a) и @b(b).
-
- @b(Пример использования:)
-@begin[lang=lisp](code)
- (multiply (matr-new 2 3 '(1.0 2.0 3.0
-			   4.0 5.0 6.0))
-	   (matr-new 3 2 '(1.0 2.0
-			   3.0 4.0
-			   5.0 6.0)))
- => Matr 2х2
-    [ 22.0 28.0 ]
-    [ 49.0 64.0 ]
- (multiply (matr-new 3 2 '(1.0 2.0
-			   3.0 4.0
-			   5.0 6.0))
-	   (matr-new 2 3 '(1.0 2.0 3.0
-			   4.0 5.0 6.0)))
- => Matr 3х3
-    [ 9.0  12.0 15.0 ]
-    [ 19.0 26.0 33.0 ]
-    [ 29.0 40.0 51.0 ]
-@end(code)
-"
   (let ((a_n (rows a))
 	(a_m (cols a))
 	(b_n (rows b))
@@ -405,19 +228,6 @@
     c))
 
 (defmethod multiply ((a number ) (b <matrix>))
-    "@b(Описание:) метод @b(multiply) возвращает матрицу типа (<matrix>),
-     являющуюся результатом умножения числа @b(a) и матрицы @b(b).
-
- @b(Пример использования:)
-@begin[lang=lisp](code)
- (multiply 10 
-           (matr-new 2 3 '(1.0 2.0 3.0
-			   4.0 5.0 6.0)))
- => Matr 2х3
-    [ 10.0      20.0      30.0     ]
-    [ 40.0      50.0      60.0     ]
-@end(code)
-"
   (let ((rez (make-instance '<matrix> :dimensions (dimensions b))))
     (loop :for i :from 0 :below (rows b) :do
 	 (loop :for j :from 0 :below (cols b) :do
@@ -429,18 +239,6 @@
 					(row mm i)))
 
 (defmethod transpose ((mm <matrix>))
-  "@b(Описание:) метод @b(transpose) возвращает матрицу типа <matrix>,
-   являющуютя результатом транспонирования матрицы @b(mm).
-
- @b(Пример использования:)
-@begin[lang=lisp](code)
- (transpose (matr-new 2 3 '(1 2 3
-                            4 5 6)))
-  => Matr 3х2
-     [ 1         4        ]
-     [ 2         5        ]
-     [ 3         6        ]
-@end(code)"
   (let ((rez (make-instance '<matrix> :dimensions (nreverse (dimensions mm)))))
     (loop :for i :from 0 :below (rows mm) :do
 	 (loop :for j :from 0 :below (cols mm) :do
@@ -448,7 +246,6 @@
     rez))
 
 (defmethod transpose ((mm cons))
-  "Выполняет транспонирование"
   (apply #'mapcar #'list mm))
 
 (defmethod swap-rows*  ((mm <matrix>) i j)
@@ -476,7 +273,6 @@
   (swap-cols* (copy mm) i j))
 
 (defmethod matr-eval-* ((mm <matrix>))
-  "Мутная функция и непонятно как ее использовать и где?"
   (let ((rows (rows mm))
 	(cols (cols mm))
 	(mm-cp (copy  mm)))
