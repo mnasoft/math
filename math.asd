@@ -118,7 +118,8 @@
   :depends-on ("math/core" "math/2d-array" "math/ls-gauss" "math/arr-matr" "math/smooth" ) ;;;; "math"
   :components ((:module "src/appr"
 		:serial t
-                :components ((:file "appr")))))
+                :components ((:file "appr")
+                             (:file "appr-doc")))))
 
 (defsystem "math/stat"
   :description "Describe math here"
