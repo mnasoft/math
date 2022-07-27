@@ -32,8 +32,14 @@
 #+latex_header:
 
 * ToDo
+1. [ ] Отделить документацию от кода
 1. [ ] Расширить документацию.
 2. [ ] Определить тесты.
 3. [ ] Разобраться с примерами.
-4. [ ] Сообщить об ошибке в font-discover          
+4. [ ] Сообщить об ошибке в font-discover
+5. [ ] Переименовать классы:
+   - [ ]  term-pdfcairo -> <term-pdfcairo> 
+   - [ ]  term-pngcairo -> <term-pngcairo>
+   - [ ]  gnuplot-vector -> <gnuplot-vector>
+       
 * DoNe

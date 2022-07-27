@@ -25,13 +25,11 @@
 (in-package :math/gnuplot)
 
 (defparameter *default-gnuplot-direcroty*
-  (ensure-directories-exist #P"~/gnuplot/")
-  "Каталог для вывода по умолчанию.")
+  (ensure-directories-exist #P"~/gnuplot/"))
 
 ;;;; (directory-namestring *default-gnuplot-direcroty*)
 
 (defun file-name (f-name &optional (f-ext ""))
-  "Определяет имя файла в каталоге поумолчанию."
   (assert (stringp f-name))
   (assert (stringp f-ext))
   (if (string= "" f-ext)
@@ -41,30 +39,10 @@
                    f-name "." f-ext)))
 
 (defun find-font-family (&key (family "Times New Roman"))
-  "@b(Описание:) функция @b(find-font-family) возвращает имя шрифта,
-установленного в систему похожего на тот, что указан.
-
- @b(Пример использования:)
-@begin[lang=lisp](code)
- (find-font-family :family \"Arial\")
- (find-font-family :family \"Courier New\")
- (find-font-family :family \"Times New Roman\")
-@end(code)
-"
  (org.shirakumo.font-discovery:family
   (org.shirakumo.font-discovery:find-font :family family)))
 
 (defun rgb (aa rr gg bb)
-  "@b(Описание:) функция @b(rgb) возвращает строковое представление цвета.
-
- @b(Переменые:)
-@begin(list)
-@iterm(aa = 0..255 яркость;) 
-@iterm(rr = 0..255 насыщенность красного;) 
-@iterm(gg = 0..255 насыщенность зеленого;) 
-@iterm(bb = 0..255 насыщенность синего.) 
-@end(list)
-"
   (assert (and (<= 0 aa 255) (<= 0 rr 255) (<= 0 gg 255) (<= 0 bb 255)))
   (format nil "#~X~X~X~X" aa rr gg bb))
 
@@ -83,38 +61,12 @@
    (size-units           :initarg size-units           :initform :cm :documentation "По умолчанию - пиксели|пиксели=72*in|пиксели=72/25.4*cm")
    ))
 
-(defclass term-pdfcairo (<term>)
-  ()
-  (:documentation
-   "
- @b(Пример использования:)
-@begin[lang=gnuplot](code)
- set term pdfcairo
-             {{no}enhanced} {mono|color}
-             {font <font>} {fontscale <scale>}
-             {linewidth <lw>} {rounded|butt|square} {dashlength <dl>}
-             {background <rgbcolor>}
-             {size <XX>{unit},<YY>{unit}}
-@end(code)
-"))
+(defclass term-pdfcairo (<term>) ())
 
 (defclass term-pngcairo (<term>)
-  ((no-transparent       :initarg no-transparent       :initform :no-transparent)
-   (no-crop              :initarg no-crop              :initform :no-crop)
-   (pointscale           :initarg pointscale           :initform 1.0))
-  (:documentation 
-   "
- @b(Пример использования:)
-@begin[lang=gnuplot](code)
- set term pngcairo
-             {{no}enhanced} {mono|color}
-             {{no}transparent} {{no}crop} {background <rgbcolor>}
-             {font <font>} {fontscale <scale>}
-             {linewidth <lw>} {rounded|butt|square} {dashlength <dl>}
-             {pointscale <ps>}
-             {size <XX>{unit},<YY>{unit}}
-@end(code)
-"))
+  ((no-transparent :initarg no-transparent :initform :no-transparent)
+   (no-crop        :initarg no-crop        :initform :no-crop)
+   (pointscale     :initarg pointscale     :initform 1.0)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -262,16 +214,6 @@
           (split-range x-from x-to steps)))
 
 (defun make-table (lst-1 lst-2)
-"@b(Описание:) make-table выполняет формирование списка точек, разделенного на группы.
-
- @b(Пример использования:)
-@begin[lang=lisp](code)
-  (make-table (split-range 1.0 0.0 2) (split-range -3 0 3))
-  =>  (((1.0 -3.0) (1.0 -2.0) (1.0 -1.0) (1.0 0.0))
-       ((0.5 -3.0) (0.5 -2.0) (0.5 -1.0) (0.5 0.0))
-       ((0.0 -3.0) (0.0 -2.0) (0.0 -1.0) (0.0 0.0)))
-@end(code)
-"
   (assert (consp lst-1)) 
   (assert (consp lst-2))
   (assert (not (find-if-not #'numberp lst-1)))
@@ -285,32 +227,6 @@
      lst-1)))
 
 (defun table-apply (table func &rest second-and-others)
-"@b(Описание:) функция @b(table-apply)
-
- @b(Пример использования:)
-@begin[lang=lisp](code)
- (make-table (split-range 1 4 3) (split-range 5 7 2)) 
- => 
- (((1.0 5.0) (1.0 6.0) (1.0 7.0)) 
-  ((2.0 5.0) (2.0 6.0) (2.0 7.0))
-  ((3.0 5.0) (3.0 6.0) (3.0 7.0)) 
-  ((4.0 5.0) (4.0 6.0) (4.0 7.0)))
-
- (table-apply (make-table (split-range 1 4 3) (split-range 5 7 2))  #'* 10.) 
- =>
- (((1.0 5.0  50.0) (1.0 6.0  60.0) (1.0 7.0  70.0))
-  ((2.0 5.0 100.0) (2.0 6.0 120.0) (2.0 7.0 140.0))
-  ((3.0 5.0 150.0) (3.0 6.0 180.0) (3.0 7.0 210.0))
-  ((4.0 5.0 200.0) (4.0 6.0 240.0) (4.0 7.0 280.0)))
-
- (table-apply (make-table (split-range 1 4 3) (split-range 5 7 2))  #'vector)
- =>
- (((1.0 5.0 #(1.0 5.0)) (1.0 6.0 #(1.0 6.0)) (1.0 7.0 #(1.0 7.0)))
-  ((2.0 5.0 #(2.0 5.0)) (2.0 6.0 #(2.0 6.0)) (2.0 7.0 #(2.0 7.0)))
-  ((3.0 5.0 #(3.0 5.0)) (3.0 6.0 #(3.0 6.0)) (3.0 7.0 #(3.0 7.0)))
-  ((4.0 5.0 #(4.0 5.0)) (4.0 6.0 #(4.0 6.0)) (4.0 7.0 #(4.0 7.0))))
-@end(code)
-"
   (assert (consp table))
   (mapcar
    #'(lambda (el)
@@ -321,12 +237,6 @@
    table))
 
 (defun table-apply-0 (table func &rest second-and-others &key )
-  "Пример использования:
-   (table-apply-0 (make-table (split-range 1 4 3) (split-range 5 7 2))  #'vector) =>
-   ((#(1.0 5.0) #(1.0 6.0) #(1.0 7.0))
-    (#(2.0 5.0) #(2.0 6.0) #(2.0 7.0))
-    (#(3.0 5.0) #(3.0 6.0) #(3.0 7.0))
-    (#(4.0 5.0) #(4.0 6.0) #(4.0 7.0))) "
   (assert (consp table))
   (mapcar
    #'(lambda (el)
@@ -337,14 +247,6 @@
    table))
 
 (defun table-apply-1 (table func &rest second-and-others)
-  "Пример использования:
-  ;;(table-apply-1 (make-table (split-range 1 4 3) (split-range 5 7 2))  #'*  10.) 
-
-=>
- (((1.0 5.0 50.0) (1.0 6.0 60.0) (1.0 7.0 70.0))
-  ((2.0 5.0 100.0) (2.0 6.0 120.0) (2.0 7.0 140.0))
-  ((3.0 5.0 150.0) (3.0 6.0 180.0) (3.0 7.0 210.0))
-  ((4.0 5.0 200.0) (4.0 6.0 240.0) (4.0 7.0 280.0)))"
   (assert (consp table))
   (mapcar
    #'(lambda (el)
@@ -356,25 +258,9 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defgeneric gnuplot-data-to-file (f-name data)
-  (:documentation
-   "@b(Описание:) обобщенная функция @b(gnuplot-data-to-file) выводит данные
-@b(data) в файл с именем @b(f-name), расположенный в каталоге поумолчанию
-(см. переменную *default-gnuplot-direcroty*)."))
+(defgeneric gnuplot-data-to-file (f-name data))
 
 (defmethod gnuplot-data-to-file (f-name (data cons))
-  "@b(Описание:) метод @b(gnuplot-data-to-file) выводит данные
-@b(data) в файл с именем @b(f-name), расположенный в каталоге поумолчанию
-(см. переменную *default-gnuplot-direcroty*). 
-
- Данные должны быть представлены 2d-list.
-
- @b(Пример использования:)
-@begin[lang=lisp](code)
- (gnuplot-data-to-file \"data\" 
-  (loop :for i :from 0 :to 4 :by 1/10 :collect (list i (* i i))))
-@end(code)
-"
   (with-open-file (os (file-name f-name "data") :direction :output :if-exists :supersede :external-format :utf8)
     (mapc #'(lambda (el) (format os "~{~F ~}~%" el)) data)
     (format t "'~A'" (file-name f-name "data"))))
@@ -382,20 +268,6 @@
 ;;;; (gnuplot-data-to-file "data-2d-list" (loop :for i :from 0 :to 4 :by 1/10 :collect (list i (* i i))))
 
 (defmethod gnuplot-data-to-file (f-name (data array))
-  "@b(Описание:) метод @b(gnuplot-data-to-file) выводит данные
-@b(data) в файл с именем @b(f-name), расположенный в каталоге поумолчанию
-(см. переменную *default-gnuplot-direcroty*). 
-
- Данные должны быть представлены 2d-array.
-
- @b(Пример использования:)
-@begin[lang=lisp](code)
- (gnuplot-data-to-file \"data\" 
-  (loop :for i :from 0 :to 4 :by 1/10 :collect (list i (* i i))))
-@end(code)
-
- (gnuplot-data-to-file \"data\" (make-array '(5 2) :initial-contents '((0 0)(1 1)(2 4)(3 9)(4 16))))
-"
   (assert (= (array-rank data) 2))
   (with-open-file (os (file-name f-name "data") :direction :output :if-exists :supersede :external-format :utf8)
     (loop :for i :from 0 :below (array-dimension data 0) :do
@@ -408,15 +280,12 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defparameter *palette-defined* "set palette defined (0.05 'blue', 0.2 'cyan', 0.4 'green', 0.6 'yellow', 0.8 'orange', 1.0 'red')"
-  "STUB")
+(defparameter *palette-defined* "set palette defined (0.05 'blue', 0.2 'cyan', 0.4 'green', 0.6 'yellow', 0.8 'orange', 1.0 'red')")
 
 (defparameter *palette-defined-01*
-  "set palette defined (0 'blue', 0.1 'white', 0.2 'cyan', 0.3 'white', 0.4 'green', 0.5 'white', 0.6 'yellow', 0.7 'white', 0.8 'orange', 0.9 'white', 1 'red')"
-  "STUB")
+  "set palette defined (0 'blue', 0.1 'white', 0.2 'cyan', 0.3 'white', 0.4 'green', 0.5 'white', 0.6 'yellow', 0.7 'white', 0.8 'orange', 0.9 'white', 1 'red')")
 
-(defparameter *pm3d-map* "set pm3d map"
-  "STUB")
+(defparameter *pm3d-map* "set pm3d map")
 
 (defun gnuplot-splot (f-name
 		      &key
@@ -426,9 +295,6 @@
 			(palette  *palette-defined*) 
 			(pm3d     *pm3d-map*)
 			(splot    (concatenate 'string "splot '" (file-name f-name "data") "' u 2:1:3")))
-  "Осуществляет подготовку данных, содержащихся в файле f-name с расширением data.
-Данные в файле должны иметь формат gp-list
-"
   (assert (probe-file (file-name f-name "data")))
   (with-open-file (gp (file-name f-name "gp") :direction :output :if-exists :supersede :external-format :utf8)
     (when terminal (format gp "~A~%" terminal))
@@ -450,7 +316,6 @@
 			   (palette  *palette-defined*) 
 			   (pm3d     *pm3d-map*)
 			   (splot    (concatenate 'string "splot '" (file-name f-name "data")"' u 2:1:3")))
-  "STUB"
   (assert (consp data))
   (assert (consp (first data)))
   (assert (consp (first (first data))))
@@ -488,18 +353,6 @@
                             (output   (concatenate 'string "set output '" (file-name f-name "pdf") "'"))
 			    (preamble "set xrange [0:4]")
 			    (plot    (concatenate 'string "plot '" (file-name f-name "data")"' u 1:2 with lines")))
-  "@b(Описание:) функция @b(gnuplot-data-plot)
-
- @b(Пример использования:)
-@begin[lang=lisp](code)
-;;;; Пример 1
- (math:gnuplot-data-plot
- \"plot2\"
- (mapcar #'(lambda (x) (list x (sin x)(sqrt x)) )
-	 (math:split-range 0.0 10 1000) )
- :plot \"plot 'plot2.data' u 1:2 with lines lt 1, 'plot2.data' u 1:3 with lines lt 2 \")
-@end(code)
-"
   (assert (consp data))
   (assert (consp (first data)))
   (with-open-file (os (file-name f-name "data") :direction :output :if-exists :supersede :external-format :utf8)
@@ -524,7 +377,6 @@
 		              (preamble "set xrange [0:2.5]")
 		              (output   (concatenate 'string "set output '" (file-name f-name ".pdf") "'"))
 			      (plot    (concatenate 'string "plot '" (file-name f-name ".data") "' u 2:1")))
-  "STUB"
   (with-open-file (gp (file-name f-name ".gp")  :direction :output :if-exists :supersede :external-format :utf8)
     (when terminal (format gp "~A~%" terminal))
     (when preamble (format gp "~A~%" preamble)) 
@@ -551,20 +403,6 @@
   (uiop:run-program (concatenate 'string "sh" " " (file-name f-name "sh")) :ignore-error-status t))
 
 (defun make-plot-data-file (f-name data)
-"@b(Описание:) функция @b(make-plot-data-file) выполняет вывод
-данных @b(data) в файл с именем f-name и расширением data.
-
- @b(Пример использования:)
-@begin[lang=lisp](code)
-;;;; Пример 1
- (make-plot-data-file
-  \"plot2\"
-  (mapcar
-   #'(lambda (x)
-       (list x (sin x) (sqrt x)))
-   (math:split-range 0.0 10 1000)))
-@end(code)
-"
   (assert (consp data))
   (assert (consp (first data)))
   (with-open-file (os (concatenate 'string f-name "." "data") :direction :output :if-exists :supersede :external-format :utf8)

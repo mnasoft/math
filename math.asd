@@ -183,8 +183,8 @@
   :depends-on (:math :gsll)
   :components ((:module "src/ls-solve"
 		:serial t
-                :components ((:file "package")
-			     (:file "lu-solve")))))
+                :components ((:file "lu-solve")
+                             (:file "lu-solve-doc")))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

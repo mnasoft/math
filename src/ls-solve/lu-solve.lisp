@@ -1,5 +1,10 @@
 ;;;; ls-solve/lu-solve.lisp
 
+;;;; ls-solve/package.lisp
+
+(defpackage #:math-ls-solve
+  (:use #:cl ))
+
 (in-package #:math-ls-solve)
 
 ;;; В данном файле определяются некоторые операции над матрицами,
