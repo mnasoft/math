@@ -1,51 +1,33 @@
-;;;; ls-solve/lu-solve.lisp
+;;;; ./src/ls-solve/ls-solve.lisp
 
-;;;; ls-solve/package.lisp
+(defpackage #:math/ls-solve
+  (:use #:cl )
+  (:export lu-solve
+           lu-solve-extmatr)
+  (:documentation
+   "@b(Описание:) пакет @b(math/ls-solve) пределяет функции для
+ решения СЛАУ методом LU-разложения при помощи системσ GSLL."))
 
-(defpackage #:math-ls-solve
-  (:use #:cl ))
-
-(in-package #:math-ls-solve)
-
-;;; В данном файле определяются некоторые операции над матрицами,
-;;; представленными 2d-list, (списком состоящим из списков)
-
+(in-package #:math/ls-solve)
 
 (defun lu-solve (matrix vector)
-  "@b(Описание:) функция| @b(lu-solve) возвращает корни решения СЛАУ 
-(системы линейных алгебраических уравнений), 
-используя LU-разложение матрицы @b(matrix).
-
- @b(Пример использования:)
-@begin[lang=lisp](code)
- (let ((m (grid:make-foreign-array 'double-float :initial-contents '((1 2 3)  
-								     (2 1 1)  
-								     (3 0 1)))) 
-       (v (grid:make-foreign-array 'double-float :initial-contents '(14 7 6))))
-   (lu-solve m v)) => 
-#m(1.000000000000000d0 2.000000000000000d0 3.000000000000000d0)
-
-@end(code)
-"
   (multiple-value-bind (upper permutation signum) (gsl:lu-decomposition (grid:copy matrix))
     (declare (ignore signum))
     (let ((initial-solution (gsl:lu-solve upper vector permutation t)))
       (gsl:lu-refine matrix upper permutation vector initial-solution))))
 
-(defun lu-solve-extmatr (matrix-vector &key (grid-type 'array) (element-type 'double-float))
-  ""
-  (let ((matrix (grid:make-foreign-array
-		 'double-float
-		 :initial-contents
-		 (math/list-matr:detach-last-col matrix-vector)))
-	(vector (grid:make-foreign-array
-		 'double-float
-		 :initial-contents
-		 (math/list-matr:get-last-col    matrix-vector))))
+(defun lu-solve-extmatr (m-v &key (grid-type 'array) (element-type 'double-float))
+  (let* ((m (math/list-matr:detach-last-col m-v))
+         (v (math/list-matr:get-last-col    m-v))
+         (matrix
+           (grid:make-foreign-array element-type :initial-contents m))
+         (vector
+           (grid:make-foreign-array element-type :initial-contents v)))
     (grid:copy
      (lu-solve matrix vector) 
      :grid-type  grid-type
      :element-type element-type)))
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

@@ -30,8 +30,9 @@
                "math/geom"
                "math/transform"
                "math/equation"
+               "math/ls-solve"
 	       ;; "math/x-o"
-	       ) ;;;; "math/ls-solve" "math/tests"
+	       ) ;;;; "math/tests"
   :components ((:module "src/math"
 		:serial t
                 :components ((:file "math"))))) ;;;; (:file "matr-temp")
@@ -180,11 +181,11 @@
   :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"  
   :serial t
   :in-order-to ((test-op (test-op "math/tests")))
-  :depends-on (:math :gsll)
+  :depends-on ("gsll" "math/list-matr") ;; :math
   :components ((:module "src/ls-solve"
 		:serial t
-                :components ((:file "lu-solve")
-                             (:file "lu-solve-doc")))))
+                :components ((:file "ls-solve")
+                             (:file "ls-solve-doc")))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
