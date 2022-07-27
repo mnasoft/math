@@ -1,6 +1,6 @@
-;;;; ./src/ls-solve/lu-solve-doc.lisp
+;;;; ./src/ls-gsll/lu-solve-doc.lisp
 
-(in-package #:math/ls-solve)
+(in-package #:math/ls-gsll)
 
 (defmacro make-doc (obj-name obj-type doc-string)
   `(setf (documentation ,obj-name ,obj-type)
@@ -14,7 +14,7 @@
 
 
 (make-doc
-  #'MATH/LS-SOLVE:LU-SOLVE-EXTMATR 'function
+  #'MATH/LS-GSLL:LU-SOLVE-EXTMATR 'function
   "@b(Описание:) функция| @b(lu-solve) возвращает корни решения СЛАУ
  (системы линейных алгебраических уравнений), используя LU-разложение
  матрицы @b(m-v).
@@ -36,7 +36,7 @@
   ")
 
 (make-doc
-  #'MATH/LS-SOLVE:LU-SOLVE 'function
+  #'MATH/LS-GSLL:LU-SOLVE 'function
   "@b(Описание:) функция| @b(lu-solve) возвращает корни решения СЛАУ 
 (системы линейных алгебраических уравнений), 
 используя LU-разложение матрицы @b(matrix).

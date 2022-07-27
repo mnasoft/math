@@ -1,14 +1,14 @@
 ;;;; ./src/ls-solve/ls-solve.lisp
 
-(defpackage #:math/ls-solve
+(defpackage #:math/ls-gsll
   (:use #:cl )
   (:export lu-solve
            lu-solve-extmatr)
   (:documentation
-   "@b(Описание:) пакет @b(math/ls-solve) пределяет функции для
+   "@b(Описание:) пакет @b(math/ls-gsll) пределяет функции для
  решения СЛАУ методом LU-разложения при помощи системσ GSLL."))
 
-(in-package #:math/ls-solve)
+(in-package #:math/ls-gsll)
 
 (defun lu-solve (matrix vector)
   (multiple-value-bind (upper permutation signum) (gsl:lu-decomposition (grid:copy matrix))

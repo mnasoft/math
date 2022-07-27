@@ -30,7 +30,7 @@
                "math/geom"
                "math/transform"
                "math/equation"
-               "math/ls-solve"
+               "math/ls-gsll"
 	       ;; "math/x-o"
 	       ) ;;;; "math/tests"
   :components ((:module "src/math"
@@ -175,17 +175,17 @@
 			     ;; (:file "matr-class")
                              ))))
 
-(defsystem "math/ls-solve"
+(defsystem "math/ls-gsll"
   :description "Решение систем линейных уравнений при помощи библиотеки gsll"
   :author "Mykola Matvyeyev <mnasoft@gmail.com>"
   :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"  
   :serial t
   :in-order-to ((test-op (test-op "math/tests")))
   :depends-on ("gsll" "math/list-matr") ;; :math
-  :components ((:module "src/ls-solve"
+  :components ((:module "src/ls-gsll"
 		:serial t
-                :components ((:file "ls-solve")
-                             (:file "ls-solve-doc")))))
+                :components ((:file "ls-gsll")
+                             (:file "ls-gsll-doc")))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
