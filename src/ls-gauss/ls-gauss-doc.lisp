@@ -13,8 +13,8 @@
 
 
 (make-doc
-  #'MATH/LS-GAUSS:SOLVE-LINEAR-SYSTEM-GAUSS 'function
-  "@b(Описание:) обобщенная_функция @b(solve-linear-system-gauss)
+  #'MATH/LS-GAUSS:SOLVE-X 'function
+  "@b(Описание:) обобщенная_функция @b(solve-x)
 возвращает матрицу, содержащую корни решения системы линейных уравений.
 
  Решение системы линейных уравнений выполняется методом Гаусса.
@@ -73,11 +73,11 @@
  ")
 
 (make-doc
-  (find-method #'MATH/LS-GAUSS:SOLVE-LINEAR-SYSTEM-GAUSS NIL '(MATH/ARR-MATR:<MATRIX>))
+  (find-method #'MATH/LS-GAUSS:SOLVE-X NIL '(MATH/ARR-MATR:<MATRIX>))
   t
   "@b(Пример использования 1.1:)
 @begin[lang=lisp](code)
-  (solve-linear-system-gauss
+  (solve-x
    (math/arr-matr:matr-new 
              3 4 '(1 2 3 14 
 		   2 1 1 7 
@@ -88,7 +88,7 @@
 
  @b(Пример использования 1.2:)
 @begin[lang=lisp](code)
- (solve-linear-system-gauss
+ (solve-x
   (math/arr-matr:matr-new 
             3 4 '(1.0 2 3 14 
 		  2   1 1  7 
@@ -99,7 +99,7 @@
 
  @b(Пример использования 2:)
 @begin[lang=lisp](code)
- (solve-linear-system-gauss 
+ (solve-x 
    (math/arr-matr:matr-new 
              3 4 '(1 0 1 4 
 		   0 1 0 2 

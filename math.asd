@@ -31,11 +31,23 @@
                "math/transform"
                "math/equation"
                "math/ls-gsll"
+               "math/rnd"
 	       ;; "math/x-o"
 	       ) ;;;; "math/tests"
   :components ((:module "src/math"
 		:serial t
                 :components ((:file "math"))))) ;;;; (:file "matr-temp")
+
+(defsystem "math/rnd"
+  :description "Содержит функции для генерирования случайных списков и 2d-списков."
+  :author "Mykola Matvyeyev <mnasoft@gmail.com>"
+  :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"  
+  :serial t
+  :in-order-to ((test-op (test-op "math/core/tests")))
+  :components ((:module "src/rnd"
+		:serial nil
+                :components ((:file "rnd")
+                             (:file "rnd-doc" :depends-on ("rnd"))))))
 
 (defsystem "math/core"
   :description "Содержит некоторые функции и обобщенные функции,
@@ -197,17 +209,19 @@
   :perform (test-op (o s)
 		    (uiop:symbol-call :math-tests :test-math))
   :components ((:module "src/tests"
-			:serial t
-			:components ((:file "package")
-				     (:file "all")
-                                     (:file "core")
-                                     (:file "equation")
-				     (:file "matrix")
-				     (:file "linear-system-tests") 
-				     (:file "approximation-tests") 
-				     (:file "list-matr-tests")
+		:serial t
+		:components ((:file "package")
+			     (:file "all")
+                             (:file "core")
+                             (:file "equation")
+			     (:file "matrix")
+			     (:file "linear-system-tests") 
+			     (:file "approximation-tests") 
+			     (:file "list-matr-tests")
+                             (:file "ls-gsll")
+                             (:file "ls-gauss")
                                       
-				     (:file "run")))))
+			     (:file "run")))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

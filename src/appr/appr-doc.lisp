@@ -185,12 +185,12 @@ yy(x@sub(1))=a@sub(1)·x@sub(1)@sup(2)·x@sub(2)@sup(2)+ a@sub(2)·x@sub(1)@sup(
 ; [ 0.0d0     0.0d0     0.0d0     0.0d0     50.0d0    0.0d0     250.0d0  ]
 ; [ 50.0d0    50.0d0    0.0d0     0.0d0     0.0d0     25.0d0    300.0d0  ]
 
-  (solve-linear-system-gauss *)
+  (solve-x *)
 ;  => Matr 1х6
 ; [ 1.0d0     2.0d0     3.0d0     4.0d0     5.0d0     6.0d0    ]
 @end(code)
 
- См. также solve-linear-system-gauss; solve-linear-system-rotation
+ См. также math/ls-gauss/solve-x; math/ls-rotation/solve
   ")
 
 (make-doc

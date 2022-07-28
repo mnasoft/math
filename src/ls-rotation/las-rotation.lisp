@@ -2,16 +2,16 @@
 
 (defpackage #:math/ls-rotation
   (:use #:cl );; #:math/arr-matr
-  (:export solve-linear-system-rotation))
+  (:export solve-x))
 
 (in-package :math/ls-rotation)
 
-(defun solve-linear-system-rotation (matr)
+(defun solve-x (matr)
   (let ((n (array-dimension matr 0))	; Количество строк
 	(m (array-dimension matr 1))	; Количество столбцов
 	)
     (if (/= (1+ n) m)			; Проверка размерности
-	(break "ERROR IN FUNC solve-linear-system-rotation:~%n+1 != m~%" ))
+	(break "ERROR IN FUNC solve-x:~%n+1 != m~%" ))
     (do ((i 0 (1+ i)))
 	((not (< i n)) matr)
       (do ((a nil) (b nil) (c nil) (s nil) (tmp nil)
@@ -35,6 +35,5 @@
 	  ((not (< j n)))
 	(setf summ (+ summ (* (aref matr i j) (aref x j)))))
       (setf summ (- (aref matr i n) summ)
-	    (aref x i) (/ summ (aref matr i i)))
-      )))
+	    (aref x i) (/ summ (aref matr i i))))))
 

@@ -32,13 +32,13 @@
     (is-true (math/arr-matr:equivalent m1-obrhod
 			      (math/ls-gauss:solve-linear-system-gauss-backward-run m1)))))
 
-(def-test solve-linear-system-gauss-test ()
-  "Пример использования: (test-solve-linear-system-gauss)"
+(def-test solve-x-test ()
+  "Пример использования: (test-solve-x)"
   (let ((m1 (make-instance 'math/arr-matr:<matrix>
 			   :initial-contents '((1 2 3 14)
 						       (2 1 1  7)
 						       (3 0 1  2))))
 	(m1-gau (make-instance 'math/arr-matr:<matrix>
 			       :initial-contents '(( 1/3 16/3 1 )))))
-    (is-true (math/arr-matr:equivalent (math/ls-gauss:solve-linear-system-gauss m1) m1-gau))))
+    (is-true (math/arr-matr:equivalent (math/ls-gauss:solve-x m1) m1-gau))))
 

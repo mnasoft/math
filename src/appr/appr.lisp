@@ -123,7 +123,7 @@
 	     (mapcar
 	      #'(lambda(el1 el2)
 		  (cons '* (cons el1 el2)))
-	      (row (math/ls-gauss:solve-linear-system-gauss
+	      (row (math/ls-gauss:solve-x
 		    (make-least-squares-matrix vv ff ex_pts))
 		   0)
 	      ff)))

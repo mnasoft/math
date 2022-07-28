@@ -186,6 +186,11 @@
                  :collect (* (norma i)))))
     (/ (apply #'+ n) (length n))))
 
+(defmethod norma ((x vector))
+  (let ((n (loop :for i :across x
+                 :collect (* (norma i)))))
+    (/ (apply #'+ n) (length n))))
+
 (defgeneric semi-equal (x y &key tolerance) )
 
 (defmethod semi-equal ((x number) (y number)
@@ -215,6 +220,33 @@
              (< (distance x y) tolerance))
     t))
 
+(defmethod semi-equal ((x vector) (y vector)
+                       &key
+                         (tolerance (+ *semi-equal-zero*
+                                       (* *semi-equal-relativ*
+                                          (norma (list (norma x)
+                                                       (norma y)))))))
+  (when (and (= (length x) (length y))
+             (< (distance x y) tolerance))
+    t))
+
+(defmethod semi-equal ((x1 vector) (x2 cons)
+                       &key
+                         (tolerance (+ *semi-equal-zero*
+                                       (* *semi-equal-relativ*
+                                          (norma (list (norma x1)
+                                                       (norma x2)))))))
+  (semi-equal x1 (coerce x2 'vector) :tolerance tolerance))
+
+(defmethod semi-equal ((x1 cons) (x2 vector) 
+                       &key
+                         (tolerance (+ *semi-equal-zero*
+                                       (* *semi-equal-relativ*
+                                          (norma (list (norma x1)
+                                                       (norma x2)))))))
+  (semi-equal (coerce x1 'vector) x2 :tolerance tolerance))
+
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;; /src/core/method.lisp
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -239,16 +271,18 @@
 
 (defmethod distance ((x1 vector) (x2 vector))
   (assert (= (length x1) (length x2)))
-  (sqrt (apply #'+
-	       (loop :for i :from 0 :below (array-dimension x1 0)
-		     :collect
-		     (square (distance (svref x1 i) (svref x2 i)))))))
-
-(defmethod distance ((x1 vector) (x2 vector))
-  (assert (= (length x1) (length x2)))
   (sqrt (loop :for i :from 0 :below (array-dimension x1 0)
 	      :summing
               (square (distance (svref x1 i) (svref x2 i))))))
+
+(defmethod distance ((x1 vector) (x2 cons))
+  (distance x1 (coerce x2 'vector)))
+
+(defmethod distance ((x1 cons) (x2 vector))
+  (distance (coerce x1 'vector) x2))
+
+
+;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;; distance-relative

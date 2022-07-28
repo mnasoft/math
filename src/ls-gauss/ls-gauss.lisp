@@ -4,7 +4,7 @@
   (:use #:cl ) ;;#:math/arr-matr
   (:export convert-to-triangular
 	   solve-linear-system-gauss-backward-run
-	   solve-linear-system-gauss
+	   solve-x
 	   ))
 
 (in-package :math/ls-gauss)
@@ -13,7 +13,7 @@
 
 (defgeneric convert-to-triangular (matrix))
 
-(defgeneric solve-linear-system-gauss (matrix))
+(defgeneric solve-x (matrix))
 
 (defmethod convert-to-triangular ((matr math/arr-matr:<matrix> ))
   (do ((n (math/arr-matr:rows matr)) (ie nil) (j 0 (1+ j)) (row-j nil) (row-i nil))
@@ -52,7 +52,26 @@
 	(setf summ (+ summ (* (math/arr-matr:mref matr i j) (math/arr-matr:mref x 0 j)))))
       (setf (math/arr-matr:mref x 0 i) (/ (- (math/arr-matr:mref matr i n) summ) (math/arr-matr:mref matr i i))))))
 
-(defmethod solve-linear-system-gauss ((matr math/arr-matr:<matrix>))
+(defmethod solve-x ((matr math/arr-matr:<matrix>))
   (let* ((matr-tr (convert-to-triangular matr))
 	 (x (solve-linear-system-gauss-backward-run matr-tr)))
     x))
+
+(defmethod solve-x ((matr cons))
+  "@b(Пример использования:)
+@begin[lang=lisp](code)
+ (solve-x '((1 2 2)
+           (3 5 4)))
+  => #(-2 2)
+
+@end(code)
+"
+  (apply #'vector
+  (math/arr-matr:row
+   (solve-x (make-instance 'math/arr-matr:<matrix> :initial-contents matr))
+   0)))
+
+
+
+
+
