@@ -215,7 +215,6 @@
                              (:file "core")
                              (:file "equation")
 			     (:file "matrix")
-			     (:file "linear-system-tests") 
 			     (:file "approximation-tests") 
 			     (:file "list-matr-tests")
                              (:file "ls-gsll")
