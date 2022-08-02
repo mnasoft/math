@@ -27,7 +27,7 @@
       (math/ls-gauss:convert-to-triangular m1)))))
 
 
-(def-test solve-linear-system-gauss-backward-run-test ()
+(def-test backward-run-test ()
   "Пример использования: (test-matr-obrhod)"
   (let ((m1 (make-instance
              'math/arr-matr:<matrix>
@@ -39,7 +39,7 @@
     (is-true
      (math/arr-matr:equivalent
       m1-obrhod
-      (math/ls-gauss:solve-linear-system-gauss-backward-run m1)))))
+      (math/ls-gauss:backward-run m1)))))
 
 (def-test solve-x-test ()
   "Пример использования: (test-solve-x)"
@@ -68,7 +68,8 @@
     (let* ((m (math/rnd:make-2d-list i))
            (v (math/rnd:make-1d-list i))
            (m-v (math/rnd:make-ls-system m v)))
-      (is-true
-       (math/core:semi-equal
-        (math/ls-gauss:solve-x m-v)
-        v)))))
+      (when (not (math/ls-gauss:singular-p  m-v))
+        (is-true
+         (math/core:semi-equal
+          (math/ls-gauss:solve-x m-v)
+          v))))))

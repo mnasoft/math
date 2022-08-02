@@ -214,6 +214,7 @@
 			     (:file "all")
                              (:file "core")
                              (:file "equation")
+                             (:file "2d-array")
 			     (:file "matrix")
 			     (:file "approximation-tests") 
 			     (:file "list-matr-tests")

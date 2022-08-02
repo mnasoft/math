@@ -11,7 +11,6 @@
            swap-rows*)
   (:export initialize-instance
            matrix-data
-           convert-to-triangular
            matrix->2d-list
            transpose 
            matr-eval-*
@@ -43,7 +42,8 @@
 (defclass <matrix> ()
   ((data :accessor matrix-data :initform nil :initarg :data)))
 
-(defmethod matr-name-* ((mm <matrix>)))
+(defmethod matr-name-* ((mm <matrix>))
+  (type-of mm))
 
 (defmethod print-object ((mm <matrix>) s)
   (format s "~A " (matr-name-* mm))

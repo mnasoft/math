@@ -21,7 +21,9 @@
     (let* ((m (math/rnd:make-2d-list i))
            (v (math/rnd:make-1d-list i))
            (m-v (math/rnd:make-ls-system m v)))
-      (is-true
-       (math/core:semi-equal
-        (math/ls-gsll:solve-x m-v)
-        v)))))
+      (when (not (math/ls-gauss:singular-p  m-v))
+        (is-true
+         (math/core:semi-equal
+          (math/ls-gsll:solve-x m-v)
+          v))))))
+

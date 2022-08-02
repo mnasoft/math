@@ -27,7 +27,8 @@
            append-col)
   (:export lv-print
            lm-print)
-  (:export unite-rows)
+  (:export unite-rows
+           unite-cols)
   (:export make)
   (:documentation
    "@b(Описание:) пакет @b(math/list-matr) определяет некоторые
@@ -40,6 +41,11 @@
   (apply #'mapcar #'list 2d-list))
 
 (defun unite-rows (lst)
+  (let ((rez nil))
+    (mapcar #'(lambda (el) (setf rez (append rez el) ) ) lst)
+    rez))
+
+(defun unite-cols (lst)
   (let ((rez nil))
     (mapcar #'(lambda (el) (setf rez (append rez el) ) ) lst)
     rez))

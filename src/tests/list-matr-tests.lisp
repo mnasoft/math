@@ -2,11 +2,6 @@
 
 (in-package #:math/tests)
 
-(defun make-random-2dlist (rows cols &optional (scale 5))
-  (loop :for i :from 1 :to rows
-	:collect (loop :for j :from 1 :to cols
-		       :collect (random (* rows cols scale)))))
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (def-suite list-matr-tests

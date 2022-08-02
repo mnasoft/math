@@ -21,7 +21,7 @@
 ")
 
 (make-doc
-  #'MATH/LS-GAUSS:SOLVE-LINEAR-SYSTEM-GAUSS-BACKWARD-RUN 'function
+  #'MATH/LS-GAUSS:BACKWARD-RUN 'function
   "Кандидат в intern.
 
  Обратный ход при вычислении решения системы линейных уравнений.
@@ -64,7 +64,7 @@
 @end(code)")
 
 (make-doc
-  (find-method #'MATH/LS-GAUSS:SOLVE-LINEAR-SYSTEM-GAUSS-BACKWARD-RUN NIL '(MATH/ARR-MATR:<MATRIX>))
+  (find-method #'MATH/LS-GAUSS:BACKWARD-RUN NIL '(MATH/ARR-MATR:<MATRIX>))
   t
   "Кандидат в intern.
 

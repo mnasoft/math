@@ -1,0 +1,3 @@
+* ToDo
+- [ ] Объединить подсистемы math/2d-array math/arr-matr math/list-matr
+  math/transform в одну систему math/matr
