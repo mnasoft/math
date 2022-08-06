@@ -1,6 +1,5 @@
-;;;; array.lisp
+(in-package :math/matr)
 
-(in-package #:math/2d-array)
 
 (defparameter *a* (make-array '(2 3) :initial-contents '((1 2 3)(4 5 6))))
 
