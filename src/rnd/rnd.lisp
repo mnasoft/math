@@ -21,7 +21,7 @@
 
 (defun make-ls-system (m vec)
   (assert (= (length m) (length vec)))
-  (math/list-matr:append-col 
+  (math/matr:append-col 
    (mapcar
     #'(lambda(el)
         (apply #'+ (mapcar #'(lambda(v a) (* v a)) vec el)))

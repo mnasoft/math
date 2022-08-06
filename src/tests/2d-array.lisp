@@ -20,12 +20,11 @@
 ;;;(signal (row -1 arr)) ; => error
 ;;;(signal (row  5 arr)) ; => error
     (is-true (math/core:semi-equal
-              (math/2d-array:row  0 arr)
+              (math/matr:row  0 arr)
               '(0 1)))
     (is-true (math/core:semi-equal
-              (math/2d-array:row  2 arr)
+              (math/matr:row  2 arr)
               '(4 5)))
     (is-true (math/core:semi-equal
-              (math/2d-array:row  4 arr)
-              '(8 9)))
-    ))
+              (math/matr:row  4 arr)
+              '(8 9)))))

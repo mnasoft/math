@@ -20,8 +20,8 @@
                    :collect (grid:gref rez i))))))
 
 (defun solve-x (m-v)
-  (let ((m (math/list-matr:detach-last-col m-v))
-        (v (math/list-matr:get-last-col    m-v)))
+  (let ((m (math/matr:detach-last-col m-v))
+        (v (math/matr:get-last-col    m-v)))
     (solve (grid:make-foreign-array 'double-float :initial-contents m)
            (grid:make-foreign-array 'double-float :initial-contents v))))
 

@@ -35,7 +35,7 @@
 для решения системы ЛУ методом Гаусса.")
 
 (make-doc
-  (find-method #'MATH/LS-GAUSS:CONVERT-TO-TRIANGULAR NIL '(MATH/ARR-MATR:<MATRIX>))
+  (find-method #'MATH/LS-GAUSS:CONVERT-TO-TRIANGULAR NIL '(MATH/MATR:<MATRIX>))
   t
   "@b(Пример использования:)
 @begin[lang=lisp](code)
@@ -53,7 +53,7 @@
  @b(Пример использования:)
 @begin[lang=lisp](code)
  (convert-to-triangular
-  (make-instance 'math/arr-matr:<matrix> 
+  (make-instance 'math/matr:<matrix> 
 		 :initial-contents '((1.0d0  2.0d0  3.0d0  4.0d0)
 				     (5.0d0  6.0d0  7.0d0  8.0d0)
 				     (9.0d0 10.0d0 11.0d0 12.0d0))))
@@ -64,7 +64,7 @@
 @end(code)")
 
 (make-doc
-  (find-method #'MATH/LS-GAUSS:BACKWARD-RUN NIL '(MATH/ARR-MATR:<MATRIX>))
+  (find-method #'MATH/LS-GAUSS:BACKWARD-RUN NIL '(MATH/MATR:<MATRIX>))
   t
   "Кандидат в intern.
 
@@ -73,12 +73,12 @@
  ")
 
 (make-doc
-  (find-method #'MATH/LS-GAUSS:SOLVE-X NIL '(MATH/ARR-MATR:<MATRIX>))
+  (find-method #'MATH/LS-GAUSS:SOLVE-X NIL '(MATH/MATR:<MATRIX>))
   t
   "@b(Пример использования 1.1:)
 @begin[lang=lisp](code)
   (solve-x
-   (math/arr-matr:matr-new 
+   (math/matr:matr-new 
              3 4 '(1 2 3 14 
 		   2 1 1 7 
 		   3 0 1 2)))
@@ -89,7 +89,7 @@
  @b(Пример использования 1.2:)
 @begin[lang=lisp](code)
  (solve-x
-  (math/arr-matr:matr-new 
+  (math/matr:matr-new 
             3 4 '(1.0 2 3 14 
 		  2   1 1  7 
 		  3   0 1  2)))
@@ -100,7 +100,7 @@
  @b(Пример использования 2:)
 @begin[lang=lisp](code)
  (solve-x 
-   (math/arr-matr:matr-new 
+   (math/matr:matr-new 
              3 4 '(1 0 1 4 
 		   0 1 0 2 
 		   0 0 1 3)))

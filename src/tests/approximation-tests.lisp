@@ -10,12 +10,12 @@
 
 (def-test approximation-make-least-squares-matrix-test ()
   "Пример использования: (test-matr-mnk)"
-  (let* ((m1 (make-instance 'math/arr-matr:<matrix>
+  (let* ((m1 (make-instance 'math/matr:<matrix>
 			    :initial-contents '(( 98.0d0    34.0d0    14.0d0    98.0d0 )
 						( 34.0d0    14.0d0    4.0d0     34.0d0 )
 						( 14.0d0    4.0d0     4.0d0     14.0d0 ))))
 	 (pts-1 '((-1.0 1.0) (0.0 0.0) (2.0 4.0) (3.0 9.0)))
-	 (m2 (make-instance 'math/arr-matr:<matrix>
+	 (m2 (make-instance 'math/matr:<matrix>
 			    :initial-contents '(( 225.0d0   75.0d0    75.0d0    25.0d0    931.25d0 )
 						( 75.0d0    75.0d0    25.0d0    25.0d0    606.25d0 )
 						( 75.0d0    25.0d0    75.0d0    25.0d0    631.25d0 )
@@ -32,12 +32,12 @@
 		    (loop :for x2 :from -1 :to 3 :do
 		      (push (list x1 x2 (funcall ff-2 x1 x2)) rez )))
 		  rez)))
-    (is-true (math/arr-matr:equivalent
+    (is-true (math/matr:equivalent
 	      m1
 	      (math/appr:make-least-squares-matrix '(xx yy) 
 					      '((xx xx) (xx) (1.0) (yy)) 
 					      pts-1 )))
-    (is-true (math/arr-matr:equivalent
+    (is-true (math/matr:equivalent
 	      m2
 	      (math/appr:make-least-squares-matrix '(x1 x2 yy) 
 					      '((x1 x2)  (x1) (x2) (1.0) (yy)) 

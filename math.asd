@@ -18,20 +18,18 @@
   :in-order-to ((test-op (test-op "math/tests")))
   :depends-on ("cl-utilities"
 	       "math/core"
-	       "math/list-matr"
-	       "math/2d-array"
-	       "math/appr"
-	       "math/stat"
-	       "math/smooth"
-	       "math/coord"
-	       "math/arr-matr"
-	       "math/gnuplot"
-	       "math/ls-rotation"
+               "math/coord"
+               "math/matr"
                "math/geom"
-               "math/transform"
                "math/equation"
-               "math/ls-gsll"
+               "math/stat"
+               "math/smooth"
                "math/rnd"
+               "math/ls-gauss"
+               "math/ls-gsll"
+               "math/ls-rotation"
+               "math/gnuplot"
+               "math/appr"
 	       ;; "math/x-o"
 	       ) ;;;; "math/tests"
   :components ((:module "src/math"
@@ -43,6 +41,7 @@
   :author "Mykola Matvyeyev <mnasoft@gmail.com>"
   :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"  
   :serial t
+  :depends-on ("math/matr")
   :in-order-to ((test-op (test-op "math/core/tests")))
   :components ((:module "src/rnd"
 		:serial nil
@@ -85,7 +84,7 @@
 		:serial t
                 :components ((:file "gnuplot")))))
 
-(defsystem "math/list-matr"
+#+nil (defsystem "math/list-matr"
   :description "Реализация некоторых операций над матрицами,
 представленными прямоугольными 2d-списками"
   :author "Mykola Matvyeyev <mnasoft@gmail.com>"
@@ -104,12 +103,12 @@
   :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"  
   :serial t
   :in-order-to ((test-op (test-op "math/ls-gauss/tests")))
-  :depends-on ("math/arr-matr")
+  :depends-on ("math/matr")
   :components ((:module "src/ls-gauss"
 		:serial t
                 :components ((:file "ls-gauss")
                              (:file "ls-gauss-doc")))))
-
+#+nil
 (defsystem "math/2d-array"
   :description "Реализация некоторых операций над 
 матрицами, представленными  2d-массивами"
@@ -128,7 +127,7 @@
   :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"  
   :serial t
   :in-order-to ((test-op (test-op "math/appr/tests")))
-  :depends-on ("math/core" "math/2d-array" "math/ls-gauss" "math/arr-matr" "math/smooth" ) ;;;; "math"
+  :depends-on ("math/core" "math/matr" "math/ls-gauss" "math/smooth") 
   :components ((:module "src/appr"
 		:serial t
                 :components ((:file "appr")
@@ -171,29 +170,13 @@
                 :components ((:file "coord")
                              (:file "coord-doc")))))
 
-(defsystem "math/arr-matr"
-  :description "Реализация некоторых операций над 
-матрицами, представленными классом <matrix>"
-  :author "Mykola Matvyeyev <mnasoft@gmail.com>"
-  :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"  
-  :serial t
-  :in-order-to ((test-op (test-op "math/arr-matr/tests")))
-  :depends-on ("math/core" "cl-utilities")
-  :components ((:module "src/arr-matr"
-		:serial t
-                :components ((:file "arr-matr")
-                             ;; (:file "package")
-			     ;; (:file "matr-generics") 
-			     ;; (:file "matr-class")
-                             ))))
-
 (defsystem "math/ls-gsll"
   :description "Решение систем линейных уравнений при помощи библиотеки gsll"
   :author "Mykola Matvyeyev <mnasoft@gmail.com>"
   :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"  
   :serial t
   :in-order-to ((test-op (test-op "math/tests")))
-  :depends-on ("gsll" "math/list-matr") ;; :math
+  :depends-on ("gsll" "math/matr")
   :components ((:module "src/ls-gsll"
 		:serial t
                 :components ((:file "ls-gsll")
@@ -213,15 +196,15 @@
 		:components ((:file "package")
 			     (:file "all")
                              (:file "core")
-                             (:file "equation")
                              (:file "2d-array")
-			     (:file "matrix")
-			     (:file "approximation-tests") 
-			     (:file "list-matr-tests")
-                             (:file "ls-gsll")
+                             (:file "matrix")
+                             (:file "list-matr-tests")
+                             (:file "equation")
                              (:file "ls-gauss")
-                                      
-			     (:file "run")))))
+                             (:file "ls-gsll")
+                             (:file "approximation-tests") 
+			     (:file "run")
+                             ))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -248,7 +231,7 @@
   ((:module "src/docs" :serial nil
     :components ((:file "docs")))))
 
-(defsystem "math/transform"
+#+nil (defsystem "math/transform"
   :description "@b(Описание:) система @b(math/transform) содержит
   функции преобразования в трехмерном пространстве."
   :author "Mykola Matvyeyev <mnasoft@gmail.com>"
@@ -273,6 +256,24 @@
 		:serial t
                 :components ((:file "equation")
                              (:file "equation-doc")))))
+
+(defsystem "math/matr"
+  :description "@b(Описание:) система @b(math/matr) содержит
+ некоторых операций над матрицами"
+  :author "Mykola Matvyeyev <mnasoft@gmail.com>"
+  :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"  
+  :serial t
+  :depends-on ("cl-utilities" "math/coord" "math/stat")
+  :components ((:module "src/matr"
+		:serial t
+                :components ((:file "matr")
+                             (:file "defmethod")
+                             #+nil
+                             (:file "matr-doc")))))
+
+  :author "Mykola Matvyeyev <mnasoft@gmail.com>"
+  :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"  
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

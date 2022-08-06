@@ -1,7 +1,7 @@
 ;;;; ./appr/package.lisp
 
 (defpackage #:math/appr 
-  (:use #:cl #:math/arr-matr)
+  (:use #:cl) ;;#:math/matr
   (:export refine-smoothing-by-points
            smooth-by-points
            approximate
@@ -101,11 +101,11 @@
 (defun make-least-squares-matrix (vv ff ex_pts)
   (let* ((m          (length ff))
 	 (n          (1- m))
-	 (mtr        (make-instance '<matrix> :dimensions  (list n m) :initial-element 0.0d0 ))
-	 (mtr-lambda (make-instance '<matrix> :dimensions  (list n m) :initial-element nil )))
+	 (mtr        (make-instance 'math/matr:<matrix> :dimensions  (list n m) :initial-element 0.0d0 ))
+	 (mtr-lambda (make-instance 'math/matr:<matrix> :dimensions  (list n m) :initial-element nil )))
     (dotimes (i n)
       (dotimes (j m)
-	(setf (mref mtr-lambda i j)
+	(setf (math/matr:mref mtr-lambda i j)
 	      (eval (list 'lambda  vv (cons '* (append (nth i ff) (nth j ff))))))))
     
     (mapc
@@ -113,7 +113,7 @@
 	 (dotimes (i n)
 	   (dotimes (j m)
 	     (setf (mref mtr i j)
-		   (+ (apply (mref mtr-lambda i j) el) (mref mtr i j))))))
+		   (+ (apply (math/matr:mref mtr-lambda i j) el) (math/matr:mref mtr i j))))))
      ex_pts)
     mtr))
 
@@ -123,7 +123,7 @@
 	     (mapcar
 	      #'(lambda(el1 el2)
 		  (cons '* (cons el1 el2)))
-	      (row (math/ls-gauss:solve-x
+	      (math/matr:row (math/ls-gauss:solve-x
 		    (make-least-squares-matrix vv ff ex_pts))
 		   0)
 	      ff)))
@@ -285,7 +285,7 @@
 	(z 0.0))
     (loop :for i :from 0 :below  (array-dimension points 0) :do
 	 (progn
-	   (setf w (funcall weight-func (math/core:distance-relative x (math/2d-array:row i points) dx))
+	   (setf w (funcall weight-func (math/core:distance-relative x (math/matr:row i points) dx))
 		 w-summ (+ w-summ w)
 		 z (aref values i)
 		 w-z-summ (+ w-z-summ (* w z )))))
@@ -330,7 +330,7 @@
     (labels ((start-V1 (v-rez v-iter)
 	       (loop :for i :from 0 :below (length nod-values) :do
 		 (setf (svref v-rez i)
-		       (smooth-by-points (math/2d-array:row i nod-points) base-dist-s nod-points v-iter :weight-func weight-func)))
+		       (smooth-by-points (math/matr:row i nod-points) base-dist-s nod-points v-iter :weight-func weight-func)))
 	       (math/core:summ-distance v-rez nod-values))
 	     (iterate (v-rez v-iter)
 	       (loop :for i :from 0 :below (length nod-values) :do

@@ -13,16 +13,16 @@
 (def-test linear-system-convert-to-triangular-test ()
   "Пример использования: (test-convert-to-triangular)"
   (let ((m1 (make-instance
-             'math/arr-matr:<matrix>
+             'math/matr:<matrix>
 	     :initial-contents '((0.0 0.0 4.0 12.0)
 				 (2.0 0.0 2.0  8.0)
 				 (0.0 3.0 0.0  6.0))))
-	(m1-tr (make-instance 'math/arr-matr:<matrix> :initial-contents
+	(m1-tr (make-instance 'math/matr:<matrix> :initial-contents
 			      '(( 1.0 0.0 1.0 4.0 )
 				( 0.0 1.0 0.0 2.0 )
 				( 0.0 0.0 1.0 3.0 )))))
     (is-true
-     (math/arr-matr:equivalent
+     (math/matr:equivalent
       m1-tr
       (math/ls-gauss:convert-to-triangular m1)))))
 
@@ -30,30 +30,30 @@
 (def-test backward-run-test ()
   "Пример использования: (test-matr-obrhod)"
   (let ((m1 (make-instance
-             'math/arr-matr:<matrix>
+             'math/matr:<matrix>
 	     :initial-contents '(( 1.0 0.0 1.0 4.0 )
 				 ( 0.0 1.0 0.0 2.0 )
     				 ( 0.0 0.0 1.0 3.0 ))))
-	(m1-obrhod (make-instance 'math/arr-matr:<matrix>
+	(m1-obrhod (make-instance 'math/matr:<matrix>
 				  :initial-contents '(( 1.0 2.0 3.0 )))))
     (is-true
-     (math/arr-matr:equivalent
+     (math/matr:equivalent
       m1-obrhod
       (math/ls-gauss:backward-run m1)))))
 
 (def-test solve-x-test ()
   "Пример использования: (test-solve-x)"
   (let ((m1 (make-instance
-             'math/arr-matr:<matrix>
+             'math/matr:<matrix>
 	     :initial-contents '((1 2 3 14)
 				 (2 1 1  7)
 				 (3 0 1  2))))
 	(m1-gau
           (make-instance
-           'math/arr-matr:<matrix>
+           'math/matr:<matrix>
 	   :initial-contents '(( 1/3 16/3 1 )))))
     (is-true
-     (math/arr-matr:equivalent
+     (math/matr:equivalent
       (math/ls-gauss:solve-x m1) m1-gau))))
 
 (def-test solve-x ()
