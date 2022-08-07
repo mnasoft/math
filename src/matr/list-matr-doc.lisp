@@ -1,6 +1,6 @@
 ;;;; ./src/list-matr/list-matr-doc.lisp
 
-(in-package :math/list-matr)
+(in-package :math/matr)
 
 (defmacro make-doc (obj-name obj-type doc-string)
   `(setf (documentation ,obj-name ,obj-type)
@@ -14,7 +14,7 @@
 
 
 (make-doc
-  #'MATH/LIST-MATR:UNITE-ROWS 'function
+  #'MATH/MATR:UNITE-ROWS 'function
   "@b(Описание:) функция @b(unite-rows) объединяет строки матрицы
 (список списков) в вектор (список).
 
@@ -27,7 +27,7 @@
 ")
 
 (make-doc
-  #'MATH/LIST-MATR:TRANSPOSE 'function
+  #'MATH/MATR:TRANSPOSE 'function
   "@b(Описание:) функция @b(transpose) выполняет транспонирование матрицы,
 представленной списком 2d-list.
 
@@ -42,22 +42,22 @@
 ")
 
 (make-doc
-  #'MATH/LIST-MATR:MAX-COL-NOT-NIL-VALUE 'function
+  #'MATH/MATR:MAX-COL-NOT-NIL-VALUE 'function
   "@b(Описание:) функция @b(max-col-not-nil-value) вычисляет среднее 
 значение по столбцам матрицы (списка списков).")
 
 (make-doc
-  #'MATH/LIST-MATR:AVERAGE-NOT-NIL-VALUE 'function
+  #'MATH/MATR:AVERAGE-NOT-NIL-VALUE 'function
   "@b(Описание:) функция @b(average-not-nil-value) вычисляет среднее значение
 по элементам матрицы (списка списков) с исключением nil-элементов.")
 
 (make-doc
-  #'MATH/LIST-MATR:LM-PRINT 'function
+  #'MATH/MATR:LM-PRINT 'function
   "@b(Описание:) функция @b(lm-print) красивый вывод
 матрицы (списка списков).")
 
 (make-doc
-  #'MATH/LIST-MATR:ROW 'function
+  #'MATH/MATR:ROW 'function
   "@b(Описание:) функция @b(row) возвращает строку row матрицы,
 представленной списком 2d-list.
 
@@ -72,7 +72,7 @@
 ")
 
 (make-doc
-  #'MATH/LIST-MATR:MAX-ROW-NOT-NIL-VALUE 'function
+  #'MATH/MATR:MAX-ROW-NOT-NIL-VALUE 'function
   "@b(Описание:) функция @b(max-row-not-nil-value) вычисляет максимальные 
 значения по строкам матрицы (списка списков).
 
@@ -84,7 +84,7 @@
 ")
 
 (make-doc
-  #'MATH/LIST-MATR:PREPEND-ROW 'function
+  #'MATH/MATR:PREPEND-ROW 'function
   "@b(Описание:) функция @b(prepend-row)
 
  @b(Пример использования:)
@@ -114,7 +114,7 @@
 ")
 
 (make-doc
-  #'MATH/LIST-MATR:AVERAGE-COL-VALUE 'function
+  #'MATH/MATR:AVERAGE-COL-VALUE 'function
   "@b(Описание:) функция @b(average-col-value) вычисляет среднее значение
 по столбцам матрицы (списка списков).
 
@@ -125,7 +125,7 @@
 @end(code)")
 
 (make-doc
-  #'MATH/LIST-MATR:APPEND-ROW 'function
+  #'MATH/MATR:APPEND-ROW 'function
   "@b(Описание:) функция @b(append-row) добавляет вектор
 (список) r-lst к матрице 2d-list.
 
@@ -159,7 +159,7 @@
 ")
 
 (make-doc
-  #'MATH/LIST-MATR:AVERAGE-COL-NOT-NIL-VALUE 'function
+  #'MATH/MATR:AVERAGE-COL-NOT-NIL-VALUE 'function
   "@b(Описание:) функция @b(average-col-not-nil-value) вычисляет среднее 
 значение по элементам матрицы (списка списков).
 
@@ -172,12 +172,12 @@
 ")
 
 (make-doc
-  #'MATH/LIST-MATR:AVERAGE-ROW-NOT-NIL-VALUE 'function
+  #'MATH/MATR:AVERAGE-ROW-NOT-NIL-VALUE 'function
   "@b(Описание:) функция @b(average-row-not-nil-value) вычисляет среднее значение
 по элементам матрицы (списка списков).")
 
 (make-doc
-  #'MATH/LIST-MATR:DIMENSIONS 'function
+  #'MATH/MATR:DIMENSIONS 'function
   "@b(Описание:) функция @b(cols) возвращает 
 количество столбцов в матрице, представленной списком 2d-list.
 
@@ -191,7 +191,7 @@
 ")
 
 (make-doc
-  #'MATH/LIST-MATR:DETACH-LAST-COL 'function
+  #'MATH/MATR:DETACH-LAST-COL 'function
   "@b(Описание:) функция @b(detach-last-col) возвращает матрицу, 
 представленную в виде списка, образованную удалением последнего столбца 
 (последнего элемента каждой строки).
@@ -208,7 +208,7 @@
 ")
 
 (make-doc
-  #'MATH/LIST-MATR:APPEND-COL 'function
+  #'MATH/MATR:APPEND-COL 'function
   "@b(Описание:) функция @b(append-col) добавляет к матрице,
 представленной списком 2d-list, столбец (список) c-lst.
 
@@ -224,7 +224,7 @@
 ")
 
 (make-doc
-  #'MATH/LIST-MATR:ROWS 'function
+  #'MATH/MATR:ROWS 'function
   "@b(Описание:) функция @b(rows) возвращает
 количество строк в матрице, заданной списком 2d-list
 
@@ -235,7 +235,7 @@
 ")
 
 (make-doc
-  #'MATH/LIST-MATR:PREPEND-COL 'function
+  #'MATH/MATR:PREPEND-COL 'function
   "@b(Описание:) функция @b(prepend-col) добавляет вектор
 (список) c-lst к матрице 2d-list.
 
@@ -252,7 +252,7 @@
 ")
 
 (make-doc
-  #'MATH/LIST-MATR:PREPEND-ROWS 'function
+  #'MATH/MATR:PREPEND-ROWS 'function
   "
  @b(Пример использования:)
 @begin[lang=lisp](code)
@@ -266,7 +266,7 @@
 ")
 
 (make-doc
-  #'MATH/LIST-MATR:MAKE 'function
+  #'MATH/MATR:MAKE 'function
   "@b(Описание:) функция @b(make) генерирует матрицу 
 (список списков) из вектора (списока).
 
@@ -282,7 +282,7 @@
 ")
 
 (make-doc
-  #'MATH/LIST-MATR:AVERAGE-VALUE 'function
+  #'MATH/MATR:AVERAGE-VALUE 'function
   "@b(Описание:) функция @b(average-value) вычисляет среднее значение по
 элементам матрицы (списка списков).
 
@@ -293,7 +293,7 @@
 @end(code)")
 
 (make-doc
-  #'MATH/LIST-MATR:GET-LAST-COL 'function
+  #'MATH/MATR:GET-LAST-COL 'function
   "@b(Описание:) функция @b(get-last-col) возвращает последний столбец матрицы, 
 представленной в виде списка.
 
@@ -307,7 +307,7 @@
 ")
 
 (make-doc
-  #'MATH/LIST-MATR:AVERAGE-ROW-VALUE 'function
+  #'MATH/MATR:AVERAGE-ROW-VALUE 'function
   "@b(Описание:) функция @b(average-row-value) вычисляет 
 средние значения в строках матрицы (списка списков).
 
@@ -319,7 +319,7 @@
 ")
 
 (make-doc
-  #'MATH/LIST-MATR:COLS 'function
+  #'MATH/MATR:COLS 'function
   "@b(Описание:) функция @b(cols) возвращает 
 количество столбцов в матрице, представленной списком 2d-list.
 
@@ -333,7 +333,7 @@
 ")
 
 (make-doc
-  #'MATH/LIST-MATR:COL 'function
+  #'MATH/MATR:COL 'function
   "@b(Описание:) функция @b(col) возвращает столбец
 @b(col) матрицы, представленной списком @b(2d-list).
 
@@ -347,6 +347,6 @@
 @end(code)")
 
 (make-doc
-  #'MATH/LIST-MATR:LV-PRINT 'function
+  #'MATH/MATR:LV-PRINT 'function
   "@b(Описание:) функция @b(lv-print) красивый вывод
  вектора (списка).")

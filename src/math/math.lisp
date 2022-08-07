@@ -1,7 +1,7 @@
 ;;;; package.lisp
 
 (defpackage #:math 
-  (:use #:cl) ;;#:math/core #:math/arr-matr
+  (:use #:cl) ;;#:math/core 
   (:export mult-matr-vect )
   (:export split-range
 	   split-range-by-func)
@@ -33,17 +33,3 @@
 	  ((= j n) (setf (aref vect-rez i) summ))
 	(setf summ (+ summ (* (aref matr i j )
 			      (aref vect j))))))))
-
-;;;; (use-package (find-package :math/arr-matr) (find-package :math))
-;;;; (use-package (find-package :math/core) (find-package :math))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-#+nil
-(setf (asdf:system-description (asdf:find-system :math))
-      (uiop:read-file-form 
-       (make-pathname
-        :directory (pathname-directory
-                    (asdf:system-definition-pathname :math))
-        :name "description")
-       :at 1))
-

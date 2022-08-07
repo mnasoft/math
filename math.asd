@@ -70,8 +70,8 @@
   ;; :depends-on ("math/arr-matr")
   :components ((:module "src/ls-rotation"
 		:serial t
-                :components ((:file "las-rotation")
-                             (:file "las-rotation-doc")))))
+                :components ((:file "ls-rotation")
+                             (:file "ls-rotation-doc")))))
 
 (defsystem "math/gnuplot"
   :description "Интерфейс к программе построения графиков gnuplot"
@@ -84,19 +84,6 @@
 		:serial t
                 :components ((:file "gnuplot")))))
 
-#+nil (defsystem "math/list-matr"
-  :description "Реализация некоторых операций над матрицами,
-представленными прямоугольными 2d-списками"
-  :author "Mykola Matvyeyev <mnasoft@gmail.com>"
-  :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"  
-  :serial t
-  :in-order-to ((test-op (test-op "math/arr-matr/tests")))
-  :depends-on ("cl-utilities" "math/stat")
-  :components ((:module "src/list-matr"
-		:serial t
-                :components ((:file "list-matr")
-                             (:file "list-matr-doc")))))
-
 (defsystem "math/ls-gauss"
   :description "Решение систем линейных уравнений методом Гаусса"
   :author "Mykola Matvyeyev <mnasoft@gmail.com>"
@@ -108,18 +95,6 @@
 		:serial t
                 :components ((:file "ls-gauss")
                              (:file "ls-gauss-doc")))))
-#+nil
-(defsystem "math/2d-array"
-  :description "Реализация некоторых операций над 
-матрицами, представленными  2d-массивами"
-  :author "Mykola Matvyeyev <mnasoft@gmail.com>"
-  :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"  
-  :serial t
-  :in-order-to ((test-op (test-op "math/2d-array/tests")))
-;;;  :depends-on (:math)
-  :components ((:module "src/2d-array"
-		:serial t
-                :components ((:file "2d-array")))))
 
 (defsystem "math/appr"
   :description "Describe math here"
@@ -202,7 +177,9 @@
                              (:file "equation")
                              (:file "ls-gauss")
                              (:file "ls-gsll")
-                             (:file "approximation-tests") 
+                             (:file "ls-rotation")
+                             (:file "appr")
+                             (:file "coord") 
 			     (:file "run")
                              ))))
 
@@ -230,18 +207,6 @@
   :components
   ((:module "src/docs" :serial nil
     :components ((:file "docs")))))
-
-#+nil (defsystem "math/transform"
-  :description "@b(Описание:) система @b(math/transform) содержит
-  функции преобразования в трехмерном пространстве."
-  :author "Mykola Matvyeyev <mnasoft@gmail.com>"
-  :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"  
-  :serial t
-  :in-order-to ((test-op (test-op "math/ls-rotation/tests")))
-;;;;  :depends-on ("math/arr-matr")
-  :components ((:module "src/transform"
-		:serial t
-                :components ((:file "transform")))))
 
 (defsystem "math/equation"
   :description "@b(Описание:) система @b(math/equation) содержит
@@ -273,7 +238,6 @@
 
   :author "Mykola Matvyeyev <mnasoft@gmail.com>"
   :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"  
-
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

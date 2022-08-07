@@ -2,24 +2,31 @@
 
 (in-package #:math/tests)
 
-(def-suite approximation-tests
-  :description "Мастер-набор тестов по решению СЛАУ (систем линейных плгебраических уравнений."
+(def-suite appr
+  :description "Мастер-набор тестов по решению СЛАУ (систем линейных
+  плгебраических уравнений."
   :in all)
 
-(in-suite  approximation-tests)
+(in-suite appr)
 
 (def-test approximation-make-least-squares-matrix-test ()
   "Пример использования: (test-matr-mnk)"
-  (let* ((m1 (make-instance 'math/matr:<matrix>
-			    :initial-contents '(( 98.0d0    34.0d0    14.0d0    98.0d0 )
-						( 34.0d0    14.0d0    4.0d0     34.0d0 )
-						( 14.0d0    4.0d0     4.0d0     14.0d0 ))))
+  (let* ((m1
+           (make-instance
+            'math/matr:<matrix>
+	    :initial-contents
+            '(( 98.0d0    34.0d0    14.0d0    98.0d0 )
+	      ( 34.0d0    14.0d0    4.0d0     34.0d0 )
+	      ( 14.0d0    4.0d0     4.0d0     14.0d0 ))))
 	 (pts-1 '((-1.0 1.0) (0.0 0.0) (2.0 4.0) (3.0 9.0)))
-	 (m2 (make-instance 'math/matr:<matrix>
-			    :initial-contents '(( 225.0d0   75.0d0    75.0d0    25.0d0    931.25d0 )
-						( 75.0d0    75.0d0    25.0d0    25.0d0    606.25d0 )
-						( 75.0d0    25.0d0    75.0d0    25.0d0    631.25d0 )
-						( 25.0d0    25.0d0    25.0d0    25.0d0    406.25d0 ))))
+	 (m2
+           (make-instance
+            'math/matr:<matrix>
+            :initial-contents
+            '(( 225.0d0   75.0d0    75.0d0    25.0d0    931.25d0 )
+	      ( 75.0d0    75.0d0    25.0d0    25.0d0    606.25d0 )
+	      ( 75.0d0    25.0d0    75.0d0    25.0d0    631.25d0 )
+	      ( 25.0d0    25.0d0    25.0d0    25.0d0    406.25d0 ))))
 	 (ff-2 #'(lambda (x1 x2)
 		   (+ (* 1/2 x1 x1 )
 		      (* 1/4 x2 x2 )
@@ -35,13 +42,13 @@
     (is-true (math/matr:equivalent
 	      m1
 	      (math/appr:make-least-squares-matrix '(xx yy) 
-					      '((xx xx) (xx) (1.0) (yy)) 
-					      pts-1 )))
+					           '((xx xx) (xx) (1.0) (yy)) 
+					           pts-1 )))
     (is-true (math/matr:equivalent
 	      m2
 	      (math/appr:make-least-squares-matrix '(x1 x2 yy) 
-					      '((x1 x2)  (x1) (x2) (1.0) (yy)) 
-					      pts-2)))))
+					           '((x1 x2)  (x1) (x2) (1.0) (yy)) 
+					           pts-2)))))
 
 (def-test averaging-function-tests ()
   "Пример использования: (test-averaging-function)"

@@ -3,7 +3,8 @@
 (in-package #:math/tests)
 
 (def-suite 2d-array
-  :description "Мастер-набор всех тестов проекта math/2d-array."
+  :description "Мастер-набор всех тестов проекта math/matr для матрицы
+  типа 2d-array."
   :in all)
 
 (in-suite 2d-array)

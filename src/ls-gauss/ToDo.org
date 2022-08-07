@@ -1,7 +1,8 @@
-* ToDo
+* ls-gauss
+** ToDo
 
-* Done
-1. [X] Переименовать math/ls-gauss:solve-linear-system-gauss-backward-run
-   -> math/ls-gauss:backward-run
+** Done
+ 1. [X] Переименовать math/ls-gauss:solve-linear-system-gauss-backward-run
+    -> math/ls-gauss:backward-run
 
-* Rejected
+** Rejected

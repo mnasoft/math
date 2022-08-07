@@ -58,7 +58,7 @@
            move-v
            rotate-around)
   (:documentation
-   "@b(Описание:) пакет @b(math/list-matr) определяет некоторые
+   "@b(Описание:) пакет @b(math/matr) определяет некоторые
  операции над матрицами, представленными 2d-list, (списком состоящим
  из списков)"))
 
@@ -125,9 +125,6 @@
 			ll (cdr ll)))))
     mm))
 
-(defmethod mref ((mm <matrix>) i j) (aref (matrix-data mm) i j))
-
-(defmethod (setf mref) (value (mm <matrix>) i j) (setf (aref (matrix-data mm) i j) value) mm)
 
 (defmethod copy ((mm-ref <matrix>))
   (make-instance '<matrix> :data (cl-utilities:copy-array (matrix-data mm-ref))))
@@ -424,9 +421,9 @@
 
  @b(Пример использования:)
 @begin[lang=lisp](code)
- (progn (defparameter *p* (make-instance 'math/arr-matr:<matrix> :dimensions '(1 4)))
-        (setf (math/arr-matr:row *p* 0) '(10.0 20.0 30.0 1.0))
-        (math/arr-matr:multiply *p* (rotate-y (dtr 90.0))))
+ (progn (defparameter *p* (make-instance 'math/matr:<matrix> :dimensions '(1 4)))
+        (setf (math/matr:row *p* 0) '(10.0 20.0 30.0 1.0))
+        (math/matr:multiply *p* (rotate-y (dtr 90.0))))
 @end(code)
 "
     (let ((matrix (make-instance '<matrix> :dimensions '(4 4))))
@@ -508,29 +505,5 @@ z."
   (let ((p (make-instance '<matrix> :dimensions '(1 4))))
     (setf (row p 0) (list (first point) (second point) (third point) 1.0))
     (nreverse (cdr (nreverse (row (multiply p matrix) 0))))))
-
-#+nil
-(transform '(10 20 30) (move-xyz 10 20 30))
-
-#+nil
-(rotate-around '(0 0 0) '(1 1 1) (dtr 90))
-
-#+nil
-(progn
-  (defparameter *m* (make-instance '<matrix> :dimensions '(4 4)))
-
-  (defparameter *p* (make-instance 'math/arr-matr:<matrix> :dimensions '(1 4)))
-
-  (setf (math/arr-matr:row *p* 0) '(10.0 20.0 30.0 1.0))
-
-  (math/arr-matr:multiply *p* (rotate-y (dtr -90.0)))
-  
-  (math/arr-matr:multiply *p* (move 10 20 30))
-
-  (rotate-x (dtr 22.5) *m*)
-  (math/arr-matr:multiply *p* (rotate-v (dtr -90.0) (normalize `(0 1 0))))
-  (math/arr-matr:multiply *p* (rotate-y (dtr -90.0)))
-  )
-
 
 

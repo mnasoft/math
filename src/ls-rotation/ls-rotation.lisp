@@ -1,12 +1,12 @@
 ;;;; ./src/ls-rotation/las-rotation.lisp
 
 (defpackage #:math/ls-rotation
-  (:use #:cl );; #:math/arr-matr
+  (:use #:cl)
   (:export solve-x))
 
 (in-package :math/ls-rotation)
 
-(defun solve-x (matr)
+(defmethod solve-x ((matr array))
   (let ((n (array-dimension matr 0))	; Количество строк
 	(m (array-dimension matr 1))	; Количество столбцов
 	)
@@ -36,4 +36,15 @@
 	(setf summ (+ summ (* (aref matr i j) (aref x j)))))
       (setf summ (- (aref matr i n) summ)
 	    (aref x i) (/ summ (aref matr i i))))))
+
+(defmethod solve-x ((matr cons))
+  (let ((m (loop :for i :from 0 :below (math/matr:rows matr)
+                   :collect
+                   (loop :for j :from 0 :below (math/matr:cols matr)
+                         :collect
+                         (coerce (math/matr:mref matr i j) 'double-float)))))
+    (solve-x
+     (make-array (list (math/matr:rows m)
+                       (math/matr:cols m))
+                 :initial-contents m))))
 

@@ -2,6 +2,31 @@
 (in-package :math/matr)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;; mref
+(defmethod mref ((mm <matrix>) i j)
+  (aref (matrix-data mm) i j))
+
+(defmethod mref ((mm cons) i j)
+  (nth j (nth i mm)))
+
+(defmethod mref ((mm array) i j)
+  (aref mm i j))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;; mref
+(defmethod (setf mref) (value (mm <matrix>) i j)
+  (setf (aref (matrix-data mm) i j) value)
+  mm)
+
+(defmethod (setf mref) (value (mm cons) i j)
+  (setf (nth j (nth i mm)) value)
+  mm)
+
+(defmethod (setf mref) (value (mm array) i j)
+  (setf (aref mm i j) value)
+  mm)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;; transpose
 
 (defmethod transpose ((mm <matrix>))

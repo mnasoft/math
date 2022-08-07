@@ -1,5 +1,5 @@
 ;;;; ./src/arr-matr/arr-matr-doc.lisp
-(in-package :math/arr-matr)
+(in-package :math/matr)
 
 (defmacro make-doc (obj-name obj-type doc-string)
   `(setf (documentation ,obj-name ,obj-type)
@@ -11,102 +11,102 @@
         :key #'sb-mop:slot-definition-name))
 
 (make-doc
-  (find-method #'INITIALIZE-INSTANCE NIL '(MATH/ARR-MATR:<MATRIX>))
+  (find-method #'INITIALIZE-INSTANCE NIL '(MATH/MATR:<MATRIX>))
   t
   NIL)
 
 (make-doc
-  #'MATH/ARR-MATR:MATR-NEW 'function
+  #'MATH/MATR:MATR-NEW 'function
   "Примечание:
  (matr-new 3 4 '(1 2 3 4 5 6 7 8 9 10)) ")
 
 (make-doc
-  #'MATH/ARR-MATR:TRANSPOSE 'function
+  #'MATH/MATR:TRANSPOSE 'function
   "@b(Описание:) обобщенная_функция @b(transpose) возвращает, являющуютя
 результатом транспонирования матрицы @b(mm).")
 
 (make-doc
-  #'MATH/ARR-MATR:MULTIPLY 'function
+  #'MATH/MATR:MULTIPLY 'function
   NIL)
 
 (make-doc
-  #'MATH/ARR-MATR:ROW 'function
+  #'MATH/MATR:ROW 'function
   NIL)
 
 (make-doc
-  #'MATH/ARR-MATR:MATRIX->2D-LIST 'function
+  #'MATH/MATR:MATRIX->2D-LIST 'function
   NIL)
 
 (make-doc
-  #'MATH/ARR-MATR:MATRIX-DATA 'function
+  #'MATH/MATR:MATRIX-DATA 'function
   NIL)
 
 (make-doc
-  #'MATH/ARR-MATR:MREF 'function
+  #'MATH/MATR:MREF 'function
   NIL)
 
 (make-doc
-  #'MATH/ARR-MATR:ROWS 'function
+  #'MATH/MATR:ROWS 'function
   NIL)
 
 (make-doc
-  #'MATH/ARR-MATR:COPY 'function
+  #'MATH/MATR:COPY 'function
   NIL)
 
 (make-doc
-  #'MATH/ARR-MATR:MAIN-DIAGONAL 'function
+  #'MATH/MATR:MAIN-DIAGONAL 'function
   NIL)
 
 (make-doc
-  #'MATH/ARR-MATR:SWAP-COLS* 'function
+  #'MATH/MATR:SWAP-COLS* 'function
   NIL)
 
 (make-doc
-  #'MATH/ARR-MATR:SWAP-ROWS 'function
+  #'MATH/MATR:SWAP-ROWS 'function
   NIL)
 
 (make-doc
-  #'MATH/ARR-MATR:EQUIVALENT 'function
+  #'MATH/MATR:EQUIVALENT 'function
   NIL)
 
 (make-doc
-  #'MATH/ARR-MATR:DIMENSIONS 'function
+  #'MATH/MATR:DIMENSIONS 'function
   NIL)
 
 (make-doc
-  #'MATH/ARR-MATR:ANTI-DIAGONAL 'function
+  #'MATH/MATR:ANTI-DIAGONAL 'function
   NIL)
 
 (make-doc
-  #'MATH/ARR-MATR:MATR-EVAL-* 'function
+  #'MATH/MATR:MATR-EVAL-* 'function
   "Matr")
 
 (make-doc
-  #'MATH/ARR-MATR:ADD 'function
+  #'MATH/MATR:ADD 'function
   NIL)
 
 (make-doc
-  #'MATH/ARR-MATR:SWAP-COLS 'function
+  #'MATH/MATR:SWAP-COLS 'function
   NIL)
 
 (make-doc
-  #'MATH/ARR-MATR:SQUAREP 'function
+  #'MATH/MATR:SQUAREP 'function
   NIL)
 
 (make-doc
-  #'MATH/ARR-MATR:COLS 'function
+  #'MATH/MATR:COLS 'function
   NIL)
 
 (make-doc
-  #'MATH/ARR-MATR:COL 'function
+  #'MATH/MATR:COL 'function
   NIL)
 
 (make-doc
-  #'MATH/ARR-MATR:SWAP-ROWS* 'function
+  #'MATH/MATR:SWAP-ROWS* 'function
   NIL)
 
 (make-doc
-  (find-class 'MATH/ARR-MATR:<MATRIX>) t
+  (find-class 'MATH/MATR:<MATRIX>) t
   "Представляет матрицу, определенную через массив.
 
  Создание:
@@ -130,27 +130,27 @@
 ")
 
 (make-doc
- (find-slot 'MATH/ARR-MATR::DATA 'MATH/ARR-MATR:<MATRIX>)
+ (find-slot 'MATH/MATR::DATA 'MATH/MATR:<MATRIX>)
  t
  "Сдержимое матрицы.")
 
 (make-doc
-  (find-method #'MATH/ARR-MATR:SWAP-ROWS* NIL '(MATH/ARR-MATR:<MATRIX> T T))
+  (find-method #'MATH/MATR:SWAP-ROWS* NIL '(MATH/MATR:<MATRIX> T T))
   t
   NIL)
 
 (make-doc
-  (find-method #'MATH/ARR-MATR:COL NIL '(MATH/ARR-MATR:<MATRIX> T))
+  (find-method #'MATH/MATR:COL NIL '(MATH/MATR:<MATRIX> T))
   t
   NIL)
 
 (make-doc
-  (find-method #'MATH/ARR-MATR:COLS NIL '(MATH/ARR-MATR:<MATRIX>))
+  (find-method #'MATH/MATR:COLS NIL '(MATH/MATR:<MATRIX>))
   t
   NIL)
 
 (make-doc
-  (find-method #'MATH/ARR-MATR:SQUAREP NIL '(MATH/ARR-MATR:<MATRIX>))
+  (find-method #'MATH/MATR:SQUAREP NIL '(MATH/MATR:<MATRIX>))
   t
   "@b(Описание:) метод @b(squarep) возвращает T, если матрица является
   квадратной. В противном случае возвращает nil.
@@ -166,13 +166,13 @@
 ")
 
 (make-doc
-  (find-method #'MATH/ARR-MATR:SWAP-COLS NIL '(MATH/ARR-MATR:<MATRIX> T T))
+  (find-method #'MATH/MATR:SWAP-COLS NIL '(MATH/MATR:<MATRIX> T T))
   t
   NIL)
 
 (make-doc
-  (find-method #'MATH/ARR-MATR:ADD NIL '(MATH/ARR-MATR:<MATRIX>
-                                         MATH/ARR-MATR:<MATRIX>))
+  (find-method #'MATH/MATR:ADD NIL '(MATH/MATR:<MATRIX>
+                                         MATH/MATR:<MATRIX>))
   t
   "@b(Описание:) метод @b(add) возвращает матрицу типа <matrix>,
 являющуюся результатом сложения матриц a и b.
@@ -194,12 +194,12 @@
 ")
 
 (make-doc
-  (find-method #'MATH/ARR-MATR:MATR-EVAL-* NIL '(MATH/ARR-MATR:<MATRIX>))
+  (find-method #'MATH/MATR:MATR-EVAL-* NIL '(MATH/MATR:<MATRIX>))
   t
   "Мутная функция и непонятно как ее использовать и где?")
 
 (make-doc
-  (find-method #'MATH/ARR-MATR:ANTI-DIAGONAL NIL '(MATH/ARR-MATR:<MATRIX>))
+  (find-method #'MATH/MATR:ANTI-DIAGONAL NIL '(MATH/MATR:<MATRIX>))
   t
   "@b(Пример использования:)
 @begin[lang=lisp](code)
@@ -218,43 +218,43 @@
   @end(code)")
 
 (make-doc
-  (find-method #'MATH/ARR-MATR:DIMENSIONS NIL '(MATH/ARR-MATR:<MATRIX>))
+  (find-method #'MATH/MATR:DIMENSIONS NIL '(MATH/MATR:<MATRIX>))
   t
   NIL)
 
 (make-doc
-  (find-method #'MATH/ARR-MATR:EQUIVALENT NIL '(MATH/ARR-MATR:<MATRIX>
-                                                MATH/ARR-MATR:<MATRIX>))
+  (find-method #'MATH/MATR:EQUIVALENT NIL '(MATH/MATR:<MATRIX>
+                                                MATH/MATR:<MATRIX>))
   t
   NIL)
 
 (make-doc
-  (find-method #'MATH/ARR-MATR:EQUIVALENT NIL '(ARRAY ARRAY))
+  (find-method #'MATH/MATR:EQUIVALENT NIL '(ARRAY ARRAY))
   t
   NIL)
 
 (make-doc
-  (find-method #'MATH/ARR-MATR:EQUIVALENT NIL '(MATH/ARR-MATR:<MATRIX> ARRAY))
+  (find-method #'MATH/MATR:EQUIVALENT NIL '(MATH/MATR:<MATRIX> ARRAY))
   t
   NIL)
 
 (make-doc
-  (find-method #'MATH/ARR-MATR:EQUIVALENT NIL '(ARRAY MATH/ARR-MATR:<MATRIX>))
+  (find-method #'MATH/MATR:EQUIVALENT NIL '(ARRAY MATH/MATR:<MATRIX>))
   t
   NIL)
 
 (make-doc
-  (find-method #'MATH/ARR-MATR:SWAP-ROWS NIL '(MATH/ARR-MATR:<MATRIX> T T))
+  (find-method #'MATH/MATR:SWAP-ROWS NIL '(MATH/MATR:<MATRIX> T T))
   t
   NIL)
 
 (make-doc
-  (find-method #'MATH/ARR-MATR:SWAP-COLS* NIL '(MATH/ARR-MATR:<MATRIX> T T))
+  (find-method #'MATH/MATR:SWAP-COLS* NIL '(MATH/MATR:<MATRIX> T T))
   t
   NIL)
 
 (make-doc
-  (find-method #'MATH/ARR-MATR:MAIN-DIAGONAL NIL '(MATH/ARR-MATR:<MATRIX>))
+  (find-method #'MATH/MATR:MAIN-DIAGONAL NIL '(MATH/MATR:<MATRIX>))
   t
   " @b(Пример использования:)
 @begin[lang=lisp](code)
@@ -274,33 +274,33 @@
 @end(code)")
 
 (make-doc
-  (find-method #'MATH/ARR-MATR:COPY NIL '(MATH/ARR-MATR:<MATRIX>))
+  (find-method #'MATH/MATR:COPY NIL '(MATH/MATR:<MATRIX>))
   t
   NIL)
 
 (make-doc
-  (find-method #'MATH/ARR-MATR:ROWS NIL '(MATH/ARR-MATR:<MATRIX>))
+  (find-method #'MATH/MATR:ROWS NIL '(MATH/MATR:<MATRIX>))
   t
   NIL)
 
 (make-doc
-  (find-method #'MATH/ARR-MATR:MREF NIL '(MATH/ARR-MATR:<MATRIX> T T))
+  (find-method #'MATH/MATR:MREF NIL '(MATH/MATR:<MATRIX> T T))
   t
   NIL)
 
 (make-doc
-  (find-method #'MATH/ARR-MATR:MATRIX->2D-LIST NIL '(MATH/ARR-MATR:<MATRIX>))
+  (find-method #'MATH/MATR:MATRIX->2D-LIST NIL '(MATH/MATR:<MATRIX>))
   t
   NIL)
 
 (make-doc
-  (find-method #'MATH/ARR-MATR:ROW NIL '(MATH/ARR-MATR:<MATRIX> T))
+  (find-method #'MATH/MATR:ROW NIL '(MATH/MATR:<MATRIX> T))
   t
   NIL)
 
 (make-doc
-  (find-method #'MATH/ARR-MATR:MULTIPLY NIL '(MATH/ARR-MATR:<MATRIX>
-                                              MATH/ARR-MATR:<MATRIX>))
+  (find-method #'MATH/MATR:MULTIPLY NIL '(MATH/MATR:<MATRIX>
+                                              MATH/MATR:<MATRIX>))
   t
   "@b(Описание:) метод @b(multiply) возвращает матрицу типа <matrix>,
 являющуюся результатом умножения матриц @b(a) и @b(b).
@@ -328,7 +328,7 @@
 ")
 
 (make-doc
-  (find-method #'MATH/ARR-MATR:MULTIPLY NIL '(NUMBER MATH/ARR-MATR:<MATRIX>))
+  (find-method #'MATH/MATR:MULTIPLY NIL '(NUMBER MATH/MATR:<MATRIX>))
   t
   "@b(Описание:) метод @b(multiply) возвращает матрицу типа (<matrix>),
      являющуюся результатом умножения числа @b(a) и матрицы @b(b).
@@ -345,7 +345,7 @@
 ")
 
 (make-doc
-  (find-method #'MATH/ARR-MATR:TRANSPOSE NIL '(MATH/ARR-MATR:<MATRIX>))
+  (find-method #'MATH/MATR:TRANSPOSE NIL '(MATH/MATR:<MATRIX>))
   t
   "@b(Описание:) метод @b(transpose) возвращает матрицу типа <matrix>,
    являющуютя результатом транспонирования матрицы @b(mm).
@@ -361,24 +361,24 @@
 @end(code)")
 
 (make-doc
-  (find-method #'MATH/ARR-MATR:TRANSPOSE NIL '(CONS))
+  (find-method #'MATH/MATR:TRANSPOSE NIL '(CONS))
   t
   "Выполняет транспонирование")
 
 (make-doc
-  (find-method #'(SETF MATH/ARR-MATR:COL) NIL '(T MATH/ARR-MATR:<MATRIX> T))
+  (find-method #'(SETF MATH/MATR:COL) NIL '(T MATH/MATR:<MATRIX> T))
   t
   NIL)
 
 (make-doc
-  (find-method #'(SETF MATH/ARR-MATR:ANTI-DIAGONAL) NIL '(T
-                                                          MATH/ARR-MATR:<MATRIX>))
+  (find-method #'(SETF MATH/MATR:ANTI-DIAGONAL) NIL '(T
+                                                          MATH/MATR:<MATRIX>))
   t
   NIL)
 
 (make-doc
-  (find-method #'(SETF MATH/ARR-MATR:MAIN-DIAGONAL) NIL '(T
-                                                          MATH/ARR-MATR:<MATRIX>))
+  (find-method #'(SETF MATH/MATR:MAIN-DIAGONAL) NIL '(T
+                                                          MATH/MATR:<MATRIX>))
   t
   "@b(Пример использования:)
 @begin[lang=lisp](code)
@@ -403,8 +403,8 @@
 @end(code)")
 
 (make-doc
-  (find-method #'(SETF MATH/ARR-MATR:MAIN-DIAGONAL) NIL '(NUMBER
-                                                          MATH/ARR-MATR:<MATRIX>))
+  (find-method #'(SETF MATH/MATR:MAIN-DIAGONAL) NIL '(NUMBER
+                                                          MATH/MATR:<MATRIX>))
   t
   "@b(Пример использования:)
 @begin[lang=lisp](code)
@@ -435,11 +435,11 @@
 @end(code)")
 
 (make-doc
-  (find-method #'(SETF MATH/ARR-MATR:MREF) NIL '(T MATH/ARR-MATR:<MATRIX> T T))
+  (find-method #'(SETF MATH/MATR:MREF) NIL '(T MATH/MATR:<MATRIX> T T))
   t
   NIL)
 
 (make-doc
-  (find-method #'(SETF MATH/ARR-MATR:ROW) NIL '(T MATH/ARR-MATR:<MATRIX> T))
+  (find-method #'(SETF MATH/MATR:ROW) NIL '(T MATH/MATR:<MATRIX> T))
   t
   NIL)

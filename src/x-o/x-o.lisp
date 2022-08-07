@@ -1,7 +1,7 @@
 ;;;; x-o.lisp
 
 (defpackage #:math/x-o
-  (:use #:cl #:math/core #:math/arr-matr)
+  (:use #:cl #:math/core #:math/matr)
   (:export play))
 
 (in-package #:math/x-o)

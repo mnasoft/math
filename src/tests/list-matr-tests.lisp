@@ -5,7 +5,8 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (def-suite list-matr-tests
-  :description "Мастер-набор всех тестов системы math/list-matr."
+  :description "Мастер-набор всех тестов системы math/matr для матриц
+  типа 2d-list."
   :in all)
 
 (in-suite list-matr-tests)

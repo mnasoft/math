@@ -41,7 +41,7 @@
       m1-obrhod
       (math/ls-gauss:backward-run m1)))))
 
-(def-test solve-x-test ()
+(def-test ls-gauss-solve-x-test ()
   "Пример использования: (test-solve-x)"
   (let ((m1 (make-instance
              'math/matr:<matrix>
@@ -56,7 +56,7 @@
      (math/matr:equivalent
       (math/ls-gauss:solve-x m1) m1-gau))))
 
-(def-test solve-x ()
+(def-test ls-gauss-solve-x ()
   (is-true
    (math/core:semi-equal
     (let ((m '((1 2 3   14)
