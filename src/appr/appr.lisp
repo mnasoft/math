@@ -112,7 +112,7 @@
      #'(lambda (el)
 	 (dotimes (i n)
 	   (dotimes (j m)
-	     (setf (mref mtr i j)
+	     (setf (math/matr:mref mtr i j)
 		   (+ (apply (math/matr:mref mtr-lambda i j) el) (math/matr:mref mtr i j))))))
      ex_pts)
     mtr))
