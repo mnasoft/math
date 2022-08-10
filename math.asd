@@ -30,11 +30,24 @@
                "math/ls-rotation"
                "math/gnuplot"
                "math/appr"
+               "math/series"
 	       ;; "math/x-o"
 	       ) ;;;; "math/tests"
   :components ((:module "src/math"
 		:serial t
                 :components ((:file "math"))))) ;;;; (:file "matr-temp")
+
+(defsystem "math/series"
+  :description "@b(Описание:) система @b(math/series) определяет некоторые операции с
+ прогрессиями."
+  :author "Mykola Matvyeyev <mnasoft@gmail.com>"
+  :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"  
+  :serial t
+  :depends-on ("half-div")
+  :components ((:module "src/series"
+		:serial nil
+                :components ((:file "series")
+                             (:file "series-doc" :depends-on ("series"))))))
 
 (defsystem "math/rnd"
   :description "Содержит функции для генерирования случайных списков и 2d-списков."
