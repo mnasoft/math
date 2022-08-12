@@ -31,11 +31,22 @@
                "math/gnuplot"
                "math/appr"
                "math/series"
+               "math/half-div"
 	       ;; "math/x-o"
 	       ) ;;;; "math/tests"
   :components ((:module "src/math"
 		:serial t
                 :components ((:file "math"))))) ;;;; (:file "matr-temp")
+
+(defsystem "math/half-div"
+  :description "Describe half-div here"
+  :author "Mykola Matvyeyev <mnasoft@gmail.com>"
+  :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"  
+  :serial t
+  :components ((:module "src/half-div"
+		:serial nil
+                :components ((:file "half-div")
+                             (:file "half-div-doc" :depends-on ("half-div"))))))
 
 (defsystem "math/series"
   :description "@b(Описание:) система @b(math/series) определяет некоторые операции с
@@ -43,7 +54,7 @@
   :author "Mykola Matvyeyev <mnasoft@gmail.com>"
   :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"  
   :serial t
-  :depends-on ("half-div")
+  :depends-on ("math/half-div")
   :components ((:module "src/series"
 		:serial nil
                 :components ((:file "series")

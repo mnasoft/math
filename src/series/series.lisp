@@ -116,7 +116,7 @@
 (defmethod scale-by-number&summ ((series <geometric>) n S &key (from 0.001) (to 1000.))
   (let ((b (<geometric>-b series)))
     (setf (<geometric>-q series) 
-          (half-div:h-div
+          (math/half-div:h-div
            from to
            #'(lambda (q)
                (- (/ (* b (- (expt q n) 1)) (- q 1)) S))))))

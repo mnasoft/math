@@ -1,5 +1,6 @@
 * ToDo
-1) [-] equation
+1) [ ] half-div включить систему в систему math/half-div
+2) [-] equation
    1. [-] Определить метод (defmethod roots ((eq <quartic>)) ... )
    2. [-] Добавить тесты для пакета equation
       - [-] по доступу к слотам;
@@ -33,7 +34,7 @@
         - [ ]  <quadric>;
         - [ ]  <cubic>;
         - [ ]  <quartic>.
-2) gnuplot
+3) gnuplot
    1. [ ] Отделить документацию от кода
    2. [ ] Расширить документацию.
    3. [ ] Определить тесты.
@@ -44,26 +45,23 @@
       - [ ]  term-pngcairo -> <term-pngcairo>
       - [ ]  gnuplot-vector -> <gnuplot-vector>
 
-3) [ ] Создать подсистему для генерирования спучайных списков матриц
-   СЛАУ -> math/rnd.
-4) [-] Вывести строки документации в отдельные файлы:
-   - [ ] arr-math;
+* DoNe
+1) [X] Вывести строки документации в отдельные файлы:
    - [X] coord;
    - [X] core;
-
-
-* DoNe
-1) [X] Перенести math/arr-matr:semi-equal -> math/core:semi-equal
-2) [X] Выполнить замену:
+2) [X] Создать подсистему для генерирования спучайных списков матриц
+   СЛАУ -> math/rnd.
+3) [X] Перенести math/arr-matr:semi-equal -> math/core:semi-equal
+4) [X] Выполнить замену:
    - [X] math/2d-array -> math/matr;
    - [X] math/arr-matr -> math/matr;
    - [X] math/list-matr -> math/matr;
    - [X] math/transform -> math/matr;
-3) [1/1] ls-gsll
+5) [1/1] ls-gsll
    1. [X] Добавить систему тестирования.
-4) [X] Объединить подсистемы math/2d-array math/arr-matr math/list-matr
+6) [X] Объединить подсистемы math/2d-array math/arr-matr math/list-matr
    math/transform в одну систему math/matr.
-5) [2/2] equation
+7) [2/2] equation
    1. [X] Выполнить переименование классов:
       - [X] linear -> <linear>;
       - [X] quadric -> <quadric>;
@@ -74,17 +72,17 @@
       - [X]  <quadric>;
       - [X]  <cubic>;
       - [X]  <quartic>.
-6) [1/1] ls-gauss
+8) [1/1] ls-gauss
    1) [X] Переименовать math/ls-gauss:solve-linear-system-gauss-backward-run
       -> math/ls-gauss:backward-run
-7) [X] Переименовать файлы:
+9) [X] Переименовать файлы:
    - [X] lu-solve.lisp -> ls-solve.lisp;
-8) [X] Определить экспортируемые функции;
-   1. [X] Переименовать пакет math-ls-solver -> math/ls-solve;
-   2. [X] Отделить документацию;
-   3. [X] Переименовать lu-solve -> solve;
-   4. [X] Переименовать lu-solve-extmatr -> slove-x;   
-9) [ ] Переименовать ls-rotation:solve-linear-system-rotation -> ls-rotation:solve
+10) [X] Определить экспортируемые функции;
+    1. [X] Переименовать пакет math-ls-solver -> math/ls-solve;
+    2. [X] Отделить документацию;
+    3. [X] Переименовать lu-solve -> solve;
+    4. [X] Переименовать lu-solve-extmatr -> slove-x;   
+11) [ ] Переименовать ls-rotation:solve-linear-system-rotation -> ls-rotation:solve
 
 ** ReJecTed
 
