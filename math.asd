@@ -203,7 +203,8 @@
                              (:file "ls-gsll")
                              (:file "ls-rotation")
                              (:file "appr")
-                             (:file "coord") 
+                             (:file "coord")
+                             (:file "half-div")
 			     (:file "run")
                              ))))
 

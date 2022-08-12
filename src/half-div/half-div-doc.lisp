@@ -64,10 +64,6 @@
 ")
 
 (make-doc
-  #'MATH/HALF-DIV::SUBST-ELEMENT-BY-NO 'function
-  NIL)
-
-(make-doc
   #'MATH/HALF-DIV::BOOLE-TO-INT 'function
   NIL)
 

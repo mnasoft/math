@@ -1,6 +1,5 @@
 * ToDo
-1) [ ] half-div включить систему в систему math/half-div
-2) [-] equation
+1) [-] equation
    1. [-] Определить метод (defmethod roots ((eq <quartic>)) ... )
    2. [-] Добавить тесты для пакета equation
       - [-] по доступу к слотам;
@@ -34,7 +33,7 @@
         - [ ]  <quadric>;
         - [ ]  <cubic>;
         - [ ]  <quartic>.
-3) gnuplot
+2) gnuplot
    1. [ ] Отделить документацию от кода
    2. [ ] Расширить документацию.
    3. [ ] Определить тесты.
@@ -46,6 +45,7 @@
       - [ ]  gnuplot-vector -> <gnuplot-vector>
 
 * DoNe
+1) [X] half-div включить систему в систему math/half-div
 1) [X] Вывести строки документации в отдельные файлы:
    - [X] coord;
    - [X] core;
