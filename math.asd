@@ -54,7 +54,7 @@
   :author "Mykola Matvyeyev <mnasoft@gmail.com>"
   :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"  
   :serial t
-  :depends-on ("math/half-div")
+  :depends-on ("math/half-div" "math/equation")
   :components ((:module "src/series"
 		:serial nil
                 :components ((:file "series")
@@ -141,7 +141,8 @@
   :depends-on ("math/core")
   :components ((:module "src/stat"
 		:serial t
-                :components ((:file "statistics")))))
+                :components ((:file "stat")
+                             (:file "stat-doc" :depends-on ("stat"))))))
 
 (defsystem "math/smooth"
   :description "Весовые функции для методов сглаживания"
