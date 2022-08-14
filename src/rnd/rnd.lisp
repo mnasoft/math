@@ -4,8 +4,7 @@
   (:use #:cl) 
   (:export make-1d-list 
            make-2d-list 
-	   make-ls-system
-           ))
+	   make-ls-system))
 
 (in-package #:math/rnd)
 

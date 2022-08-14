@@ -1,5 +1,4 @@
-;;;; ./src/rnd/rnd-doc.lisp
-(in-package #:math/rnd)
+(in-package #:MATH/RND)
 
 (defmacro make-doc (obj-name obj-type doc-string)
   `(setf (documentation ,obj-name ,obj-type)
@@ -10,6 +9,19 @@
         (sb-mop:class-direct-slots  (find-class class))
         :key #'sb-mop:slot-definition-name))
 
+
+
+(make-doc
+  (find-package 'MATH/RND) t
+  "@b(Описание:) пакет @b(math/rnd) содержит функции, предназначенные
+   для создания случайных одномерных (1d-list) и двумерных (2d-list)
+   списков, а также систем линейных уравнений со сручайным наперед
+   заданным решением.
+")
+
+(make-doc
+  (macro-function 'MATH/RND::MAKE-DOC) t
+  NIL)
 
 (make-doc
   #'MATH/RND:MAKE-1D-LIST 'function

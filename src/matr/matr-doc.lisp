@@ -295,7 +295,7 @@
 ")
 
 (make-doc
-  #'MATH/MATR::MAKE-VECTOR-N 'function
+  #'MATH/MATR:MAKE-VECTOR-N 'function
   "Пример использования:
  (make-vector-n 1.5 3) => #(1.5 1.5 1.5)")
 
@@ -416,7 +416,7 @@
   "Сдержимое матрицы.")
 
 (make-doc
-  (find-method #'MATH/MATR::TRANSFORM NIL '(CONS MATH/MATR:<MATRIX>))
+  (find-method #'MATH/MATR:TRANSFORM NIL '(CONS MATH/MATR:<MATRIX>))
   t
   "@b(Описание:) метод @b(transform) возвращает координаты точки
   @b(point), преобразованные с помощью матрицы matrix.")
