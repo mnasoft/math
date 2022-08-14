@@ -259,7 +259,6 @@
 		:serial t
                 :components ((:file "matr")
                              (:file "defmethod")
-                             #+nil
                              (:file "matr-doc")))))
 
   :author "Mykola Matvyeyev <mnasoft@gmail.com>"
