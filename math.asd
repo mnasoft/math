@@ -152,7 +152,8 @@
 ;;;  :depends-on (:math)
   :components ((:module "src/smooth"
 		:serial t
-                :components ((:file "smoothing")))))
+                :components ((:file "smooth")
+                             (:file "smooth-doc" :depends-on ("smooth"))))))
 
 (defsystem "math/coord"
   :description "Содержит функции преобразования

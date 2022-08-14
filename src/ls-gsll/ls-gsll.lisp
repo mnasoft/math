@@ -3,15 +3,15 @@
 (defpackage #:math/ls-gsll
   (:use #:cl )
   (:export solve
-           solve-x)
-  (:documentation
-   "@b(Описание:) пакет @b(math/ls-gsll) пределяет функции для
- решения СЛАУ методом LU-разложения при помощи системσ GSLL."))
+           solve-x))
 
 (in-package #:math/ls-gsll)
 
 (defun solve (matrix vector)
-  (multiple-value-bind (upper permutation signum) (gsl:lu-decomposition (grid:copy matrix))
+  (multiple-value-bind
+        (upper permutation signum)
+      (gsl:lu-decomposition
+       (grid:copy matrix))
     (declare (ignore signum))
     (let* ((initial-solution (gsl:lu-solve upper vector permutation t))
            (rez (gsl:lu-refine matrix upper permutation vector initial-solution)))

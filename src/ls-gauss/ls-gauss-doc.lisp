@@ -1,5 +1,5 @@
-(in-package :math/ls-gauss)
 
+(in-package #:MATH/LS-GAUSS)
 
 (defmacro make-doc (obj-name obj-type doc-string)
   `(setf (documentation ,obj-name ,obj-type)
@@ -13,12 +13,34 @@
 
 
 (make-doc
+  (find-package 'MATH/LS-GAUSS) t
+  NIL)
+
+(make-doc
+  (macro-function 'MATH/LS-GAUSS::MAKE-DOC) t
+  NIL)
+
+(make-doc
+  #'MATH/LS-GAUSS::FIND-SLOT 'function
+  NIL)
+
+(make-doc
   #'MATH/LS-GAUSS:SOLVE-X 'function
   "@b(Описание:) обобщенная_функция @b(solve-x)
 возвращает матрицу, содержащую корни решения системы линейных уравений.
 
  Решение системы линейных уравнений выполняется методом Гаусса.
 ")
+
+(make-doc
+  #'MATH/LS-GAUSS:DETERMIANT 'function
+  NIL)
+
+(make-doc
+  #'MATH/LS-GAUSS:CONVERT-TO-TRIANGULAR 'function
+  "@b(Описание:) обобщенная_функция @b(convert-to-triangular) 
+выполняет приведение  матрицы @b(matrix) к треугольному виду,
+для решения системы ЛУ методом Гаусса.")
 
 (make-doc
   #'MATH/LS-GAUSS:BACKWARD-RUN 'function
@@ -29,10 +51,27 @@
  ")
 
 (make-doc
-  #'MATH/LS-GAUSS:CONVERT-TO-TRIANGULAR 'function
-  "@b(Описание:) обобщенная_функция @b(convert-to-triangular) 
-выполняет приведение  матрицы @b(matrix) к треугольному виду,
-для решения системы ЛУ методом Гаусса.")
+  #'MATH/LS-GAUSS:SINGULAR-P 'function
+  NIL)
+
+(make-doc
+  (find-method #'MATH/LS-GAUSS:SINGULAR-P NIL '(MATH/MATR:<MATRIX>))
+  t
+  NIL)
+
+(make-doc
+  (find-method #'MATH/LS-GAUSS:SINGULAR-P NIL '(CONS))
+  t
+  NIL)
+
+(make-doc
+  (find-method #'MATH/LS-GAUSS:BACKWARD-RUN NIL '(MATH/MATR:<MATRIX>))
+  t
+  "Кандидат в intern.
+
+ Обратный ход при вычислении решения системы линейных уравнений.
+ Матрица matr должна быть приведена к треугольной;
+ ")
 
 (make-doc
   (find-method #'MATH/LS-GAUSS:CONVERT-TO-TRIANGULAR NIL '(MATH/MATR:<MATRIX>))
@@ -64,13 +103,19 @@
 @end(code)")
 
 (make-doc
-  (find-method #'MATH/LS-GAUSS:BACKWARD-RUN NIL '(MATH/MATR:<MATRIX>))
+  (find-method #'MATH/LS-GAUSS:CONVERT-TO-TRIANGULAR NIL '(CONS))
   t
-  "Кандидат в intern.
+  NIL)
 
- Обратный ход при вычислении решения системы линейных уравнений.
- Матрица matr должна быть приведена к треугольной;
- ")
+(make-doc
+  (find-method #'MATH/LS-GAUSS:DETERMIANT NIL '(MATH/MATR:<MATRIX>))
+  t
+  NIL)
+
+(make-doc
+  (find-method #'MATH/LS-GAUSS:DETERMIANT NIL '(CONS))
+  t
+  NIL)
 
 (make-doc
   (find-method #'MATH/LS-GAUSS:SOLVE-X NIL '(MATH/MATR:<MATRIX>))
@@ -106,6 +151,18 @@
 		   0 0 1 3)))
   => Matr 1х3
      [ 1         2         3        ]
+@end(code)
+")
+
+(make-doc
+  (find-method #'MATH/LS-GAUSS:SOLVE-X NIL '(CONS))
+  t
+  "@b(Пример использования:)
+@begin[lang=lisp](code)
+ (solve-x '((1 2 2)
+           (3 5 4)))
+  => #(-2 2)
+
 @end(code)
 ")
 

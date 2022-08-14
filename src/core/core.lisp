@@ -160,17 +160,9 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defparameter *semi-equal-relativ* 1e-6
-  "@b(Описание:) переменная @b(*semi-equal-relativ*) определяет
-относительную величину, на которую могут отличаться значения 
-считающиеся равными при срвнении из с помощью функции @b(semi-equal).
-")
+(defparameter *semi-equal-relativ* 1e-6)
 
-(defparameter *semi-equal-zero*    1e-6
-    "@b(Описание:) переменная @b(*semi-equal-zero*) определяет
-абсолютную величину, на которую могут отличаться значения 
-считающиеся равными при срвнении из с помощью функции @b(semi-equal).
-")
+(defparameter *semi-equal-zero*    1e-6)
 
 (defgeneric norma (x))
 
@@ -198,16 +190,6 @@
                          (tolerance (+ *semi-equal-zero*
                                        (* *semi-equal-relativ*
                                           (norma (list (norma x) (norma y)))))))
-  "@b(Описание:) функция @b(semi-equal) возвращает T, если 
-расстояние между значениями меньше tolerance. При этом 
-имеется в виду, что значения примерно равны.
-
- @b(Пример использования:)
-@begin[lang=lisp](code)
- (semi-equal 1.0 1.000001) T
- (semi-equal 1.0 1.00001)  nil
-@end(code)
-"
   (< (distance x y) tolerance))
 
 (defmethod semi-equal ((x cons) (y cons)

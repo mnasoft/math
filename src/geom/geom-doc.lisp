@@ -11,8 +11,6 @@
         (sb-mop:class-direct-slots  (find-class class))
         :key #'sb-mop:slot-definition-name))
 
-
-
 (make-doc
  #'MATH/GEOM:EQUIVALENT-DIAMETER 'function
  "

@@ -2,11 +2,7 @@
 
 (defpackage #:math 
   (:use #:cl) ;;#:math/core 
-  (:export mult-matr-vect )
-  (:export split-range
-	   split-range-by-func)
-  (:export row  col
-	   rows cols))
+  (:export mult-matr-vect))
 
 (in-package #:math)
 

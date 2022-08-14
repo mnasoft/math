@@ -3,10 +3,7 @@
 (defpackage #:math/half-div
   (:use #:cl)
   (:export h-div) 
-  (:export h-div-lst)
-  (:documentation
-   "@b(Описание:) пакет @b( half-div) реализует алгоритм половинного
- деления для выполнения поиска корня функции на отрезке."))
+  (:export h-div-lst))
 
 (in-package #:math/half-div)
 

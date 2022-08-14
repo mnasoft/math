@@ -13,6 +13,15 @@
 
 
 (make-doc
+  (find-package 'MATH/HALF-DIV) t
+  "@b(Описание:) пакет @b( half-div) реализует алгоритм половинного
+ деления для выполнения поиска корня функции на отрезке.")
+
+(make-doc
+  (macro-function 'MATH/HALF-DIV::MAKE-DOC) t
+  NIL)
+
+(make-doc
   #'MATH/HALF-DIV:H-DIV-LST 'function
   "@b(Описание:) функция @b(h-div-lst) возвращает результат решения
  уравнения func(X[0],X[1],...,X[n],...,X[m])=0 методом половинного
@@ -64,6 +73,10 @@
 ")
 
 (make-doc
+  #'MATH/HALF-DIV::FIND-SLOT 'function
+  NIL)
+
+(make-doc
   #'MATH/HALF-DIV::BOOLE-TO-INT 'function
   NIL)
 
@@ -74,3 +87,4 @@
 (make-doc
   #'MATH/HALF-DIV::EPSYLON 'function
   "Функция для вычисления комплексной точности.")
+

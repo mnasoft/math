@@ -1,7 +1,7 @@
 ;;;; ./src/ls-gauss/ls-gauss.lisp
 
 (defpackage #:math/ls-gauss
-  (:use #:cl ) 
+  (:use #:cl) 
   (:export convert-to-triangular
 	   backward-run
 	   solve-x
@@ -75,14 +75,6 @@
     x))
 
 (defmethod solve-x ((matr cons))
-  "@b(Пример использования:)
-@begin[lang=lisp](code)
- (solve-x '((1 2 2)
-           (3 5 4)))
-  => #(-2 2)
-
-@end(code)
-"
   (apply #'vector
   (math/matr:row
    (solve-x (make-instance 'math/matr:<matrix> :initial-contents matr))

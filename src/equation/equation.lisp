@@ -64,13 +64,11 @@
 (defgeneric func (eq))
 
 (defmethod func ((eq <linear>))
-  "(funcall (func (make-instance '<linear>)) 1)"
   (values
    #'(lambda (x) (+ (* x (coeff-a eq)) (coeff-b eq)))
    (format nil "~S" eq)))
 
 (defmethod func ((eq <quadric>))
-  "(funcall (func (make-instance '<quadric>)) 2)"
   (values
    #'(lambda (x)
        (+ (* x x (coeff-a eq))
@@ -79,7 +77,6 @@
    (format nil "~S" eq)))
 
 (defmethod func ((eq <cubic>))
-  "(funcall (func (make-instance '<cubic>)) 5)"
   (values
    #'(lambda (x)
        (+ (* x x x (coeff-a eq))
@@ -89,7 +86,6 @@
    (format nil "~S" eq)))
 
 (defmethod func ((eq <quartic>))
-  "(funcall (func (make-instance '<quartic>)) 0)"
   (values
    #'(lambda (x)
        (+
