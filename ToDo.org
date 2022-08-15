@@ -1,5 +1,12 @@
 * ToDo
-1) [-] equation
+1) [ ] Определить функции кубической интерполяции для функции одного
+   переменного, заданной табличными значениями.
+2) [ ] Для документирования при помощи проекта mnas-package
+   предусмотреть исключение дублирующих ребер в графах.
+3) [ ] При определении коэффициентов в функции
+   =averaging-function-body= необходимо выполнить нормализацию
+   диапазона аргументов и значений функций.
+4) [-] equation
    1. [-] Определить метод (defmethod roots ((eq <quartic>)) ... )
    2. [-] Добавить тесты для пакета equation
       - [-] по доступу к слотам;
@@ -33,35 +40,36 @@
         - [ ]  <quadric>;
         - [ ]  <cubic>;
         - [ ]  <quartic>.
-2) gnuplot
-   1. [ ] Отделить документацию от кода
-   2. [ ] Расширить документацию.
-   3. [ ] Определить тесты.
-   4. [ ] Разобраться с примерами.
-   5. [ ] Сообщить об ошибке в font-discover
-   6. [ ] Переименовать классы:
+5) gnuplot
+   1. [ ] Расширить документацию.
+   2. [ ] Определить тесты.
+   3. [ ] Разобраться с примерами.
+   4. [ ] Сообщить об ошибке в font-discover
+   5. [ ] Переименовать классы:
       - [ ]  term-pdfcairo -> <term-pdfcairo> 
       - [ ]  term-pngcairo -> <term-pngcairo>
       - [ ]  gnuplot-vector -> <gnuplot-vector>
 
 * DoNe
-1) [X] half-div включить систему в систему math/half-div
-1) [X] Вывести строки документации в отдельные файлы:
+1) gnuplot
+   1. [X] Отделить документацию от кода
+2) [X] half-div включить систему в систему math/half-div
+3) [X] Вывести строки документации в отдельные файлы:
    - [X] coord;
    - [X] core;
-2) [X] Создать подсистему для генерирования спучайных списков матриц
+4) [X] Создать подсистему для генерирования спучайных списков матриц
    СЛАУ -> math/rnd.
-3) [X] Перенести math/arr-matr:semi-equal -> math/core:semi-equal
-4) [X] Выполнить замену:
+5) [X] Перенести math/arr-matr:semi-equal -> math/core:semi-equal
+6) [X] Выполнить замену:
    - [X] math/2d-array -> math/matr;
    - [X] math/arr-matr -> math/matr;
    - [X] math/list-matr -> math/matr;
    - [X] math/transform -> math/matr;
-5) [1/1] ls-gsll
+7) [1/1] ls-gsll
    1. [X] Добавить систему тестирования.
-6) [X] Объединить подсистемы math/2d-array math/arr-matr math/list-matr
+8) [X] Объединить подсистемы math/2d-array math/arr-matr math/list-matr
    math/transform в одну систему math/matr.
-7) [2/2] equation
+9) [2/2] equation
    1. [X] Выполнить переименование классов:
       - [X] linear -> <linear>;
       - [X] quadric -> <quadric>;
@@ -72,17 +80,114 @@
       - [X]  <quadric>;
       - [X]  <cubic>;
       - [X]  <quartic>.
-8) [1/1] ls-gauss
-   1) [X] Переименовать math/ls-gauss:solve-linear-system-gauss-backward-run
-      -> math/ls-gauss:backward-run
-9) [X] Переименовать файлы:
-   - [X] lu-solve.lisp -> ls-solve.lisp;
-10) [X] Определить экспортируемые функции;
+10) [1/1] ls-gauss
+    1) [X] Переименовать math/ls-gauss:solve-linear-system-gauss-backward-run
+       -> math/ls-gauss:backward-run
+11) [X] Переименовать файлы:
+    - [X] lu-solve.lisp -> ls-solve.lisp;
+12) [X] Определить экспортируемые функции;
     1. [X] Переименовать пакет math-ls-solver -> math/ls-solve;
     2. [X] Отделить документацию;
     3. [X] Переименовать lu-solve -> solve;
     4. [X] Переименовать lu-solve-extmatr -> slove-x;   
-11) [ ] Переименовать ls-rotation:solve-linear-system-rotation -> ls-rotation:solve
+13) [ ] Переименовать ls-rotation:solve-linear-system-rotation -> ls-rotation:solve
+14) [X] Перенести и сделать доступным в math
+    - [X] math/gnuplot:split-range -> math/core:split-range
+    - [X] math/gnuplot:split-range-by-func -> math/core:split-range-by-func
+15) [X] Определить функцию генерирующую замыкание для функции
+    интерполяции одного переменного -- make-appr-linear.
+16) [X] Выполнить оптимизацию вычисления для функции matr-mnk за счет
+    создания матрицы содержащей функции для аддитивного вычисления
+    коэффициентов.  SCHEDULED: <2018-11-30 Пт>
+17) [X] Заменить префикс с целью укорачивания имен
+    math/list-matr:list-matr* -> math/list-matr:*
+    - [X] print             -> lm-print
+    - [X] list-vector-print -> lv-print
+    - [X] union             -> unite-rows 
+18) [X] Рефакторинг -  разделить проект на отдельные части:
+    - [X] Матрицы -- arr-matr
+    - [X] Аппроксимация -- appr
+    - [X] Матрицы в виде списков -- list-matr
+    - [X] Матрицы в виде массивов -- 2d-array
+    - [X] x-o.lisp        - файл, содержащий определение класса x-o крестики-нолики, выделить в отдельный подпроект.
+      - [X] matr-set-ij-* - заменить на, что-то что применяется в настоящий момент -- (setf (mref mm r c) v).
+      - [X] matr-rows-* - заменить на, что-то что применяется в настоящий момент -- rows.
+      - [X] matr-cols-* - заменить на, что-то что применяется в настоящий момент -- cols.
+      - [X] matr-set-row-* - заменить на, что-то что применяется в настоящий момент -- (setf (row mm r) v).
+      - [X] matr-get-row-* - заменить на, что-то что применяется в настоящий момент -- (row mm r).
+      - [X] matr-get-col-* - заменить на, что-то что применяется в настоящий момент -- (col mm r).
+19) [X] Разобраться с функциями с целью исключеия какой-либо из них. 
+    - [X] matr-ij (matr i j) - исключена;
+    - [X] matr-set_ij (matr elem i j) - исключена;
+    - [X] matr-set-ij (matr value i j) - исключена;
+20) [X] Определить операции для класса matrix
+    - [X] вывода строки, определяющией тип матрицы    -- matr-name-*  ((mm matrix));
+    - [X] создания матрицы                            -- make-instance 'matrix
+    - [X] инициализации матрицы                       -- initialize-instance  ((mm matrix) &key dimensions initial-element initial-contents data (element-type t));
+    - [X] копирования матрицы                         -- copy  ((mm-ref matrix));
+    - [X] проверка на квадратность                    -- squarep  ((mm matrix));
+    - [X] определения:[100%] 
+      + [X] размерностей                              -- dimensions ((mm matrix));
+      + [X] количества строк                          -- rows ((mm matrix));
+      + [X] количества столбцов                       -- cols ((mm matrix));
+    - [X] печати                                      -- print-object ((mm matrix) s);
+    - [X] извлечения: [100%] 
+      + [X] элментов;                                 -- mref ((mm matrix) i j);
+      + [X] строк;                                    -- row  ((mm matrix) row);
+      + [X] столбцов;                                 -- col  ((mm matrix) col);
+      + [X] диагонали: [100%] 
+        - [X] главной                                 -- main-diagonal  ((mm matrix));
+        - [X] побочной                                -- anti-diagonal  ((mm matrix));
+    - [X] записи:
+      + [X] элементов                                 -- (setf mref) (matrix row col);
+      + [X] строки                                    -- (setf row)  (new-value-lst (mm matrix) row);
+      + [X] столбца                                   -- (setf col)  (new-value-lst (mm matrix) col);
+      + [X] [100%] диагонали
+        - [X] главной                                 -- (setf main-diagonal) (elements (mm matrix));
+        - [X] побочной                                -- (setf anti-diagonal) (elements (mm matrix));
+    - [X] Опреции: [100%]
+      - [X] проверки равентсва                        -- matr-equal* ((m1 matrix) (m2 matrix) &key (test #'equal));
+      - [X] Сложения                                  -- matr-sum*   ((a matrix ) (b matrix));
+      - [X] Умножения [100%]
+        - [X] на матрицу                              -- matr-mult*  ((a matrix ) (b matrix));
+        - [X] на число                                -- matr-mult*  ((a number ) (b matrix));
+      - [X] транспонирования: [100%]
+        - [X] транспонирования                        -- transpose   ((mm matrix));
+        - [X] транспонирования                        -- transpose   ((mm cons));
+      - [X] перестановки: [100%]
+        + [X] строк;                                  -- swap-rows*  ((mm matrix) i j)
+        + [X] строк;                                  -- swap-rows   ((mm matrix) i j)
+        + [X] столбцов;                               -- swap-cols*  ((mm matrix) i j)
+        + [X] столбцов;                               -- swap-cols   ((mm matrix) i j)
+      - [X] Преобразования [100%]
+        + [X] в matrix->2d-list                       -- matrix->2d-list ((mm matrix))
+21) [X] Тестирование 
+    - [X] list-matr [[file:~/quicklisp/local-projects/ultralisp/math/tests/list-matr-tests.lisp][list-matr-tests.lisp]]
+      - [X] rows -> list-matr-rows-cols-dimensions-test
+      - [X] cols -> list-matr-rows-cols-dimensions-test
+      - [X] dimensions -> list-matr-rows-cols-dimensions-test
+      - [X] row -> list-matr-row-test
+      - [X] col -> list-matr-col-test
+      - [X] average-value
+      - [X] average-not-nil-value
+      - [X] average-row-value
+      - [X] average-row-not-nil-value
+      - [X] average-col-value
+      - [X] average-col-not-nil-value
+      - [X] max-row-not-nil-value
+      - [X] max-col-not-nil-value
+      - [X] transpose
+      - [X] detach-last-col
+      - [X] get-last-col
+      - [X] prepend-row
+      - [X] prepend-col
+      - [X] append-row
+      - [X] append-col
+      - [X] lv-print
+      - [X] lm-print
+      - [X] unite-rows
+      - [X] make
+    
 
 ** ReJecTed
 
