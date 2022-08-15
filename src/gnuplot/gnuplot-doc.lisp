@@ -1,5 +1,5 @@
-;;;; ./src/gnuplot/gnuplot-doc.lisp
-(in-package :math/gnuplot)
+
+(in-package #:MATH/GNUPLOT)
 
 (defmacro make-doc (obj-name obj-type doc-string)
   `(setf (documentation ,obj-name ,obj-type)
@@ -11,14 +11,6 @@
         :key #'sb-mop:slot-definition-name))
 
 
-
-(make-doc
-  'MATH/GNUPLOT:*TERM-PNGCAIRO* 'variable
-  NIL)
-
-(make-doc
-  'MATH/GNUPLOT:*TERM-PDFCAIRO* 'variable
-  NIL)
 
 (make-doc
   'MATH/GNUPLOT:*PM3D-MAP* 'variable
@@ -35,6 +27,10 @@
 (make-doc
   'MATH/GNUPLOT:*PALETTE-DEFINED* 'variable
   "STUB")
+
+(make-doc
+  (macro-function 'MATH/GNUPLOT::MAKE-DOC) t
+  NIL)
 
 (make-doc
   #'MATH/GNUPLOT:GNUPLOT-SPLOT 'function
@@ -151,14 +147,6 @@
 ")
 
 (make-doc
-  #'MATH/GNUPLOT::MAKE-2D-LIST-BY-FUNC 'function
-  NIL)
-
-(make-doc
-  #'MATH/GNUPLOT::FILE-NAME 'function
-  "Определяет имя файла в каталоге поумолчанию.")
-
-(make-doc
   #'MATH/GNUPLOT::TABLE-APPLY-0 'function
   "Пример использования:
    (table-apply-0 (make-table (split-range 1 4 3) (split-range 5 7 2))  #'vector) =>
@@ -166,6 +154,10 @@
     (#(2.0 5.0) #(2.0 6.0) #(2.0 7.0))
     (#(3.0 5.0) #(3.0 6.0) #(3.0 7.0))
     (#(4.0 5.0) #(4.0 6.0) #(4.0 7.0))) ")
+
+(make-doc
+  #'MATH/GNUPLOT::FILE-NAME 'function
+  "Определяет имя файла в каталоге поумолчанию.")
 
 (make-doc
   #'MATH/GNUPLOT::TABLE-APPLY-1 'function
@@ -183,36 +175,6 @@
   "@b(Описание:) обобщенная функция @b(gnuplot-data-to-file) выводит данные
 @b(data) в файл с именем @b(f-name), расположенный в каталоге поумолчанию
 (см. переменную *default-gnuplot-direcroty*).")
-
-(make-doc
-  #'MATH/GNUPLOT::OUTPUT 'function
-  NIL)
-
-(make-doc
-  #'MATH/GNUPLOT::MOVE 'function
-  NIL)
-
-(make-doc
-  #'MATH/GNUPLOT::PLOT 'function
-  NIL)
-
-(make-doc
-  #'MATH/GNUPLOT::GNUPLOT-VECTOR-DIRECTION 'function
-  NIL)
-
-(make-doc
-  #'MATH/GNUPLOT::GNUPLOT-VECTOR-ORIGIN 'function
-  NIL)
-
-(make-doc
-  #'(setf MATH/GNUPLOT::GNUPLOT-VECTOR-DIRECTION)
-  'function
-  NIL)
-
-(make-doc
-  #'(setf MATH/GNUPLOT::GNUPLOT-VECTOR-ORIGIN)
-  'function
-  NIL)
 
 (make-doc
   (find-class 'MATH/GNUPLOT::TERM-PDFCAIRO) t
@@ -244,109 +206,9 @@
 ")
 
 (make-doc
-  (find-class 'MATH/GNUPLOT::GNUPLOT-VECTOR) t
-  NIL)
-
-(make-doc
-  (find-class 'MATH/GNUPLOT::<TERM>) t
-  NIL)
-
-(make-doc
- (find-slot 'MATH/GNUPLOT::NO-TRANSPARENT 'MATH/GNUPLOT::TERM-PNGCAIRO)
+  (find-slot 'MATH/GNUPLOT::SIZE-UNITS 'MATH/GNUPLOT::<TERM>)
  t
- NIL)
-
-(make-doc
- (find-slot 'MATH/GNUPLOT::NO-CROP 'MATH/GNUPLOT::TERM-PNGCAIRO)
- t
- NIL)
-
-(make-doc
- (find-slot 'MATH/GNUPLOT::POINTSCALE 'MATH/GNUPLOT::TERM-PNGCAIRO)
- t
- NIL)
-
-(make-doc
- (find-slot 'MATH/GNUPLOT::ORIGN 'MATH/GNUPLOT::GNUPLOT-VECTOR)
- t
- NIL)
-
-(make-doc
- (find-slot 'MATH/GNUPLOT::DIRECTION 'MATH/GNUPLOT::GNUPLOT-VECTOR)
- t
- NIL)
-
-(make-doc
- (find-slot 'MATH/GNUPLOT::NO-ENHANCED 'MATH/GNUPLOT::<TERM>)
- t
- NIL)
-
-(make-doc
- (find-slot 'MATH/GNUPLOT::MONO/COLOR 'MATH/GNUPLOT::<TERM>)
- t
- NIL)
-
-(make-doc
- (find-slot 'MATH/GNUPLOT::FONT 'MATH/GNUPLOT::<TERM>)
- t
- NIL)
-
-(make-doc
- (find-slot 'MATH/GNUPLOT::FONTSCALE 'MATH/GNUPLOT::<TERM>)
- t
- NIL)
-
-(make-doc
- (find-slot 'MATH/GNUPLOT::LINEWIDTH 'MATH/GNUPLOT::<TERM>)
- t
- NIL)
-
-(make-doc
- (find-slot 'MATH/GNUPLOT::ROUNDED/BUTT/SQUARE 'MATH/GNUPLOT::<TERM>)
- t
- NIL)
-
-(make-doc
- (find-slot 'MATH/GNUPLOT::DASHLENGTH 'MATH/GNUPLOT::<TERM>)
- t
- NIL)
-
-(make-doc
- (find-slot 'MATH/GNUPLOT::BACKGROUND 'MATH/GNUPLOT::<TERM>)
- t
- NIL)
-
-(make-doc
- (find-slot 'MATH/GNUPLOT::SIZE 'MATH/GNUPLOT::<TERM>)
- t
- NIL)
-
-(make-doc
- (find-slot 'MATH/GNUPLOT::SIZE-UNITS 'MATH/GNUPLOT::<TERM>)
- t
- "По умолчанию - пиксели|пиксели=72*in|пиксели=72/25.4*cm")
-
-(make-doc
-  (find-method #'MATH/GNUPLOT::PLOT NIL '(STRING MATH/GNUPLOT::<TERM> CONS))
-  t
-  NIL)
-
-(make-doc
-  (find-method #'MATH/GNUPLOT::MOVE NIL '(MATH/GNUPLOT::GNUPLOT-VECTOR VECTOR))
-  t
-  NIL)
-
-(make-doc
-  (find-method #'MATH/GNUPLOT::OUTPUT NIL '(MATH/GNUPLOT::TERM-PDFCAIRO STRING
-                                            T))
-  t
-  NIL)
-
-(make-doc
-  (find-method #'MATH/GNUPLOT::OUTPUT NIL '(MATH/GNUPLOT::TERM-PNGCAIRO STRING
-                                            T))
-  t
-  NIL)
+  "По умолчанию - пиксели|пиксели=72*in|пиксели=72/25.4*cm")
 
 (make-doc
   (find-method #'MATH/GNUPLOT:GNUPLOT-DATA-TO-FILE NIL '(T CONS))

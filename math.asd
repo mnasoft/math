@@ -106,7 +106,8 @@
   :depends-on ("math/core" "font-discovery" "vgplot")
   :components ((:module "src/gnuplot"
 		:serial t
-                :components ((:file "gnuplot")))))
+                :components ((:file "gnuplot")
+                             (:file "gnuplot-doc" :depends-on ("gnuplot"))))))
 
 (defsystem "math/ls-gauss"
   :description "Решение систем линейных уравнений методом Гаусса"
