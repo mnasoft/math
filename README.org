@@ -5,7 +5,7 @@
 #+OPTIONS: timestamp:t title:t toc:nil todo:t |:t
 #+TITLE: Math
 #+DATE: <2020-08-03 Пн>
-#+AUTHOR: Nick Matvyeyev
+#+AUTHOR: Mykola Matvyeyev
 #+EMAIL: mnasoft@gmail.com
 #+LANGUAGE: en
 #+SELECT_TAGS: export
@@ -49,5 +49,26 @@ For documentation generation use:
   (codex:document :math)
 #+END_SRC
 
-
+* Dependencies
+:PROPERTIES:  
+:UNNUMBERED: t  
+:END:
+** MSYS2
+libffi.dll
+libgslcblas-0.dll
+libgsl-0.dll
+** Dependency Resolution
+#+begin_src shell
+  #!/bin/bash
+  # Installing packages
+  pacman -S mingw-w64-x86_64-gsl mingw-w64-x86_64-libffi
+  # Finding Dependencies
+  LIBGSL=`pacman -Ql mingw-w64-x86_64-gsl | grep 'libgsl-[0-9]*.dll' | awk  '{print $2}'`
+  LIBGSLCBLAS=`pacman -Ql mingw-w64-x86_64-gsl | grep 'libgslcblas-[0-9]*.dll' | awk  '{print $2}'`
+  LIBFFI=`pacman -Ql mingw-w64-x86_64-libffi | grep 'libffi-[0-9]*.dll' | awk  '{print $2}'`
+  # Creating symbolic links
+  ln -sf -T ${LIBGSL} /usr/local/bin/libgsl-0.dll
+  ln -sf -T ${LIBGSLCBLAS} /usr/local/bin/libgslcblas-0.dll
+  ln -sf -T ${LIBFFI} /usr/local/bin/libffi.dll
+#+end_src
 
