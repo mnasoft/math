@@ -180,8 +180,8 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defclass <appr-linear> ()
-  ((x1       :accessor appr-linear-x1      )
-   (a1d-func :accessor appr-linear-a1d-func)))
+  ((x1       :accessor appr-linear-x1 :documentation "Вектор аргументов.")
+   (a1d-func :accessor appr-linear-a1d-func :documentation "Вектор функций.")))
 
 (defmethod print-object ((a-l <appr-linear>) s)
   (format s "#<appr-linear> (~A ~A)"

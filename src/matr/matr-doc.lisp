@@ -411,11 +411,6 @@
 ")
 
 (make-doc
-  (find-slot 'MATH/MATR::DATA 'MATH/MATR:<MATRIX>)
- t
-  "Сдержимое матрицы.")
-
-(make-doc
   (find-method #'MATH/MATR:TRANSFORM NIL '(CONS MATH/MATR:<MATRIX>))
   t
   "@b(Описание:) метод @b(transform) возвращает координаты точки

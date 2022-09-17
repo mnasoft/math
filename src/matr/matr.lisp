@@ -77,7 +77,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defclass <matrix> ()
-  ((data :accessor matrix-data :initform nil :initarg :data)))
+  ((data :accessor matrix-data :initform nil :initarg :data :documentation "Сдержимое матрицы.")))
 
 (defmethod matr-name-* ((mm <matrix>))
   (type-of mm))

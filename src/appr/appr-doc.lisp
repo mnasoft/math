@@ -436,16 +436,6 @@ yy(x@sub(1))=a@sub(1)·x@sub(1)@sup(2)·x@sub(2)@sup(2)+ a@sub(2)·x@sub(1)@sup(
   "@b(Описание:) Класс @b(<appr-bilinear>) представляет билинейную интерполяцию.")
 
 (make-doc
- (find-slot 'MATH/APPR::X1 'MATH/APPR:<APPR-LINEAR>)
- t
- "Вектор аргументов.")
-
-(make-doc
- (find-slot 'MATH/APPR::A1D-FUNC 'MATH/APPR:<APPR-LINEAR>)
- t
- "Вектор функций.")
-
-(make-doc
  (find-slot 'MATH/APPR::X1 'MATH/APPR:<APPR-BILINEAR>)
  t
  "Вектор реперных значений по первому направлению (измерению).")
