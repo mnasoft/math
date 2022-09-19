@@ -93,7 +93,7 @@
   (codex:document :math)
   (make-graphs)
   (mnas-package:copy-doc->public-html "math")
-  ;;;; (mnas-package:rsync-doc "math")
+  (mnas-package:rsync-doc "math")
   :make-all-finish)
 
 ;;;; (make-all)
