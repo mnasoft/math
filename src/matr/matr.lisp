@@ -58,7 +58,12 @@
            rotate-around
            move-xyz
            move-v
-           transform))
+           transform)
+  (:documentation
+   "@b(Описание:) пакет @b(math/matr) определяет некоторые операции
+ над матрицами, представленными 2d-list, (списком состоящим из
+ списков)")
+  )
 
 (in-package :math/matr)
 
@@ -114,6 +119,8 @@
 Что-то пошло не так!"))))
 
 (defun matr-new (rows cols &optional (lst nil))
+  "Примечание:
+ (matr-new 3 4 '(1 2 3 4 5 6 7 8 9 10)) "  
   (let ((mm (make-instance '<matrix> :dimensions (list rows cols) :initial-element 0.0d0))
 	(ll lst))
     (when (consp lst)
@@ -283,6 +290,13 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defun make-vector-n (element n)
+    "
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+
+@end(code)
+
+ (make-vector-n 1.5 3) => #(1.5 1.5 1.5)"
   (make-array (list n) :initial-element element))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -290,6 +304,15 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defun unite-rows (2d-list)
+  "@b(Описание:) функция @b(unite-rows) объединяет строки матрицы
+ (список списков) в вектор (список).
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (unite-rows '((1 2 3)
+               (4 5 6)))
+ =>(1 2 3 4 5 6)
+@end(code)"  
   (let ((rez nil))
     (mapcar #'(lambda (el) (setf rez (append rez el) ) ) 2d-list)
     rez))
@@ -300,6 +323,18 @@
     rez))
 
 (defun make (rows cols 2d-list)
+  "@b(Описание:) функция @b(make) генерирует матрицу 
+(список списков) из вектора (списка).
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (math:make 2 3 '(0 1 2 3 4 5 6 7 8 9 10 11 12))
+ => ((0 1 2) 
+     (3 4 5))
+ (math:make 2 3 'nil)
+ => ((NIL NIL NIL) 
+     (NIL NIL NIL))
+@end(code)"  
   (let ((rez nil)
         (rw nil))
     (dotimes (r rows (reverse rez))
@@ -313,47 +348,109 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defun average-value (2d-list)
+  "@b(Описание:) функция @b(average-value) вычисляет среднее значение по
+ элементам матрицы (списка списков).
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (average-value '((1.0 1.5 2.0)
+                  (2.0 2.5 3.0))) => 2.0
+@end(code)"  
   (math/stat:average-value (unite-rows 2d-list)))
 
 (defun average-not-nil-value (2d-list)
+  "@b(Описание:) функция @b(average-not-nil-value) вычисляет среднее
+ значение по элементам матрицы (списка списков) с исключением
+ nil-элементов."  
   (math/stat:average-not-nil-value (unite-rows 2d-list)))
 
 ;;;;
 
 (defun average-row-value (lst)
+  "@b(Описание:) функция @b(average-row-value) вычисляет 
+средние значения в строках матрицы (списка списков).
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (average-row-value '((1.0 1.5 2.0)
+                      (2.0 2.5 3.0))) => (1.5 2.5)
+@end(code)"  
   (mapcar #'math/stat:average-value lst))
 
 (defun average-row-not-nil-value (lst)
+  "@b(Описание:) функция @b(average-row-not-nil-value) вычисляет среднее
+ значение по элементам матрицы (списка списков)."
   (mapcar #'math/stat:average-not-nil-value lst))
 
 (defun max-row-not-nil-value (lst)
+  "@b(Описание:) функция @b(max-row-not-nil-value) вычисляет максимальные 
+значения по строкам матрицы (списка списков).
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (max-row-not-nil-value '((1.0 2.1 1.5 2.0)
+                          (2.0 2.5 3.2 3.0))) => (2.1 3.2)
+@end(code)"  
   (mapcar #'(lambda (el) (apply #'max (math/core:exclude-nil-from-list el))) lst))
 
 ;;;;
 
 (defun average-col-value (lst)
+  "@b(Описание:) функция @b(average-col-value) вычисляет среднее
+значение по столбцам матрицы (списка списков).
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (average-col-value '((3.0 2.1 4.5)
+                     (2.0 2.5 3.2))) => (2.5 2.3 3.85)
+@end(code)"  
   (average-row-value (transpose lst)))
 
 (defun average-col-not-nil-value (lst)
+  "@b(Описание:) функция @b(average-col-not-nil-value) вычисляет среднее 
+значение по элементам матрицы (списка списков).
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (average-col-not-nil-value '((nil 2.1 4.5)
+                             (2.0 nil 3.2))) => (2.0 2.1 3.85)
+  
+@end(code)"  
   (average-row-not-nil-value (transpose lst)))
 
 (defun max-col-not-nil-value (lst)
+  "@b(Описание:) функция @b(max-col-not-nil-value) вычисляет среднее
+ значение по столбцам матрицы (списка списков)."  
   (max-row-not-nil-value (transpose lst)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;; lm-print
 
 (defun lm-print (2d-list &key (fmt "~6,1f") (stream t))
+  "@b(Описание:) функция @b(lm-print) красивый вывод матрицы (списка
+ списков)."  
   (format stream (concatenate 'string  "~{~{" fmt "~^ ~}~%~}") 2d-list))
 
 (defun lv-print (lst &key (fmt "~6,1f") (stream t))
+  "@b(Описание:) функция @b(lv-print) красивый вывод
+ вектора (списка)."  
   (format stream (concatenate 'string  "~{" fmt "~^ ~}~%") lst))
-
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;; append
 
 (defun append-col (c-lst 2d-list)
+  "@b(Описание:) функция @b(append-col) добавляет к матрице,
+ представленной списком 2d-list, столбец (список) c-lst.
+
+ @b(Пример использования:) @begin[lang=lisp](code)
+ (math:append-col '(10 11 12)
+                  '((1 2 3)
+                    (4 5 6)
+                    (7 8 9))) => ((1 2 3 10) 
+                                  (4 5 6 11)
+                                  (7 8 9 12))
+@end(code)"  
   (let ((rez nil)
         (r nil))
     (dolist (l 2d-list (reverse rez))
@@ -362,12 +459,54 @@
       (push (append l (list r)) rez))))
 
 (defun append-row (c-lst 2d-list)
+  "@b(Описание:) функция @b(append-row) добавляет вектор (список) r-lst
+ к матрице 2d-list.
+
+ @b(Пример использования:) @begin[lang=lisp](code)
+ (math:append-row '(10 11 12)
+                  '((1 2 3)
+                    (4 5 6)
+                    (7 8 9)))  =>((1 2 3)
+                                  (4 5 6)
+                                  (7 8 9)
+                                  (10 11 12))
+
+ (math:append-row '(10 11 )
+                  '((1 2 3)
+                    (4 5 6)
+                    (7 8 9)))
+ =>((1 2 3)
+    (4 5 6)
+    (7 8 9)
+    (10 11 NIL))
+
+ (math:append-row '(10 11 12 13)
+                  '((1 2 3)
+                    (4 5 6)
+                    (7 8 9))) =>(( 1  2  3)
+                                 ( 4  5  6)
+                                 ( 7  8  9)
+                                 (10 11 12))
+@end(code)"  
   (transpose (append-col c-lst (transpose 2d-list))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;; prepend
 
 (defun prepend-col (c-lst 2d-list)
+ "@b(Описание:) функция @b(prepend-col) добавляет вектор
+(список) c-lst к матрице 2d-list.
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (prepend-col '(10 11 12)
+              '((1  2  3)
+                (4  5  6)
+                (7  8  9))) => ((10 1 2 3)
+                                (11 4 5 6)
+                                (12 7 8 9))
+
+@end(code)"  
   (let ((rez nil)
         (r nil))
     (dolist (l 2d-list (reverse rez))
@@ -376,17 +515,77 @@
       (push (cons r l) rez))))
 
 (defun prepend-row (c-lst 2d-list)
+  "@b(Описание:) функция @b(prepend-row)
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (prepend-row '(10 11 12) 
+              '((1 2 3)
+                (4 5 6)
+                (7 8 9))) =>((10 11 12) 
+                             ( 1  2  3) 
+                             ( 4  5  6)
+                             ( 7  8  9))
+ (math:prepend-row '(10 11 )
+                   '((1 2 3)
+                     (4 5 6) 
+                     (7 8 9))) =>((10 11 NIL) 
+                                  (1 2 3) 
+                                  (4 5 6) 
+                                  (7 8 9))
+ (math:prepend-row '(10 11 12 13)
+                   '((1 2 3)
+                     (4 5 6)
+                     (7 8 9)))  =>((10 11 12)
+                                   ( 1  2  3) 
+                                   ( 4  5  6) 
+                                   ( 7  8  9))
+@end(code)"
   (transpose (prepend-col c-lst (transpose 2d-list))))
 
 (defun prepend-rows (rs-lst 2d-list)
+  "
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (prepend-rows
+ '((10 20 30)
+   (11 22 33))
+ '((11 12 13)
+   (12 13 14)
+   (13 14 15)))
+@end(code)"  
   (reduce #'(lambda (x y) (prepend-row y x)) (reverse rs-lst) :initial-value 2d-list))
 
 (defun detach-last-col (2d-list)
+  "@b(Описание:) функция @b(detach-last-col) возвращает матрицу, 
+представленную в виде списка, образованную удалением последнего столбца 
+(последнего элемента каждой строки).
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (detach-last-col
+  '((1 2 3  6)
+    (2 3 4  9) 
+    (3 4 5 12))) => ((1 2 3)
+                     (2 3 4)
+                     (3 4 5))
+@end(code)"  
   (mapcar
    #'(lambda(el) (reverse (cdr (reverse el))))
    2d-list))
 
 (defun get-last-col (2d-list)
+  "@b(Описание:) функция @b(get-last-col) возвращает последний столбец
+ матрицы, представленной в виде списка.
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (get-last-col
+ '((1  2  3  6)
+   (2  3  4  9) 
+   (3  4  5 12))) =>(6 9 12) 
+@end(code)
+"  
   (mapcar
    #'(lambda(el) (car (last el)))
    2d-list))
@@ -396,8 +595,16 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defun normalize (v)
-    (let ((len (sqrt (apply #'+ (mapcar #'(lambda (el) (* el el)) v)))))
-      (mapcar #'(lambda (el) (/ el len)) v)))
+  "@b(Описание:) функция @b(normalize) возвращает нормализованный вектор.
+Длина нормализованного вектора равна 1.0.
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (normalize '(1 2 3)) => (0.26726124 0.5345225 0.8017837)
+ (normalize '(2 -3))  => (0.5547002 -0.8320503)
+@end(code)"  
+  (let ((len (sqrt (apply #'+ (mapcar #'(lambda (el) (* el el)) v)))))
+    (mapcar #'(lambda (el) (/ el len)) v)))
 
 (defmethod rotate-x ((α number))
     (let ((matrix (make-instance '<matrix> :dimensions '(4 4))))

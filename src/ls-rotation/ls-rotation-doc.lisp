@@ -10,20 +10,6 @@
         (sb-mop:class-direct-slots  (find-class class))
         :key #'sb-mop:slot-definition-name))
 
-
-
-(make-doc
-  (find-package 'MATH/LS-ROTATION) t
-  NIL)
-
-(make-doc
-  (macro-function 'MATH/LS-ROTATION::MAKE-DOC) t
-  NIL)
-
-(make-doc
-  #'MATH/LS-ROTATION::FIND-SLOT 'function
-  NIL)
-
 (make-doc
   #'MATH/LS-ROTATION:SOLVE-X 'function
   "@b(Описание:) функция @b(solve-x) решает систему линейных
@@ -74,12 +60,3 @@
  Есть необходимость доработки с точки зрения решения разреженной СЛАУ!
 ")
 
-(make-doc
-  (find-method #'MATH/LS-ROTATION:SOLVE-X NIL '(ARRAY))
-  t
-  NIL)
-
-(make-doc
-  (find-method #'MATH/LS-ROTATION:SOLVE-X NIL '(CONS))
-  t
-  NIL)

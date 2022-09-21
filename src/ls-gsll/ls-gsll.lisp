@@ -3,11 +3,31 @@
 (defpackage #:math/ls-gsll
   (:use #:cl )
   (:export solve
-           solve-x))
+           solve-x)
+  (:documentation
+    "@b(Описание:) пакет @b(math/ls-gsll) пределяет функции для
+ решения СЛАУ методом LU-разложения при помощи системσ GSLL."))
 
 (in-package #:math/ls-gsll)
 
 (defun solve (matrix vector)
+  "@b(Описание:) функция| @b(solve) возвращает корни решения СЛАУ 
+(системы линейных алгебраических уравнений), 
+используя LU-разложение матрицы @b(matrix).
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (let ((m (grid:make-foreign-array
+           'double-float :initial-contents
+           '((1 2 3)  
+	     (2 1 1)  
+	     (3 0 1)))) 
+       (v (grid:make-foreign-array
+           'double-float :initial-contents
+           '(14 7 6))))
+   (solve m v))
+=> #(1.0000000000000002d0 2.0000000000000004d0 2.9999999999999996d0)
+@end(code)"  
   (multiple-value-bind
         (upper permutation signum)
       (gsl:lu-decomposition
@@ -20,6 +40,24 @@
                    :collect (grid:gref rez i))))))
 
 (defun solve-x (m-v)
+  "@b(Описание:) функция| @b(solve) возвращает корни решения СЛАУ
+ (системы линейных алгебраических уравнений), используя LU-разложение
+ матрицы @b(m-v).
+ 
+ @b(Переменые:)
+@begin(list)
+ @item(m-v - матрица, представленная в виде 2d-list, (списком
+       состоящим из списков));
+@end(list)
+
+  @b(Пример использования:)
+@begin[lang=lisp](code)
+ (let ((m '((1 2 3   14)  
+	    (2 1 1    7)  
+	    (3 0 1    6))))
+   (solve-x m))
+=> #(1.0000000000000002d0 2.0000000000000004d0 2.9999999999999996d0)
+@end(code)"  
   (let ((m (math/matr:detach-last-col m-v))
         (v (math/matr:get-last-col    m-v)))
     (solve (grid:make-foreign-array 'double-float :initial-contents m)
