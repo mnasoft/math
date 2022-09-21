@@ -44,9 +44,28 @@
 (in-package :math/core)
 
 (defun square (x)
+  "@b(Описание:) функция @b(square) возвращает квадрат значения.
+
+ @b(Переменые:)
+@begin(list)
+ @item(x - число.)
+@end(list)
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (square 5) => 25 
+ (square -4) => 16 
+@end(code)"  
   (* x x))
 
 (defun exclude-nil-from-list (lst)
+  "@b(Описание:) функция @b(exclude-nil-from-list) возвращает список в
+ котором нет nil-элементов (они исключаются).
+
+ @b(Пример использования:) @begin[lang=lisp](code)
+ (exclude-nil-from-list '(1.1 1.0 nil 0.9 nil 1.2 nil 0.8)) 
+ => (1.1 1.0 0.9 1.2 0.8)
+@end(code)"  
   (let ((res nil))
     (dolist (el lst (reverse res) )
       (when el (push el res )))))
@@ -59,23 +78,52 @@
 	    rez (+ rez nf)))))
 
 (defun split-range (from to steps)
+  "@b(Описание:) split-range
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (split-range 10 20 5)  => (10.0 12.0 14.0 16.0 18.0 20.0)
+@end(code)
+ "  
  (loop :for i :from 0 :to steps
 	:collect (coerce (+ from (* (/ i steps ) (- to from))) 'float)))
 
 (defun split-range-by-func (from to steps &key
 					    (func #'(lambda (x) (log x 10)))
 					    (anti-func #'(lambda (x) (expt 10 x))))
+  "@b(Описание:) split-range-by-func
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (split-range-by-func 1 10 5) => (1.0 1.5848932 2.5118864 3.981072 6.3095737 10.0)
+ (split-range-by-func 1 10 10) =>
+ (1.0 1.2589254 1.5848932 1.9952624 2.5118864 3.1622777 3.981072 5.0118723  6.3095737 7.943282 10.0)
+@end(code)
+"  
  (mapcar
    #'(lambda (el)(funcall anti-func el))
    (split-range (funcall func from) (funcall func to) steps)))
 
 (defun depth-sphere-along-cone (r alpha)
+  "@b(Описание:) функция @b(depth-sphere-along-cone) возвращает 
+заглубление сферы с радиусом R в конуc с углом при вершине 
+равным alpha от линии пересечения конуса с цилиндром."  
    (let ((betta (- pi (/ alpha 2))))
     (- r (* r (tan (/ betta  2))))))
 
 (defparameter +significant-digits+ 4)
 
 (defun round-to-significant-digits (val &optional (significant-digits +significant-digits+) (base-val val))
+  "@b(Описание:) функция @b(round-to-significant-digits) округляет значение
+val до количества значащих цифр, задаваемых аргументом significant-digits.
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (round-to-significant-digits 456.32738915923           ) => 456.3
+ (round-to-significant-digits 456.32738915923 6         ) => 456.327
+ (round-to-significant-digits 456.32738915923 6 53562.23) => 456.3
+@end(code)
+"  
    (labels ((find-divisor (val)
 	     "@b(Описание:) функция @b(find-divisor)
 
@@ -108,55 +156,113 @@
 ;;;; /src/core/generic.lisp
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defgeneric distance (x1 x2))
+(defgeneric distance (x1 x2)
+  (:documentation
+   "@b(Описание:) обобщенная функция @b(distance)
+возвращает расстояние между x1 и x2. Как корень квадратный из 
+сумм квадратов расстояний по каждому направлению."))
 
-(defgeneric distance-relative (x0 x1 dx))
+(defgeneric distance-relative (x0 x1 dx)
+  (:documentation
+   "@b(Описание:) обобщенная функция @b(distance-relative)
+возвращает относительную длину между x0 и x1, длина приведения dx.
+Корень квадратный из сумм квадратов расстояний по каждому направлению
+отнесенному к длине приведения."))
 
-(defgeneric summ-distance (x1 x2))
+(defgeneric summ-distance (x1 x2)
+  (:documentation
+   "@b(Описание:) обобщенная функция @b(summ-distance) возвращает сумму
+ расстояний по каждому направлению."))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;; /src/core/generic-matr.lisp
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defgeneric matr-name-* (matrix))
+(defgeneric matr-name-* (matrix)
+  (:documentation "Matr"))
 
-(defgeneric dimensions (matrix))
+(defgeneric dimensions (matrix)
+  (:documentation
+    "@b(Описание:) обобщенная_функция @b(dimensions) возвращает список,
+ содержащий размерности матрицы @b(matrix)."))
 
-(defgeneric rows (matrix))
+(defgeneric rows (matrix)
+  (:documentation
+   "@b(Описание:) обобщенная_функция @b(rows) возврвщает количество строк
+матрицы @b(matrix)."))
 
-(defgeneric cols (matrix))
+(defgeneric cols (matrix)
+  (:documentation
+   "@b(Описание:) обобщенная_функция @b(cols) возврвщает количество столбцов
+матрицы @b(matrix)."))
 
 (defgeneric equivalent (matrix-1 matrix-2 &key test))
 
-(defgeneric row (matrix row))
+(defgeneric row (matrix row)
+  (:documentation
+   "@b(Описание:) обобщенная_функция @b(row) возвращает строку @b(row)
+матрицы @b(matrix)."))
 
 (defgeneric (setf row) (values matrix row))
 
-(defgeneric col (matrix col))
+(defgeneric col (matrix col)
+  (:documentation
+   "@b(Описание:) обобщенная_функция @b(col) возвращает строку @b(col)
+ матрицы @b(matrix)."))
 
 (defgeneric (setf col) (values matrix col))
 
-(defgeneric main-diagonal (matrix))
+(defgeneric main-diagonal (matrix)
+  (:documentation
+   "@b(Описание:) обобщенная_функция @b(main-diagonal) извлекает главную
+ диагональ матрицы.
+
+Элементы возвращаются в порядке возрастания строк."))
 
 (defgeneric (setf main-diagonal) (elements matrix))
 
-(defgeneric anti-diagonal (matrix))
+(defgeneric anti-diagonal (matrix)
+  (:documentation
+   "@b(Описание:) обобщенная_функция @b(anti-diagonal)
+возвращает список элементов, находящихся на побочной диагонали матрицы.
+
+ В результирующем списке элементы следуют по строкам.
+
+ Д.б опредена только для квадратной матрицы."))
 
 (defgeneric (setf anti-diagonal) (elements matrix))
 
-(defgeneric squarep (matrix))
+(defgeneric squarep (matrix)
+  (:documentation
+   "@b(Описание:) обобщенная_функция @b(squarep) возвращает T, 
+если матрица @b(matrix) является квадратной."))
 
-(defgeneric mref (matrix row col))
+(defgeneric mref (matrix row col)
+  (:documentation
+   "@b(Описание:) обобщенная_функция @b(mref) возвращает элемент матрицы,
+находяшийся в строке @b(row) и столбце @b(col)."))
 
 (defgeneric (setf mref) (value matrix row col))
 
-(defgeneric copy (obj))
+(defgeneric copy (obj)
+  (:documentation
+    "@b(Описание:) обобщенная_функция @b(copy) возвращает ссылку на новый объект,
+созданный на основе @b(obj)."))
 
-(defgeneric add (a b))
+(defgeneric add (a b)
+  (:documentation
+   "@b(Описание:) обобщенная_функция @b(multiply)
+выполняет сложение аргументов @b(a) и @b(b).")
 
-(defgeneric multiply (a b))
+(defgeneric multiply (a b)
+  (:documentation
+   "@b(Описание:) обобщенная_функция @b(multiply) 
+выполняет перемножение аргументов @b(a) и @b(b)."))
 
-(defgeneric transpose (matrix))
+(defgeneric transpose (matrix)
+  (:documentation
+   "@b(Описание:) обобщенная_функция @b(transpose) 
+возвращает транспонированную матрицу."))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
