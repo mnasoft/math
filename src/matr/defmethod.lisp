@@ -43,6 +43,18 @@
 ;;;; transpose
 
 (defmethod transpose ((mm <matrix>))
+    "@b(Описание:) метод @b(transpose) возвращает матрицу типа <matrix>,
+   являющуютя результатом транспонирования матрицы @b(mm).
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (transpose (matr-new 2 3 '(1 2 3
+                            4 5 6)))
+  => Matr 3х2
+     [ 1         4        ]
+     [ 2         5        ]
+     [ 3         6        ]
+@end(code)"
   (let ((rez (make-instance '<matrix> :dimensions (nreverse (dimensions mm)))))
     (loop :for i :from 0 :below (rows mm) :do
 	 (loop :for j :from 0 :below (cols mm) :do
@@ -50,6 +62,7 @@
     rez))
 
 (defmethod transpose ((mm cons))
+  "Выполняет транспонирование"
   (apply #'mapcar #'list mm))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -64,7 +77,7 @@
   (array-dimension (matrix-data mm) 0))
 
 (defmethod rows ((a array))
-  "@b(Описание:) метод @b(rows) возвращает количество строк в массиве @b(a)."
+  "@b(Описание:) метод @b(rows) возвращает количество строк в массиве @b(a)."  
   (assert (= (array-rank a) 2))
   (array-dimension a 0))
 

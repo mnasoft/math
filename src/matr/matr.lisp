@@ -251,20 +251,70 @@
   (loop :for i :from 0 :below (min (rows mm) (cols mm))
 	:collect (mref mm i i)))
 
-
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;; (setf main-diagonal)
 (defgeneric (setf main-diagonal) (elements matrix)
    (:documentation "@b(Описание:) обобщенная_функция @b((setf main-diagonal))
  устанавливает новые значения элементам матрицы @b(matrix),
  находящимся на главной диагонали.
 
  Элементы @b(elements) устанавливаются в порядке возрастания строк."))
+
 (defmethod (setf main-diagonal) (elements (mm <matrix>))
+  "@b(Пример использования:)
+@begin[lang=lisp](code)
+ (defparameter *mm* 
+   (make-instance '<matrix> 
+      :initial-contents '(( 1d0  2d0  3d0) 
+                          ( 4d0  5d0  6d0) 
+                          ( 7d0  8d0  9d0) 
+                          (10d0 11d0 12d0))))
+ *mm* =>  Matr 4х3
+          [ 1.0d0     2.0d0     3.0d0    ]
+          [ 4.0d0     5.0d0     6.0d0    ]
+          [ 7.0d0     8.0d0     9.0d0    ]
+          [ 10.0d0    11.0d0    12.0d0   ]
+
+ (setf (main-diagonal *mm*) '(11d0 22d0 33d0)) 
+ *mm* => Matr 4х3
+        [ 11.0d0    2.0d0     3.0d0    ]
+        [ 4.0d0     22.0d0    6.0d0    ]
+        [ 7.0d0     8.0d0     33.0d0   ]
+        [ 10.0d0    11.0d0    12.0d0   ]
+@end(code)"
   (loop :for i :from 0 :below (min (rows mm) (cols mm))
 	:for el :in elements :by #'cdr  :do
 	  (setf (mref  mm i i) el))
   mm)
 
 (defmethod (setf main-diagonal) ((element number) (mm <matrix>) )
+    "@b(Пример использования:)
+@begin[lang=lisp](code)
+ (defparameter *mm* 
+   (make-instance '<matrix> 
+      :initial-contents '(( 1d0  2d0  3d0) 
+                          ( 4d0  5d0  6d0) 
+                          ( 7d0  8d0  9d0) 
+                          (10d0 11d0 12d0))))
+ *mm* =>  Matr 4х3
+          [ 1.0d0     2.0d0     3.0d0    ]
+          [ 4.0d0     5.0d0     6.0d0    ]
+          [ 7.0d0     8.0d0     9.0d0    ]
+          [ 10.0d0    11.0d0    12.0d0   ]
+
+ (setf (main-diagonal *mm*) 11d0) 
+  Matr 4х3
+  [ 11.0d0     2.0d0    3.0d0   ]
+  [ 4.0d0     11.0d0    6.0d0   ]
+  [ 7.0d0      8.0d0   11.0d0   ]
+  [ 10.0d0    11.0d0   12.0d0   ]
+
+ *mm* => Matr 4х3
+  [ 11.0d0    2.0d0     3.0d0    ]
+  [ 4.0d0     11.0d0    6.0d0    ]
+  [ 7.0d0     8.0d0     11.0d0   ]
+  [ 10.0d0    11.0d0    12.0d0   ]
+@end(code)"
   (loop :for i :from 0 :below (min (rows mm) (cols mm))
 	:do (setf (mref  mm i i) element))
   mm)
@@ -290,6 +340,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;; anti-diagonal
+
 (defgeneric anti-diagonal (matrix)
   (:documentation
    "@b(Описание:) обобщенная_функция @b(anti-diagonal)
@@ -298,12 +349,28 @@
  В результирующем списке элементы следуют по строкам.
 
  Д.б опредена только для квадратной матрицы."))
+
 (defmethod anti-diagonal ((mm <matrix>))
+  "@b(Пример использования:)
+@begin[lang=lisp](code)
+ (defparameter *mm* 
+  (make-instance '<matrix> 
+   :initial-contents '((1d0 2d0 3d0) 
+                       (4d0 5d0 6d0) 
+                       (7d0 8d0 9d0))))
+ =>
+ Matr 3х3
+ [ 1.0d0     2.0d0     3.0d0    ]
+ [ 4.0d0     5.0d0     6.0d0    ]
+ [ 7.0d0     8.0d0     9.0d0    ]
+
+  (anti-diagonal  *mm*) => (3.0d0 5.0d0 7.0d0)
+  @end(code)"
   (assert (squarep mm) (mm) "Матрица не является квадратной~%~S" mm)
   (loop
-     :for c :from 0 :below (cols mm)
-     :for r :downfrom (- (rows mm) 1) :to 0
-     :collect (mref mm c r)))
+    :for c :from 0 :below (cols mm)
+    :for r :downfrom (- (rows mm) 1) :to 0
+    :collect (mref mm c r)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;; (setf anti-diagonal)
@@ -328,18 +395,33 @@
 ;;;; add
 (defgeneric add (a b)
   (:documentation
-   "@b(Описание:) обобщенная_функция @b(multiply)
-выполняет сложение аргументов @b(a) и @b(b)."))
+   "@b(Описание:) обобщенная_функция @b(add) выполняет сложение
+ аргументов @b(a) и @b(b)."))
 
 (defmethod add ((a <matrix> ) (b <matrix>))
+  " @b(Пример использования:)
+@begin[lang=lisp](code)
+ (add (matr-new 2 2 '(1 2 
+                      3 4)) 
+      (matr-new 2 2 '(1 2 
+                      3 4)))
+  => Matr 2х2
+     [ 2         4        ]
+     [ 6         8        ]
+ (add (matr-new 2 2 '(1 2 3 4)) (matr-new 2 2 '(4 3 2 1)))
+  => Matr 2х2
+     [ 5         5        ]
+     [ 5         5        ]
+@end(code)
+"
   (assert (and (= (rows a) (rows b)) (= (cols a) (cols b))) (a b)
 	  "Матрицы A[~A,~A] и B[~A,~A] имеют отличаюшиеся размеры"
 	  (rows a) (cols a) (rows b) (cols b))
   (let ((a+b (matr-new (rows a) (cols a))))
     (loop :for r :from 0 :below (rows a) :do
-	 (loop :for c :from 0 :below (rows b) :do
-	      (setf (mref a+b r c)
-		    (+ (mref a r c ) (mref b r c)))))
+      (loop :for c :from 0 :below (rows b) :do
+	(setf (mref a+b r c)
+	      (+ (mref a r c ) (mref b r c)))))
     a+b))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;; multiply
@@ -437,6 +519,7 @@
   (swap-cols* (copy mm) i j))
 
 (defmethod matr-eval-* ((mm <matrix>))
+    "Мутная функция и непонятно как ее использовать и где?"
   (let ((rows (rows mm))
 	(cols (cols mm))
 	(mm-cp (copy  mm)))
@@ -789,14 +872,20 @@
     matrix))
 
 (defmethod rotate-y ((β number))
-    (let ((matrix (make-instance '<matrix> :dimensions '(4 4))))
-      (setf (row matrix 0) `(   ,(cos β)  0.0 ,(sin β) 0.0))
-      (setf (row matrix 1) `(       0.0   1.0     0.0  0.0))
-      (setf (row matrix 2) `(,(- (sin β)) 0.0 ,(cos β) 0.0))
-      (setf (row matrix 3) `(       0.0   0.0     0.0  1.0))
-      matrix))
+  "@b(Описание:) метод @b(rotate-x) возвращает однородную матрицу
+  преобразования, которая вращает систему координат на угол β вокруг
+  оси y."
+  (let ((matrix (make-instance '<matrix> :dimensions '(4 4))))
+    (setf (row matrix 0) `(   ,(cos β)  0.0 ,(sin β) 0.0))
+    (setf (row matrix 1) `(       0.0   1.0     0.0  0.0))
+    (setf (row matrix 2) `(,(- (sin β)) 0.0 ,(cos β) 0.0))
+    (setf (row matrix 3) `(       0.0   0.0     0.0  1.0))
+    matrix))
 
 (defmethod rotate-z ((γ number))
+  "@b(Описание:) метод @b(rotate-x) возвращает однородную матрицу
+преобразования, которая вращает систему координат на угол γ вокруг оси
+z."
   (let ((matrix (make-instance '<matrix> :dimensions '(4 4))))
     (setf (row matrix 0) `(,(cos γ) ,(- (sin γ)) 0.0 0.0))
     (setf (row matrix 1) `(,(sin γ)    ,(cos γ)  0.0 0.0))
@@ -805,6 +894,10 @@
     matrix))
 
 (defmethod rotate-v ((θ number) (v cons))
+  "@b(Описание:) метод @b(rotate-x) возвращает однородную матрицу
+преобразования, которая вращает систему координат на угол α вокруг
+оси, заданной вектором v. Вектор v должен быть нормализованным (иметь
+единичную длину)."
   (let ((matrix (make-instance '<matrix> :dimensions '(4 4)))
         (x (first  v))
         (y (second v))
@@ -833,6 +926,9 @@
   (move-xyz (first v) (second v) (third v)))
 
 (defmethod rotate-around ((point-1 cons) (point-2 cons) θ)
+  "@b(Описание:) метод @b(rotate-x) возвращает однородную матрицу
+преобразования, которая вращает протсранство вокруг оси, заданной
+точками point-1 и point-2"
   (let ((rotate-p1-p2 (rotate-v θ (normalize (mapcar #'- point-2 point-1))))
         (move-p1-p0   (move-v (mapcar #'- point-1)))
         (move-p0-p1   (move-v point-1)))
