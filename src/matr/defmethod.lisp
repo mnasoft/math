@@ -3,6 +3,12 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;; mref
+
+(defgeneric mref (matrix row col)
+  (:documentation
+   "@b(Описание:) обобщенная_функция @b(mref) возвращает элемент матрицы,
+находяшийся в строке @b(row) и столбце @b(col)."))
+
 (defmethod mref ((mm <matrix>) i j)
   (aref (matrix-data mm) i j))
 
@@ -14,6 +20,13 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;; mref
+
+(defgeneric (setf mref) (value matrix row col)
+  (:documentation
+   "@b(Описание:) обобщенная_функция @b((setf mref)) устанавливает
+значение @b(value) элементу матрицы, находящемуся в 
+строке @b(row) и столбце @b(col)."))
+
 (defmethod (setf mref) (value (mm <matrix>) i j)
   (setf (aref (matrix-data mm) i j) value)
   mm)
@@ -40,6 +53,12 @@
   (apply #'mapcar #'list mm))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;; rows
+
+(defgeneric rows (matrix)
+  (:documentation
+   "@b(Описание:) обобщенная_функция @b(rows) возврвщает количество строк
+матрицы @b(matrix)."))
 
 (defmethod rows ((mm <matrix>))
   (array-dimension (matrix-data mm) 0))
@@ -54,29 +73,50 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;; cols
+(defgeneric cols (matrix)
+  (:documentation
+   "@b(Описание:) обобщенная_функция @b(cols) возврвщает количество столбцов
+матрицы @b(matrix)."))
+
 (defmethod cols ((a array))
-    "@b(Описание:) метод @b(rows) возвращает количество столбцов в массиве @b(a)."
+  " @b(Пример использования:)
+@begin[lang=lisp](code)
+ (To-Do)
+@end(code)
+"
   (assert (= (array-rank a) 2))
   (array-dimension a 1))
 
 (defmethod cols ((2d-list cons))
+  " @b(Пример использования:)
+@begin[lang=lisp](code)
+ (To-Do)
+@end(code)
+"
   (math/stat:min-value (mapcar #'length 2d-list)))
 
 (defmethod cols ((mm <matrix>))
+  " @b(Пример использования:)
+@begin[lang=lisp](code)
+ (To-Do)
+@end(code)
+"
   (array-dimension (matrix-data mm) 1))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;; row
+(defgeneric row (matrix row)
+  (:documentation
+   "@b(Описание:) обобщенная_функция @b(row) возвращает строку @b(row)
+матрицы @b(matrix)."))
+
 (defmethod row ((mm <matrix>) row)
   (let ((data (matrix-data mm)))
     (loop :for c :from 0 :below (cols mm)
 	  :collect (aref data row c))))
 
 (defmethod row ((row integer) (a array))
-  "@b(Описание:) метод @b(row) возвращает строку @b(row) из масства @b(a).
-Строка возвращается в виде вектора vector.
-
- @b(Пример использования:)
+  " @b(Пример использования:)
 @begin[lang=lisp](code)
   (let ((arr (make-array '(5 2)
 			 :initial-contents '((0 1)
@@ -87,8 +127,7 @@
    (row  0 arr)		    ;=> #(0 1)
    (row  2 arr)	            ;=> #(4 5)
    (row  4 arr)		    ;=> #(8 9))
-@end(code)
-"
+@end(code)"
   (when (/= (array-rank a) 2) (error 'row-operation-not-appicable))
   (assert (< -1 row (array-dimension a 0)))
   (apply #'vector (loop :for j :from 0 :below (array-dimension a 1)
@@ -107,6 +146,11 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;; col
+
+(defgeneric col (matrix col)
+  (:documentation
+   "@b(Описание:) обобщенная_функция @b(col) возвращает строку @b(col)
+ матрицы @b(matrix)."))
 
 (defmethod col ((mm <matrix>) col)
   (let ((data (matrix-data mm)))
@@ -141,6 +185,12 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;; (setf row)
 
+(defgeneric (setf row) (values matrix row)
+  (:documentation
+   "@b(Описание:) обобщенная_функция @b((setf row)) заменяет строку
+ @b(row) матрицы @b(matrix) элементами, находящимися в списке
+ @b(values)."))
+
 (defmethod (setf row) (new-value-lst (mm <matrix>) row )
   (let ((data (matrix-data mm))
 	(ll new-value-lst))
@@ -174,6 +224,12 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;; (setf col)
+
+(defgeneric (setf col) (values matrix col)
+  (:documentation
+   "@b(Описание:) обобщенная_функция @b((setf col)) заменяет столбец
+ @b(col) матрицы @b(matrix) элементами, находящимися в списке
+ @b(values)."))
 
 (defmethod (setf col) (new-value-lst (mm <matrix>) col )
   (let ((data (matrix-data mm))

@@ -71,18 +71,49 @@
 ;;;; /src/arr-matr/package.lisp
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defgeneric matr-eval-* (matrix))
+(defgeneric matr-eval-* (matrix)
+  (:documentation
+   "Matr"))
 
 (defgeneric matr-equal* (matrix1 matrix2 &key test) )
 
-(defgeneric transpose (matrix))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;; transpose
+
+(defgeneric transpose (matrix)
+  (:documentation
+   "@b(Описание:) обобщенная_функция @b(transpose) 
+возвращает транспонированную матрицу."))
 
 (defgeneric matr-name-* (matrix))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defclass <matrix> ()
-  ((data :accessor matrix-data :initform nil :initarg :data :documentation "Сдержимое матрицы.")))
+  ((data :accessor matrix-data :initform nil :initarg :data :documentation
+         "Сдержимое матрицы."))
+  (:documentation
+   "@b(Описание:) класс @b(<matrix>) представляет матрицу, определенную
+ через массив.
+
+ Создание:
+@begin(list)
+ @item(при помощи функции matr-new)
+ @item( )
+@end(list)
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (matr-new 2 3)
+ => Matr 2х3
+    [ 0.0d0     0.0d0     0.0d0    ]
+    [ 0.0d0     0.0d0     0.0d0    ]
+ (matr-new 3 2 '(1 2 3 4 5))
+ => Matr 3х2
+    [ 1         2        ]
+    [ 3         4        ]
+    [ 5         NIL      ]
+@end(code)"))
 
 (defmethod matr-name-* ((mm <matrix>))
   (type-of mm))
@@ -130,14 +161,34 @@
 			ll (cdr ll)))))
     mm))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;; copy
+(defgeneric copy (obj)
+  (:documentation
+    "@b(Описание:) обобщенная_функция @b(copy) возвращает ссылку на новый объект,
+созданный на основе @b(obj)."))
 
 (defmethod copy ((mm-ref <matrix>))
   (make-instance '<matrix> :data (cl-utilities:copy-array (matrix-data mm-ref))))
 
-(defmethod dimensions ((mm <matrix>)) (array-dimensions (matrix-data mm)))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;; dimensions
+(defgeneric dimensions (matrix)
+  (:documentation
+    "@b(Описание:) обобщенная_функция @b(dimensions) возвращает список,
+ содержащий размерности матрицы @b(matrix)."))
 
-;;;;;;;;;; equivalent ;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(defmethod dimensions ((mm <matrix>))
+  (array-dimensions (matrix-data mm)))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;; equivalent
+
+(defgeneric equivalent (matrix-1 matrix-2 &key test)
+  (:documentation
+     "@b(Описание:) обобщенная_функция @b(equivalent) возвращает T,
+если матирицы @b(matrix-1) и @b(matrix-2) имеют одинаковые размерности и их 
+соответствующие элементы равны (для них функция @b(test) возвращает T )."))
 (defmethod equivalent ((m1 <matrix>) (m2 <matrix>) &key (test #'math/core:semi-equal))
   (let ((rez t))
     (if (and (= (rows m1) (rows m2))
@@ -170,12 +221,43 @@
   (declare (type (array * (* *)) a1))
   (equivalent (make-instance '<matrix> :data a1) m2 :test test))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;; main-diagonal
+
+(defgeneric main-diagonal (matrix)
+  (:documentation
+   "@b(Описание:) обобщенная_функция @b(main-diagonal) извлекает главную
+ диагональ матрицы.
+
+Элементы возвращаются в порядке возрастания строк."))
 
 (defmethod main-diagonal ((mm <matrix>))
+  " @b(Пример использования:)
+@begin[lang=lisp](code)
+ (defparameter *mm* 
+   (make-instance '<matrix> :initial-contents 
+    '(( 1d0  2d0  3d0) 
+      ( 4d0  5d0  6d0) 
+      ( 7d0  8d0  9d0) 
+      (10d0 11d0 12d0))))
+ *mm*  =>  Matr 4х3
+           [ 1.0d0     2.0d0     3.0d0    ]
+           [ 4.0d0     5.0d0     6.0d0    ]
+           [ 7.0d0     8.0d0     9.0d0    ]
+           [ 10.0d0    11.0d0    12.0d0   ]
+
+(main-diagonal *mm*) =>  (1.0d0 5.0d0 9.0d0)
+@end(code)"
   (loop :for i :from 0 :below (min (rows mm) (cols mm))
 	:collect (mref mm i i)))
 
+
+(defgeneric (setf main-diagonal) (elements matrix)
+   (:documentation "@b(Описание:) обобщенная_функция @b((setf main-diagonal))
+ устанавливает новые значения элементам матрицы @b(matrix),
+ находящимся на главной диагонали.
+
+ Элементы @b(elements) устанавливаются в порядке возрастания строк."))
 (defmethod (setf main-diagonal) (elements (mm <matrix>))
   (loop :for i :from 0 :below (min (rows mm) (cols mm))
 	:for el :in elements :by #'cdr  :do
@@ -187,15 +269,51 @@
 	:do (setf (mref  mm i i) element))
   mm)
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;; squarep
+(defgeneric squarep (matrix)
+  (:documentation
+   "@b(Описание:) обобщенная_функция @b(squarep) возвращает T, 
+если матрица @b(matrix) является квадратной."))
+
 (defmethod squarep ((mm <matrix>))
+  " @b(Пример использования:)
+@begin[lang=lisp](code)
+  (defparameter *mm* (make-instance '<matrix>   :dimensions '(2 3)))
+  (squarep *mm*) => nil
+
+  (defparameter *mm* (make-instance '<matrix>   :dimensions '(3 3)))
+  (squarep *mm*) => T
+@end(code)
+"
   (= (cols mm) (rows mm) ))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;; anti-diagonal
+(defgeneric anti-diagonal (matrix)
+  (:documentation
+   "@b(Описание:) обобщенная_функция @b(anti-diagonal)
+возвращает список элементов, находящихся на побочной диагонали матрицы.
+
+ В результирующем списке элементы следуют по строкам.
+
+ Д.б опредена только для квадратной матрицы."))
 (defmethod anti-diagonal ((mm <matrix>))
   (assert (squarep mm) (mm) "Матрица не является квадратной~%~S" mm)
   (loop
      :for c :from 0 :below (cols mm)
      :for r :downfrom (- (rows mm) 1) :to 0
      :collect (mref mm c r)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;; (setf anti-diagonal)
+
+(defgeneric (setf anti-diagonal) (elements matrix)
+  (:documentation
+   "@b(Описание:) обобщенная_функция @b((setf anti-diagonal)) устанавливет 
+новые значения элементам матрицы @b(matrix), на побочной диагонали матрицы.
+
+ Элементы @b(elements) устанавливаются в порядке возрастания строк."))
 
 (defmethod (setf anti-diagonal) (elements (mm <matrix>) )
   (assert (squarep mm) (mm) "Матрица не является квадратной~%~S" mm)
@@ -205,6 +323,13 @@
      :for e :in elements :by #'cdr :do
        (setf (mref mm c r) e))
   mm)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;; add
+(defgeneric add (a b)
+  (:documentation
+   "@b(Описание:) обобщенная_функция @b(multiply)
+выполняет сложение аргументов @b(a) и @b(b)."))
 
 (defmethod add ((a <matrix> ) (b <matrix>))
   (assert (and (= (rows a) (rows b)) (= (cols a) (cols b))) (a b)
@@ -216,8 +341,35 @@
 	      (setf (mref a+b r c)
 		    (+ (mref a r c ) (mref b r c)))))
     a+b))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;; multiply
+(defgeneric multiply (a b)
+  (:documentation
+   "@b(Описание:) обобщенная_функция @b(multiply) выполняет перемножение
+ аргументов @b(a) и @b(b)."))
 
 (defmethod multiply ((a <matrix> ) (b <matrix>))
+  " @b(Пример использования:)
+@begin[lang=lisp](code)
+ (multiply (matr-new 2 3 '(1.0 2.0 3.0
+			   4.0 5.0 6.0))
+	   (matr-new 3 2 '(1.0 2.0
+			   3.0 4.0
+			   5.0 6.0)))
+ => Matr 2х2
+    [ 22.0 28.0 ]
+    [ 49.0 64.0 ]
+ (multiply (matr-new 3 2 '(1.0 2.0
+			   3.0 4.0
+			   5.0 6.0))
+	   (matr-new 2 3 '(1.0 2.0 3.0
+			   4.0 5.0 6.0)))
+ => Matr 3х3
+    [ 9.0  12.0 15.0 ]
+    [ 19.0 26.0 33.0 ]
+    [ 29.0 40.0 51.0 ]
+@end(code)
+"
   (let ((a_n (rows a))
 	(a_m (cols a))
 	(b_n (rows b))
@@ -239,6 +391,15 @@
     c))
 
 (defmethod multiply ((a number ) (b <matrix>))
+  " @b(Пример использования:)
+@begin[lang=lisp](code)
+ (multiply 10 
+           (matr-new 2 3 '(1.0 2.0 3.0
+			   4.0 5.0 6.0)))
+ => Matr 2х3
+    [ 10.0      20.0      30.0     ]
+    [ 40.0      50.0      60.0     ]
+@end(code)"
   (let ((rez (make-instance '<matrix> :dimensions (dimensions b))))
     (loop :for i :from 0 :below (rows b) :do
 	 (loop :for j :from 0 :below (cols b) :do
@@ -606,13 +767,26 @@
   (let ((len (sqrt (apply #'+ (mapcar #'(lambda (el) (* el el)) v)))))
     (mapcar #'(lambda (el) (/ el len)) v)))
 
+(defgeneric rotate-x (α)
+  (:documentation
+     "@b(Описание:) метод @b(rotate-x) возвращает однородную матрицу
+  преобразования, которая вращает систему координат на угол α вокруг
+  оси x."))
+
 (defmethod rotate-x ((α number))
-    (let ((matrix (make-instance '<matrix> :dimensions '(4 4))))
-      (setf (row matrix 0) `(1.0     0.0         0.0   0.0))
-      (setf (row matrix 1) `(0.0 ,(cos α) ,(- (sin α)) 0.0))
-      (setf (row matrix 2) `(0.0 ,(sin α)    ,(cos α)  0.0))
-      (setf (row matrix 3) `(0.0     0.0         0.0   1.0))
-      matrix))
+  " @b(Пример использования:)
+@begin[lang=lisp](code)
+ (progn (defparameter *p* (make-instance 'math/matr:<matrix> :dimensions '(1 4)))
+        (setf (math/matr:row *p* 0) '(10.0 20.0 30.0 1.0))
+        (math/matr:multiply *p* (rotate-y (dtr 90.0))))
+@end(code)
+"
+  (let ((matrix (make-instance '<matrix> :dimensions '(4 4))))
+    (setf (row matrix 0) `(1.0     0.0         0.0   0.0))
+    (setf (row matrix 1) `(0.0 ,(cos α) ,(- (sin α)) 0.0))
+    (setf (row matrix 2) `(0.0 ,(sin α)    ,(cos α)  0.0))
+    (setf (row matrix 3) `(0.0     0.0         0.0   1.0))
+    matrix))
 
 (defmethod rotate-y ((β number))
     (let ((matrix (make-instance '<matrix> :dimensions '(4 4))))
@@ -642,6 +816,9 @@
     matrix))
 
 (defmethod move-xyz ((dx number) (dy number) (dz number))
+    "@b(Описание:) метод @b(move-xyz) возвращает однородную матрицу
+преобразования, которая перемещает систему координат на (dx dy dz).
+"
   (let ((matrix (make-instance '<matrix> :dimensions '(4 4))))
     (setf (row matrix 0) `(1.0 0.0 0.0 0.0))
     (setf (row matrix 1) `(0.0 1.0 0.0 0.0))
@@ -650,6 +827,9 @@
     matrix))
 
 (defmethod move-v ((v cons))
+  "@b(Описание:) метод @b(rotate-x) возвращает однородную матрицу
+преобразования, которая перемещает систему координат в направлении
+вектора v."
   (move-xyz (first v) (second v) (third v)))
 
 (defmethod rotate-around ((point-1 cons) (point-2 cons) θ)
@@ -660,7 +840,21 @@
      (multiply move-p1-p0 rotate-p1-p2)
      move-p0-p1)))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;; transform
+
+(defgeneric transform (point matrix)
+  (:documentation
+   "@b(Описание:) метод @b(transform) возвращает координаты точки
+  @b(point), преобразованные с помощью матрицы @b(matrix)."))
+
 (defmethod transform ((point cons) (matrix <matrix>))
+"
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (To-Do) 
+@end(code)
+"
   (let ((p (make-instance '<matrix> :dimensions '(1 4))))
     (setf (row p 0) (list (first point) (second point) (third point) 1.0))
     (nreverse (cdr (nreverse (row (multiply p matrix) 0))))))

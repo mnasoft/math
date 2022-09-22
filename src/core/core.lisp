@@ -9,34 +9,13 @@
            )
   (:export summ-distance 
 	   distance               
-	   exclude-nil-from-list  
+	   exclude-nil-from-list 
 	   depth-sphere-along-cone
 	   distance-relative
 	   square)
   (:export split-range
 	   split-range-by-func )
-  (:export mref
-	   col
-	   row
-	   
-	   cols	   
-	   rows
-	   dimensions
-
-	   add
-	   multiply
-	   
-	   squarep
-	   
-	   matr-name-*
-	     
-	   main-diagonal
-	   anti-diagonal
-
-	   equivalent
-	   copy
-
-	   transpose
+  (:export matr-name-*
 	   )
   (:export round-to-significant-digits
            +significant-digits+))
@@ -111,7 +90,8 @@
    (let ((betta (- pi (/ alpha 2))))
     (- r (* r (tan (/ betta  2))))))
 
-(defparameter +significant-digits+ 4)
+(defparameter +significant-digits+ 4
+  "Определяет количество значащих цифр при округлении по умолчанию.")
 
 (defun round-to-significant-digits (val &optional (significant-digits +significant-digits+) (base-val val))
   "@b(Описание:) функция @b(round-to-significant-digits) округляет значение
@@ -177,98 +157,22 @@ val до количества значащих цифр, задаваемых а
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;; /src/core/generic-matr.lisp
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 (defgeneric matr-name-* (matrix)
   (:documentation "Matr"))
 
-(defgeneric dimensions (matrix)
-  (:documentation
-    "@b(Описание:) обобщенная_функция @b(dimensions) возвращает список,
- содержащий размерности матрицы @b(matrix)."))
-
-(defgeneric rows (matrix)
-  (:documentation
-   "@b(Описание:) обобщенная_функция @b(rows) возврвщает количество строк
-матрицы @b(matrix)."))
-
-(defgeneric cols (matrix)
-  (:documentation
-   "@b(Описание:) обобщенная_функция @b(cols) возврвщает количество столбцов
-матрицы @b(matrix)."))
-
-(defgeneric equivalent (matrix-1 matrix-2 &key test))
-
-(defgeneric row (matrix row)
-  (:documentation
-   "@b(Описание:) обобщенная_функция @b(row) возвращает строку @b(row)
-матрицы @b(matrix)."))
-
-(defgeneric (setf row) (values matrix row))
-
-(defgeneric col (matrix col)
-  (:documentation
-   "@b(Описание:) обобщенная_функция @b(col) возвращает строку @b(col)
- матрицы @b(matrix)."))
-
-(defgeneric (setf col) (values matrix col))
-
-(defgeneric main-diagonal (matrix)
-  (:documentation
-   "@b(Описание:) обобщенная_функция @b(main-diagonal) извлекает главную
- диагональ матрицы.
-
-Элементы возвращаются в порядке возрастания строк."))
-
-(defgeneric (setf main-diagonal) (elements matrix))
-
-(defgeneric anti-diagonal (matrix)
-  (:documentation
-   "@b(Описание:) обобщенная_функция @b(anti-diagonal)
-возвращает список элементов, находящихся на побочной диагонали матрицы.
-
- В результирующем списке элементы следуют по строкам.
-
- Д.б опредена только для квадратной матрицы."))
-
-(defgeneric (setf anti-diagonal) (elements matrix))
-
-(defgeneric squarep (matrix)
-  (:documentation
-   "@b(Описание:) обобщенная_функция @b(squarep) возвращает T, 
-если матрица @b(matrix) является квадратной."))
-
-(defgeneric mref (matrix row col)
-  (:documentation
-   "@b(Описание:) обобщенная_функция @b(mref) возвращает элемент матрицы,
-находяшийся в строке @b(row) и столбце @b(col)."))
-
-(defgeneric (setf mref) (value matrix row col))
-
-(defgeneric copy (obj)
-  (:documentation
-    "@b(Описание:) обобщенная_функция @b(copy) возвращает ссылку на новый объект,
-созданный на основе @b(obj)."))
-
-(defgeneric add (a b)
-  (:documentation
-   "@b(Описание:) обобщенная_функция @b(multiply)
-выполняет сложение аргументов @b(a) и @b(b).")
-
-(defgeneric multiply (a b)
-  (:documentation
-   "@b(Описание:) обобщенная_функция @b(multiply) 
-выполняет перемножение аргументов @b(a) и @b(b)."))
-
-(defgeneric transpose (matrix)
-  (:documentation
-   "@b(Описание:) обобщенная_функция @b(transpose) 
-возвращает транспонированную матрицу."))
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defparameter *semi-equal-relativ* 1e-6)
+(defparameter *semi-equal-relativ* 1e-6
+  "@b(Описание:) переменная @b(*semi-equal-relativ*) определяет
+относительную величину, на которую могут отличаться значения 
+считающиеся равными при срвнении из с помощью функции @b(semi-equal).
+")
 
-(defparameter *semi-equal-zero*    1e-6)
+(defparameter *semi-equal-zero*    1e-6
+  "@b(Описание:) переменная @b(*semi-equal-zero*) определяет
+абсолютную величину, на которую могут отличаться значения 
+считающиеся равными при срвнении из с помощью функции @b(semi-equal).
+")
 
 (defgeneric norma (x))
 
@@ -296,6 +200,16 @@ val до количества значащих цифр, задаваемых а
                          (tolerance (+ *semi-equal-zero*
                                        (* *semi-equal-relativ*
                                           (norma (list (norma x) (norma y)))))))
+  "@b(Описание:) функция @b(semi-equal) возвращает T, если 
+расстояние между значениями меньше tolerance. При этом 
+имеется в виду, что значения примерно равны.
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (semi-equal 1.0 1.000001) T
+ (semi-equal 1.0 1.00001)  nil
+@end(code)
+"
   (< (distance x y) tolerance))
 
 (defmethod semi-equal ((x cons) (y cons)
@@ -342,22 +256,52 @@ val до количества значащих цифр, задаваемых а
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;; distance
 
-(defmethod distance ((x1 real) (x2 real) )
+(defmethod distance ((x1 real) (x2 real))
+  " @b(Пример использования:)
+@begin[lang=lisp](code)
+ (distance 1 0 ) => 1
+ (distance 2 0 ) => 2
+ (distance 2 1 ) => 1
+@end(code)"
   (let ((rez (- x1 x2)))
     (abs rez)))
 
 (defmethod distance ((x1 number) (x2 number))
+  " @b(Пример использования:)
+@begin[lang=lisp](code)
+ (distance (complex 1 2) 0) => 2.236068
+ (distance 0 (complex 1 2)) => 2.236068
+ (distance (complex 0 2) (complex 1 2)) => 1.0
+@end(code)"
   (sqrt (+ (square (- (realpart x1) (realpart x2)))
            (square (- (imagpart x1) (imagpart x2))))))
 
 (defmethod distance ((x1-lst cons) (x2-lst cons))
+  "@b(Описание:) метод @b(distance) возвращает расстояние 
+между точками @b(x1-lst) и @b(x2-lst).
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (distance '(1 1 1) '(0 0 0)) => 1.7320508 = (sqrt (+ 1 1 1))
+ (distance '(2 2 2) '(0 0 0)) => 3.4641016 = (sqrt (+ 4 4 4))
+ (distance '(2 1 2) '(0 0 0)) => 3.0 =       (sqrt (+ 4 1 4))
+@end(code)"  
   (assert (= (length x1-lst) (length x1-lst)))
   (sqrt (apply #'+ (mapcar
 		    #'(lambda (x1 x2)
-			  (square (distance x1 x2)))
+			(square (distance x1 x2)))
 		    x1-lst x2-lst))))
 
 (defmethod distance ((x1 vector) (x2 vector))
+  "@b(Описание:) метод @b(distance) возвращает расстояние 
+между точками @b(x1-lst) и @b(x2-lst).
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (distance #(1 1 1) #(0 0 0)) => 1.7320508
+ (distance #(2 2 2) #(0 0 0)) => 3.4641016
+ (distance #(2 1 2) #(0 0 0)) => 3.0
+@end(code)"
   (assert (= (length x1) (length x2)))
   (sqrt (loop :for i :from 0 :below (array-dimension x1 0)
 	      :summing
@@ -376,10 +320,23 @@ val до количества значащих цифр, задаваемых а
 ;;;; distance-relative
 
 (defmethod distance-relative ((x number) (xi number) (dx number))
+    "
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (distance-relative 1 0 1) => 1.0
+ (distance-relative 2 0 1) => 2.0
+ (distance-relative 2 0 2) => 1.0
+@end(code)"
   (let ((rez (/ (- x xi) dx)))
     (sqrt (square rez))))
 
 (defmethod distance-relative ((x-lst cons) (xi-lst cons) (dx-lst cons))
+    " @b(Пример использования:)
+@begin[lang=lisp](code)
+ (distance-relative '(1 1 1) '(0 0 0) '(1 1 1)) => 1.7320508
+ (distance-relative '(2 2 2) '(0 0 0) '(1 1 1)) => 3.4641016
+ (distance-relative '(2 2 2) '(0 0 0) '(1 2 2)) => 2.4494898
+@end(code)"
   (assert (apply #'= (mapcar #'length `(,x-lst ,xi-lst ,dx-lst))))
   (sqrt (apply #'+ (mapcar
 		    #'(lambda (x xi dx)
@@ -388,6 +345,17 @@ val до количества значащих цифр, задаваемых а
 		    x-lst xi-lst dx-lst))))
 
 (defmethod distance-relative ((x vector) (xi vector) (dx vector))
+    " @b(Описание:) метод @b(distance-relative) возвращает относительное 
+расстояние от точки @b(x) до точки @b(xi) по отношению к базовым длинам,
+находящимся в @b(dx).
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (distance-relative #(1 1 1) #(0 0 0) #(1 1 1)) => 1.7320508 
+ (distance-relative #(1 1 1) #(0 0 0) #(2 2 2)) => 0.8660254 
+ (distance-relative #(1 2 3) #(0 0 0) #(3 2 1)) => 3.1797974 = (sqrt (+ (* 1/3 1/3) (* 2/2 2/2) (* 3/1 3/1)))
+@end(code)
+"
   (assert (apply #'= (mapcar #'length `(,x ,xi ,dx))))
   (sqrt (apply #'+ (loop :for i :from 0 :below (array-dimension x 0)
 			 :collect
@@ -398,11 +366,27 @@ val до количества значащих цифр, задаваемых а
 ;;;; summ-distance
 
 (defmethod summ-distance ((x1 vector) (x2 vector))
+  "@b(Описание:) метод @b(summ-distance) возвращает сумму 
+расстояний по каждому направлению.
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (summ-distance #(1 2 3) #(3 2 1)) => 4 = (+ 2 0 2)
+@end(code)
+"
   (assert (= (length x1) (length x2)))
   (apply #'+ (loop :for i :from 0 :below (length x1)
 		   :collect (abs (- (svref x1 i) (svref x2 i))))))
 
 (defmethod summ-distance ((x1 cons) (x2 cons))
+  "@b(Описание:) функция @b(summ-distance) возвращает сумму 
+расстояний по каждому направлению.
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (summ-distance '(1 2 3) '(3 2 1)) => 4 = (+ 2 0 2)
+@end(code)
+"
   (assert (= (length x1) (length x2)))
   (apply #'+
 	 (mapcar
