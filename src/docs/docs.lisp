@@ -13,24 +13,21 @@
     :for i :in
     '(;; 1
       (:math             :math)
-      ;; 2
       (:math/ls-rotation :math/ls-rotation)
       (:math/geom        :math/geom)
       (:math/appr        :math/appr)
-      ;; 3
       (:math/matr        :math/matr)
       (:math/ls-gauss    :math/ls-gauss)
       (:math/smooth      :math/smooth)
-      ;; 2
+      (:math/coord       :math/coord)
+      (:math/stat        :math/stat)
+      (:math/core        :math/core)
+      (:math/gnuplot     :math/gnuplot)
+      (:math/rnd         :math/rnd)
+      (:math/series      :math/series)
+      (#:math/stat       #:math/stat)
       #+nil
       (:math/x-o         :math/x-o)
-      (:math/coord       :math/coord)
-      ;; 3       
-      (:math/stat        :math/stat)
-      ;; 5
-      (:math/core        :math/core)
-      ;; 2
-      (:math/gnuplot     :math/gnuplot)
       )
     :do (progn
           (apply #'mnas-package:document i)
@@ -47,11 +44,15 @@
       :math/matr
       :math/ls-gauss
       :math/smooth
-      #+nil :math/x-o
       :math/coord
       :math/stat
       :math/core
-      :math/gnuplot)
+      :math/gnuplot
+      :math/rnd
+      :math/series
+      #:math/stat
+      #+nil :math/x-o      
+      )
     :do (progn
           (mnas-package:make-codex-graphs i i)
           (format t "~A ~A~%" j i))))

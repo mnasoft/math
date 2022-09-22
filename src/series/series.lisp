@@ -23,12 +23,29 @@
   ())
 
 (defclass <arithmetic> (<series>)
-  ((a :accessor <arithmetic>-a :initform 0.0 :initarg :a)
-   (d :accessor <arithmetic>-d :initform 1.2 :initarg :d)))
+  ((a
+    :accessor <arithmetic>-a :initform 0.0 :initarg :a
+    :documentation
+    "Первый член арифметической прогрессии (нумерация начинается с
+      нуля).")
+   (d
+    :accessor <arithmetic>-d :initform 1.2 :initarg :d
+    :documentation
+    "Разность арифметической прогрессии.")))
 
 (defclass <geometric> ()
-  ((b :accessor <geometric>-b :initform 1 :initarg :b)
-   (q :accessor <geometric>-q :initform 1.2 :initarg :q)))
+  ((b
+    :accessor <geometric>-b :initform 1 :initarg :b
+    :documentation
+    "Первый член геометрической прогрессии (нумерация начинается с
+      нуля).")
+   (q
+    :accessor <geometric>-q :initform 1.2 :initarg :q
+    :documentation
+    "Знаменатель геометрической прогрессии."))
+  (:documentation
+   "@b(Описание:) класс @b(<geometric>) представляет геометрическую
+   прогрессию."))
 
 (defmethod print-object ((series <arithmetic>) s)
   (format s "~A, ~A+~A, ..., ~A+~A*i"
@@ -48,24 +65,51 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defgeneric summ (series n))
+(defgeneric summ (series n)
+  (:documentation
+   "@b(Описание:) обобщенная_функция @b(summ) возвращает сумму @b(n)
+ членов прогрессии."))
 
-(defgeneric item (series i))
+(defgeneric item (series i)
+  (:documentation
+   "@b(Описание:) обобщенная_функция @b(item) возвращает значение
+ @b(i)-того члена прогрессии."))
 
-(defgeneric items-by-summ (series summ))
+(defgeneric items-by-summ (series summ)
+  (:documentation
+   "@b(Описание:) обобщенная функция @b(items-by-summ) возвращает
+ количество членов прогрессии, чтобы их сумма равнялась @b(summ)."))
 
-(defgeneric first-by-number&summ (series n S))
+(defgeneric first-by-number&summ (series n S)
+  (:documentation
+   "@b(Описание:) обобщенная функция @b(first-by-number&summ)
+ возвращает первый член прогрессии, такой чтобы сумма n членов
+ равнялась @b(S). При этом прогрессия сама поргрессия @b(series)
+ изменяется."))
 
-(defgeneric scale-by-number&summ (series n S &key from to))
+(defgeneric scale-by-number&summ (series n S &key from to)
+  (:documentation
+   "@b(Описание:) обобщенная_функция @b(scale-by-number&summ) возвращает
+ масштаб (разность для арифмеической прогрессии или степень для
+ геометрической прогрессии) такую, чтобы сумма @b(n) членов
+ прогрессии равнялась @b(S)."))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defmethod summ ((series <geometric>) (n integer))
+  " @b(Пример использования:)
+@begin[lang=lisp](code)
+ (summ (make-instance '<geometric> :b 2 :q 1.2) 5) => 14.883203
+@end(code)"
   (let ((b (<geometric>-b series))
         (q (<geometric>-q series)))
     (/ (* b (- (expt q n) 1))(- q 1))))
 
 (defmethod summ ((series <arithmetic>) (n integer))
+  "@b(Пример использования:)
+@begin[lang=lisp](code)
+  (summ (make-instance '<arithmetic> :a 2 :d 1.2) 5)  ; => 22.0
+@end(code)"
   (let ((a (<arithmetic>-a series))
         (d (<arithmetic>-d series)))
     (* 1/2 n (+ (* 2 a)
@@ -85,11 +129,15 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defmethod items-by-summ ((series <geometric>) S)
+  "@b(Описание:) функция @b(n) количество членов геометрической
+прогрессии, чтобы их сумма равнялась @b(S)."
   (let ((b (<geometric>-b series))
         (q (<geometric>-q series)))
     (/ (log (+ 1 (/ (* S (- q 1)) b))) (log q))))
 
 (defmethod items-by-summ ((series <arithmetic>) S)
+  "@b(Описание:) функция @b(n) количество членов геометрической
+прогрессии, чтобы их сумма равнялась @b(S)."
   (let* ((a (<arithmetic>-a series))
          (d (<arithmetic>-d series))
          (eq
