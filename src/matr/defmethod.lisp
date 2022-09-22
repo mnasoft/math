@@ -43,7 +43,8 @@
 ;;;; transpose
 
 (defmethod transpose ((mm <matrix>))
-    "@b(Описание:) метод @b(transpose) возвращает матрицу типа <matrix>,
+  "@b(Описание:) метод @b(transpose) возвращает матрицу типа <matrix>,
+
    являющуютя результатом транспонирования матрицы @b(mm).
 
  @b(Пример использования:)
@@ -57,8 +58,8 @@
 @end(code)"
   (let ((rez (make-instance '<matrix> :dimensions (nreverse (dimensions mm)))))
     (loop :for i :from 0 :below (rows mm) :do
-	 (loop :for j :from 0 :below (cols mm) :do
-	      (setf (mref rez j i) (mref mm i j))))
+      (loop :for j :from 0 :below (cols mm) :do
+	(setf (mref rez j i) (mref mm i j))))
     rez))
 
 (defmethod transpose ((mm cons))

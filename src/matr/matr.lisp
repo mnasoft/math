@@ -262,6 +262,7 @@
 
 (defmethod (setf main-diagonal) (elements (mm <matrix>))
   "@b(Пример использования:)
+
 @begin[lang=lisp](code)
  (defparameter *mm* 
    (make-instance '<matrix> 
@@ -287,8 +288,9 @@
 	  (setf (mref  mm i i) el))
   mm)
 
+
 (defmethod (setf main-diagonal) ((element number) (mm <matrix>) )
-    "@b(Пример использования:)
+  " @b(Пример использования:)
 @begin[lang=lisp](code)
  (defparameter *mm* 
    (make-instance '<matrix> 
@@ -400,6 +402,7 @@
 
 (defmethod add ((a <matrix> ) (b <matrix>))
   " @b(Пример использования:)
+
 @begin[lang=lisp](code)
  (add (matr-new 2 2 '(1 2 
                       3 4)) 
@@ -423,6 +426,7 @@
 	(setf (mref a+b r c)
 	      (+ (mref a r c ) (mref b r c)))))
     a+b))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;; multiply
 (defgeneric multiply (a b)

@@ -12,6 +12,7 @@
 
 
 
+
 (make-doc
   (find-method #'MATH/MATR:TRANSPOSE NIL '(CONS))
   t
@@ -21,7 +22,5 @@
   (find-method #'MATH/MATR:ROWS NIL '(ARRAY))
   t
   "@b(Описание:) метод @b(rows) возвращает количество строк в массиве @b(a).")
-
-
 
 
