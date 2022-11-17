@@ -8,7 +8,10 @@
            cartesian->polar
            spherical->cartesian
            cartesian->spherical
-	   )
+           )
+  (:export point-3d->4d
+           point-4d->3d
+           )
   (:documentation "coord"))
 
 (in-package :math/coord)
@@ -121,3 +124,28 @@
 	 (φ (atan y x))
 	 (θ (atan (sqrt (+ (* x x) (* y y))) z)))
     (list r φ θ)))
+
+(defun point-3d->4d (point-3d &optional (coord-4 0.0d0))
+  "@b(Описание:) функция @b(point-3d->4d) возвращает координаты точки
+ @b(point-3d) в однородных координатах, добавляя к ним четвертую
+ координату @b(coord-4).
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (point-3d->4d '(1.0 2.0 3.0))     => (1.0 2.0 3.0 0.0d0)
+ (point-3d->4d '(1.0 2.0 3.0) 0.0) => (1.0 2.0 3.0 0.0)
+@end(code)"
+  (let ((point-4d (nreverse(copy-list point-3d))))
+    (nreverse (push coord-4 point-4d))))
+
+(defun point-4d->3d (point-4d)
+  "@b(Описание:) функция @b(point-4d->3d) преобразует координаты точки
+ @b(point-4d) из однороднвх в 3d и возвращает последние.
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (point-4d->3d '(1.0 2.0 3.0 0.0d0)) => (1.0 2.0 3.0)
+@end(code)"
+  (loop :for i :from 0 :to 2
+        :for coord :in point-4d
+        :collect coord))
