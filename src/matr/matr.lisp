@@ -948,7 +948,7 @@ z."
    "@b(Описание:) метод @b(transform) возвращает координаты точки
   @b(point), преобразованные с помощью матрицы @b(matrix)."))
 
-(defmethod transform ((point cons) (matrix <matrix>))
+#+nil (defmethod transform ((point cons) (matrix <matrix>))
 "
  @b(Пример использования:)
 @begin[lang=lisp](code)
@@ -960,3 +960,16 @@ z."
     (nreverse (cdr (nreverse (row (multiply p matrix) 0))))))
 
 
+(defmethod transform ((point-3d cons) (matrix-4x4 <matrix>))
+  "
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (To-Do) 
+@end(code)
+"
+  (math/coord:single-float-list
+     (math/coord:point-4d->3d
+      (math/matr:row 
+       (math/matr:multiply
+        (math/matr:matr-new 1 4 (math/coord:point-3d->4d point-3d)) matrix-4x4)
+       0))))

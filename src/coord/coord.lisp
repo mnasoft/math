@@ -12,6 +12,9 @@
   (:export point-3d->4d
            point-4d->3d
            )
+  (:export double-float-list
+           single-float-list
+           )
   (:documentation "coord"))
 
 (in-package :math/coord)
@@ -125,7 +128,7 @@
 	 (θ (atan (sqrt (+ (* x x) (* y y))) z)))
     (list r φ θ)))
 
-(defun point-3d->4d (point-3d &optional (coord-4 0.0d0))
+(defun point-3d->4d (point-3d &optional (coord-4 1.0d0))
   "@b(Описание:) функция @b(point-3d->4d) возвращает координаты точки
  @b(point-3d) в однородных координатах, добавляя к ним четвертую
  координату @b(coord-4).
@@ -149,3 +152,11 @@
   (loop :for i :from 0 :to 2
         :for coord :in point-4d
         :collect coord))
+
+(defun double-float-list (list)
+  (loop :for i :in list
+        :collect (coerce i 'double-float)))
+
+(defun single-float-list (list)
+  (loop :for i :in list
+        :collect (coerce i 'single-float)))
