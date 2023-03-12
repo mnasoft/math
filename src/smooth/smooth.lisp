@@ -1,7 +1,7 @@
 ;;;; smoothing.lisp
 ;;;; ./src/smooth/smooth.lisp
 
-(defpackage #:math/smooth
+(defpackage :math/smooth
   (:use #:cl)
   (:export gauss-smoothing
 	   exp-smoothing

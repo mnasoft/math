@@ -1,10 +1,10 @@
 ;;;; package.lisp
 
-(defpackage #:math 
+(defpackage :math 
   (:use #:cl) ;;#:math/core 
   (:export mult-matr-vect))
 
-(in-package #:math)
+(in-package :math)
 
 (defun mult-matr-vect (matr vect)
   "Умножение матрицы Matr на вектор Vect

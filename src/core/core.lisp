@@ -1,6 +1,6 @@
 ;;;; ./src/core/core.lisp
 
-(defpackage #:math/core
+(defpackage :math/core
   (:use #:cl)
   (:export norma
            *semi-equal-relativ*

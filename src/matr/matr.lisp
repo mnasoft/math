@@ -1,6 +1,6 @@
 ;;;; ./src/matr/matr.lisp
 
-(defpackage #:math/matr
+(defpackage :math/matr
   (:use #:cl #:math/coord)
   (:export initialize-instance)
   (:export matr-new

@@ -1,6 +1,6 @@
 ;;;; tests/array.lisp
 
-(in-package #:math/tests)
+(in-package :math/tests)
 
 (def-suite 2d-array
   :description "Мастер-набор всех тестов проекта math/matr для матрицы

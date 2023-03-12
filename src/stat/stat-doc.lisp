@@ -1,4 +1,4 @@
 ;;;; ./src/stat/stat-doc.lisp
 
-(in-package #:math/stat)
+(in-package :math/stat)
 

@@ -1,6 +1,6 @@
 ;;;; ./src/equation/equation.lisp
 
-(defpackage #:math/equation
+(defpackage :math/equation
   (:use #:cl)
   (:export tab
            func

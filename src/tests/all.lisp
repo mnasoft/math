@@ -1,6 +1,6 @@
 ;;;; tests/main.lisp
 
-(in-package #:math/tests)
+(in-package :math/tests)
 
 (def-suite all
   :description "Мастер-набор всех тестов проекта math.")

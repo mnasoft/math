@@ -1,6 +1,6 @@
 ;;;; approximation.lisp
 
-(in-package #:math)
+(in-package :math)
 
 (defparameter *arr-2xN* (make-array '(5 2) :initial-contents '((-2.0 0.91553) (-1.0 1.15765) (0.0 1.68105) (1.0 1.15759) (2.0 0.9213))))
 

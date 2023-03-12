@@ -1,6 +1,6 @@
 ;;;; ./src/rnd/rnd.lisp
 
-(defpackage #:math/rnd
+(defpackage :math/rnd
   (:use #:cl) 
   (:export make-1d-list 
            make-2d-list 
@@ -11,7 +11,7 @@
    списков, а также систем линейных уравнений со сручайным наперед
    заданным решением."))
 
-(in-package #:math/rnd)
+(in-package :math/rnd)
 
 (defun make-1d-list (size &optional (arg 15))
   "@b(Описание:) функция @b(make-1d-list) возвращает 1d-list длиной

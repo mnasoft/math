@@ -1,6 +1,6 @@
 ;;;; ./src/half-div/half-div.lisp
 
-(defpackage #:math/half-div
+(defpackage :math/half-div
   (:use #:cl)
   (:export h-div) 
   (:export h-div-lst)
@@ -8,7 +8,7 @@
    "@b(Описание:) пакет @b( half-div) реализует алгоритм половинного
  деления для выполнения поиска корня функции на отрезке."))
 
-(in-package #:math/half-div)
+(in-package :math/half-div)
 
 (defun boole-to-int (b) (if b 1 0))
 

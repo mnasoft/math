@@ -1,5 +1,5 @@
 
-(defpackage #:math/docs
+(defpackage :math/docs
   (:use #:cl ) 
   (:export make-all)
   (:documentation "Пакет @b(math/docs) содержит функции

@@ -1,6 +1,6 @@
 ;;;; ./math/src/tests/core.lisp
 
-(in-package #:math/tests)
+(in-package :math/tests)
 
 (def-suite core
   :description "Мастер-набор всех тестов math/core."

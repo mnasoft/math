@@ -1,10 +1,10 @@
 ;;;; x-o.lisp
 
-(defpackage #:math/x-o
+(defpackage :math/x-o
   (:use #:cl #:math/core #:math/matr)
   (:export play))
 
-(in-package #:math/x-o)
+(in-package :math/x-o)
 
 (defclass x-o (<matrix>) ())
 

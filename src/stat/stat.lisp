@@ -1,6 +1,6 @@
 ;;;; statistics.lisp
 
-(defpackage #:math/stat
+(defpackage :math/stat
   (:use #:cl #:math/core)
   (:intern remove-first
            remove-last)

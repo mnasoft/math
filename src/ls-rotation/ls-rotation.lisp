@@ -1,6 +1,6 @@
 ;;;; ./src/ls-rotation/las-rotation.lisp
 
-(defpackage #:math/ls-rotation
+(defpackage :math/ls-rotation
   (:use #:cl)
   (:export solve-x))
 

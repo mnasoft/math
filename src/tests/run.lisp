@@ -1,5 +1,5 @@
 ;;;; tests/main-run.lisp
 
-(in-package #:math/tests)
+(in-package :math/tests)
 
 (run-tests)

@@ -1,6 +1,6 @@
 ;;;; ./src/coord/coordinate-system.lisp
  
-(defpackage #:math/coord
+(defpackage :math/coord
   (:use #:cl #:math/core)
   (:export dtr
            rtd

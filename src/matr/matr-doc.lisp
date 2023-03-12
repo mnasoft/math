@@ -1,5 +1,5 @@
 
-(in-package #:MATH/MATR)
+(in-package :MATH/MATR)
 
 (defmacro make-doc (obj-name obj-type doc-string)
   `(setf (documentation ,obj-name ,obj-type)

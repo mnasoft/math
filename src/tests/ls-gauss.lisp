@@ -1,6 +1,6 @@
 ;;;; ./src/tests/ls-gauss.lisp
 
-(in-package #:math/tests)
+(in-package :math/tests)
 
 (def-suite ls-gauss
   :description

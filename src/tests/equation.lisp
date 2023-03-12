@@ -1,6 +1,6 @@
 ;;;; ./math/src/tests/equation.lisp
 
-(in-package #:math/tests)
+(in-package :math/tests)
 
 (def-suite equation
   :description "Мастер-набор всех тестов math/equation."

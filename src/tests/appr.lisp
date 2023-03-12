@@ -1,6 +1,6 @@
 ;;;; tests/approximation-tests.lisp
 
-(in-package #:math/tests)
+(in-package :math/tests)
 
 (def-suite appr
   :description "Мастер-набор тестов по решению СЛАУ (систем линейных

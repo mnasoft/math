@@ -1,6 +1,6 @@
 ;;;; tests/package.lisp
 
-(defpackage #:math/tests
+(defpackage :math/tests
   (:use #:cl #:fiveam)
   (:export #:run-tests))
 

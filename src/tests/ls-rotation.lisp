@@ -1,6 +1,6 @@
 ;;;; ./src/tests/ls-rotation.lisp
 
-(in-package #:math/tests)
+(in-package :math/tests)
 
 (def-suite ls-rotation
   :description "Мастер-набор всех тестов math/ls-rotation решение системы

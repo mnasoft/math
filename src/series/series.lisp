@@ -1,6 +1,6 @@
 ;;;; ./src/series/series.lisp
 
-(defpackage #:math/series
+(defpackage :math/series
   (:use #:cl )
   (:export <arithmetic>
            <arithmetic>-a

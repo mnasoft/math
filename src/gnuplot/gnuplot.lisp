@@ -1,6 +1,6 @@
 ;;;; ./src/gnuplot/package.lisp
 
-(defpackage #:math/gnuplot
+(defpackage :math/gnuplot
   (:use #:cl #:math/core)
   (:export gnuplot-splot
 	   gnuplot-plot

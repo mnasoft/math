@@ -1,2 +1,2 @@
-(in-package #:MATH/LS-GSLL)
+(in-package :MATH/LS-GSLL)
 

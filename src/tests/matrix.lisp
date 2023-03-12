@@ -1,6 +1,6 @@
 ;;;; 
 
-(in-package #:math/tests)
+(in-package :math/tests)
 
 (defun make-<matrix>-int (rows cols)
   "@b(Описание:) функция @b(make-<matrix>-int) возвращает матрицу 

@@ -1,3 +1,3 @@
 ;;;; /src/ls-rotation/ls-rotation-doc.lisp
 
-(in-package #:MATH/LS-ROTATION)
+(in-package :MATH/LS-ROTATION)

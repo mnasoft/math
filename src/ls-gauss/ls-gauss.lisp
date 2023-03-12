@@ -1,6 +1,6 @@
 ;;;; ./src/ls-gauss/ls-gauss.lisp
 
-(defpackage #:math/ls-gauss
+(defpackage :math/ls-gauss
   (:use #:cl) 
   (:export convert-to-triangular
 	   backward-run

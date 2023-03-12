@@ -1,6 +1,6 @@
 ;;;; ./appr/package.lisp
 
-(defpackage #:math/appr 
+(defpackage :math/appr 
   (:use #:cl) ;;#:math/matr
   (:export refine-smoothing-by-points
            smooth-by-points
@@ -41,7 +41,7 @@
            *apr-func-2-9*
            ))
 
-(in-package #:math/appr)
+(in-package :math/appr)
 
 ;;;; appr-func-temptate.lisp
 

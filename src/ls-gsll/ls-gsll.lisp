@@ -1,6 +1,6 @@
 ;;;; ./src/ls-solve/ls-solve.lisp
 
-(defpackage #:math/ls-gsll
+(defpackage :math/ls-gsll
   (:use #:cl )
   (:export solve
            solve-x)
@@ -8,7 +8,7 @@
     "@b(Описание:) пакет @b(math/ls-gsll) пределяет функции для
  решения СЛАУ методом LU-разложения при помощи системσ GSLL."))
 
-(in-package #:math/ls-gsll)
+(in-package :math/ls-gsll)
 
 (defun solve (matrix vector)
   "@b(Описание:) функция| @b(solve) возвращает корни решения СЛАУ 

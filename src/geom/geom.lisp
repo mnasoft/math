@@ -1,6 +1,6 @@
 ;;;; ./src/geom/geom-doc.lisp
 
-(defpackage #:math/geom
+(defpackage :math/geom
   (:use #:cl)
   (:export triangle-area-by-sides
            regular-triangle-area-by-side
