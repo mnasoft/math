@@ -118,15 +118,15 @@ val до количества значащих цифр, задаваемых а
 		 ((< (abs (* val divisor)) 1) (setf divisor (* divisor 10)))
 		 ((< 1 (abs (* val divisor))) (setf divisor (/ divisor 10))))))
 
-	   (my-round (val &optional (sb-kernel::divisor 1))
+	   (my-round (val &optional (divisor 1))
 	     "
  @b(Пример использования:)
 @begin[lang=lisp](code)
  (my-round 10.964739714723287d0 1/100) => 10.96
 @end(code)
 "
-	     (coerce (* (round val sb-kernel::divisor)
-			sb-kernel::divisor)
+	     (coerce (* (round val divisor)
+			divisor)
 		     'single-float)))
     (my-round val
               (/ (expt 10 (* -1 (- significant-digits 1)))
