@@ -1,7 +1,7 @@
 ;;;; x-o.lisp
 
 (defpackage :math/x-o
-  (:use #:cl #:math/core #:math/matr)
+  (:use #:cl #:math/matr)
   (:export play))
 
 (in-package :math/x-o)
@@ -178,7 +178,7 @@
 	(progn
 	  (print mm)
 	  (format t "~%Current player - ~A" *player*)
-	  (format t "~%[help reset pl pl1 pl2 exit]<player row col>:")
+	  (format t "~%[help reset pl pl1 pl2 exit]<row col>:")
 	  (game-over-p mm)
 	  (setf rr (read-line))
 	  (print rr)
@@ -204,8 +204,6 @@ col    - [0..2] столбец, в который помещается ход и
 	     (multiple-value-bind (rr cc) (values-list (eval (read-from-string (concatenate 'string "(list " rr ")"))))
 	       (setf (mref mm  rr cc) *player*))
 	     (next-player)))))))
-
-(export 'play)
 
 (defun play ()
   "@b(Описание:) функция @b(play) запускает на выполнение 

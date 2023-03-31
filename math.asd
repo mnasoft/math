@@ -274,7 +274,7 @@
   :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"  
   :serial t
   :in-order-to ((test-op (test-op "math/x-o/tests")))
-  :depends-on ( "math/core" "math/arr-matr") 
+  :depends-on ( "math/core" "math/matr") 
   :components ((:module "src/x-o"
 		:serial t
                 :components ((:file "x-o")))))
