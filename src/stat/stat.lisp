@@ -8,8 +8,12 @@
 	   )
   (:export average
            dispersion
+           dispersion-not-nil
            standard-deviation
-           variation-coefficient)
+           standard-deviation-not-nil
+           variation-coefficient
+           variation-coefficient-not-nil
+           )
   (:export max-value
 	   average-value
            min-value)
@@ -154,6 +158,9 @@
 	 (summ (apply #'+ (mapcar #'(lambda (el) (square (- el x-sr))) x))))
     (/ summ n-1)))
 
+(defun dispersion-not-nil (x)
+  (dispersion (exclude-nil-from-list x)))
+
 (defun standard-deviation (x)
   "@b(Описание:) функция standard-deviation возвращает среднеквадратичное 
 (стандартное) отклонение для списка величин.
@@ -169,6 +176,9 @@
 @end(code)"  
   (sqrt (dispersion x)))
 
+(defun standard-deviation-not-nil (x)
+  (standard-deviation (exclude-nil-from-list x)))
+
 (defun variation-coefficient (x)
   "@b(Описание:) возвращает 
 @link[uri=\"https://ru.wikipedia.org/wiki/Коэффициент_вариации\"](коэффициент вариации)
@@ -181,6 +191,9 @@
 "  
   (/ (standard-deviation x)
      (apply #'average X)))
+
+(defun variation-coefficient-not-nil (x)
+  (variation-coefficient (exclude-nil-from-list x)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
