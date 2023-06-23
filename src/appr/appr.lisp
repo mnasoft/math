@@ -13,7 +13,7 @@
            make-linear-interpolation
            make-appr-linear
            make-least-squares-matrix
-           make-refine-smooting
+           make-refine-smoothing
            make-approximation-lambda
            )
   (:export <appr-linear>
@@ -475,10 +475,11 @@ yy(x@sub(1))=a@sub(1)·x@sub(1)@sup(2)·x@sub(2)@sup(2)+ a@sub(2)·x@sub(1)@sup(
  | 5.0 |  19.0 |  23.0 |
  @end(code)"))
 
-(defmethod print-object ((a-l <appr-linear>) s)
-  (format s "#<appr-linear> (~A ~A)"
-	  (appr-linear-x1       a-l)
-	  (appr-linear-a1d-func a-l)))
+(defmethod print-object ((a-l <appr-linear>) stream)
+  (print-unreadable-object (a-l stream :type t)
+    (format stream " (~A ~A)"
+	    (appr-linear-x1       a-l)
+	    (appr-linear-a1d-func a-l))))
 
 (defmethod initialize-instance ((a-l <appr-linear>) &key (x1 (vector -2 -1 0 1 2)) (a1d (vector 4 1 0 1 4)))
   (setf (appr-linear-x1       a-l) x1
@@ -557,11 +558,12 @@ yy(x@sub(1))=a@sub(1)·x@sub(1)@sup(2)·x@sub(2)@sup(2)+ a@sub(2)·x@sub(1)@sup(
   (:documentation
    "@b(Описание:) Класс @b(<appr-bilinear>) представляет билинейную интерполяцию."))
 
-(defmethod print-object ((a-l <appr-bilinear>) s)
-  (format s "#<appr-bilinear> (~A ~A ~A)"
-	  (appr-bilinear-x1       a-l)
- 	  (appr-bilinear-x2       a-l)
-	  (appr-bilinear-a2d-func a-l)))
+(defmethod print-object ((a-l <appr-bilinear>) stream)
+  (print-unreadable-object (a-l stream)
+    (format stream " (~A ~A ~A)"
+	    (appr-bilinear-x1       a-l)
+ 	    (appr-bilinear-x2       a-l)
+	    (appr-bilinear-a2d-func a-l))))
 
 (defmethod initialize-instance ((a-l <appr-bilinear>) &key (x1 (vector -1 0 1 )) (x2 (vector 0 1 )) (a2d '#2A((1 2) (3 4) (5 6))))
   (setf (appr-bilinear-x1       a-l) x1
@@ -609,8 +611,8 @@ yy(x@sub(1))=a@sub(1)·x@sub(1)@sup(2)·x@sub(2)@sup(2)+ a@sub(2)·x@sub(1)@sup(
 
 (defmethod smooth-by-points ((x number) (dx number) (points vector) (values vector)
 			     &key (weight-func #'math/smooth:gauss-smoothing))
-    "@b(Описание:) метод @b(smooth-by-points) возвращает значение, являющееся результатом
-сглаживания зависимости заданной:
+    "@b(Описание:) метод @b(smooth-by-points) возвращает значение,
+являющееся результатом сглаживания зависимости заданной:
 @begin(list)
  @item(аргументами @b(points);)
  @item(значениями в этих точках @b(values);)
@@ -791,11 +793,11 @@ yy(x@sub(1))=a@sub(1)·x@sub(1)@sup(2)·x@sub(2)@sup(2)+ a@sub(2)·x@sub(1)@sup(
 	(iterate v-rez v-iter)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;; make-refine-smooting
+;;;; make-refine-smoothing
 
-(defmethod make-refine-smooting ((nod-points vector) (nod-values vector) (base-dist-s number)
+(defmethod make-refine-smoothing ((nod-points vector) (nod-values vector) (base-dist-s number)
 				 &key (weight-func #'math/smooth:gauss-smoothing) (delta 0.001) (iterations 10000))
-  "@b(Описание:) метод @b(make-refine-smooting) в случе 
+  "@b(Описание:) метод @b(make-refine-smoothing) в случе 
 нахождения сглаживания для функции одного переменного.
 
  @b(Пример использования:)
@@ -806,7 +808,7 @@ yy(x@sub(1))=a@sub(1)·x@sub(1)@sup(2)·x@sub(2)@sup(2)+ a@sub(2)·x@sub(1)@sup(
 	(base-dists-1_0 1.0 )
 	(base-dists-0_6 0.6 )
 	(base-dists-0_4 0.4 )
-	(func (make-refine-smooting nod-pts nod-rez base-dists-1_5)))
+	(func (make-refine-smoothing nod-pts nod-rez base-dists-1_5)))
    (loop :for i :from -2 :to 2 :by 1/10
 	 :collect (list (* 1.0 i)
 			(* 1.0 i i)
@@ -846,9 +848,24 @@ yy(x@sub(1))=a@sub(1)·x@sub(1)@sup(2)·x@sub(2)@sup(2)+ a@sub(2)·x@sub(1)@sup(
 			new-base-dist-s new-nod-points new-nod-values
 			:weight-func weight-func))))
 
-(defmethod make-refine-smooting ((nod-points array) (nod-values vector) (base-dist-s vector)
+(defmethod make-refine-smoothing ((nod-points cons)
+                                  (nod-values cons)
+                                  (base-dist-s number)
+                                  &key
+                                    (weight-func #'math/smooth:gauss-smoothing)
+                                    (delta 0.001)
+                                    (iterations 10000))
+  (make-refine-smoothing (coerce nod-points 'vector)
+                         (coerce nod-values 'vector)
+                         base-dist-s
+                         :weight-func weight-func
+                         :delta delta
+                         :iterations iterations))
+                         
+
+(defmethod make-refine-smoothing ((nod-points array) (nod-values vector) (base-dist-s vector)
 				 &key (weight-func #'math/smooth:gauss-smoothing) (delta 0.001) (iterations 10000))
-  "@b(Описание:) метод @b(make-refine-smooting) в случе 
+  "@b(Описание:) метод @b(make-refine-smoothing) в случе 
 нахождения сглаживания для функции двух переменных.
 
  @b(Пример использования:)
@@ -860,7 +877,7 @@ yy(x@sub(1))=a@sub(1)·x@sub(1)@sup(2)·x@sub(2)@sup(2)+ a@sub(2)·x@sub(1)@sup(
 	(base-dists-1_0 #(1.0 1.0))
         (base-dists-0_6 #(0.6 0.6))
 	(base-dists-0_4 #(0.4 0.4))
-	(func (make-refine-smooting nod-pts nod-rez base-dists-1_5)))
+	(func (make-refine-smoothing nod-pts nod-rez base-dists-1_5)))
    (funcall func 0.0 0.5))
 @end(code)"
   (let ((new-nod-values

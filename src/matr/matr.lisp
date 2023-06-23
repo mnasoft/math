@@ -118,16 +118,15 @@
 (defmethod matr-name-* ((mm <matrix>))
   (type-of mm))
 
-(defmethod print-object ((mm <matrix>) s)
-  (format s "~A " (matr-name-* mm))
-  (when (and (matrix-data mm) (arrayp (matrix-data mm)))
-    (format s "~{~A~^х~}" (array-dimensions (matrix-data mm)))
-    (loop :for i :from 0 :below (array-dimension (matrix-data mm) 0)
-       :do
-	 (format s "~%[")
-	 (loop :for j :from 0 :below (array-dimension (matrix-data mm) 1)
-	    :do (format s " ~8A " (aref (matrix-data mm) i j)))
-	 (format s "]"))))
+(defmethod print-object ((matrix <matrix>) stream)
+  (print-unreadable-object (matrix stream :type t)
+    (when (and (matrix-data matrix) (arrayp (matrix-data matrix)))
+      (format stream "~{~A~^х~}" (array-dimensions (matrix-data matrix)))
+      (loop :for i :from 0 :below (array-dimension (matrix-data matrix) 0)
+            :do
+	       (format stream "~%")
+	       (loop :for j :from 0 :below (array-dimension (matrix-data matrix) 1)
+	             :do (format stream " ~6A" (aref (matrix-data matrix) i j)))))))
 
 (defmethod initialize-instance ((mm <matrix>) &key dimensions initial-element initial-contents data (element-type t))
   (when (and (consp dimensions) (/= (length dimensions) 2))

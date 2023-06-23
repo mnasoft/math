@@ -47,21 +47,23 @@
    "@b(Описание:) класс @b(<geometric>) представляет геометрическую
    прогрессию."))
 
-(defmethod print-object ((series <arithmetic>) s)
-  (format s "~A, ~A+~A, ..., ~A+~A*i"
-          (<arithmetic>-a series)
-          (<arithmetic>-a series)
-          (<arithmetic>-d series)
-          (<arithmetic>-a series)
-          (<arithmetic>-d series)))
+(defmethod print-object ((series <arithmetic>) stream)
+  (print-unreadable-object (series stream :type t)
+    (format stream "~A, ~A+~A, ..., ~A+~A*i"
+            (<arithmetic>-a series)
+            (<arithmetic>-a series)
+            (<arithmetic>-d series)
+            (<arithmetic>-a series)
+            (<arithmetic>-d series))))
 
-(defmethod print-object ((series <geometric>) s)
-  (format s "~A, ~A*~A, ..., ~A+~A^i"
-          (<geometric>-b series)
-          (<geometric>-b series)
-          (<geometric>-q series)
-          (<geometric>-b series)
-          (<geometric>-q series)))
+(defmethod print-object ((series <geometric>) stream)
+  (print-unreadable-object (series stream :type t)
+    (format stream "~A, ~A*~A, ..., ~A+~A^i"
+            (<geometric>-b series)
+            (<geometric>-b series)
+            (<geometric>-q series)
+            (<geometric>-b series)
+            (<geometric>-q series))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

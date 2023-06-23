@@ -69,20 +69,24 @@
 ."))
 
 (defmethod print-object ((eq <linear>) s)
-  (format s "f(x)=(~S)*x+(~S)"
-          (coeff-a eq) (coeff-b eq)))
+  (print-unreadable-object (eq s :type t)
+    (format s "f(x)=(~S)*x+(~S)"
+            (coeff-a eq) (coeff-b eq))))
 
 (defmethod print-object ((eq <quadric>) s)
-  (format s "f(x)=(~S)*x^2+(~S)*x+(~S)"
-          (coeff-a eq) (coeff-b eq) (coeff-c eq)))
+  (print-unreadable-object (eq s :type t)
+    (format s "f(x)=(~S)*x^2+(~S)*x+(~S)"
+            (coeff-a eq) (coeff-b eq) (coeff-c eq))))
 
 (defmethod print-object ((eq <cubic>) s)
-  (format s "f(x)=(~S)*x^3+(~S)*x^2+(~S)*x+(~S)"
-          (coeff-a eq) (coeff-b eq) (coeff-c eq) (coeff-d eq)))
+  (print-unreadable-object (eq s :type t)
+    (format s "f(x)=(~S)*x^3+(~S)*x^2+(~S)*x+(~S)"
+            (coeff-a eq) (coeff-b eq) (coeff-c eq) (coeff-d eq))))
 
 (defmethod print-object ((eq <quartic>) s)
-  (format s "f(x)=(~S)*x^4+(~S)*x^3+(~S)*x^2+(~S)*x+(~S)"
-          (coeff-a eq) (coeff-b eq) (coeff-c eq) (coeff-d eq) (coeff-e eq)))
+  (print-unreadable-object (eq s :type t)
+    (format s "f(x)=(~S)*x^4+(~S)*x^3+(~S)*x^2+(~S)*x+(~S)"
+            (coeff-a eq) (coeff-b eq) (coeff-c eq) (coeff-d eq) (coeff-e eq))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

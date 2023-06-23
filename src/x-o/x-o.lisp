@@ -6,31 +6,31 @@
 
 (in-package :math/x-o)
 
-(defclass x-o (<matrix>) ())
+(defclass <x-o> (<matrix>) ())
 
-(defmethod matr-name-* ((mm x-o)) "X-O")
+(defmethod matr-name-* ((mm <x-o>)) "X-O")
 
-(defmethod print-object ((mm x-o) s)
-  (format s "~A " (matr-name-* mm))
-  (when (and (matrix-data mm) (arrayp (matrix-data mm)))
-    (format s "~{~A~^х~}" (array-dimensions (matrix-data mm)))
-    (loop :for i :from 0 :below (array-dimension (matrix-data mm) 0)
-       :do
-	 (format s "~%[")
-	 (loop :for j :from 0 :below (array-dimension (matrix-data mm) 1)
-	    :do (format s " ~A " (aref (matrix-data mm) i j)))
-	 (format s "]"))))
+(defmethod print-object ((x-o <x-o>) s)
+  (print-unreadable-object (x-o s :type t) 
+    (when (and (matrix-data x-o) (arrayp (matrix-data x-o)))
+      (format s "~{~A~^х~}" (array-dimensions (matrix-data x-o)))
+      (loop :for i :from 0 :below (array-dimension (matrix-data x-o) 0)
+            :do
+	       (format s "~%[")
+	       (loop :for j :from 0 :below (array-dimension (matrix-data x-o) 1)
+	             :do (format s " ~A " (aref (matrix-data x-o) i j)))
+	       (format s "]")))))
 
-(defmethod initialize-instance ((mm x-o) &key (rows 3) (cols 3) )
+(defmethod initialize-instance ((mm <x-o>) &key (rows 3) (cols 3) )
   (setf (matrix-data mm) (make-array (list rows cols) :initial-element 0)))
 
-(defmethod x-o-reset ((mm x-o))
+(defmethod x-o-reset ((mm <x-o>))
   (loop :for i :from 0 :below (array-dimension (matrix-data mm) 0)
      :do
      (loop :for j :from 0 :below (array-dimension (matrix-data mm) 1)
 	   :do (setf (aref (matrix-data mm) i j) 0))))
 
-(defparameter *xo* (make-instance 'x-o ))
+(defparameter *xo* (make-instance '<x-o> ))
 
 ;;;;;
 
@@ -49,7 +49,7 @@
 		(count-if     #'(lambda (el) (= 0     el)) lst))))
     (and (<= v-n 0) (= v-y 1))))
 
-(defmethod x-o-lines ((mm x-o))
+(defmethod x-o-lines ((mm <x-o>))
   (append
    (loop :for r :from 0 :below (rows  mm)
       :collect (row mm r))
@@ -57,28 +57,28 @@
       :collect (col mm c))
    (list (main-diagonal mm) (anti-diagonal mm))))
 
-(defmethod x-o-winp ((mm x-o) player)
-  "Определяет для расстановки x-o выиграл-ли игрок player"
+(defmethod x-o-winp ((mm <x-o>) player)
+  "Определяет для расстановки <x-o> выиграл-ли игрок player"
   (let ((lst (mapcar #'(lambda (el)
 		     (mate-value player el) )
 		 (x-o-lines mm))))
     (some #'(lambda (el) el) lst)))
 
-(defmethod x-o-check-num ((mm x-o) player)
+(defmethod x-o-check-num ((mm <x-o>) player)
   "Определяет количество шахов"
   (let ((lst (mapcar #'(lambda (el)
 			 (check-value player el) )
 		     (x-o-lines mm))))
     (count t lst)))
 
-(defmethod x-o-1/2-check-num ((mm x-o) player)
+(defmethod x-o-1/2-check-num ((mm <x-o>) player)
   "Определяет количество полушахов"
   (let ((lst (mapcar #'(lambda (el)
 			 (half-check-value player el) )
 		     (x-o-lines mm))))
     (count t lst)))
 
-(defmethod free-fields ((mm x-o))
+(defmethod free-fields ((mm <x-o>))
   "Возвращает свободные поля"
   (let ((rez nil))
     (loop :for i :from 0 :below (array-dimension (matrix-data mm) 0)
@@ -87,7 +87,7 @@
 		    (push (list i j) rez))))
     rez))
 
-(defmethod game-over-p ((mm x-o))
+(defmethod game-over-p ((mm <x-o>))
   "Возвращает статус игры"
   (let* ((first-winner (x-o-winp mm 1))
 	 (second-winner (x-o-winp mm 2))
@@ -101,29 +101,29 @@
 
 (defun get-random-element (lst) (when lst (nth (random (length lst)) lst)))
 
-(defmethod step-check-rule-back (rule (mm x-o) player r c)
+(defmethod step-check-rule-back (rule (mm <x-o>) player r c)
   (let ((rez (funcall rule (setf (mref mm r c) player) player)))
     (setf (mref mm r c) 0)
     (list rez r c)))
 
-(defmethod check-rule (rule chek-for-payer (mm x-o) move-player r c)
+(defmethod check-rule (rule chek-for-payer (mm <x-o>) move-player r c)
   (let ((rez (funcall rule (setf (mref mm r c) move-player) chek-for-payer)))
     (setf (mref mm r c) 0)
     (list rez r c)))
 
-(defmethod map-check-rule (rule check-for-payer (mm x-o) move-player)
+(defmethod map-check-rule (rule check-for-payer (mm <x-o>) move-player)
   (mapcar
    #'(lambda (el)
        (check-rule rule check-for-payer mm move-player (first el) (second el)))
    (free-fields mm)))
 
-(defmethod map-step-check-rule-back (rule (mm x-o) player)
+(defmethod map-step-check-rule-back (rule (mm <x-o>) player)
   (mapcar
    #'(lambda (el)
        (step-check-rule-back rule mm player (first el) (second el)))
    (free-fields mm)))
 
-(defmethod may-win-next-step ((mm x-o) player)
+(defmethod may-win-next-step ((mm <x-o>) player)
   (let* ((rez (map-step-check-rule-back #'x-o-winp mm player ))
 	   (win-coords nil ))
       (mapcar #'(lambda (el) (when (first el) (push (cdr el) win-coords))) rez)
@@ -149,7 +149,7 @@
 (defun rank-intersection (triple-lst-1 triple-lst-2)
   (intersection triple-lst-1 triple-lst-2 :key #'cdr :test #'equal))
 
-(defmethod move ((mm x-o) player)
+(defmethod move ((mm <x-o>) player)
   (unless (game-over-p mm)
     (let* ((may-win       (may-win-next-step mm player))
 	   (min-check     (collect-as-first-rank
