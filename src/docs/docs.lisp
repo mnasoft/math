@@ -2,8 +2,16 @@
 (defpackage :math/docs
   (:use #:cl ) 
   (:export make-all)
-  (:documentation "Пакет @b(math/docs) содержит функции
-  генерирования и публикации документации."))
+  (:documentation "
+Пакет @b(math/docs) содержит функции генерирования и публикации
+документации.
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (ql:quickload :math/docs)
+ (math/docs:make-all)
+@end(code)
+"))
 
 (in-package :math/docs)
 
