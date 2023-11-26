@@ -33,7 +33,8 @@
       (:math/gnuplot     :math/gnuplot)
       (:math/rnd         :math/rnd)
       (:math/series      :math/series)
-      (#:math/stat       #:math/stat)
+      (:math/stat        :math/stat)
+      (:math/docs        :math/docs)
       #+nil
       (:math/x-o         :math/x-o)
       )
@@ -58,7 +59,8 @@
       :math/gnuplot
       :math/rnd
       :math/series
-      #:math/stat
+      :math/stat
+      :math/docs
       #+nil :math/x-o      
       )
     :do (progn

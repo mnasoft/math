@@ -227,7 +227,12 @@
                              (:file "geom-doc")))))
 
 (defsystem "math/docs"
-  :description "Зависимости для сборки документации"
+  :description "
+@b(Описание:) система @b(math/docs) содержит функции для извлечения
+сборки и публикации документации.
+
+Для публикации документации в системе должна быть установлена
+программа @b(rsync)."
   :author "Mykola Matvyeyev <mnasoft@gmail.com>"
   :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"  
   :depends-on ("math"
