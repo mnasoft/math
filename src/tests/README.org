@@ -1,0 +1,51 @@
+#+options: ':nil *:t -:t ::t <:t H:3 \n:nil ^:t arch:headline
+#+options: author:t broken-links:nil c:nil creator:nil
+#+options: d:(not "LOGBOOK") date:t e:t email:nil f:t inline:t num:t
+#+options: p:nil pri:nil prop:nil stat:t tags:t tasks:t tex:t
+#+options: timestamp:t title:t toc:t todo:t |:t
+#+title: README
+#+date: <2023-11-25 Сб>
+#+author:
+#+email: mnaso@UAKAZI-NOTE
+#+language: en
+#+select_tags: export
+#+exclude_tags: noexport
+#+creator: Emacs 29.1 (Org mode 9.6.6)
+#+cite_export:
+#+options: html-link-use-abs-url:nil html-postamble:auto
+#+options: html-preamble:t html-scripts:nil html-style:t
+#+options: html5-fancy:nil tex:t
+#+html_doctype: xhtml-strict
+#+html_container: div
+#+html_content_class: content
+#+description:
+#+keywords:
+#+html_link_home:
+#+html_link_up:
+#+html_mathjax:
+#+html_equation_reference_format: \eqref{%s}
+#+html_head:
+#+html_head_extra:
+#+subtitle:
+#+infojs_opt:
+#+creator: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 29.1 (<a href="https://orgmode.org">Org</a> mode 9.6.6)
+#+latex_header:
+
+* Назначение
+Пакет :math/tests предназначен для проверки изменений, внесенных в
+пакеты, связаные с :math.
+
+* Использоваие
+** Загрузка
+Загузка пакета осуществляется через загрузку системы:
+
+#+begin_src lisp
+  (ql:quickload :math/tests)
+#+end_src
+
+** Выполнение тестов
+Для выполнения всех проверок выполните:
+
+#+begin_src lisp
+  (run-tests)
+#+end_src
