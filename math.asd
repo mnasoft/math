@@ -14,7 +14,7 @@
 "
   :author "Mykola Matvyeyev <mnasoft@gmail.com>"
   :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"
-  :version "0.0.2"
+  :version "0.0.3"
   :serial t
   :in-order-to ((test-op (test-op "math/tests")))
   :depends-on ("cl-utilities"
@@ -266,7 +266,21 @@
   :components ((:module "src/matr"
 		:serial t
                 :components ((:file "matr")
-                             (:file "defmethod")
+                             (:file "generics")
+                             (:file "methods/add")
+                             (:file "methods/anti-diagonal")
+                             (:file "methods/col")
+                             (:file "methods/cols")
+                             (:file "methods/dimensions")
+                             (:file "methods/equivalent")
+                             (:file "methods/main-diagonal")
+                             (:file "methods/mref")
+                             (:file "methods/multiply")
+                             (:file "methods/row")
+                             (:file "methods/rows")
+                             (:file "methods/squarep")                             
+                             (:file "methods/transpose")
+                             (:file "methods/swap-rows")
                              (:file "matr-doc")))))
 
   :author "Mykola Matvyeyev <mnasoft@gmail.com>"
