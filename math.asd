@@ -279,6 +279,8 @@
                              (:file "methods/main-diagonal")
                              (:file "methods/mref")
                              (:file "methods/multiply")
+                             (:file "methods/prepend")
+                             (:file "methods/rotate")
                              (:file "methods/row")
                              (:file "methods/rows")
                              (:file "methods/squarep")

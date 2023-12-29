@@ -1,16 +1,20 @@
 * ToDo
 1) [-] math/matr
+   - [ ] сингатура вызова функций rotate-v (angle vector) и
+     rotate-around (p1 p2 angle) не выглядит гармонично с точки зрения
+     порядка следования аргументов. Аргумент angle просится на первое
+     место. Или вообще убрать rotate-around?
    - [ ] разделить код для методов на файлы - каждый файл должен
      представлять один метод;
    - [-] кандидаты в defgeneric:
      - [X] unite-rows;
      - [X] unite-cols;
-     - [ ] average-value;
-     - [ ] average-not-nil-value;
-     - [ ] average-row-value;
-     - [ ] average-row-not-nil-value;
-     - [ ] average-col-value;
-     - [ ] average-col-not-nil-value;
+     - [X] average-value;
+     - [X] average-not-nil-value;
+     - [X] average-row-value;
+     - [X] average-row-not-nil-value;
+     - [X] average-col-value;
+     - [X] average-col-not-nil-value;
      - [ ] max-col-not-nil-value;
      - [ ] max-row-not-nil-value.
 2) [ ] Определить функции кубической интерполяции для функции одного
