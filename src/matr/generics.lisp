@@ -133,14 +133,84 @@
    "@b(Описание:) обобщенная функция @b(transform) возвращает координаты точки
   @b(point), преобразованные с помощью матрицы @b(matrix)."))
 
+(defgeneric swap-rows* (matrix i j)
+  (:documentation
+   "@b(Описание:) обобщенная функция @b(swap-rows*) меняет местами строки
+@b(i) и @b(j) в матрице @b(matrix) и возвращает его в качестве
+результата."))
+
 (defgeneric swap-rows (matrix i j)
   (:documentation
    "@b(Описание:) обобщенная функция @b(swap-rows) возвращает новый
 объект, совпадающий по типу с @b(matrix), у которого строки @b(i) и
 @b(j) меняются местами."))
 
-(defgeneric swap-rows* (matrix i j)
+(defgeneric swap-cols* (matrix i j)
   (:documentation
-   "@b(Описание:) обобщенная функция @b(swap-rows*) меняет местами строки
+   "@b(Описание:) обобщенная функция @b(swap-cols*) меняет местами столбцы
 @b(i) и @b(j) в матрице @b(matrix) и возвращает его в качестве
 результата."))
+
+(defgeneric swap-cols (matrix i j)
+  (:documentation
+   "@b(Описание:) обобщенная функция @b(swap-cols) возвращает новый
+объект, совпадающий по типу с @b(matrix), у которого столбцы @b(i) и
+@b(j) меняются местами."))
+
+
+(defgeneric unite-cols (matrix)
+  (:documentation  
+  "@b(Описание:) обобщенная функция @b(unite-cols) объединяет столбцы
+матрицы (список списков) в вектор (список)."))
+
+(defgeneric unite-rows (matrix)
+  (:documentation
+   "@b(Описание:) обобщенная @b(unite-rows) объединяет строки матрицы
+ (список списков) в вектор (список)."))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defgeneric average-value (matrix)
+  (:documentation 
+   "@b(Описание:) функция @b(average-value) вычисляет среднее значение по
+ элементам матрицы (списка списков)."))
+
+(defgeneric average-not-nil-value (matrix)
+  (:documentation
+  "@b(Описание:) функция @b(average-not-nil-value) вычисляет среднее
+значение по элементам матрицы (списка списков) с исключением
+nil-элементов."))
+
+;;;;
+
+(defgeneric average-row-value (matrix)
+  (:documentation  
+  "@b(Описание:) функция @b(average-row-value) вычисляет 
+средние значения в строках матрицы (списка списков)."))
+
+(defgeneric average-row-not-nil-value (matrix)
+  (:documentation  
+  "@b(Описание:) функция @b(average-row-not-nil-value) вычисляет среднее
+ значение по элементам матрицы (списка списков)."))
+
+;;;;
+
+(defgeneric average-col-value (matrix)
+  (:documentation 
+   "@b(Описание:) функция @b(average-col-value) вычисляет среднее
+значение по столбцам матрицы (списка списков)."))
+
+(defgeneric average-col-not-nil-value (matrix)
+  (:documentation  
+  "@b(Описание:) функция @b(average-col-not-nil-value) вычисляет среднее 
+значение по элементам матрицы (списка списков)."))
+
+(defgeneric append-col (col matrix)
+  (:documentation    
+  "@b(Описание:) функция @b(append-col) добавляет столбец @b(col) к
+матрице @b(matrix)."))
+
+(defgeneric append-row (row matrix)
+  (:documentation      
+  "@b(Описание:) функция @b(append-row) добавляет строку @b(row) к
+матрице @b(matrix)."))

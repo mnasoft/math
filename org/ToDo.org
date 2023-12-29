@@ -1,9 +1,10 @@
 * ToDo
-1) [ ] math/matr
-   - [ ] разделить код на файлы - части
-   - [ ] кандидаты в defgeneric:
-     - [ ] unite-rows;
-     - [ ] unite-cols;
+1) [-] math/matr
+   - [ ] разделить код для методов на файлы - каждый файл должен
+     представлять один метод;
+   - [-] кандидаты в defgeneric:
+     - [X] unite-rows;
+     - [X] unite-cols;
      - [ ] average-value;
      - [ ] average-not-nil-value;
      - [ ] average-row-value;
