@@ -61,3 +61,13 @@
 	 (loop :for j :from 0 :below (cols b) :do
 	      (setf (mref rez i j) (* a (mref b i j)))))
     rez))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defmethod multiply ((a number ) (v cons))
+  " @b(Пример использования:)
+@begin[lang=lisp](code)
+ (multiply 10 '(1 2 3)) 
+ => (10 20 30)
+@end(code)"
+  (loop :for i :in v :collect (* a i)))
