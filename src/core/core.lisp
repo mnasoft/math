@@ -14,7 +14,9 @@
 	   distance-relative
 	   square)
   (:export split-range
-	   split-range-by-func )
+	   split-range-by-func
+           split-range-at-center
+           )
   (:export matr-name-*
 	   )
   (:export round-to-significant-digits
@@ -82,6 +84,22 @@
  (mapcar
    #'(lambda (el)(funcall anti-func el))
    (split-range (funcall func from) (funcall func to) steps)))
+
+(defun split-range-at-center (from to subdivisions)
+  "@b(Описание:) функция @b(split-range-in-center) делит интервал от
+@b(from) до @b(to) на @b(subdivisions) интервалов, возвращая их
+середины.
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (split-range-at-center 0.0 10.0 10)
+ => (0.5 1.5 2.5 3.5 4.5 5.5 6.5 7.5 8.5 9.5)
+@end(code)
+"
+  (let ((delta (- to from))
+        (divisions (* subdivisions 2)))
+    (loop :for i :from 1 :to divisions :by 2
+          :collect (+ from (* (/ i divisions) delta)))))
 
 (defun depth-sphere-along-cone (r alpha)
   "@b(Описание:) функция @b(depth-sphere-along-cone) возвращает 

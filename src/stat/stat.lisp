@@ -29,15 +29,33 @@
            clean-min-flagrant-error
            clean-flagrant-error)
   (:export aver-max-min
-	   aver-dmax-dmin))
+	   aver-dmax-dmin)
+  (:export factorial
+           permutations
+           combinations
+           ))
 
 (in-package :math/stat)
+
+(defun factorial (x)
+  "Факториал x."
+  (gsll:factorial x))
+
+(defun permutations (n)
+  "Количество перестановок"
+  (gsll:factorial n))
+
+(defun combinations (i n)
+  "Количество сочетаний из n по i."
+  (/ (factorial n) (factorial i) (factorial (- n i))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defun remove-first (lst)
   (cdr lst))
 
 (defun remove-last (lst)
-  (reverse (cdr (reverse lst))))
+  (butlast lst))
 
 (defun average (&rest x)
   "@b(Описание:) функция @b(average) возврвщает среднее значение для

@@ -35,3 +35,4 @@
 	  ((= j n) (setf (aref vect-rez i) summ))
 	(setf summ (+ summ (* (aref matr i j )
 			      (aref vect j))))))))
+

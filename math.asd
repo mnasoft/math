@@ -140,7 +140,7 @@
   :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"  
   :serial t
   :in-order-to ((test-op (test-op "math/stat/tests")))
-  :depends-on ("math/core")
+  :depends-on ("math/core" "gsll")
   :components ((:module "src/stat"
 		:serial t
                 :components ((:file "stat")
@@ -291,8 +291,19 @@
                              (:file "methods/unite-rows")
                              (:file "matr-doc")))))
 
+(defsystem "math/obj"
+  :description "@b(Описание:) система @b(math/obj) содержит описание некоторых
+геометрических объектов."
   :author "Mykola Matvyeyev <mnasoft@gmail.com>"
   :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"  
+  :serial t
+  :depends-on ("gsll" "math/stat" "vgplot")  
+  :components ((:module "src/obj"
+		:serial t
+                :components ((:file "obj")))))
+
+
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
