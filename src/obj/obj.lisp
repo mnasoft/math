@@ -1,11 +1,10 @@
 (defpackage :math/obj 
   (:use #:cl) 
-  (:export factorial
-           combinations)
   (:export b* b/ b+ b- ;; Операции биаргументного умножения, деления, слоожения и вычитания;
            m* m/ m+ m- ;; Операции мультиаргументного умножения, деления, слоожения и вычитания;
            )
-  (:export <point-3d>
+  (:export point-3d
+           <point-3d>
            <point-3d>-x
            <point-3d>-y
            <point-3d>-z
@@ -46,6 +45,13 @@
           (<vector-3d>-x vector-3d)
           (<vector-3d>-y vector-3d)
           (<vector-3d>-z vector-3d)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defun point-3d (x y z)
+  (make-instance '<point-3d>
+                 :x (coerce x 'double-float)
+                 :y (coerce y 'double-float) :z (coerce z 'double-float)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -155,14 +161,14 @@
             (list (<point-3d>-x p) (<point-3d>-y p)))))
 
   (vgplot:plot (map 'list #'first *pts*)
-               (map 'list #'second *pts*)
+               (map 'list #'second *pts*) ""
                
                (map 'list #'(lambda (p) (<point-3d>-x p ) ) *p*)
-               (map 'list #'(lambda (p) (<point-3d>-y p ) ) *p*)))
-
-
-(defun point-3d (x y z)
-  (make-instance '<point-3d>
-                 :x (coerce x 'double-float)
-                 :y (coerce y 'double-float) :z (coerce z 'double-float)))
-
+               (map 'list #'(lambda (p) (<point-3d>-y p ) ) *p*)
+               ""))
+#+nil
+(progn 
+  (vgplot:format-plot t "unset tics")
+  (vgplot:format-plot t "set label ")
+  (vgplot:xlabel "X")
+  (vgplot:ylabel "Y"))
