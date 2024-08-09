@@ -68,14 +68,29 @@
   (assert (< 0 (length x)))
   (/ (apply #'+ x) (length x)))
 
-(defun average-value (x)
-  "@b(Описание:) функция @b(average-value) возвращает среднее значение
- для списка величин.
+(defgeneric average-value (x)
+  (:documentation
+   "@b(Описание:) функция @b(average-value) возвращает среднее значение
+ для величин, содержащихся в @b(x).
 
  @b(Пример использования:) @begin[lang=lisp](code)
 (average-value '(1.1 1.0 0.9 1.2 0.8)) => 1.0
+@end(code)")
+  )
+
+(defmethod average-value ((1d-list cons))
+  "@b(Пример использования:)
+@begin[lang=lisp](code)
+ (average-value '(1.1 1.0 0.9 1.2 0.8)) => 1.0
 @end(code)"  
-  (apply #'average x))
+  (apply #'average 1d-list))
+
+(defmethod average-value ((1d-vector vector))
+  "@b(Пример использования:)
+@begin[lang=lisp](code)
+ (average-value #(1.1 1.0 0.9 1.2 0.8)) => 1.0
+@end(code)"  
+  (apply #'average (coerce 1d-vector 'list)))
 
 ;;;;  (assert (< 0 (length x))) (/ (apply #'+ x) (length x))
 
@@ -96,15 +111,24 @@
 "  
   (apply #'average (exclude-nil-from-list x)))
 
-(defun min-value (x)
-  "@b(Описание:) функция @b(min-value) возвращает максимальное значение
- для списка величин.
+(defgeneric min-value (x)
+  (:documentation
+   "@b(Описание:) функция @b(min-value) возвращает максимальное значение
+ для списка величин." ))
 
- @b(Пример использования:)
+(defmethod min-value ((1d-list cons))
+  " @b(Пример использования:)
 @begin[lang=lisp](code)
-(min-value '(1.1 1.0 0.9 1.2 0.8)) => 0.8 
+ (min-value '(1.1 1.0 0.9 1.2 0.8)) => 0.8 
 @end(code)"
-  (apply #'min x))
+  (apply #'min 1d-list))
+
+(defmethod min-value ((1d-vector vector))
+    " @b(Пример использования:)
+@begin[lang=lisp](code)
+ (min-value #(1.1 1.0 0.9 1.2 0.8)) => 0.8 
+@end(code)"
+    (apply #'min (coerce 1d-vector 'list)))
 
 (defun delta-min-value (x)
   "@b(Описание:) функция @b(delta-min-value)
@@ -131,14 +155,24 @@
 @end(code)"  
   (min-value (exclude-nil-from-list x)))
 
-(defun max-value (x)
-  "@b(Описание:) функция max-value возвращает максимальное значение для списка величин
+(defgeneric max-value (x)
+  (:documentation
+   "@b(Описание:) функция max-value возвращает максимальное значение
+ для списка величин"))
 
- @b(Пример использования:)
+(defmethod max-value ((1d-list cons))
+  " @b(Пример использования:)
 @begin[lang=lisp](code)
-(max-value '(1.1 1.0 0.9 1.2 0.8)) => 1.2 
+ (max-value '(1.1 1.0 0.9 1.2 0.8)) => 1.2 
 @end(code)"  
-  (apply #'max x))
+  (apply #'max 1d-list))
+
+(defmethod max-value ((1d-vector vector))
+  " @b(Пример использования:)
+@begin[lang=lisp](code)
+ (max-value #(1.1 1.0 0.9 1.2 0.8)) => 1.2 
+@end(code)"  
+  (apply #'max (coerce 1d-vector 'list)))
 
 (defun delta-max-value (x)
   "Возвращает отклонение максимальной величины от среднего значения
