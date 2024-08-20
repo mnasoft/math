@@ -1,0 +1,42 @@
+
+* gnuplot-data-to-file
+** Пример 1
+Создается файл [[~\gnuplot\data-2d-list.data]].
+
+#+begin_src lisp
+  (math/gnuplot:gnuplot-data-to-file
+   "data-2d-list" (loop :for i :from 0 :to 4 :by 1/10 :collect (list i (* i i))))
+#+end_src
+
+** Пример 2
+Создается файл [[~\gnuplot\data-array.data]].
+#+begin_src lisp
+  (math/gnuplot:gnuplot-data-to-file
+   "data-array"
+   (make-array '(5 2) :initial-contents '((0 0)(1 1)(2 4)(3 9)(4 16))))
+#+end_src
+
+#+begin_src lisp
+  (math/gnuplot:file-name "name-of-file")
+#+end_src
+
+#+RESULTS:
+: ~/gnuplot/name-of-file
+
+#+begin_src lisp
+  (math/gnuplot:gnuplot-data-to-file
+   "3d-data"
+   (loop :for i :from 0 :to 4 :by 1/10 :collect (list i (* i i))))
+  
+  (math/gnuplot:gnuplot-splot "3d-data")
+#+end_src
+
+#+RESULTS:
+: NIL
+
+#+begin_src lisp
+  (math/:gnuplot-plot "data")
+
+#+end_src
+
+#+RESULTS:

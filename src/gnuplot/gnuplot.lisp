@@ -20,7 +20,8 @@
            *term-pngcairo*
            *term-pdfcairo*
 
-           ))
+           )
+  (:export file-name))
 
 (in-package :math/gnuplot)
 
@@ -346,18 +347,15 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-  "@b(Описание:) обобщенная функция @b(gnuplot-data-to-file) выводит данные
-@b(data) в файл с именем @b(f-name), расположенный в каталоге поумолчанию
-(см. переменную *default-gnuplot-direcroty*)."(defgeneric gnuplot-data-to-file (f-name data))
+
+(defgeneric gnuplot-data-to-file (f-name data)
+  (:documentation
+     "@b(Описание:) обобщенная функция @b(gnuplot-data-to-file) выводит
+данные @b(data) в файл с именем @b(f-name), расположенный в каталоге
+поумолчанию (см. переменную *default-gnuplot-direcroty*)."))
 
 (defmethod gnuplot-data-to-file (f-name (data cons))
-    "@b(Описание:) метод @b(gnuplot-data-to-file) выводит данные
-@b(data) в файл с именем @b(f-name), расположенный в каталоге поумолчанию
-(см. переменную *default-gnuplot-direcroty*). 
-
- Данные должны быть представлены 2d-list.
-
- @b(Пример использования:)
+    " @b(Пример использования:)
 @begin[lang=lisp](code)
  (gnuplot-data-to-file \"data\" 
   (loop :for i :from 0 :to 4 :by 1/10 :collect (list i (* i i))))
@@ -367,20 +365,12 @@
     (mapc #'(lambda (el) (format os "~{~F ~}~%" el)) data)
     (format t "'~A'" (file-name f-name "data"))))
 
-;;;; (gnuplot-data-to-file "data-2d-list" (loop :for i :from 0 :to 4 :by 1/10 :collect (list i (* i i))))
-
 (defmethod gnuplot-data-to-file (f-name (data array))
-    "@b(Описание:) метод @b(gnuplot-data-to-file) выводит данные
-@b(data) в файл с именем @b(f-name), расположенный в каталоге поумолчанию
-(см. переменную *default-gnuplot-direcroty*). 
-
- Данные должны быть представлены 2d-array.
-
- @b(Пример использования:)
+    " @b(Пример использования:)
 @begin[lang=lisp](code)
- (gnuplot-data-to-file \"data\" 
-  (loop :for i :from 0 :to 4 :by 1/10 :collect (list i (* i i))))
- (gnuplot-data-to-file \"data\" (make-array '(5 2) :initial-contents '((0 0)(1 1)(2 4)(3 9)(4 16))))
+  (gnuplot-data-to-file
+   \"data\" (make-array
+             '(5 2) :initial-contents '((0 0)(1 1)(2 4)(3 9)(4 16))))
 @end(code)
 "
   (assert (= (array-rank data) 2))
@@ -390,8 +380,6 @@
 	(format os "~F " (aref data i j)))
       (format os "~%" ))
     (format t "'~A'" (file-name f-name "data"))))
-
-;;;; (gnuplot-data-to-file "data-array" (make-array '(5 2) :initial-contents '((0 0)(1 1)(2 4)(3 9)(4 16))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -545,11 +533,10 @@
 @begin[lang=lisp](code)
 ;;;; Пример 1
  (make-plot-data-file
-  \"plot2\"
-  (mapcar
-   #'(lambda (x)
-       (list x (sin x) (sqrt x)))
-   (math:split-range 0.0 10 1000)))
+  (namestring (merge-pathnames \"plot2\" *default-gnuplot-direcroty*))
+  (loop :for x :from 0 :to 10 :by 1/100
+        :collect
+        (list x (sin x) (sqrt x))))
 @end(code)
 "
   (assert (consp data))
