@@ -198,36 +198,57 @@
 @end(code)"  
   (max-value (exclude-nil-from-list x)))
 
-(defun dispersion (x)
-  "@b(Описание:) функция dispersion возвращает дисперсию для списка
- величин.
+(defgeneric dispersion (vals)
+  (:documentation
+   "@b(Описание:) обобщенная_функция @b(dispersion) возвращает дисперсию
+для списка величин @(vals)."))
 
+(defmethod dispersion ((1d-list cons))
+  "
  @b(Пример использования:)
 @begin[lang=lisp](code)
  (dispersion '(1.1 1.0 0.9 1.2 0.8)) => 0.025000006
 @end(code)"  
-  (let* ((x-sr (apply #'average x))
-	 (n-1 (1- (length x)))
-	 (summ (apply #'+ (mapcar #'(lambda (el) (square (- el x-sr))) x))))
+  (let* ((x-sr (apply #'average 1d-list))
+	 (n-1 (1- (length 1d-list)))
+	 (summ (apply #'+ (mapcar #'(lambda (el) (square (- el x-sr))) 1d-list))))
     (/ summ n-1)))
+
+(defmethod dispersion ((1d-vector vector))
+  "
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (dispersion #(1.1 1.0 0.9 1.2 0.8)) => 0.025000006
+@end(code)"    
+  (let* ((n (length 1d-vector))
+         (mean (average-value 1d-vector)))
+    (/ (loop :for x :across 1d-vector
+             :summing (expt (- x mean) 2))
+       (1- n))))
 
 (defun dispersion-not-nil (x)
   (dispersion (exclude-nil-from-list x)))
 
-(defun standard-deviation (x)
-  "@b(Описание:) функция standard-deviation возвращает среднеквадратичное 
-(стандартное) отклонение для списка величин.
+(defgeneric standard-deviation (vals)
+  (:documentation
+   "@b(Описание:) функция standard-deviation возвращает среднеквадратичное 
+(стандартное) отклонение для списка величин @b(vals)."))
 
- @b(Переменые:)
-@begin(list)
- @item(x - список, содержащий числовые значения.)
-@end(list)
-
+(defmethod standard-deviation ((1d-list cons))
+  "
  @b(Пример использования:)
 @begin[lang=lisp](code)
  (standard-deviation '(1.1 1.0 0.9 1.2 0.8)) => 0.1581139
 @end(code)"  
-  (sqrt (dispersion x)))
+  (sqrt (dispersion 1d-list)))
+
+(defmethod standard-deviation ((1d-vector vector))  
+  "
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (standard-deviation #(1.1 1.0 0.9 1.2 0.8)) => 0.1581139
+@end(code)"  
+  (sqrt (dispersion 1d-vector)))
 
 (defun standard-deviation-not-nil (x)
   (standard-deviation (exclude-nil-from-list x)))
