@@ -515,10 +515,10 @@
 		   (plot (concatenate 'string "plot '" (file-name f-name ".data") "' u 2:1")))
   (with-open-file (gp (file-name f-name ".gp")  :direction :output :if-exists :supersede :external-format :utf8)
     (format gp "~a~%" term)
-    (format gp "~a~%" (output term))
+    #+nil (format gp "~a~%" (output term))
     
     (when preamble (format gp "~A~%" preamble)) 
-    (when output   (format gp "~A~%" output)) 
+    #+nil (when output   (format gp "~A~%" output)) 
     (when plot     (format gp "~A~%" plot)))
   (with-open-file (sh (file-name f-name "sh") :direction :output :if-exists :supersede :external-format :utf8)
     (format sh "#!/bin/bash~%" )

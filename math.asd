@@ -16,7 +16,7 @@
   :license "GPL-3.0-or-later"
   :version "0.0.4"
   :serial t
-  :in-order-to ((test-op (test-op "math/tests")))
+  :in-order-to ((test-op (test-op "math-tests")))
   :depends-on ("cl-utilities"
 	       "math/core"
                "math/coord"
@@ -138,33 +138,6 @@
                 :components ((:file "ls-gsll")
                              (:file "ls-gsll-doc")))))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(defsystem "math/tests"
-  :description "Тестирование систем, входящих  в проект Math"
-  :depends-on (:math :fiveam)
-  :perform (test-op (o s)
-		    (uiop:symbol-call :math/tests :run-tests))
-  :components ((:module "tests"
-		:serial t
-		:components ((:file "package")
-			     (:file "all")
-                             (:file "core")
-                             (:file "2d-array")
-                             (:file "matrix")
-                             (:file "list-matr-tests")
-                             (:file "equation")
-                             (:file "ls-gauss")
-                             (:file "ls-gsll")
-                             (:file "ls-rotation")
-                             (:file "coord")
-                             (:file "half-div")
-                             (:file "appr")
-			     ;; (:file "run")
-                             ))))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 (defsystem "math/geom"
   :description "Функции вычисления площадей и объемов геометрических фигур и тел."
   :components ((:module "src/geom"
@@ -225,6 +198,7 @@
                              (:file "methods/transpose")
                              (:file "methods/unite-cols")
                              (:file "methods/unite-rows")
+                             (:file "methods/rest-methods")
                              (:file "matr-doc")))))
 
 (defsystem "math/obj"
