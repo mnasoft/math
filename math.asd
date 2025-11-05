@@ -1,4 +1,4 @@
-;;;; math.asd
+;;;; ./math.asd
 
 (defsystem "math"
   :description
@@ -13,8 +13,8 @@
 @end(list)
 "
   :author "Mykola Matvyeyev <mnasoft@gmail.com>"
-  :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"
-  :version "0.0.3"
+  :license "GPL-3.0-or-later"
+  :version "0.0.4"
   :serial t
   :in-order-to ((test-op (test-op "math/tests")))
   :depends-on ("cl-utilities"
@@ -34,16 +34,13 @@
                "math/series"
                "math/half-div"
 	       ;; "math/x-o"
-	       ) ;;;; "math/tests"
+	       )
   :components ((:module "src/math"
 		:serial t
                 :components ((:file "math"))))) ;;;; (:file "matr-temp")
 
 (defsystem "math/half-div"
   :description "Describe half-div here"
-  :author "Mykola Matvyeyev <mnasoft@gmail.com>"
-  :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"  
-  :serial t
   :components ((:module "src/half-div"
 		:serial nil
                 :components ((:file "half-div")
@@ -52,9 +49,6 @@
 (defsystem "math/series"
   :description "@b(Описание:) система @b(math/series) определяет некоторые операции с
  прогрессиями."
-  :author "Mykola Matvyeyev <mnasoft@gmail.com>"
-  :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"  
-  :serial t
   :depends-on ("math/half-div" "math/equation")
   :components ((:module "src/series"
 		:serial nil
@@ -63,11 +57,7 @@
 
 (defsystem "math/rnd"
   :description "Содержит функции для генерирования случайных списков и 2d-списков."
-  :author "Mykola Matvyeyev <mnasoft@gmail.com>"
-  :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"  
-  :serial t
   :depends-on ("math/matr")
-  :in-order-to ((test-op (test-op "math/core/tests")))
   :components ((:module "src/rnd"
 		:serial nil
                 :components ((:file "rnd")
@@ -76,10 +66,6 @@
 (defsystem "math/core"
   :description "Содержит некоторые функции и обобщенные функции,
 используемые в проекте повсеместно"
-  :author "Mykola Matvyeyev <mnasoft@gmail.com>"
-  :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"  
-  :serial t
-  :in-order-to ((test-op (test-op "math/core/tests")))
   ;; :depends-on ()
   :components ((:module "src/core"
 		:serial nil
@@ -88,10 +74,6 @@
 
 (defsystem "math/ls-rotation"
   :description "Реализация решение системы линейных уравнений методом вращения"
-  :author "Mykola Matvyeyev <mnasoft@gmail.com>"
-  :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"  
-  :serial t
-  :in-order-to ((test-op (test-op "math/ls-rotation/tests")))
   :depends-on ("math/matr")
   :components ((:module "src/ls-rotation"
 		:serial t
@@ -100,10 +82,6 @@
 
 (defsystem "math/gnuplot"
   :description "Интерфейс к программе построения графиков gnuplot"
-  :author "Mykola Matvyeyev <mnasoft@gmail.com>"
-  :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"  
-  :serial t
-  :in-order-to ((test-op (test-op "math/gnuplot/tests")))
   :depends-on ("math/core" "font-discovery" "vgplot")
   :components ((:module "src/gnuplot"
 		:serial t
@@ -112,10 +90,6 @@
 
 (defsystem "math/ls-gauss"
   :description "Решение систем линейных уравнений методом Гаусса"
-  :author "Mykola Matvyeyev <mnasoft@gmail.com>"
-  :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"  
-  :serial t
-  :in-order-to ((test-op (test-op "math/ls-gauss/tests")))
   :depends-on ("math/matr")
   :components ((:module "src/ls-gauss"
 		:serial t
@@ -124,10 +98,6 @@
 
 (defsystem "math/appr"
   :description "Describe math here"
-  :author "Mykola Matvyeyev <mnasoft@gmail.com>"
-  :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"  
-  :serial t
-  :in-order-to ((test-op (test-op "math/appr/tests")))
   :depends-on ("math/core" "math/matr" "math/ls-gauss" "math/smooth") 
   :components ((:module "src/appr"
 		:serial t
@@ -136,10 +106,6 @@
 
 (defsystem "math/stat"
   :description "Describe math here"
-  :author "Mykola Matvyeyev <mnasoft@gmail.com>"
-  :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"  
-  :serial t
-  :in-order-to ((test-op (test-op "math/stat/tests")))
   :depends-on ("math/core" "gsll")
   :components ((:module "src/stat"
 		:serial t
@@ -148,11 +114,6 @@
 
 (defsystem "math/smooth"
   :description "Весовые функции для методов сглаживания"
-  :author "Mykola Matvyeyev <mnasoft@gmail.com>"
-  :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"  
-  :serial t
-  :in-order-to ((test-op (test-op "math/smooth/tests")))
-;;;  :depends-on (:math)
   :components ((:module "src/smooth"
 		:serial t
                 :components ((:file "smooth")
@@ -163,10 +124,6 @@
 - угловой меры;
 - координат точки между декартовой, полярной, сферической системами координат.
 "
-  :author "Mykola Matvyeyev <mnasoft@gmail.com>"
-  :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"  
-  :serial t
-  :in-order-to ((test-op (test-op "math/coord/tests")))
   :depends-on ("math/core") 
   :components ((:module "src/coord"
 		:serial t
@@ -175,10 +132,6 @@
 
 (defsystem "math/ls-gsll"
   :description "Решение систем линейных уравнений при помощи библиотеки gsll"
-  :author "Mykola Matvyeyev <mnasoft@gmail.com>"
-  :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"  
-  :serial t
-  :in-order-to ((test-op (test-op "math/tests")))
   :depends-on ("gsll" "math/matr")
   :components ((:module "src/ls-gsll"
 		:serial t
@@ -189,12 +142,10 @@
 
 (defsystem "math/tests"
   :description "Тестирование систем, входящих  в проект Math"
-  :author "Mykola Matvyeyev <mnasoft@gmail.com>"
-  :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"  
   :depends-on (:math :fiveam)
   :perform (test-op (o s)
-		    (uiop:symbol-call :math-tests :test-math))
-  :components ((:module "src/tests"
+		    (uiop:symbol-call :math/tests :run-tests))
+  :components ((:module "tests"
 		:serial t
 		:components ((:file "package")
 			     (:file "all")
@@ -206,21 +157,16 @@
                              (:file "ls-gauss")
                              (:file "ls-gsll")
                              (:file "ls-rotation")
-                             (:file "appr")
                              (:file "coord")
                              (:file "half-div")
-			     (:file "run")
+                             (:file "appr")
+			     ;; (:file "run")
                              ))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defsystem "math/geom"
   :description "Функции вычисления площадей и объемов геометрических фигур и тел."
-  :author "Mykola Matvyeyev <mnasoft@gmail.com>"
-  :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"  
-  :serial t
-  :in-order-to ((test-op (test-op "math/ls-rotation/tests")))
-;;;;  :depends-on ("math/arr-matr")
   :components ((:module "src/geom"
 		:serial t
                 :components ((:file "geom")
@@ -233,8 +179,6 @@
 
 Для публикации документации в системе должна быть установлена
 программа @b(rsync)."
-  :author "Mykola Matvyeyev <mnasoft@gmail.com>"
-  :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"  
   :depends-on ("math"
                "mnas-package"
                "codex")
@@ -246,11 +190,6 @@
   :description "@b(Описание:) система @b(math/equation) содержит
   функции для нахождения корней линейных, квадратных, кубических и
   уравнений 4-ой степени (последнее не реализовано)."
-  :author "Mykola Matvyeyev <mnasoft@gmail.com>"
-  :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"  
-  :serial t
-  :in-order-to ((test-op (test-op "math/ls-rotation/tests")))
-;;;;  :depends-on ("math/arr-matr")
   :components ((:module "src/equation"
 		:serial t
                 :components ((:file "equation")
@@ -259,9 +198,6 @@
 (defsystem "math/matr"
   :description "@b(Описание:) система @b(math/matr) содержит
  некоторых операций над матрицами"
-  :author "Mykola Matvyeyev <mnasoft@gmail.com>"
-  :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"  
-  :serial t
   :depends-on ("cl-utilities" "math/coord" "math/stat" "closer-mop")
   :components ((:module "src/matr"
 		:serial t
@@ -294,25 +230,15 @@
 (defsystem "math/obj"
   :description "@b(Описание:) система @b(math/obj) содержит описание некоторых
 геометрических объектов."
-  :author "Mykola Matvyeyev <mnasoft@gmail.com>"
-  :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"  
-  :serial t
   :depends-on ("gsll" "math/stat" "vgplot")  
   :components ((:module "src/obj"
 		:serial t
                 :components ((:file "obj")))))
 
-
-
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defsystem "math/x-o"
   :description "Консольная игра крестики-нолики"
-  :author "Mykola Matvyeyev <mnasoft@gmail.com>"
-  :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"  
-  :serial t
-  :in-order-to ((test-op (test-op "math/x-o/tests")))
   :depends-on ( "math/core" "math/matr") 
   :components ((:module "src/x-o"
 		:serial t

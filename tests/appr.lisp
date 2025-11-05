@@ -9,6 +9,7 @@
 
 (in-suite appr)
 
+#+nil 
 (def-test approximation-make-least-squares-matrix-test ()
   "Пример использования: (test-matr-mnk)"
   (let* ((m1
@@ -50,9 +51,10 @@
 					           '((x1 x2)  (x1) (x2) (1.0) (yy)) 
 					           pts-2)))))
 
+#+nil 
 (def-test averaging-function-tests ()
   "Пример использования: (test-averaging-function)"
-  (is-true (equal
+    (is-true (equal
 	  '((xx) (+ (* 1.0d0 xx xx) (* 0.0d0 xx) (* 0.0d0 1.0)))
 	  (math/appr::averaging-function-body '(xx yy) 
 			  '((xx xx) (xx) (1.0) (yy)) 

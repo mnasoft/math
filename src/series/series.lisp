@@ -124,8 +124,8 @@
     (* b (expt q i))))
 
 (defmethod item ((series <arithmetic>) (i integer))
-  (let ((a (<geometric>-a series))
-        (d (<geometric>-d series)))
+  (let ((a (<arithmetic>-a series))
+        (d (<arithmetic>-d series)))
     (+ a (expt d i))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
