@@ -33,6 +33,9 @@
   (:export factorial
            permutations
            combinations
+           )
+  (:export random-unit-vector-3d
+           random-positive-unit-vector-3d
            ))
 
 (in-package :math/stat)
@@ -503,3 +506,21 @@
 	  (round-to-significant-digits (- min-v mid-v) significant-digits mid-v))))
 	  
 
+(defun random-unit-vector-3d (&optional (state *random-state*))
+  "Возвращает случайный единичный вектор в 3D в виде списка (x y z)."
+  (let* ((z (- (random 2.0d0 state) 1.0d0))
+	 (phi (random (* 2.0d0 pi) state))
+	 (radius (sqrt (max 0.0d0 (- 1.0d0 (* z z))))))
+    (list (* radius (cos phi))
+	  (* radius (sin phi))
+	  z)))
+
+(defun random-positive-unit-vector-3d (&optional (state *random-state*))
+  "Возвращает случайный единичный 3D-вектор, все компоненты которого
+положительны и имеют тип single-float."
+  (loop
+    for vector = (random-unit-vector-3d state)
+    when (every #'plusp vector)
+      return (mapcar
+              (lambda (value) (coerce value 'single-float))
+	      vector)))
