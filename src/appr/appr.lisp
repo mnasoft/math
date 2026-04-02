@@ -39,7 +39,35 @@
            *apr-func-2-8*
            *apr-func-2-7*
            *apr-func-2-9*
-           ))
+           )
+  (:documentation
+   "@b(Описание:) Пакет @b(:math/appr) содержит функции и классы
+для линейной и билинейной интерполяции/аппроксимации данных.
+
+@begin(section) @title(Основные группы функций)
+
+@begin(list)
+ @item(@b(Интерполяция:) @b(make-linear-interpolation), @b(make-appr-linear)
+   — построение линейной интерполяции по таблице значений.)
+ @item(@b(Аппроксимация:) @b(approximate), @b(smooth-by-points),
+   @b(refine-smoothing-by-points), @b(make-refine-smoothing)
+   — приближение полиномами и сглаживание по набору точек.)
+ @item(@b(Весовые функции:) @b(averaging-function-lambda),
+   @b(averaging-function-defun) — анонимные и именованные весовые функции.)
+ @item(@b(Классы:) @b(<appr-linear>) — одномерная аппроксимация;
+   @b(<appr-bilinear>) — двухмерная аппроксимация.)
+@end(list)
+
+@end(section)
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (ql:quickload :math)
+ (let ((f (math/appr:make-linear-interpolation
+            '(0.0 1.0 2.0) '(0.0 1.0 4.0))))
+   (funcall f 1.5))
+ => 2.5
+@end(code)"))
 
 (in-package :math/appr)
 

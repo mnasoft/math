@@ -1,6 +1,40 @@
 ;;;; statistics.lisp
 
 (defpackage :math/stat
+  (:documentation
+   "@b(Описание:) Пакет @b(:math/stat) содержит функции для
+описательной статистики, проверки грубых промахов по критерию
+Граббса, комбинаторики и генерации случайных выборок.
+
+@begin(section) @title(Основные группы функций)
+
+@begin(list)
+ @item(@b(Описательная статистика:) @b(average), @b(average-value),
+   @b(dispersion), @b(standard-deviation), @b(variation-coefficient)
+   и их аналоги @b(-not-nil), работающие со списками, содержащими @b(nil).)
+ @item(@b(Экстремальные значения:) @b(min-value), @b(max-value),
+   @b(delta-min-value), @b(delta-max-value) и их аналоги @b(-not-nil).)
+ @item(@b(Критерий Граббса:) @b(grubbs), @b(grubbs-max), @b(grubbs-min),
+   @b(clean-flagrant-error), @b(clean-min-flagrant-error),
+   @b(clean-max-flagrant-error) — удаление грубых промахов согласно
+   ГОСТ Р 8.736-2011.)
+ @item(@b(Комбинаторика:) @b(factorial), @b(permutations), @b(combinations).)
+ @item(@b(Случайные величины:) @b(make-random-value-list),
+   @b(random-unit-vector-3d), @b(random-positive-unit-vector-3d).)
+ @item(@b(Сводные характеристики:) @b(aver-max-min), @b(aver-dmax-dmin).)
+@end(list)
+
+@end(section)
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (ql:quickload :math)
+ (math/stat:average 1.1 1.0 0.9 1.2 0.8) => 1.0
+ (math/stat:standard-deviation '(1.1 1.0 0.9 1.2 0.8)) => 0.1581139
+ (let ((lst '(10.0 10.1 10.15 10.2 10.8 9.9 9.85 9.9 10.1)))
+   (math/stat:clean-flagrant-error lst))
+ => (9.85 9.9 9.9 10.0 10.1 10.1 10.15 10.2)
+@end(code)")
   (:use #:cl #:math/core)
   (:intern remove-first
            remove-last)

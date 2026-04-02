@@ -7,7 +7,34 @@
 	   solve-x
            determiant
            singular-p
-	   ))
+	   )
+  (:documentation
+   "@b(Описание:) Пакет @b(:math/ls-gauss) реализует решение
+систем линейных алгебраических уравнений (СЛАУ) методом Гаусса.
+
+@begin(section) @title(Основные функции)
+
+@begin(list)
+ @item(@b(convert-to-triangular) — приведение расширенной матрицы
+   (матрица К | вектор правой части) к треугольному виду.)
+ @item(@b(backward-run) — обратный ход: извлечение корней из
+   треугольной системы.)
+ @item(@b(solve-x) — полное решение СЛАУ за один вызов.)
+ @item(@b(determiant), @b(singular-p) — вычисление определителя и
+   проверка вырожденности.)
+@end(list)
+
+@end(section)
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (ql:quickload :math)
+ (math/ls-gauss:solve-x
+   #2A((2.0 1.0 -1.0  8.0)
+       (-3.0 -1.0 2.0 -11.0)
+       (-2.0 1.0 2.0 -3.0)))
+ => #(2.0 3.0 -1.0)
+@end(code)"))
 
 (in-package :math/ls-gauss)
 

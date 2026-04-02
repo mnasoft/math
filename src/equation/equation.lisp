@@ -13,7 +13,29 @@
            coeff-b
            coeff-c
            coeff-d
-           coeff-e))
+           coeff-e)
+  (:documentation
+   "@b(Описание:) Пакет @b(:math/equation) содержит классы и функции
+для представления и решения алгебраических уравнений.
+
+@begin(section) @title(Основные группы)
+
+@begin(list)
+ @item(@b(Классы уравнений:) @b(<linear>), @b(<quadric>), @b(<cubic>), @b(<quartic>)
+   — уравнения 1-й, 2-й, 3-й и 4-й степени соответственно.)
+ @item(@b(Аксессоры коэффициентов:) @b(coeff-a) ... @b(coeff-e).)
+ @item(@b(Обобщённые функции:) @b(tab) — табулирование, @b(func) — значение функции,
+   @b(roots) — нахождение корней.)
+@end(list)
+
+@end(section)
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (ql:quickload :math)
+ (math/equation:roots (make-instance 'math/equation:<quadric> :a 1.0 :b 0.0 :c -1.0))
+ => (1.0 -1.0)
+@end(code)"))
 
 (in-package :math/equation)
 

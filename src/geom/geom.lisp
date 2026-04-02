@@ -12,7 +12,30 @@
   (:export circle-area-by-radius
            circle-area-by-diameter)
   (:export equivalent-diameter)
-  )
+  (:documentation
+   "@b(Описание:) Пакет @b(:math/geom) содержит функции вычисления
+площадей и объёмов геометрических фигур и тел.
+
+@begin(section) @title(Основные группы функций)
+
+@begin(list)
+ @item(@b(Треугольник:) @b(triangle-area-by-sides),
+   @b(regular-triangle-area-by-side), @b(regular-triangle-side-by-area).)
+ @item(@b(Тетраэдр:) @b(regular-tetrahedron-volume-by-side),
+   @b(regular-tetrahedron-side-by-volume).)
+ @item(@b(Окружность и круг:) @b(circle-area-by-radius), @b(circle-area-by-diameter),
+   @b(diameter-by-radius), @b(radius-by-diameter).)
+ @item(@b(Эквивалентный диаметр:) @b(equivalent-diameter).)
+@end(list)
+
+@end(section)
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (ql:quickload :math)
+ (math/geom:triangle-area-by-sides 3.0 4.0 5.0) => 6.0
+ (math/geom:circle-area-by-radius 1.0)           => 3.1415927
+@end(code)"))
 
 (in-package :math/geom)
 

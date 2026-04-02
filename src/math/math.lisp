@@ -1,8 +1,20 @@
 ;;;; package.lisp
 
 (defpackage :math 
-  (:use #:cl) ;;#:math/core 
-  (:export mult-matr-vect))
+  (:use #:cl)
+  (:export mult-matr-vect)
+  (:documentation
+   "@b(Описание:) Пакет @b(:math) является верхнеуровневым пакетом
+проекта и реэкспортирует общие утилиты, не входящие в специализированные
+подпакеты.
+
+Для использования отдельных подсистем загружайте соответствующий пакет:
+@b(:math/core), @b(:math/stat), @b(:math/matr), @b(:math/appr) и др.
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (ql:quickload :math)
+@end(code)"))
 
 (in-package :math)
 

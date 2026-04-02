@@ -21,7 +21,35 @@
            *term-pdfcairo*
 
            )
-  (:export file-name))
+  (:export file-name)
+  (:documentation
+   "@b(Описание:) Пакет @b(:math/gnuplot) содержит интерфейс к программе
+построения графиков gnuplot.
+
+@begin(section) @title(Основные группы функций)
+
+@begin(list)
+ @item(@b(Построение графиков:) @b(gnuplot-plot), @b(gnuplot-splot)
+   — построение двумерных и трёхмерных графиков.)
+ @item(@b(Данные:) @b(gnuplot-data-plot), @b(gnuplot-data-splot),
+   @b(gnuplot-data-to-file), @b(make-plot-data-file), @b(make-table),
+   @b(table-apply) — формирование данных для gnuplot.)
+ @item(@b(Терминалы вывода:) @b(*term-pngcairo*), @b(*term-pdfcairo*),
+   @b(rgb) — настройка терминалов pngcairo и pdfcairo.)
+ @item(@b(Файлы:) @b(file-name), @b(*default-gnuplot-direcroty*)
+   — именование файлов вывода.)
+@end(list)
+
+@end(section)
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (ql:quickload :math)
+ (math/gnuplot:gnuplot-plot
+  (math/gnuplot:file-name \"my-plot\" \"png\")
+  math/gnuplot:*term-pngcairo*
+  '((0.0 . 0.0) (1.0 . 1.0) (2.0 . 4.0)))
+@end(code)"))
 
 (in-package :math/gnuplot)
 

@@ -20,7 +20,31 @@
   (:export matr-name-*
 	   )
   (:export round-to-significant-digits
-           +significant-digits+))
+           +significant-digits+)
+  (:documentation
+   "@b(Описание:) Пакет @b(:math/core) содержит базовые функции и обобщённые функции,
+используемые в проекте повсеместно.
+
+@begin(section) @title(Основные группы функций)
+
+@begin(list)
+ @item(@b(Нормы и расстояния:) @b(norma), @b(distance), @b(distance-relative),
+   @b(summ-distance), @b(semi-equal) — сравнение вещественных чисел с допуском.)
+ @item(@b(Разбиение диапазона:) @b(split-range), @b(split-range-by-func),
+   @b(split-range-at-center) — разбиение отрезка на равные части или по функции.)
+ @item(@b(Вспомогательные:) @b(square), @b(exclude-nil-from-list),
+   @b(depth-sphere-along-cone), @b(round-to-significant-digits).)
+@end(list)
+
+@end(section)
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (ql:quickload :math)
+ (math/core:square 5)                           => 25
+ (math/core:split-range 0.0 1.0 4)              => (0.0 0.25 0.5 0.75 1.0)
+ (math/core:exclude-nil-from-list '(1 nil 2 nil 3)) => (1 2 3)
+@end(code)"))
 
 (in-package :math/core)
 

@@ -8,7 +8,30 @@
 	   cauchy-smoothing
 	   hann-smoothing)
   (:export weight-func-list
-	   weight-func-p))
+	   weight-func-p)
+  (:documentation
+   "@b(Описание:) Пакет @b(:math/smooth) содержит весовые функции
+для методов сглаживания данных.
+
+@begin(section) @title(Доступные весовые функции)
+
+@begin(list)
+ @item(@b(gauss-smoothing) — весовая функция Гаусса.)
+ @item(@b(exp-smoothing) — экспоненциальная весовая функция.)
+ @item(@b(cauchy-smoothing) — весовая функция Коши.)
+ @item(@b(hann-smoothing) — весовая функция Ханна.)
+ @item(@b(weight-func-list) — список весовых функций; @b(weight-func-p) — предикат проверки.)
+@end(list)
+
+@end(section)
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (ql:quickload :math)
+ (loop :for d :from 0.0 :to 1.0 :by 0.25
+       :collect (math/smooth:gauss-smoothing d))
+ => (1.0 0.9394131 0.7788008 0.5698403 0.36787944)
+@end(code)"))
 
 (in-package :math/smooth)
 

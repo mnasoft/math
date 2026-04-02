@@ -15,7 +15,28 @@
   (:export double-float-list
            single-float-list
            )
-  (:documentation "coord"))
+  (:documentation
+   "@b(Описание:) Пакет @b(:math/coord) содержит функции преобразования
+угловой меры и координат точки между системами координат.
+
+@begin(section) @title(Основные группы функций)
+
+@begin(list)
+ @item(@b(Угловая мера:) @b(dtr) — градусы в радианы, @b(rtd) — радианы в градусы.)
+ @item(@b(Полярные координаты:) @b(polar->cartesian), @b(cartesian->polar).)
+ @item(@b(Сферические координаты:) @b(spherical->cartesian), @b(cartesian->spherical).)
+ @item(@b(Преобразование точек:) @b(point-3d->4d), @b(point-4d->3d).)
+ @item(@b(Преобразование типов:) @b(double-float-list), @b(single-float-list).)
+@end(list)
+
+@end(section)
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (ql:quickload :math)
+ (math/coord:dtr 180.0)                    => 3.1415927
+ (math/coord:polar->cartesian 1.0 0.0)    => (1.0 0.0)
+@end(code)"))
 
 (in-package :math/coord)
 

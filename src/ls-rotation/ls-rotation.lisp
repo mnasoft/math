@@ -2,7 +2,30 @@
 
 (defpackage :math/ls-rotation
   (:use #:cl)
-  (:export solve-x))
+  (:export solve-x)
+  (:documentation
+   "@b(Описание:) Пакет @b(:math/ls-rotation) реализует решение
+систем линейных алгебраических уравнений (СЛАУ) методом вращений
+(метод Гивенса).
+
+@begin(section) @title(Основные функции)
+
+@begin(list)
+ @item(@b(solve-x) — решение СЛАУ методом вращения:
+   сведение к треугольному виду + обратный ход метода Гаусса.)
+@end(list)
+
+@end(section)
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (ql:quickload :math)
+ (math/ls-rotation:solve-x
+   #2A((2.0 1.0 -1.0  8.0)
+       (-3.0 -1.0 2.0 -11.0)
+       (-2.0 1.0 2.0 -3.0)))
+ => #(2.0 3.0 -1.0)
+@end(code)"))
 
 (in-package :math/ls-rotation)
 
