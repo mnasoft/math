@@ -10,9 +10,27 @@
 
 (in-package :math/half-div)
 
-(defun boole-to-int (b) (if b 1 0))
+(defun boole-to-int (b)
+  "@b(Описание:) функция @b(boole-to-int) преобразует логическое значение
+@b(b) в целое (1/0).
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (boole-to-int t) => 1
+ (boole-to-int nil) => 0
+@end(code)"
+  (if b 1 0))
 
 (defun same-znak (a b)
+  "@b(Описание:) функция @b(same-znak) проверяет, имеют ли числа
+@b(a) и @b(b) одинаковые знаки (включая ноль).
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (same-znak 1 -2) => nil
+ (same-znak -3 -4) => t
+ (same-znak 0 5) => t
+@end(code)"
   (if (zerop (logxor
 	      (boole-to-int (minusp a))
 	      (boole-to-int (minusp b))))
@@ -20,7 +38,14 @@
       nil))
 
 (defun epsylon (x &key (eps 1e-6))
-    "Функция для вычисления комплексной точности."
+    "@b(Описание:) функция @b(epsylon) вычисляет порог точности для значения
+@b(x) с относительной точностью @b(eps).
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (epsylon 100.0)    => 1.0001e-4
+ (epsylon 100.0 :eps 1e-8) => 1.00000001e-6
+@end(code)"
   (+ (* (abs x) eps ) eps))
 
 (defun h-div (a b func &key (eps 1e-6) (iters 1000))
