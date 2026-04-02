@@ -83,11 +83,20 @@
 	    rez (+ rez nf)))))
 
 (defun split-range (from to steps)
-  "@b(Описание:) split-range
+  "@b(Описание:) функция @b(split-range) возвращает список из @b(steps+1)
+равноотстоящих точек от @b(from) до @b(to) включительно.
+
+ @b(Переменые:)
+@begin(list)
+ @item(from  - начало диапазона;)
+ @item(to    - конец диапазона;)
+ @item(steps - количество шагов.)
+@end(list)
 
  @b(Пример использования:)
 @begin[lang=lisp](code)
- (split-range 10 20 5)  => (10.0 12.0 14.0 16.0 18.0 20.0)
+ (split-range 10 20 5) => (10.0 12.0 14.0 16.0 18.0 20.0)
+ (split-range 0.0 1.0 4) => (0.0 0.25 0.5 0.75 1.0)
 @end(code)
  "  
  (loop :for i :from 0 :to steps
@@ -96,13 +105,23 @@
 (defun split-range-by-func (from to steps &key
 					    (func #'(lambda (x) (log x 10)))
 					    (anti-func #'(lambda (x) (expt 10 x))))
-  "@b(Описание:) split-range-by-func
+  "@b(Описание:) функция @b(split-range-by-func) возвращает список из @b(steps+1)
+точек от @b(from) до @b(to), равноотстоящих в шкале, задаваемой функцией @b(func)
+и обратной к ней @b(anti-func). По умолчанию используется десятичная логарифмическая шкала.
+
+ @b(Переменые:)
+@begin(list)
+ @item(from      - начало диапазона;)
+ @item(to        - конец диапазона;)
+ @item(steps     - количество шагов;)
+ @item(func      - прямая функция шкалы; по умолчанию @b(log 10);)
+ @item(anti-func - обратная функция шкалы; по умолчанию @b(10^x).)
+@end(list)
 
  @b(Пример использования:)
 @begin[lang=lisp](code)
- (split-range-by-func 1 10 5) => (1.0 1.5848932 2.5118864 3.981072 6.3095737 10.0)
- (split-range-by-func 1 10 10) =>
- (1.0 1.2589254 1.5848932 1.9952624 2.5118864 3.1622777 3.981072 5.0118723  6.3095737 7.943282 10.0)
+ (split-range-by-func 1 10 5)
+ => (1.0 1.5848932 2.5118864 3.981072 6.3095737 10.0)
 @end(code)
 "  
  (mapcar
@@ -126,14 +145,27 @@
           :collect (+ from (* (/ i divisions) delta)))))
 
 (defun depth-sphere-along-cone (r alpha)
-  "@b(Описание:) функция @b(depth-sphere-along-cone) возвращает 
-заглубление сферы с радиусом R в конуc с углом при вершине 
-равным alpha от линии пересечения конуса с цилиндром."  
+  "@b(Описание:) функция @b(depth-sphere-along-cone) возвращает
+заглубление сферы с радиусом @b(r) в конус с полуугловым раствором @b(alpha)
+от линии пересечения конуса с цилиндром.
+
+ @b(Переменые:)
+@begin(list)
+ @item(r     - радиус сферы;)
+ @item(alpha - угол при вершине конуса (в радианах).)
+@end(list)
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (depth-sphere-along-cone 1.0 (/ pi 2)) => -1.4142135623730951d0
+ (depth-sphere-along-cone 10  (/ pi 3)) => -27.320508075688778d0
+@end(code)"
    (let ((betta (- pi (/ alpha 2))))
     (- r (* r (tan (/ betta  2))))))
 
 (defparameter +significant-digits+ 4
-  "Определяет количество значащих цифр при округлении по умолчанию.")
+  "@b(Описание:) переменная @b(+significant-digits+) определяет количество
+значащих цифр при округлении по умолчанию (используется в @b(round-to-significant-digits)).")
 
 (defun round-to-significant-digits (val &optional (significant-digits +significant-digits+) (base-val val))
   "@b(Описание:) функция @b(round-to-significant-digits) округляет значение
@@ -200,7 +232,8 @@ val до количества значащих цифр, задаваемых а
 ;;;; /src/core/generic-matr.lisp
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defgeneric matr-name-* (matrix)
-  (:documentation "Matr"))
+  (:documentation
+   "@b(Описание:) обобщённая функция @b(matr-name-*) возвращает имя матрицы."))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -216,21 +249,60 @@ val до количества значащих цифр, задаваемых а
 считающиеся равными при срвнении из с помощью функции @b(semi-equal).
 ")
 
-(defgeneric norma (x))
+(defgeneric norma (x)
+  (:documentation
+   "@b(Описание:) обобщённая функция @b(norma) возвращает норму (модуль) значения @b(x).
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (norma 3)          => 3
+ (norma -4)         => 4
+ (norma #C(3 4))    => 5.0
+ (norma '(1 2 3))   => 2
+ (norma #(1 2 3))   => 2
+@end(code)"))
 
 (defmethod norma ((x real))
+  "@b(Описание:) метод возвращает абсолютное значение вещественного числа.
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (norma 3)  => 3
+ (norma -4) => 4
+@end(code)"
   (abs x))
 
 (defmethod norma ((x number))
+  "@b(Описание:) метод возвращает модуль комплексного числа.
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (norma #C(3 4)) => 5.0
+ (norma #C(0 1)) => 1.0
+@end(code)"
   (sqrt (+ (* (realpart x) (realpart x))
            (* (imagpart x) (imagpart x)))))
 
 (defmethod norma ((x cons))
+  "@b(Описание:) метод возвращает среднее значение норм элементов списка.
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (norma '(1 2 3)) => 2
+ (norma '(-4 0 4)) => 8/3
+@end(code)"
   (let ((n (loop :for i :in x
                  :collect (* (norma i)))))
     (/ (apply #'+ n) (length n))))
 
 (defmethod norma ((x vector))
+  "@b(Описание:) метод возвращает среднее значение норм элементов вектора.
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (norma #(1 2 3)) => 2
+ (norma #(0 4))   => 2
+@end(code)"
   (let ((n (loop :for i :across x
                  :collect (* (norma i)))))
     (/ (apply #'+ n) (length n))))
@@ -260,6 +332,15 @@ val до количества значащих цифр, задаваемых а
                                        (* *semi-equal-relativ*
                                           (norma (list (norma x)
                                                        (norma y)))))))
+  "@b(Описание:) метод возвращает @b(t), если списки @b(x) и @b(y) одинаковой
+длины и расстояние между ними меньше @b(tolerance).
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (semi-equal '(1.0 2.0) '(1.0 2.0))      => T
+ (semi-equal '(1.0 2.0) '(1.0 2.000001)) => T
+ (semi-equal '(1.0 2.0) '(1.0 3.0))      => NIL
+@end(code)"
   (when (and (= (length x) (length y))
              (< (distance x y) tolerance))
     t))
@@ -270,6 +351,15 @@ val до количества значащих цифр, задаваемых а
                                        (* *semi-equal-relativ*
                                           (norma (list (norma x)
                                                        (norma y)))))))
+  "@b(Описание:) метод возвращает @b(t), если векторы @b(x) и @b(y) одинаковой
+длины и расстояние между ними меньше @b(tolerance).
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (semi-equal #(1.0 2.0) #(1.0 2.0))      => T
+ (semi-equal #(1.0 2.0) #(1.0 2.000001)) => T
+ (semi-equal #(1.0 2.0) #(1.0 3.0))      => NIL
+@end(code)"
   (when (and (= (length x) (length y))
              (< (distance x y) tolerance))
     t))
@@ -280,6 +370,13 @@ val до количества значащих цифр, задаваемых а
                                        (* *semi-equal-relativ*
                                           (norma (list (norma x1)
                                                        (norma x2)))))))
+  "@b(Описание:) метод сравнивает вектор @b(x1) со списком @b(x2),
+преобразуя список в вектор перед сравнением.
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (semi-equal #(1.0 2.0) '(1.0 2.000001)) => T
+@end(code)"
   (semi-equal x1 (coerce x2 'vector) :tolerance tolerance))
 
 (defmethod semi-equal ((x1 cons) (x2 vector) 
@@ -288,6 +385,13 @@ val до количества значащих цифр, задаваемых а
                                        (* *semi-equal-relativ*
                                           (norma (list (norma x1)
                                                        (norma x2)))))))
+  "@b(Описание:) метод сравнивает список @b(x1) с вектором @b(x2),
+преобразуя список в вектор перед сравнением.
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (semi-equal '(1.0 2.0) #(1.0 2.000001)) => T
+@end(code)"
   (semi-equal (coerce x1 'vector) x2 :tolerance tolerance))
 
 
@@ -350,9 +454,23 @@ val до количества значащих цифр, задаваемых а
               (square (distance (svref x1 i) (svref x2 i))))))
 
 (defmethod distance ((x1 vector) (x2 cons))
+  "@b(Описание:) метод возвращает расстояние между вектором @b(x1)
+и списком @b(x2), преобразуя список в вектор.
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (distance #(1 1 1) '(0 0 0)) => 1.7320508
+@end(code)"
   (distance x1 (coerce x2 'vector)))
 
 (defmethod distance ((x1 cons) (x2 vector))
+  "@b(Описание:) метод возвращает расстояние между списком @b(x1)
+и вектором @b(x2), преобразуя список в вектор.
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (distance '(1 1 1) #(0 0 0)) => 1.7320508
+@end(code)"
   (distance (coerce x1 'vector) x2))
 
 

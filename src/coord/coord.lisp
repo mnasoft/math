@@ -43,21 +43,34 @@
 (defun dtr (degree)
   "@b(Описание:) функция @b(dtr) переводит значение, заданное в градусах, в радианы.
 
- @b(Пример использования:)
+ @b(Переменые:)
+@begin(list)
+ @item(degree - угол в градусах.)
+@end(list)
 
+ @b(Пример использования:)
 @begin[lang=lisp](code)
- (dtr (rtd 1/2)) => 0.5d0
+ (dtr 180) => 3.141592653589793d0
+ (dtr  90) => 1.5707963267948966d0
+ (dtr  45) => 0.7853981633974483d0
 @end(code)
 "  
   (* pi 1/180 degree ))
 
 (defun rtd (radian)
-  "@b(Описание:) функция @b(rtd) переводит значение, 
+  "@b(Описание:) функция @b(rtd) переводит значение,
 заданное в радианах, в градусы.
+
+ @b(Переменые:)
+@begin(list)
+ @item(radian - угол в радианах.)
+@end(list)
 
  @b(Пример использования:)
 @begin[lang=lisp](code)
-  (rtd (dtr 45)) => 45.0d0
+ (rtd pi)       => 180.0d0
+ (rtd (/ pi 2)) => 90.0d0
+ (rtd (/ pi 4)) => 45.0d0
 @end(code)
 "  
   (/ radian pi 1/180))
@@ -67,13 +80,14 @@
 
  @b(Переменые:)
 @begin(list)
- @item(radius-angle - список, состоящий из двух элементов: радиус-вектора 
+ @item(radius-angle - список, состоящий из двух элементов: радиус-вектора
 и угла, заданного в радианах.)
 @end(list)
 
  @b(Пример использования:)
 @begin[lang=lisp](code)
- (polar->cartesian `(10.0 ,(dtr 45))) => (7.0710678118654755d0 7.071067811865475d0)
+ (polar->cartesian (list 10.0 (dtr 45))) => (7.0710678118654755d0 7.071067811865475d0)
+ (polar->cartesian (list  1.0 0.0))      => (1.0 0.0)
 @end(code)
 "  
   (let ((radius (first  radius-angle))
@@ -85,13 +99,13 @@
 
  @b(Переменые:)
 @begin(list)
- @item(radius-angle - список, состоящий из двух элементов: радиус-вектора 
-и угла, заданного в радианах.)
+ @item(x-y - список, состоящий из двух элементов: координат точки x и y.)
 @end(list)
 
  @b(Пример использования:)
 @begin[lang=lisp](code)
- (cartesian->polar (list 10.0 10)) (14.142136 0.7853982)
+ (cartesian->polar (list 10.0 10.0)) => (14.142136 0.7853982)
+ (cartesian->polar (list  1.0  0.0)) => (1.0 0.0)
 @end(code)
 "  
   (let ((radius (sqrt (apply #'+ (mapcar #'square x-y))))
@@ -175,9 +189,35 @@
         :collect coord))
 
 (defun double-float-list (list)
+  "@b(Описание:) функция @b(double-float-list) преобразует элементы
+списка @b(list) в значения типа @b(double-float).
+
+ @b(Переменые:)
+@begin(list)
+ @item(list - список числовых значений.)
+@end(list)
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (double-float-list '(1 2 3))   => (1.0d0 2.0d0 3.0d0)
+ (double-float-list '(1/2 3/4)) => (0.5d0 0.75d0)
+@end(code)"
   (loop :for i :in list
         :collect (coerce i 'double-float)))
 
 (defun single-float-list (list)
+  "@b(Описание:) функция @b(single-float-list) преобразует элементы
+списка @b(list) в значения типа @b(single-float).
+
+ @b(Переменые:)
+@begin(list)
+ @item(list - список числовых значений.)
+@end(list)
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (single-float-list '(1 2 3))   => (1.0 2.0 3.0)
+ (single-float-list '(1/2 3/4)) => (0.5 0.75)
+@end(code)"
   (loop :for i :in list
         :collect (coerce i 'single-float)))
