@@ -14,7 +14,7 @@
 "
   :author "Mykola Matvyeyev <mnasoft@gmail.com>"
   :license "GPL-3.0-or-later"
-  :version "0.0.6"
+  :version "0.0.7"
   :serial t
   :in-order-to ((test-op (test-op "math-tests")))
   :depends-on ("cl-utilities"
