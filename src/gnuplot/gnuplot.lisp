@@ -55,12 +55,21 @@
 
 (defparameter *default-gnuplot-direcroty*
   (ensure-directories-exist #P"~/gnuplot/")
-    "Каталог для вывода по умолчанию.")
+    "@b(Описание:) параметр @b(*default-gnuplot-direcroty*) определяет
+каталог для вывода файлов gnuplot по умолчанию.")
 
 ;;;; (directory-namestring *default-gnuplot-direcroty*)
 
 (defun file-name (f-name &optional (f-ext ""))
-    "Определяет имя файла в каталоге поумолчанию."
+    "@b(Описание:) функция @b(file-name) возвращает полное имя файла
+в каталоге @b(*default-gnuplot-direcroty*), добавляя при необходимости
+расширение @b(f-ext).
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (file-name "my-plot" "png") => "~/gnuplot/my-plot.png"
+ (file-name "my-plot")       => "~/gnuplot/my-plot"
+@end(code)"
   (assert (stringp f-name))
   (assert (stringp f-ext))
   (if (string= "" f-ext)
@@ -84,16 +93,22 @@
   (org.shirakumo.font-discovery:find-font :family family)))
 
 (defun rgb (aa rr gg bb)
-    "@b(Описание:) функция @b(rgb) возвращает строковое представление цвета.
+    "@b(Описание:) функция @b(rgb) возвращает строковое представление цвета
+в формате AARRGGBB.
 
  @b(Переменые:)
 @begin(list)
-@iterm(aa = 0..255 яркость;) 
-@iterm(rr = 0..255 насыщенность красного;) 
-@iterm(gg = 0..255 насыщенность зеленого;) 
-@iterm(bb = 0..255 насыщенность синего.) 
+ @item(aa - прозрачность (alpha), 0..255.)
+ @item(rr - насыщенность красного, 0..255.)
+ @item(gg - насыщенность зеленого, 0..255.)
+ @item(bb - насыщенность синего, 0..255.)
 @end(list)
-"
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (rgb #xFF #xFF #xFF #xFF) => \"#FFFFFFFF\" ; белый
+ (rgb #xFF #xFF #xFF 0)    => \"#FFFFFF0\"  ; синий = 0
+@end(code)"
   (assert (and (<= 0 aa 255) (<= 0 rr 255) (<= 0 gg 255) (<= 0 bb 255)))
   (format nil "#~X~X~X~X" aa rr gg bb))
 
@@ -137,9 +152,13 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defparameter *term-pdfcairo* (make-instance 'term-pdfcairo))
+(defparameter *term-pdfcairo* (make-instance 'term-pdfcairo)
+  "@b(Описание:) параметр @b(*term-pdfcairo*) содержит значения
+по умолчанию для терминала gnuplot pdfcairo.")
 
-(defparameter *term-pngcairo* (make-instance 'term-pngcairo))
+(defparameter *term-pngcairo* (make-instance 'term-pngcairo)
+  "@b(Описание:) параметр @b(*term-pngcairo*) содержит значения
+по умолчанию для терминала gnuplot pngcairo.")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -413,14 +432,17 @@
 
 (defparameter *palette-defined*
   "set palette defined (0.05 'blue', 0.2 'cyan', 0.4 'green', 0.6 'yellow', 0.8 'orange', 1.0 'red')"
-  "STUB")
+  "@b(Описание:) параметр @b(*palette-defined*) содержит строку gnuplot
+для задания цветовой палитры (sine: blue → cyan → green → yellow → orange → red).")
 
 (defparameter *palette-defined-01*
   "set palette defined (0 'blue', 0.1 'white', 0.2 'cyan', 0.3 'white', 0.4 'green', 0.5 'white', 0.6 'yellow', 0.7 'white', 0.8 'orange', 0.9 'white', 1 'red')"
-  "STUB")
+  "@b(Описание:) параметр @b(*palette-defined-01*) содержит строку gnuplot
+для задания цветовой палитры (blue → cyan → green → yellow → orange → red) с белыми промежутками.")
 
 (defparameter *pm3d-map* "set pm3d map"
-  "STUB")
+  "@b(Описание:) параметр @b(*pm3d-map*) содержит строку gnuplot
+для включения режима pm3d map (проекция трёхмерной поверхности на плоскость).")
 
 (defun gnuplot-splot (f-name
 		      &key
@@ -430,8 +452,18 @@
 			(palette  *palette-defined*) 
 			(pm3d     *pm3d-map*)
 			(splot    (concatenate 'string "splot '" (file-name f-name "data") "' u 2:1:3")))
-  "Осуществляет подготовку данных, содержащихся в файле f-name с расширением data.
-Данные в файле должны иметь формат gp-list."
+  "@b(Описание:) функция @b(gnuplot-splot) строит трёхмерный график по данным
+в файле @b(f-name).data через gnuplot.
+
+ @b(Переменые:)
+@begin(list)
+ @item(f-name   - базовое имя файлов .data, .gp, .pdf.)
+ @item(terminal - строка gnuplot для установки терминала.)
+ @item(output   - строка gnuplot для установки выходного файла.)
+ @item(palette  - строка gnuplot для цветовой палитры.)
+ @item(pm3d     - строка gnuplot для включения pm3d.)
+ @item(splot    - строка команды splot.)
+@end(list)"
   (assert (probe-file (file-name f-name "data")))
   (with-open-file (gp (file-name f-name "gp") :direction :output :if-exists :supersede :external-format :utf8)
     (when terminal (format gp "~A~%" terminal))
@@ -453,7 +485,14 @@
 			   (palette  *palette-defined*) 
 			   (pm3d     *pm3d-map*)
                                          (splot    (concatenate 'string "splot '" (file-name f-name "data")"' u 2:1:3")))
-    "STUB"
+    "@b(Описание:) функция @b(gnuplot-data-splot) осуществляет подготовку трёхмерных
+данных @b(data) и строит график через gnuplot.
+
+ @b(Переменые:)
+@begin(list)
+ @item(f-name - базовое имя файлов .data, .gp, .pdf.)
+ @item(data   - список списков точек (x y z).)
+@end(list)"
   (assert (consp data))
   (assert (consp (first data)))
   (assert (consp (first (first data))))
@@ -527,7 +566,17 @@
 		              (preamble "set xrange [0:2.5]")
 		              (output   (concatenate 'string "set output '" (file-name f-name ".pdf") "'"))
 			      (plot    (concatenate 'string "plot '" (file-name f-name ".data") "' u 2:1")))
-  "STUB"
+  "@b(Описание:) функция @b(gnuplot-plot) строит двумерный график
+по данным из файла @b(f-name).data через gnuplot.
+
+ @b(Переменые:)
+@begin(list)
+ @item(f-name   - базовое имя файлов .data, .gp, .pdf.)
+ @item(terminal - строка установки терминала gnuplot.)
+ @item(preamble - вводные команды gnuplot (напр., set xrange).)
+ @item(output   - строка установки выходного файла.)
+ @item(plot     - строка команды plot.)
+@end(list)"
   (with-open-file (gp (file-name f-name ".gp")  :direction :output :if-exists :supersede :external-format :utf8)
     (when terminal (format gp "~A~%" terminal))
     (when preamble (format gp "~A~%" preamble)) 
