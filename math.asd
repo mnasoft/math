@@ -14,7 +14,7 @@
 "
   :author "Mykola Matvyeyev <mnasoft@gmail.com>"
   :license "GPL-3.0-or-later"
-  :version "0.0.5"
+  :version "0.0.6"
   :serial t
   :in-order-to ((test-op (test-op "math-tests")))
   :depends-on ("cl-utilities"
@@ -40,7 +40,8 @@
                 :components ((:file "math"))))) ;;;; (:file "matr-temp")
 
 (defsystem "math/half-div"
-  :description "Describe half-div here"
+  :description "@b(Описание:) система @b(math/half-div) реализует
+метод половинного деления для нахождения корней уравнений."
   :components ((:module "src/half-div"
 		:serial nil
                 :components ((:file "half-div")
@@ -56,7 +57,8 @@
                              (:file "series-doc" :depends-on ("series"))))))
 
 (defsystem "math/rnd"
-  :description "Содержит функции для генерирования случайных списков и 2d-списков."
+  :description "@b(Описание:) система @b(math/rnd) содержит функции
+для генерирования случайных списков и двухмерных списков."
   :depends-on ("math/matr")
   :components ((:module "src/rnd"
 		:serial nil
@@ -64,8 +66,8 @@
                              (:file "rnd-doc" :depends-on ("rnd"))))))
 
 (defsystem "math/core"
-  :description "Содержит некоторые функции и обобщенные функции,
-используемые в проекте повсеместно"
+  :description "@b(Описание:) система @b(math/core) содержит
+базовые функции и обобщённые функции, используемые в проекте повсеместно."
   ;; :depends-on ()
   :components ((:module "src/core"
 		:serial nil
@@ -73,7 +75,8 @@
                              (:file "core-doc" :depends-on ("core"))))))
 
 (defsystem "math/ls-rotation"
-  :description "Реализация решение системы линейных уравнений методом вращения"
+  :description "@b(Описание:) система @b(math/ls-rotation) реализует
+решение систем линейных уравнений методом вращения."
   :depends-on ("math/matr")
   :components ((:module "src/ls-rotation"
 		:serial t
@@ -81,7 +84,8 @@
                              (:file "ls-rotation-doc")))))
 
 (defsystem "math/gnuplot"
-  :description "Интерфейс к программе построения графиков gnuplot"
+  :description "@b(Описание:) система @b(math/gnuplot) реализует
+интерфейс к программе построения графиков @b(gnuplot)."
   :depends-on ("math/core" "font-discovery" "vgplot")
   :components ((:module "src/gnuplot"
 		:serial t
@@ -89,7 +93,8 @@
                              (:file "gnuplot-doc" :depends-on ("gnuplot"))))))
 
 (defsystem "math/ls-gauss"
-  :description "Решение систем линейных уравнений методом Гаусса"
+  :description "@b(Описание:) система @b(math/ls-gauss) реализует
+решение систем линейных уравнений методом Гаусса."
   :depends-on ("math/matr")
   :components ((:module "src/ls-gauss"
 		:serial t
@@ -97,7 +102,8 @@
                              (:file "ls-gauss-doc")))))
 
 (defsystem "math/appr"
-  :description "Describe math here"
+  :description "@b(Описание:) система @b(math/appr) содержит функции
+для нахождения аппроксимирующих полиномов методом наименьших квадратов."
   :depends-on ("math/core" "math/matr" "math/ls-gauss" "math/smooth") 
   :components ((:module "src/appr"
 		:serial t
@@ -105,7 +111,9 @@
                              (:file "appr-doc")))))
 
 (defsystem "math/stat"
-  :description "Describe math here"
+  :description "@b(Описание:) система @b(math/stat) содержит функции
+описательной статистики, проверки грубых промахов по критерию
+Граббса, комбинаторики и генерации случайных выборок."
   :depends-on ("math/core" "gsll")
   :components ((:module "src/stat"
 		:serial t
@@ -113,16 +121,21 @@
                              (:file "stat-doc" :depends-on ("stat"))))))
 
 (defsystem "math/smooth"
-  :description "Весовые функции для методов сглаживания"
+  :description "@b(Описание:) система @b(math/smooth) содержит
+весовые функции, используемые в методах сглаживания данных."
   :components ((:module "src/smooth"
 		:serial t
                 :components ((:file "smooth")
                              (:file "smooth-doc" :depends-on ("smooth"))))))
 
 (defsystem "math/coord"
-  :description "Содержит функции преобразования
-- угловой меры;
-- координат точки между декартовой, полярной, сферической системами координат.
+  :description "@b(Описание:) система @b(math/coord) содержит
+функции преобразования:
+@begin(list)
+ @item(угловой меры;)
+ @item(координат точки между декартовой, полярной и сферической
+системами координат.)
+@end(list)
 "
   :depends-on ("math/core") 
   :components ((:module "src/coord"
@@ -131,7 +144,8 @@
                              (:file "coord-doc")))))
 
 (defsystem "math/ls-gsll"
-  :description "Решение систем линейных уравнений при помощи библиотеки gsll"
+  :description "@b(Описание:) система @b(math/ls-gsll) реализует
+решение систем линейных уравнений при помощи библиотеки @b(gsll)."
   :depends-on ("gsll" "math/matr")
   :components ((:module "src/ls-gsll"
 		:serial t
@@ -139,7 +153,8 @@
                              (:file "ls-gsll-doc")))))
 
 (defsystem "math/geom"
-  :description "Функции вычисления площадей и объемов геометрических фигур и тел."
+  :description "@b(Описание:) система @b(math/geom) содержит функции
+вычисления площадей и объёмов геометрических фигур и тел."
   :components ((:module "src/geom"
 		:serial t
                 :components ((:file "geom")
@@ -170,7 +185,7 @@
 
 (defsystem "math/matr"
   :description "@b(Описание:) система @b(math/matr) содержит
- некоторых операций над матрицами"
+реализацию некоторых операций над матрицами."
   :depends-on ("cl-utilities" "math/coord" "math/stat" "closer-mop")
   :components ((:module "src/matr"
 		:serial t
