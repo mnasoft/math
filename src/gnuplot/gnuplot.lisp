@@ -67,8 +67,8 @@
 
  @b(Пример использования:)
 @begin[lang=lisp](code)
- (file-name "my-plot" "png") => "~/gnuplot/my-plot.png"
- (file-name "my-plot")       => "~/gnuplot/my-plot"
+ (file-name \"my-plot\" \"png\") => \"~/gnuplot/my-plot.png\"
+ (file-name \"my-plot\")       => \"~/gnuplot/my-plot\"
 @end(code)"
   (assert (stringp f-name))
   (assert (stringp f-ext))

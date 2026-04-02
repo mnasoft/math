@@ -65,6 +65,7 @@
 прямого/обратного ходов).
 
  @b(Пример использования:)
+@begin[lang=lisp](code)
  (convert-to-triangular 
   (make-instance '<matrix> 
 		 :initial-contents '((0.0 0.0 4.0 12.0)
