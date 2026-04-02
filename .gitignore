@@ -1,5 +1,6 @@
 .directory
 *~
+<<<<<<< HEAD
 *.bak
 *.FASL
 *.fasl
@@ -22,3 +23,9 @@ ToDo.pdf
 ToDo.tex
 ToDo.html
 
+=======
+*.FASL
+*.fasl
+*.lisp-temp
+\#*#
+>>>>>>> gh/br-matr
