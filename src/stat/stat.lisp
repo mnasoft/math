@@ -291,17 +291,17 @@
   (standard-deviation (exclude-nil-from-list x)))
 
 (defun variation-coefficient (x)
-  "@b(Описание:) возвращает 
+  "@b(Описание:) возвращает
 @link[uri=\"https://ru.wikipedia.org/wiki/Коэффициент_вариации\"](коэффициент вариации)
-для списка величин.
+для списка величин @b(x).
 
  @b(Пример использования:)
 @begin[lang=lisp](code)
- (variation-coefficient '(1.1 1.0 0.9 1.2 0.8))
+ (variation-coefficient '(1.1 1.0 0.9 1.2 0.8)) => 0.1581139
 @end(code)
 "  
   (/ (standard-deviation x)
-     (apply #'average X)))
+     (average-value x)))
 
 (defun variation-coefficient-not-nil (x)
   (variation-coefficient (exclude-nil-from-list x)))
