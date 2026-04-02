@@ -124,9 +124,18 @@
     (* b (expt q i))))
 
 (defmethod item ((series <arithmetic>) (i integer))
+  "@b(Описание:) метод @b(item) для @b(<arithmetic>) возвращает
+i-й член арифметической прогрессии.
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (item (make-instance '<arithmetic> :a 2 :d 3) 0) => 2
+ (item (make-instance '<arithmetic> :a 2 :d 3) 1) => 5
+ (item (make-instance '<arithmetic> :a 2 :d 3) 2) => 8
+@end(code)"
   (let ((a (<arithmetic>-a series))
         (d (<arithmetic>-d series)))
-    (+ a (expt d i))))
+    (+ a (* d i))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -138,14 +147,14 @@
     (/ (log (+ 1 (/ (* S (- q 1)) b))) (log q))))
 
 (defmethod items-by-summ ((series <arithmetic>) S)
-  "@b(Описание:) функция @b(n) количество членов геометрической
-прогрессии, чтобы их сумма равнялась @b(S)."
+  "@b(Описание:) метод @b(items-by-summ) возвращает количество членов
+арифметической прогрессии, сумма которых равна @b(S)."
   (let* ((a (<arithmetic>-a series))
          (d (<arithmetic>-d series))
          (eq
            (make-instance 'math/equation:<quadric>
                           :a (/ d 2)
-                          :b (- a (/ d 2) )
+                          :b (- a (/ d 2))
                           :c (- S))))
     (apply #'max (math/equation:roots eq))))
 
