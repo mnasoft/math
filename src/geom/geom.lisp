@@ -54,12 +54,12 @@
     (sqrt (* p (- p a) (- p b) (- p c)))))
 
 (defun regular-triangle-area-by-side (a)
-    "@b(Описание:) функция @b(triangle-area-by-sides) возвращает
+    "@b(Описание:) функция @b(regular-triangle-area-by-side) возвращает
    площадь правильного треугольника со стороной @b(a).
  @b(Пример использования:)
 @begin[lang=lisp](code)
- (regular-triangle-area-by-side 1.0 1.0 1.0) => 0.4330127 ; (/ (sqrt 3) 4)
- (regular-triangle-area-by-side 2.0 2.0 2.0) => 1.7320508 ; (sqrt 3)
+ (regular-triangle-area-by-side 1.0) => 0.4330127
+ (regular-triangle-area-by-side 2.0) => 1.7320508
 @end(code)"
   (triangle-area-by-sides a a a))
 
@@ -85,8 +85,8 @@
   (* 1/12 a a a (sqrt 2)))
 
 (defun regular-tetrahedron-side-by-volume (v)
-    "@b(Описание:) функция @b(regular-tetrahedron-volume-by-side)
-   возвращает объем правильного тетраэдра с ребром @b(a).
+    "@b(Описание:) функция @b(regular-tetrahedron-side-by-volume)
+   возвращает длину ребра правильного тетраэдра с объёмом @b(v).
 
  @b(Пример использования:)
 @begin[lang=lisp](code)
@@ -96,23 +96,68 @@
   (expt (/ (* 12 v) (sqrt 2)) 1/3))
 
 (defun diameter-by-radius (radius)
+  "@b(Описание:) функция @b(diameter-by-radius) возвращает диаметр
+по заданному радиусу @b(radius).
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (diameter-by-radius 5.0) => 10.0
+ (diameter-by-radius 1.0) => 2.0
+@end(code)"
   (* radius 2))
 
 (defun radius-by-diameter (diameter)
+  "@b(Описание:) функция @b(radius-by-diameter) возвращает радиус
+по заданному диаметру @b(diameter).
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (radius-by-diameter 10.0) => 5.0
+ (radius-by-diameter  2.0) => 1.0
+@end(code)"
   (/ diameter 2))
 
 (defun circle-area-by-radius (radius)
-    "@b(Описание:) функция @b(circle-area-by-radius) "
+    "@b(Описание:) функция @b(circle-area-by-radius) возвращает площадь
+круга по заданному радиусу @b(radius).
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (circle-area-by-radius 1.0) => 3.141592653589793d0
+ (circle-area-by-radius 2.0) => 12.566370614359172d0
+@end(code)"
   (* pi radius radius))
 
 (defun circle-area-by-diameter (diameter)
+  "@b(Описание:) функция @b(circle-area-by-diameter) возвращает площадь
+круга по заданному диаметру @b(diameter).
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (circle-area-by-diameter 2.0) => 3.141592653589793d0
+ (circle-area-by-diameter 4.0) => 12.566370614359172d0
+@end(code)"
   (circle-area-by-radius
    (radius-by-diameter diameter)))
 
 (defun equivalent-diameter (area perimeter)
-   "
- @link[uri=\"https://ru.wikipedia.org/wiki/Гидравлический_диаметр/\"](Гидравлический_диаметр)
- @link[uri=\"https://en.wikipedia.org/wiki/Hydraulic_diameter/\"](Hydraulic_diameter)
-  "
+  "@b(Описание:) функция @b(equivalent-diameter) возвращает эквивалентный
+(гидравлический) диаметр сечения по заданным площади @b(area)
+и периметру @b(perimeter).
+
+ @b(Переменые:)
+@begin(list)
+ @item(area      - площадь сечения.)
+ @item(perimeter - периметр сечения.)
+@end(list)
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (equivalent-diameter 25.0 20.0) => 5.0 ; прямоугольник 5x5
+ (equivalent-diameter  1.0  1.0) => 4.0
+@end(code)
+
+ @link[uri=\"https://ru.wikipedia.org/wiki/Гидравлический_диаметр\"](Гидравлический диаметр)
+ @link[uri=\"https://en.wikipedia.org/wiki/Hydraulic_diameter\"](Hydraulic diameter)"
   (* 4 (/ area perimeter)))
   
