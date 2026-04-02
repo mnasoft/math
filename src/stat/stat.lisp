@@ -507,7 +507,18 @@
 	  
 
 (defun random-unit-vector-3d (&optional (state *random-state*))
-  "Возвращает случайный единичный вектор в 3D в виде списка (x y z)."
+  "@b(Описание:) функция @b(random-unit-vector-3d) возвращает случайный
+единичный вектор в трёхмерном пространстве в виде списка @b((x y z)).
+
+ @b(Переменые:)
+@begin(list)
+ @item(state - генератор случайных чисел; по умолчанию @b(*random-state*).)
+@end(list)
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (random-unit-vector-3d) => (0.6235d0 -0.4521d0 0.6374d0) ; результат случаен
+@end(code)"
   (let* ((z (- (random 2.0d0 state) 1.0d0))
 	 (phi (random (* 2.0d0 pi) state))
 	 (radius (sqrt (max 0.0d0 (- 1.0d0 (* z z))))))
@@ -516,8 +527,19 @@
 	  z)))
 
 (defun random-positive-unit-vector-3d (&optional (state *random-state*))
-  "Возвращает случайный единичный 3D-вектор, все компоненты которого
-положительны и имеют тип single-float."
+  "@b(Описание:) функция @b(random-positive-unit-vector-3d) возвращает
+случайный единичный вектор в трёхмерном пространстве, все компоненты
+которого положительны. Значения компонент имеют тип @b(single-float).
+
+ @b(Переменые:)
+@begin(list)
+ @item(state - генератор случайных чисел; по умолчанию @b(*random-state*).)
+@end(list)
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (random-positive-unit-vector-3d) => (0.6235 0.4521 0.6374) ; результат случаен
+@end(code)"
   (loop
     for vector = (random-unit-vector-3d state)
     when (every #'plusp vector)
