@@ -60,8 +60,11 @@
  Решение системы линейных уравнений выполняется методом Гаусса."))
 
 (defmethod convert-to-triangular ((matr math/matr:<matrix>))
-  "@b(Пример использования:)
-@begin[lang=lisp](code)
+  "@b(Описание:) метод @b(convert-to-triangular) приводит расширенную матрицу
+@b(matr) к ступенчатому треугольному виду (для дальнейшего решения методом
+прямого/обратного ходов).
+
+ @b(Пример использования:)
  (convert-to-triangular 
   (make-instance '<matrix> 
 		 :initial-contents '((0.0 0.0 4.0 12.0)
@@ -124,11 +127,21 @@
                   :initial-contents matr)))
 
 (defmethod backward-run ((matr math/matr:<matrix>))
-  "Кандидат в intern.
+  "@b(Описание:) метод @b(backward-run) выполняет обратный ход метода
+Гаусса по треугольной расширенной матрице @b(matr) и возвращает
+вектор неизвестных.
 
- Обратный ход при вычислении решения системы линейных уравнений.
- Матрица matr должна быть приведена к треугольной;
- "
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (backward-run
+  (convert-to-triangular
+   (make-instance 'math/matr:<matrix> :initial-contents
+                  '((1 2 3 14)
+                    (0 1 0 2)
+                    (0 0 1 3)))))
+ => #(...)
+@end(code)"
+
   (let* ((n (math/matr:rows matr)) ;; Количество строк в матрице (матрица расширенная)
 	 (x (math/matr:matr-new 1 n))) ;; Вектор результат
     (do ((i 0 (+ 1 i)))
@@ -142,13 +155,16 @@
       (setf (math/matr:mref x 0 i) (/ (- (math/matr:mref matr i n) summ) (math/matr:mref matr i i))))))
 
 (defmethod solve-x ((matr math/matr:<matrix>))
-  "@b(Пример использования 1.1:)
+  "@b(Описание:) метод @b(solve-x) решает систему линейных уравнений,
+представленную расширенной матрицей @b(matr), возвращая вектор-решение.
+
+ @b(Пример использования 1.1:)
 @begin[lang=lisp](code)
   (solve-x
-   (math/matr:matr-new 
-             3 4 '(1 2 3 14 
-		   2 1 1 7 
-		   3 0 1 2)))
+   (math/matr:matr-new
+    3 4 '(1 2 3 14
+         2 1 1 7
+         3 0 1 2)))
  => Matr 1х3
     [ 1/3       16/3      1        ]
 @end(code)
@@ -156,23 +172,23 @@
  @b(Пример использования 1.2:)
 @begin[lang=lisp](code)
  (solve-x
-  (math/matr:matr-new 
-            3 4 '(1.0 2 3 14 
-		  2   1 1  7 
-		  3   0 1  2)))
+  (math/matr:matr-new
+   3 4 '(1.0 2 3 14
+        2   1 1  7
+        3   0 1  2)))
  => Matr 1х3
     [ 0.33333397  5.333332  1.0000007 ]
 @end(code)
 
  @b(Пример использования 2:)
 @begin[lang=lisp](code)
- (solve-x 
-   (math/matr:matr-new 
-             3 4 '(1 0 1 4 
-		   0 1 0 2 
-		   0 0 1 3)))
-  => Matr 1х3
-     [ 1         2         3        ]
+ (solve-x
+  (math/matr:matr-new
+   3 4 '(1 0 1 4
+        0 1 0 2
+        0 0 1 3)))
+ => Matr 1х3
+    [ 1         2         3        ]
 @end(code)"
   (let* ((matr-tr (convert-to-triangular matr))
 	 (x (backward-run matr-tr)))
